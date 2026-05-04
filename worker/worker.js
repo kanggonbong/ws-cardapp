@@ -13,7 +13,7 @@ export default {
       });
     }
 
-    const APPS_SCRIPT_WEBAPP_URL = "YOUR_APPS_SCRIPT_WEBAPP_URL";
+    const APPS_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzLyWl4cHIEmwPDhjMGADoWN1MHa2OLhkVtcJldWDlHzRgyz-Yb9CGNleaiwmrV1-ZvBg/exec";
 
     if (APPS_SCRIPT_WEBAPP_URL === "YOUR_APPS_SCRIPT_WEBAPP_URL") {
       return new Response(JSON.stringify({
