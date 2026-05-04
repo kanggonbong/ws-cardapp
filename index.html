@@ -158,6 +158,7 @@ const mockApi = {
         ]
     }), 800)),
     getSavedCarts: (ids) => Promise.resolve({ '매식3': [{usagePlace:'Mock 식당', usageDetails:'특근매식비', amount:'18000', receiptImage:''}], '법인2': [{usagePlace:'중앙문구', usageDetails:'', amount:'12000', receiptImage:''}] }),
+    validateAdminPin: () => Promise.resolve({ ok: true }),
     rentNow: (params) => Promise.resolve({status:'success'}),
     queueRentRequest: (params) => Promise.resolve({status:'ok'}),
     queueReturnRequest: (params) => new Promise(resolve => setTimeout(() => resolve({status:'ok'}), 1000)),
@@ -241,9 +242,9 @@ const CardApp = (function() {
         confirmLeaveTimeout1: null,
         confirmLeaveTimeout2: null,
         loginTyping: false,
-        isAdminMode: (localStorage.getItem('WS_ADMIN_MODE') === '1'),
-        adminSince: localStorage.getItem('WS_ADMIN_SINCE') || null,
-        adminPinCache: localStorage.getItem('WS_ADMIN_PIN_CACHE') || null,
+        isAdminMode: false,
+        adminSince: null,
+        adminPinCache: null,
         pendingPostReturnSync: false,
         forceSyncOnNextUnlock: false
     };
@@ -266,19 +267,13 @@ const CardApp = (function() {
     function setAdminMode(on, pin=null){
         state.isAdminMode = !!on;
         if (state.isAdminMode) {
-            localStorage.setItem('WS_ADMIN_MODE', '1');
             const ts = new Date().toISOString();
-            localStorage.setItem('WS_ADMIN_SINCE', ts);
             state.adminSince = ts;
             if (pin) {
-                localStorage.setItem('WS_ADMIN_PIN_CACHE', String(pin));
                 state.adminPinCache = String(pin);
             }
             Swal.fire({toast:true, position:'top', icon:'success', title:'행정실 관리자 모드 ON', showConfirmButton:false, timer:1800});
         } else {
-            localStorage.removeItem('WS_ADMIN_MODE');
-            localStorage.removeItem('WS_ADMIN_SINCE');
-            localStorage.removeItem('WS_ADMIN_PIN_CACHE');
             state.adminSince = null;
             state.adminPinCache = null;
             Swal.fire({toast:true, position:'top', icon:'info', title:'관리자 모드 OFF', showConfirmButton:false, timer:1800});
@@ -1720,7 +1715,6 @@ const CardApp = (function() {
         elements.mainTitle = document.getElementById('main-title-container');
         let adminTapCount = 0;
         let adminTapTimer = null;
-        const ADMIN_PIN = '9100'; // 행정실 PIN
         function resetAdminTap(){
             adminTapCount = 0;
             if (adminTapTimer) clearTimeout(adminTapTimer);
@@ -1754,7 +1748,8 @@ const CardApp = (function() {
                     });
                     if (res.isConfirmed) {
                         const pin = String(res.value || '').trim();
-                        if (pin === ADMIN_PIN) setAdminMode(true, pin);
+                        const result = await Api.call('validateAdminPin', pin);
+                        if (result && result.ok) setAdminMode(true, pin);
                         else Swal.fire('실패', 'PIN이 올바르지 않습니다.', 'error');
                     }
                 }
