@@ -982,7 +982,7 @@ const CardApp = (function() {
                     <div class="mini-card-icon"></div>
                     <span class="card-name">${Utils.esc(card.displayName)}</span>
                 </div>
-                ${card.status==='사용중'?'<span class="status-badge">사용중</span>':(card.status==='반납대기'?'<span class="status-badge">반납대기</span>':'')}
+                ${card.status==='사용중'?'<span class="status-badge">사용중</span>':(card.status==='반납처리중'?'<span class="status-badge">반납처리중</span>':'')}
             `;
             if (card.status === '사용가능') {
                 wrap.addEventListener('click', () => CardLogic.openMorphOverlay(card));
@@ -1577,8 +1577,8 @@ const CardApp = (function() {
                 (state, cardId) => {
                     const t = state.allCardData.find(c => c.id === cardId);
                     if (t) {
-                        // 반납 요청 직후: 다른 사용자가 신청하지 못하도록 '반납대기'로 표시
-                        t.status = '반납대기';
+                        // 반납 요청 직후: 다른 사용자가 신청하지 못하도록 '반납처리중'으로 표시
+                        t.status = '반납처리중';
                     }
                     UIManager.showConfirmationScreen('반납 요청 완료',
                     Utils.createDetailRow('카드번호', params.cardNumber) +
