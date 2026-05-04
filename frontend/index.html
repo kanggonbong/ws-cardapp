@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="ko"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>우성고 카드</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="우성고 카드">
+<link rel="apple-touch-icon" href="https://i.ibb.co/9GtT47v/icon-192.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root{--bg-color:#e0e5ec;--primary-color:#007aff;--primary-gradient:linear-gradient(135deg,#00c6ff,#0072ff);--accent-color:#ff9500;--danger-color:#ff3b30;--success-color:#28a745;--text-primary:#4a5568;--text-secondary:#718096;--shadow-light:rgba(255,255,255,0.9);--shadow-dark:rgba(163,177,198,0.6);--font-main:'Pretendard',sans-serif;}*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;outline:none;user-select:none;-webkit-user-select:none;cursor:default;touch-action:manipulation;}html,body{font-family:var(--font-main);color:var(--text-primary);width:100%;min-height:100%;background-color:var(--bg-color);-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-y:auto;}[hidden]{display:none !important;}.text-gradient{background:var(--primary-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:var(--primary-color);}.swal2-input-new,input[type="text"],input[type="number"],input[inputmode="numeric"],input[inputmode="decimal"]{user-select:auto;-webkit-user-select:auto;cursor:text;}#lock-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:10003;background-color:var(--bg-color);cursor:default;overflow:hidden;transition:opacity 0.4s ease-out,transform 0.4s ease-out;touch-action:none;}#lock-screen.fade-out{opacity:0;pointer-events:none;transform:scale(1.05);}#lock-screen.active-pop .lock-content{transform:scale(0.96);transition:transform 0.1s ease-in;}.lock-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:40px;transition:opacity 0.3s ease,transform 0.2s ease;width:100%;}#glass-card-container{width:320px;height:200px;perspective:1000px;transform-style:preserve-3d;transition:transform 0.5s cubic-bezier(0.2,0.8,0.2,1);cursor:pointer;}#glass-card-container.hide-card{opacity:0 !important;pointer-events:none;transition:none !important;}#glass-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.1s ease-out;background:linear-gradient(135deg,#021B79 0%,#0575E6 100%);border-radius:16px;box-shadow:20px 20px 50px rgba(0,0,0,0.3),-10px -10px 40px rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1);padding:25px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;overflow:hidden;}#glass-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");opacity:0.15;pointer-events:none;border-radius:16px;mix-blend-mode:overlay;}.card-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;}.card-chip{width:45px;height:35px;background:linear-gradient(135deg,#d4af37 0%,#f9d976 100%);border-radius:6px;position:relative;box-shadow:inset 1px 1px 2px rgba(0,0,0,0.3);}.card-school-icon{font-size:2.2rem;color:rgba(255,255,255,0.95);filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));}.card-middle{display:flex;justify-content:center;margin-top:15px;position:relative;z-index:1;}.card-number{font-size:1.4rem;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.95);text-shadow:1px 1px 2px rgba(0,0,0,0.6);font-family:monospace;white-space:nowrap;}.card-bottom{display:flex;justify-content:space-between;align-items:flex-end;position:relative;z-index:1;}.card-holder{text-transform:uppercase;font-size:0.75rem;font-weight:500;letter-spacing:1px;color:rgba(255,255,255,0.8);}.card-nfc{transform:rotate(90deg);font-size:1.6rem;color:rgba(255,255,255,0.7);}.lock-text{font-size:1.3rem;font-weight:700;letter-spacing:2px;color:var(--text-secondary);margin-top:40px;text-shadow:1px 1px 2px var(--shadow-light),-1px -1px 2px var(--shadow-dark);animation:soft-pulse 3s infinite ease-in-out;text-align:center;width:100%;transition:opacity 0.2s ease-out;}@keyframes soft-pulse{0%,100%{opacity:0.6;}50%{opacity:1;}}#welcome-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:10001;background:var(--bg-color);opacity:0;visibility:hidden;transition:opacity 0.4s ease-out,visibility 0.4s;}#welcome-screen.is-visible{opacity:1;visibility:visible;}.hybrid-loader-container{display:flex;flex-direction:column;align-items:center;gap:30px;transform:translateY(-20px);}.circle-loader-wrapper{width:100px;height:100px;position:relative;border-radius:50%;background:var(--bg-color);box-shadow:-6px -6px 14px var(--shadow-light),6px 6px 14px var(--shadow-dark),inset -2px -2px 6px var(--shadow-light),inset 2px 2px 6px var(--shadow-dark);display:flex;justify-content:center;align-items:center;}.circle-spinner{position:absolute;inset:5px;border-radius:50%;border:4px solid transparent;border-top-color:var(--primary-color);border-left-color:var(--primary-color);animation:spin 1.5s cubic-bezier(0.68,-0.55,0.265,1.55) infinite;filter:drop-shadow(0 0 4px rgba(0,122,255,0.5));}.circle-icon{font-size:1.8rem;color:var(--primary-color);animation:pulse 2s infinite;}.tube-gauge-wrapper{width:200px;height:12px;background:#dbe1e8;border-radius:10px;box-shadow:inset 2px 2px 5px var(--shadow-dark),inset -2px -2px 5px var(--shadow-light);overflow:hidden;position:relative;}.tube-fill{width:0%;height:100%;background:linear-gradient(90deg,#2b86c5,#007aff);border-radius:10px;transition:width 0.4s ease-out;box-shadow:0 0 8px rgba(0,122,255,0.5);}.loader-status-text{font-size:0.95rem;font-weight:600;color:var(--text-secondary);height:20px;display:flex;align-items:center;min-width:180px;justify-content:center;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.7;transform:scale(0.95);}}:focus{outline:none !important;}:focus-visible{outline:none !important;}.loading-progress-bar{width:150px;height:15px;background:var(--bg-color);border-radius:10px;box-shadow:inset 3px 3px 6px var(--shadow-dark),inset -3px -3px 6px var(--shadow-light);overflow:hidden;position:relative;}.loading-progress-bar::after{content:'';position:absolute;top:0;left:0;width:50%;height:100%;border-radius:10px;background:var(--primary-gradient);animation:progress-light 2s ease-in-out infinite;}@keyframes progress-light{0%{transform:translateX(-100%);}50%{transform:translateX(200%);}100%{transform:translateX(-100%);}}.content-wrapper{width:100%;min-height:100vh;min-height:100dvh;height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow:visible;transition:opacity 0.6s ease,transform 0.6s ease;}.content-wrapper.fade-in-up{animation:fadeInUp 0.8s cubic-bezier(0.2,0.8,0.2,1) forwards;}@keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}.container{width:100%;max-width:680px;min-height:100%;height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;}#main-title-container{width:100%;max-width:420px;margin:0 auto 10px;display:flex;justify-content:center;opacity:0;transform:translateY(15px);transition:all 0.8s cubic-bezier(0.2,0.8,0.2,1);flex-shrink:0;}#main-title-container.is-visible{opacity:1;transform:translateY(0);}.inset-box{width:100%;background-color:var(--bg-color);padding:18px 0;border-radius:30px;display:flex;justify-content:center;align-items:center;transition:all 0.4s ease;box-shadow:inset 10px 10px 20px var(--shadow-dark),inset -10px -10px 20px var(--shadow-light);border:1px solid rgba(255,255,255,0.1);}.inset-box h2{display:block !important;margin:0 !important;font-size:2.0rem !important;font-weight:900 !important;white-space:nowrap;letter-spacing:-1px;color:var(--text-primary) !important;text-shadow:0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25) !important;background:none !important;-webkit-text-fill-color:initial !important;}.screen{display:flex;flex-direction:column;width:100%;padding:32px;background:var(--bg-color);border-radius:35px;box-shadow:20px 20px 40px var(--shadow-dark),-20px -20px 40px var(--shadow-light);transition:opacity 0.4s ease-in-out;}.screen.is-hiding{opacity:0;}.hidden{display:none !important;}#screen-login{max-width:440px;margin:0 auto;padding:32px 18px;background:var(--bg-color);border-radius:40px;box-shadow:20px 20px 60px var(--shadow-dark),-20px -20px 60px var(--shadow-light);display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.4);height:auto;max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch;}#screen-login-skeleton{max-width:380px;margin:0 auto;box-shadow:none;background:transparent;}.header-dashboard{width:100%;height:75px;padding:0 15px;border-radius:20px;box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);display:flex;justify-content:space-around;align-items:center;margin-bottom:12px;transition:all 0.3s ease;position:relative;overflow:hidden;}.stat-item{text-align:center;transition:opacity 0.2s ease;}.stat-label{font-size:0.8rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;}.stat-value{font-size:1.4rem;font-weight:800;color:var(--primary-color);}.stat-divider{width:1px;height:30px;background:var(--shadow-dark);opacity:0.5;transition:opacity 0.2s ease;}#login-user-tags{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;gap:8px;padding:0 10px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;-ms-overflow-style:none;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}#login-user-tags.active{opacity:1;pointer-events:auto;}#login-user-tags::-webkit-scrollbar{display:none;}.user-tag{display:inline-flex;align-items:center;justify-content:center;background-color:var(--bg-color);padding:8px 16px;border-radius:12px;font-weight:600;color:var(--primary-color);box-shadow:3px 3px 6px var(--shadow-dark),-3px -3px 6px var(--shadow-light);flex:0 0 auto;border:none;transition:all 0.2s ease;margin-top:2px;margin-bottom:2px;}.user-tag button{background:none;border:none;color:var(--danger-color);margin-left:8px;cursor:pointer;font-size:1.1rem;}.login-instruction-area{position:relative;height:92px;width:100%;padding:4px 0;overflow:visible;transition:height 0.2s ease;}.login-instruction-area.has-users{height:148px;}#login-instruction{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(100% - 24px);margin:0;padding:6px 0;font-weight:800;font-size:clamp(1.05rem,2.1vw,1.25rem);letter-spacing:0.06em;text-align:center;background:none;box-shadow:none;transition:opacity 160ms ease;}#login-instruction.hidden{display:block !important;opacity:0;visibility:hidden;pointer-events:none;}.login-user-panel{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:min(520px,calc(100% - 24px));margin:0;padding:24px 10px 10px;border-radius:24px;background:var(--bg-color);box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);transition:all 0.3s cubic-bezier(0.4,0,0.2,1);min-height:90px;}.login-user-panel.hidden{display:block !important;opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,-50%) scale(0.98);}.login-user-panel:not(.hidden){opacity:1;visibility:visible;pointer-events:auto;}.login-user-panel .floating-label{position:absolute;top:-15px;left:16px;padding:6px 14px;border-radius:999px;background:var(--bg-color);font-size:1rem;font-weight:900;color:var(--text-secondary);letter-spacing:-0.01em;box-shadow:4px 4px 8px var(--shadow-dark),-4px -4px 8px var(--shadow-light);z-index:2;display:flex;align-items:center;gap:8px;}.main-badge{padding:2px 8px;border-radius:12px;font-size:0.75rem;font-weight:900;color:#fff;background:linear-gradient(135deg,#ff9500,#ff3b30);box-shadow:2px 2px 5px rgba(0,0,0,0.15);}.main-remove-mark{font-size:1.2rem;font-weight:900;color:var(--danger-color);opacity:0.7;cursor:pointer;transition:all 0.2s ease;margin-left:4px;padding:0 4px;line-height:1;}.main-remove-mark:hover{opacity:1;transform:scale(1.15);}.login-user-inline{width:100%;display:grid;grid-template-columns:repeat(2,1fr);gap:6px 8px;align-items:center;justify-content:center;margin-top:2px;}.user-full-chip{position:relative;display:flex;align-items:center;justify-content:flex-start;padding:4px 6px 4px 4px;border-radius:30px;background:var(--bg-color);box-shadow:4px 4px 8px var(--shadow-dark),-4px -4px 8px var(--shadow-light);border:1px solid rgba(255,255,255,0.4);cursor:pointer;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);min-width:0;gap:6px;}.user-full-chip:active{box-shadow:inset 3px 3px 6px var(--shadow-dark),inset -3px -3px 6px var(--shadow-light);transform:scale(0.97);}.user-full-chip .avatar{width:22px;height:22px;border-radius:50%;background:#e2e8f0;box-shadow:inset 2px 2px 4px var(--shadow-dark),inset -2px -2px 4px var(--shadow-light);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--primary-color);flex-shrink:0;}.user-full-chip .content{flex:1;display:flex;justify-content:space-between;align-items:center;overflow:visible;min-width:0;}.user-full-chip .name{font-size:0.85rem;font-weight:800;letter-spacing:-0.04em;white-space:nowrap;color:var(--text-primary);}.user-full-chip .remove-mark{font-size:1rem;font-weight:900;color:var(--danger-color);opacity:0.6;transition:opacity 0.2s ease;padding:0 2px;margin-left:2px;}.user-full-chip:hover .remove-mark{opacity:1;transform:scale(1.1);}.display-area{display:flex;gap:18px;height:60px;align-items:center;justify-content:center;width:100%;margin-bottom:-25px;}.digit-wrapper{width:55px;height:55px;display:flex;align-items:center;justify-content:center;}.digit-box{width:18px;height:18px;border-radius:50%;background:var(--bg-color);box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);display:flex;align-items:center;justify-content:center;font-size:0;font-weight:700;color:var(--primary-color);transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}.digit-box.filled{width:55px;height:55px;border-radius:16px;font-size:1.5rem;box-shadow:5px 5px 10px var(--shadow-dark),-5px -5px 10px var(--shadow-light);}.digit-box.masked{width:18px;height:18px;border-radius:50%;background:var(--primary-color);color:transparent;box-shadow:0 0 15px var(--primary-color);animation:pulse-breathing 2s infinite ease-in-out;font-size:0;}@keyframes pulse-breathing{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.1);opacity:0.8;}}#keypadDisplay.shake{animation:shake 0.5s ease;}.keypad-grid{width:100%;padding:0 2px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:10px;}.keypad-btn{aspect-ratio:1 / 1;display:flex;align-items:center;justify-content:center;font-size:2.0rem;font-weight:700;color:var(--text-secondary);cursor:pointer;border-radius:18px;border:none;box-shadow:7px 7px 14px var(--shadow-dark),-7px -7px 14px var(--shadow-light);transition:all 0.1s cubic-bezier(0.2,0.8,0.2,1);background:var(--bg-color);}.keypad-btn:active:not(:disabled){box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light) !important;transform:scale(0.96);color:var(--primary-color);}#keypad-submit-btn{background:linear-gradient(135deg,#2563c9,#1d4fb8) !important;color:#ffffff !important;padding:24px 0;font-size:1.3rem;margin-top:18px;}#keypad-add-btn{color:#ff8c00 !important;font-size:1.3rem;}#keypad-back-btn{color:var(--danger-color);font-size:1.3rem;}.submit-btn{width:100%;padding:16px;border-radius:20px;border:none;background:var(--bg-color);color:var(--primary-color);font-size:1.2rem;font-weight:700;box-shadow:8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light);cursor:pointer;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;gap:10px;}.submit-btn:active{box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);transform:scale(0.98);}#security-scan-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(224,229,236,0.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:10005;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:opacity 0.6s cubic-bezier(0.4,0,0.2,1),transform 0.6s cubic-bezier(0.4,0,0.2,1),visibility 0.6s;gap:30px;}#security-scan-overlay.active{opacity:1;visibility:visible;transform:scale(1);}#security-scan-overlay.exit{opacity:0;transform:scale(1.1);pointer-events:none;}.scan-box{position:relative;width:140px;height:140px;background:var(--bg-color);border-radius:50%;box-shadow:12px 12px 24px var(--shadow-dark),-12px -12px 24px var(--shadow-light);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:all 0.4s ease;}.scan-box.success{box-shadow:inset 8px 8px 16px var(--shadow-dark),inset -8px -8px 16px var(--shadow-light);transform:scale(1.05);}.scan-icon{font-size:4rem;color:var(--text-secondary);transition:all 0.3s ease;z-index:2;}.scan-box.success .scan-icon{color:var(--primary-color);transform:scale(1.1);}.laser{position:absolute;width:80%;height:3px;background:linear-gradient(90deg,transparent,var(--primary-color),transparent);box-shadow:0 0 12px var(--primary-color);top:-10%;opacity:0;z-index:3;}@keyframes single-sweep{0%{top:0%;opacity:0;}15%{opacity:1;}85%{opacity:1;}100%{top:100%;opacity:0;}}.scan-box.scanning .laser{animation:single-sweep 1.2s cubic-bezier(0.45,0.05,0.55,0.95) forwards;}.scan-text{font-size:1.4rem;font-weight:700;color:var(--text-primary);transition:color 0.3s ease,opacity 0.22s ease,transform 0.22s ease;text-shadow:1px 1px 1px var(--shadow-light);}.scan-text.fade-out{opacity:0;transform:translateY(4px);}.scan-text.fade-in{opacity:1;transform:translateY(0);}#main-welcome-message{text-align:center;margin-bottom:32px;font-size:1.4rem;}#main-welcome-message strong{background:var(--primary-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;}#card-selection-header{text-align:center;font-size:1.1rem;font-weight:500;color:var(--text-secondary);margin-bottom:32px;}#card-selection-header.fade-out{opacity:.3;transition:opacity .15s;}#card-list-container{width:100%;}#cardGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;width:100%;padding:10px;}.special-overseas-card{grid-row:4;grid-column:2;}.card-item-wrapper{background-color:var(--bg-color);aspect-ratio:5/4;border-radius:30px;box-shadow:10px 10px 20px var(--shadow-dark),-10px -10px 20px var(--shadow-light);cursor:pointer;z-index:1;opacity:0;transform:translateY(20px);transition:opacity 0.4s ease,transform 0.5s cubic-bezier(0.25,1,0.5,1);display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;}.card-item-wrapper:active:not(.disabled){transform:scale(0.96) !important;box-shadow:5px 5px 10px var(--shadow-dark),-5px -5px 10px var(--shadow-light);}#cardGrid.is-loaded .card-item-wrapper{opacity:1;transform:translateY(0);}#cardGrid.is-loaded .card-item-wrapper:nth-child(1){transition-delay:0s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(2){transition-delay:0.05s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(3){transition-delay:0.10s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(4){transition-delay:0.15s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(5){transition-delay:0.20s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(6){transition-delay:0.25s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(7){transition-delay:0.30s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(8){transition-delay:0.35s;}#cardGrid.is-loaded .card-item-wrapper:nth-child(9){transition-delay:0.40s;}.card-item-wrapper.disabled{box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);filter:grayscale(80%) blur(1px);opacity:0.6;cursor:not-allowed;}.status-badge{position:absolute;top:15px;right:15px;color:var(--text-primary);padding:5px 10px;border-radius:12px;font-size:0.75rem;font-weight:700;background:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.5);backdrop-filter:blur(1.2px);box-shadow:2px 2px 5px rgba(0,0,0,0.05);}.card-grid-btn{width:100%;height:100%;padding:20px 10px;font-weight:600;border:none;background-color:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:20px;}.card-grid-btn .card-name{font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-top:5px;}.mini-card-icon{width:80px;height:50px;background-color:var(--bg-color);border-radius:8px;margin-bottom:10px;position:relative;box-shadow:inset 3px 3px 6px var(--shadow-dark),inset -3px -3px 6px var(--shadow-light);border:1px solid rgba(255,255,255,0.6);display:block;overflow:hidden;flex-shrink:0;}.mini-card-icon::before{content:'';position:absolute;top:10px;left:10px;width:15px;height:12px;background:linear-gradient(135deg,#f1c40f,#f39c12);border-radius:3px;box-shadow:1px 1px 3px rgba(0,0,0,0.2);}.mini-card-icon::after{content:'';position:absolute;bottom:10px;left:10px;right:10px;height:4px;background:repeating-linear-gradient(to right,var(--text-secondary) 0%,var(--text-secondary) 15%,transparent 15%,transparent 25%);background-size:100% 100%;opacity:0.4;}.status-in-use .mini-card-icon{opacity:0.6;}.morph-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-color);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform-origin:var(--morph-origin-x,50%) var(--morph-origin-y,50%);transform:scale(0.8);transition:opacity 0.4s cubic-bezier(0.4,0,0.2,1),transform 0.5s cubic-bezier(0.34,1.56,0.64,1);}.morph-overlay.active{opacity:1;pointer-events:auto;transform:scale(1);}.morph-header{font-size:2rem;font-weight:800;margin-bottom:40px;color:var(--text-primary);transform:translateY(20px);opacity:0;transition:0.4s 0.1s;text-shadow:1px 1px 2px var(--shadow-light),-1px -1px 2px var(--shadow-dark);}.morph-overlay.active .morph-header{transform:translateY(0);opacity:1;}.morph-subheader{font-size:1.15rem;font-weight:700;color:var(--text-secondary);margin:-28px 0 28px;text-align:center;transform:translateY(16px);opacity:0;transition:0.35s 0.16s;text-shadow:1px 1px 2px var(--shadow-light),-1px -1px 2px var(--shadow-dark);}.morph-overlay.active .morph-subheader{transform:translateY(0);opacity:1;}.morph-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:320px;padding:0 20px;}.morph-grid .purpose-btn{opacity:0;transform:translateY(30px);width:100%;aspect-ratio:1.2/1;}.morph-overlay.active .purpose-btn:nth-child(1){animation:fadeUp 0.4s 0.1s forwards;}.morph-overlay.active .purpose-btn:nth-child(2){animation:fadeUp 0.4s 0.2s forwards;}.morph-overlay.active .purpose-btn:nth-child(3){animation:fadeUp 0.4s 0.3s forwards;}.morph-overlay.active .purpose-btn:nth-child(4){animation:fadeUp 0.4s 0.4s forwards;}@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}.close-morph-btn{margin-top:40px;padding:12px 30px;border-radius:20px;background:transparent;border:none;color:var(--text-secondary);font-weight:700;font-size:1rem;cursor:pointer;opacity:0;transition:0.3s 0.5s;}.close-morph-btn:hover{color:var(--danger-color);}.morph-overlay.active .close-morph-btn{opacity:1;}.purpose-btn{width:100%;padding:12px 5px;font-size:1.15rem;font-weight:700;border-radius:20px;background:var(--bg-color);cursor:pointer;user-select:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:none;box-shadow:5px 5px 10px var(--shadow-dark),-5px -5px 10px var(--shadow-light);transition:all 0.2s ease;outline:none !important;white-space:nowrap;}.purpose-btn:active{box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);transform:scale(0.97);}.purpose-btn[data-purpose="물품구매"]{color:#007aff;}.purpose-btn[data-purpose="식사다과"]{color:#ff9500;}.purpose-btn[data-purpose="기타운영"]{color:#28a745;}.purpose-btn[data-purpose="특근매식"]{color:#5856d6;}.purpose-btn i{font-size:1.8rem;margin-bottom:5px;}.purpose-btn span{font-size:1rem;}#btn-back{margin-top:24px;background:none;border:none;font-size:1.1rem;font-weight:600;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:8px;transition:color 0.2s ease;}#btn-back:hover{color:var(--primary-color);}.scanner-container{position:relative;width:140px;height:180px;background:var(--bg-color);border-radius:24px;box-shadow:inset 6px 6px 12px var(--shadow-dark),inset -6px -6px 12px var(--shadow-light);display:flex;justify-content:center;align-items:center;overflow:hidden;margin-bottom:20px;}.receipt-paper{width:90px;height:130px;background:#fff;border-radius:12px;box-shadow:4px 4px 10px rgba(0,0,0,0.1);display:flex;flex-direction:column;padding:18px 12px;gap:10px;}.paper-line{height:6px;background:#e2e8f0;border-radius:3px;}.paper-line.title{width:50%;height:8px;background:#cbd5e0;margin-bottom:5px;}.paper-line.full{width:100%;}.paper-line.half{width:60%;}.scan-beam{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent 40%,rgba(0,122,255,0.2) 50%,rgba(0,122,255,0.6) 51%,transparent 55%);background-size:100% 200%;animation:beam-scan 2s linear infinite;pointer-events:none;}@keyframes beam-scan{0%{transform:translateY(-100%);}100%{transform:translateY(100%);}}#loadingOverlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(224,229,236,0.85);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;gap:20px;backdrop-filter:blur(1.2px);pointer-events:auto;}#loadingMessage{color:var(--primary-color);font-size:1.3rem;font-weight:700;text-align:center;margin-top:10px;}#receipt-dashboard{width:100%;padding:20px;margin-bottom:20px;background:var(--bg-color);border-radius:24px;box-shadow:8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light);display:flex;flex-direction:column;align-items:center;gap:5px;}#receipt-dashboard.hidden{display:none;}.dashboard-label{font-size:0.9rem;color:var(--text-secondary);font-weight:600;}.dashboard-amount{font-size:2.2rem;font-weight:800;background:var(--primary-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}.card-header-badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:0.8rem;font-weight:700;color:#fff;margin-top:5px;vertical-align:middle;box-shadow:2px 2px 5px rgba(0,0,0,0.1);}.badge-general{background:var(--primary-gradient);}.badge-meal{background:linear-gradient(135deg,#ff9966,#ff5e62);}.cart-wrapper{position:relative;width:100%;}#receipt-cart-container{width:100%;display:flex;flex-direction:column;gap:15px;padding:5px;min-height:120px;background:transparent;border-radius:0;box-shadow:none;}@keyframes breathing-warning{0%,100%{box-shadow:inset 5px 5px 10px var(--shadow-dark),inset -5px -5px 10px var(--shadow-light);}50%{box-shadow:inset 0 0 15px rgba(255,59,48,0.3),inset 0 0 5px rgba(255,59,48,0.2);border-color:rgba(255,59,48,0.4);}}.cart-item{position:relative;background:var(--bg-color);border-radius:20px;padding:15px 20px;box-shadow:inset 5px 5px 10px var(--shadow-dark),inset -5px -5px 10px var(--shadow-light);display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;cursor:pointer;transition:all 0.2s ease;overflow:hidden;border:1px solid transparent;}.cart-item.needs-details{animation:breathing-warning 2s infinite ease-in-out;}.cart-item.needs-details .cart-item-icon{color:var(--danger-color);}.cart-item:active{transform:scale(0.98);}.cart-item.processing,.cart-item.saved{opacity:0.92;pointer-events:none;position:relative;overflow:hidden;}.cart-item.processing{filter:blur(1.2px);animation:item-pulse 1.5s infinite ease-in-out;}.cart-item.processing::after,.cart-item.saved::after{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1rem;font-weight:900;letter-spacing:-0.02em;white-space:nowrap;padding:8px 14px;border-radius:999px;z-index:20;box-shadow:0 8px 18px rgba(0,0,0,0.12);}.cart-item.processing::after{content:attr(data-processing-text);color:#2563eb;background:rgba(255,255,255,0.88);animation:savingPulse 1s infinite ease-in-out;}.cart-item.saved::after{content:"저장 완료";color:#ffffff;background:linear-gradient(135deg,#34d399 0%,#10b981 100%);animation:savedPop 0.75s ease forwards;}@keyframes item-pulse{0%,100%{background-color:var(--bg-color);}50%{background-color:#d1d9e6;}}@keyframes savingPulse{0%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.06);}100%{transform:translate(-50%,-50%) scale(1);}}@keyframes savedPop{0%{transform:translate(-50%,-50%) scale(0.86);opacity:0;}18%{transform:translate(-50%,-50%) scale(1.08);opacity:1;}72%{transform:translate(-50%,-50%) scale(1);opacity:1;}100%{transform:translate(-50%,-50%) scale(0.98);opacity:0;}}.cart-item-icon{width:45px;height:45px;margin-right:15px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--primary-color);flex-shrink:0;filter:drop-shadow(1px 1px 2px rgba(255,255,255,0.5));}@media (max-width:767px){.content-wrapper{min-height:100dvh;justify-content:flex-start;padding:calc(env(safe-area-inset-top,0) + 8px) 16px calc(env(safe-area-inset-bottom,0) + 8px);}.container{justify-content:flex-start;}.screen{padding:18px 16px;border-radius:28px;}#screen-login{width:min(92vw,440px);padding-top:14px;padding-bottom:10px;max-height:none;overflow-y:visible;}#login-user-tags{margin-bottom:10px;min-height:50px;padding:8px 10px;}.display-area{gap:12px;height:52px;margin-bottom:-6px;}.digit-wrapper{width:56px;height:56px;}.digit-box{width:65px;height:65px;line-height:65px;font-size:2rem;margin:0;border-radius:16px;aspect-ratio:1 / 1;}.keypad-btn{font-size:1.6rem;padding:0;}.keypad-grid{gap:12px;margin-bottom:4px;}#keypad-submit-btn{padding:14px 0;font-size:1.12rem;margin-top:10px;}.login-instruction-area{height:62px;padding:0;}.login-instruction-area.has-users{height:108px;}#login-instruction{font-size:0.98rem;padding:0;}#security-scan-overlay,#loadingOverlay,.status-badge{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;background-color:rgba(224,229,236,0.95) !important;}.screen,.keypad-plate,.digit-box,.keypad-btn,.cart-item,.simple-btn{box-shadow:4px 4px 10px var(--shadow-dark),-4px -4px 10px var(--shadow-light) !important;}.swal2-popup{padding:1.2em 1em !important;width:92% !important;max-width:95% !important;}.swal2-input-new{height:50px !important;padding-top:15px !important;font-size:1rem !important;}.swal2-input-new:focus + .swal-input-label-new,.swal2-input-new:not(:placeholder-shown) + .swal-input-label-new{top:8px !important;left:12px !important;font-size:0.75rem !important;}.swal-input-label-new{font-size:0.9rem !important;}#swal-image{max-height:150px !important;margin-bottom:5px !important;}.swal-custom-container{gap:10px !important;padding-top:0 !important;}.swal2-actions{margin-top:15px !important;}.swal2-styled{padding:0.6em 1.5em !important;font-size:1rem !important;}.inset-box{padding:14px 24px;border-radius:20px;margin-bottom:10px;}.inset-box h2{font-size:1.38rem !important;}}.cart-item-info{display:flex;flex-direction:column;gap:4px;flex-grow:1;overflow:hidden;margin-left:0;}.cart-item-place{font-size:0.95rem;color:var(--text-primary);font-weight:700;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}.cart-item-details{font-size:0.9rem;color:var(--text-secondary);white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}.cart-item-amount-box{text-align:right;margin-left:10px;flex-shrink:0;margin-right:45px;}.cart-item-amount{font-size:1.2rem;font-weight:800;color:var(--primary-color);}.cart-item-delete{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:var(--bg-color);border:none;border-radius:50%;color:var(--danger-color);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s ease;box-shadow:3px 3px 6px var(--shadow-dark),-3px -3px 6px var(--shadow-light);z-index:10;}.cart-item-delete:active{box-shadow:inset 2px 2px 4px var(--shadow-dark),inset -2px -2px 4px var(--shadow-light);transform:translateY(-50%) scale(0.95);}.warning-text{color:var(--danger-color);font-weight:700;font-size:0.8rem;margin-left:6px;}#receipt-cart-container.empty-cart{justify-content:center;align-items:center;background:var(--bg-color);border-radius:20px;box-shadow:inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);padding:20px;min-height:80px;}.cart-placeholder{text-align:center;color:var(--text-secondary);font-weight:500;opacity:0.6;font-size:0.95rem;display:flex;align-items:center;gap:8px;justify-content:center;}.cart-placeholder i{font-size:1.2rem;}.confirmation-container{text-align:center;width:100%;max-width:400px;margin:0 auto;}.confirmation-icon-wrapper{width:80px;height:80px;margin:0 auto 30px;}.animated-check{width:80px;height:80px;border-radius:50%;display:block;stroke-width:3;stroke:var(--success-color);stroke-miterlimit:10;box-shadow:8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light);animation:scale .3s ease-in-out .9s both;background-color:var(--bg-color);}.animated-check path{stroke-dasharray:120;stroke-dashoffset:120;animation:stroke .3s cubic-bezier(0.65,0,0.45,1) .8s forwards;}.confirmation-title{font-size:1.8rem;font-weight:700;color:var(--text-primary);text-shadow:1px 1px 2px var(--shadow-light);margin-bottom:24px;}#confirmation-details{display:flex;flex-direction:column;gap:16px;margin-bottom:32px;width:100%;}.detail-row{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:8px;border-bottom:2px solid rgba(163,177,198,0.2);}.detail-row-label{font-size:1.2rem;font-weight:700;color:var(--text-primary);}.detail-row-content{font-size:1.2rem;font-weight:700;background:var(--primary-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}#confirmation-countdown{margin-top:24px;font-size:1.1rem;font-weight:600;color:var(--text-primary);}.swal2-popup{font-family:var(--font-main) !important;border-radius:30px !important;background:var(--bg-color) !important;box-shadow:20px 20px 40px var(--shadow-dark),-20px -20px 40px var(--shadow-light) !important;padding:2em !important;}.swal2-title{color:var(--text-primary) !important;font-weight:700 !important;}.swal2-html-container{color:var(--text-secondary) !important;font-weight:500 !important;}.swal-custom-container{display:flex;flex-direction:column;align-items:center;gap:1.5rem;width:100%;max-width:350px;margin:0 auto;padding-top:1rem;}#swal-image-container{position:relative;cursor:pointer;text-align:center;width:100%;}#swal-image{max-width:100%;max-height:25vh;border-radius:20px;margin-bottom:10px;display:inline-block;box-shadow:8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light);}#swal-image-instruction{font-size:0.9rem;color:var(--text-secondary);}#return-form-container{display:flex;flex-direction:column;align-items:center;gap:24px;margin-top:20px;width:100%;}#return-screen-title{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;gap:8px;}.simple-btn{width:100%;padding:18px 0;font-size:1.1rem;font-weight:700;border-radius:24px;background:var(--bg-color);cursor:pointer;user-select:none;border:none;box-shadow:8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light);transition:all 0.2s ease;position:relative;overflow:hidden;}#keypad-submit-btn{padding:20px 0;font-size:1.2rem;}.simple-btn.primary{color:var(--primary-color);}.simple-btn.accent{color:var(--accent-color);}.simple-btn:disabled{opacity:0.5;cursor:not-allowed;box-shadow:inset 3px 3px 6px var(--shadow-dark),inset -3px -3px 6px var(--shadow-light);}.simple-btn:not(:disabled):active{box-shadow:inset 5px 5px 10px var(--shadow-dark),inset -5px -5px 10px var(--shadow-light);transform:scale(0.98);}.simple-btn.is-loading{color:transparent !important;pointer-events:none;position:relative;}.simple-btn.is-loading::after{content:'';position:absolute;top:50%;left:50%;width:24px;height:24px;margin:-12px 0 0 -12px;border:3px solid var(--text-secondary);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;}.submit-guide{background:rgba(255,59,48,0.1);color:var(--danger-color);padding:12px;border-radius:16px;font-size:0.9rem;font-weight:700;text-align:center;margin-bottom:15px;display:none;animation:fadeIn 0.3s ease;width:100%;}.submit-guide.visible{display:block;}@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}.skeleton{background-color:#d1d9e6;border-radius:16px;position:relative;overflow:hidden;}.skeleton::before{content:'';position:absolute;top:0;left:-150%;height:100%;width:150%;background:linear-gradient(to right,transparent 0%,rgba(255,255,255,0.6) 50%,transparent 100%);animation:shimmer 1.5s infinite;}.skeleton-card{background:#d1d9e6;border-radius:30px;position:relative;overflow:hidden;aspect-ratio:5/4;box-shadow:inset 2px 2px 5px var(--shadow-dark),inset -2px -2px 5px var(--shadow-light);}.skeleton-card::before{content:'';position:absolute;top:0;left:-150%;height:100%;width:150%;background:linear-gradient(to right,transparent 0%,rgba(255,255,255,0.6) 50%,transparent 100%);animation:shimmer 1.5s infinite;}@keyframes shimmer{100%{left:150%;}}#retry-button{background:none;border:2px solid var(--text-secondary);color:var(--text-secondary);font-weight:600;padding:6px 12px;border-radius:12px;margin-left:8px;cursor:pointer;transition:all 0.2s;}#retry-button:hover{background:var(--text-secondary);color:var(--bg-color);}.swal-input-wrapper-new{width:100%;position:relative;}.swal-input-group-new{position:relative;width:100%;background:#dce2e8;border-radius:16px;box-shadow:inset 3px 3px 7px rgba(163,177,198,0.7),inset -3px -3px 7px rgba(255,255,255,0.8);transition:all 0.2s ease;}.swal-input-group-new:focus-within{box-shadow:inset 4px 4px 8px rgba(163,177,198,0.8),inset -4px -4px 8px rgba(255,255,255,0.9),0 0 0 1px var(--primary-color);}.swal2-input-new{width:100% !important;height:60px !important;padding:20px 1rem 0 1rem !important;font-size:1.1rem !important;border:none !important;background-color:transparent !important;color:var(--primary-color) !important;font-weight:600;box-shadow:none !important;text-align:center !important;position:relative;z-index:1;}.swal2-input-new:read-only{color:var(--text-secondary) !important;cursor:not-allowed;}.swal2-input-new.highlight-placeholder::placeholder{color:var(--accent-color);opacity:0.6;font-style:italic;}.swal-input-label-new{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;color:var(--text-secondary);pointer-events:none;transition:all 0.2s ease-in-out;z-index:0;}.swal2-input-new:focus + .swal-input-label-new,.swal2-input-new:not(:placeholder-shown) + .swal-input-label-new{top:12px;left:15px;transform:translate(0,0) scale(0.85);color:var(--primary-color);font-weight:700;}.swal-input-label-new .input-label-icon,.swal-input-label-new .input-label-text{transition:color 0.2s ease;}@keyframes breathing-text{0%,100%{text-shadow:1px 1px 2px var(--shadow-light),-1px -1px 2px var(--shadow-dark);}50%{text-shadow:1px 1px 2px var(--shadow-light),-1px -1px 2px var(--shadow-dark),0 0 15px rgba(0,122,255,0.6);}}@keyframes pop-in{0%{transform:scale(0.8);}80%{transform:scale(1.05);}100%{transform:scale(1);}}@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-5px);}40%,80%{transform:translateX(5px);}}@keyframes stroke{100%{stroke-dashoffset:0;}}@keyframes scale{0%,100%{transform:none;}50%{transform:scale3d(1.1,1.1,1);}}@keyframes fadeInSuccess{0%{opacity:0;transform:scale(0.95);}100%{opacity:1;transform:scale(1);}}@keyframes loaderStepPop{0%{transform:scale(0.97);}70%{transform:scale(1.03);}100%{transform:scale(1.02);}}@media (max-width:1023px){#cardGrid{grid-template-columns:repeat(2,1fr);gap:12px;}.special-overseas-card{grid-row:unset;grid-column:unset;}.card-item-wrapper{aspect-ratio:5 / 4 !important;}}@media (min-width:1024px){.content-wrapper{padding:20px 16px;}#card-selection-header{margin-bottom:16px;}#cardGrid{grid-template-columns:repeat(3,1fr);gap:18px;padding:0;}.card-item-wrapper{aspect-ratio:1.55 / 1;}}@media (max-width:767px){.content-wrapper{padding:20px 16px;}#screen-login{padding-top:20px;padding-bottom:10px;}#login-user-tags{margin-bottom:15px;min-height:50px;padding:8px 10px;}.keypad-display-wrapper{margin-bottom:15px;}.digit-box{width:65px;height:65px;line-height:65px;font-size:2rem;margin:0;aspect-ratio:1 / 1;}.keypad-btn{font-size:1.6rem;padding:0;}#keypad-submit-btn{padding:18px 0;font-size:1.2rem;margin-top:20px;}#security-scan-overlay,#loadingOverlay,.status-badge{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;background-color:rgba(224,229,236,0.95) !important;}.screen,.keypad-plate,.digit-box,.keypad-btn,.cart-item,.simple-btn{box-shadow:4px 4px 10px var(--shadow-dark),-4px -4px 10px var(--shadow-light) !important;}.swal2-popup{padding:1.2em 1em !important;width:92% !important;max-width:95% !important;}.swal2-input-new{height:50px !important;padding-top:15px !important;font-size:1rem !important;}.swal2-input-new:focus + .swal-input-label-new,.swal2-input-new:not(:placeholder-shown) + .swal-input-label-new{top:8px !important;left:12px !important;font-size:0.75rem !important;}.swal-input-label-new{font-size:0.9rem !important;}#swal-image{max-height:150px !important;margin-bottom:5px !important;}.swal-custom-container{gap:10px !important;padding-top:0 !important;}.swal2-actions{margin-top:15px !important;}.swal2-styled{padding:0.6em 1.5em !important;font-size:1rem !important;}.inset-box{padding:18px 40px;border-radius:20px;margin-bottom:18px;}.inset-box h2{font-size:1.6rem !important;}}@media (max-height:740px) and (max-width:767px){#login-instruction{margin:0;padding:0;font-size:0.96rem;letter-spacing:0.04em;background:none;box-shadow:none;}}.keypad-btn{transition:transform 0.08s ease,box-shadow 0.08s ease,color 0.08s ease !important;}.keypad-btn:active,.keypad-btn.pressed{box-shadow:inset 5px 5px 10px var(--shadow-dark),inset -5px -5px 10px var(--shadow-light) !important;transform:scale(0.94) !important;color:var(--primary-color) !important;}#keypad-add-btn:active,#keypad-add-btn.pressed{color:var(--accent-color) !important;}#keypad-back-btn:active,#keypad-back-btn.pressed{color:var(--danger-color) !important;}#keypad-submit-btn:active,#keypad-submit-btn.pressed{box-shadow:inset 5px 5px 10px var(--shadow-dark),inset -5px -5px 10px var(--shadow-light) !important;transform:scale(0.98) !important;}@media (max-width:767px){#main-title-container{max-width:92vw;}#screen-login{max-width:92vw;}}#welcome-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:10001;background:var(--bg-color);opacity:0;visibility:hidden;transition:opacity 0.35s ease-out,visibility 0.35s;padding:20px;}#welcome-screen.is-visible{opacity:1;visibility:visible;}.loader-card-v2{width:min(92vw,560px);background:linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.08));border-radius:38px;padding:34px 26px 26px;box-shadow:24px 24px 48px var(--shadow-dark),-20px -20px 40px var(--shadow-light);border:1px solid rgba(255,255,255,0.45);display:flex;flex-direction:column;align-items:center;gap:18px;}.loader-card-icon-wrap{width:100%;display:flex;justify-content:center;margin-bottom:2px;}.loader-card-icon{font-size:2.4rem;color:var(--primary-color);animation:pulse 2s infinite;}.loader-card-title{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900;color:#15233f;text-align:center;letter-spacing:-0.03em;line-height:1.15;margin-top:2px;}.loader-card-subtitle{font-size:clamp(1rem,2vw,1.2rem);color:var(--text-secondary);text-align:center;font-weight:700;margin-top:-2px;margin-bottom:8px;}.loader-progress-row{width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;margin:6px 0 8px;}.loader-progress-shell{width:100%;height:24px;background:rgba(255,255,255,0.35);border-radius:999px;box-shadow:inset 5px 5px 10px rgba(163,177,198,0.45),inset -4px -4px 9px rgba(255,255,255,0.7);overflow:hidden;padding:3px;}.loader-progress-fill{width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg,#2f6cff 0%,#289dff 100%);box-shadow:0 6px 16px rgba(0,122,255,0.25);transition:width 0.28s ease-out;position:relative;}.loader-progress-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,0.18),transparent 42%,rgba(255,255,255,0.1));border-radius:inherit;pointer-events:none;}.loader-progress-percent{min-width:58px;text-align:right;font-size:1.05rem;font-weight:900;color:var(--primary-color);}.loader-step-panel{width:100%;background:rgba(255,255,255,0.14);border-radius:26px;box-shadow:inset 3px 3px 8px rgba(163,177,198,0.22),inset -3px -3px 8px rgba(255,255,255,0.28);padding:14px;display:flex;flex-direction:column;gap:10px;}.loader-step-item{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:12px;padding:12px;border-radius:20px;opacity:0.42;transform:scale(0.985);filter:saturate(0.85);transition:all 0.22s ease,transform 0.22s ease,opacity 0.22s ease,box-shadow 0.22s ease;}.loader-step-item.active{opacity:1;transform:scale(1.02);filter:saturate(1);background:rgba(255,255,255,0.62);border:2px solid rgba(0,122,255,0.22);box-shadow:0 0 0 2px rgba(0,122,255,0.08),8px 8px 16px rgba(163,177,198,0.18),-8px -8px 16px rgba(255,255,255,0.24);animation:loaderStepPop 0.24s ease;}.loader-step-item.done{opacity:0.72;transform:scale(0.995);filter:saturate(0.92);background:rgba(255,255,255,0.24);}.loader-step-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg-color);box-shadow:6px 6px 12px rgba(163,177,198,0.18),-6px -6px 12px rgba(255,255,255,0.22);color:var(--primary-color);font-size:1.25rem;transition:all 0.22s ease;}.loader-step-item.active .loader-step-icon{background:linear-gradient(135deg,rgba(0,122,255,0.15),rgba(41,151,255,0.08));box-shadow:inset 2px 2px 4px rgba(255,255,255,0.35),inset -2px -2px 4px rgba(163,177,198,0.14),0 6px 14px rgba(0,122,255,0.12);transform:scale(1.05);}.loader-step-title{font-size:1.02rem;font-weight:800;color:#1c2944;margin-bottom:4px;transition:color 0.22s ease,transform 0.22s ease;}.loader-step-item.active .loader-step-title{color:#0d244d;transform:translateX(1px);}.loader-step-desc{font-size:0.9rem;color:var(--text-secondary);font-weight:600;line-height:1.35;transition:color 0.22s ease;}.loader-step-item.active .loader-step-desc{color:#60708a;}.loader-step-badge{min-width:40px;height:34px;padding:0 12px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:rgba(189,198,212,0.38);color:#6f809a;font-weight:900;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.28),inset -2px -2px 4px rgba(163,177,198,0.10);transition:all 0.22s ease;}.loader-step-item.active .loader-step-badge{background:linear-gradient(135deg,rgba(0,122,255,0.2),rgba(41,151,255,0.28));color:var(--primary-color);box-shadow:inset 2px 2px 4px rgba(255,255,255,0.34),inset -2px -2px 4px rgba(163,177,198,0.1),0 6px 12px rgba(0,122,255,0.12);transform:scale(1.05);}.loader-step-item.done .loader-step-badge{background:rgba(120,136,158,0.16);color:#6f809a;}.loader-step-divider{height:1px;background:rgba(163,177,198,0.18);margin:0 8px;}@media (max-width:767px){.loader-card-v2{width:min(94vw,520px);padding:28px 18px 18px;border-radius:30px;gap:14px;}.loader-card-icon{font-size:2rem;}.loader-card-title{font-size:2rem;}.loader-card-subtitle{font-size:0.98rem;margin-bottom:4px;}.loader-progress-shell{height:22px;}.loader-progress-percent{min-width:46px;font-size:0.98rem;}.loader-step-panel{border-radius:22px;padding:10px;}.loader-step-item{grid-template-columns:44px 1fr auto;gap:10px;padding:10px;border-radius:18px;}.loader-step-icon{width:44px;height:44px;font-size:1.05rem;}.loader-step-title{font-size:0.94rem;}.loader-step-desc{font-size:0.82rem;}.loader-step-badge{min-width:34px;height:30px;padding:0 10px;font-size:0.86rem;}}:root{--bg-color:#d6e3f3 !important;--primary-color:#2563c9 !important;--primary-gradient:linear-gradient(135deg,#7cb8ff,#1d4fb8) !important;--accent-color:#8db8f2 !important;--danger-color:#e7485f !important;--success-color:#22a06b !important;--text-primary:#1f4175 !important;--text-secondary:#6882a8 !important;--shadow-light:rgba(255,255,255,0.95) !important;--shadow-dark:rgba(110,138,176,0.30) !important;}html,body{background:radial-gradient(circle at top left,#f5f9fe 0%,#e4edf8 30%,#d6e3f3 100%) !important;}#lock-screen,#welcome-screen,#security-scan-overlay,#loadingOverlay{background:radial-gradient(circle at top left,rgba(255,255,255,0.92) 0%,#e4edf8EE 38%,#d6e3f3F2 100%) !important;}.screen,#screen-login,.loader-card-v2,#receipt-dashboard,.login-user-panel,.header-dashboard,.swal2-popup,.scanner-container,.scan-box,.inset-box{background:linear-gradient(180deg,#f1f5fb 0%,#dce7f5 100%) !important;border:1px solid rgba(255,255,255,0.62) !important;box-shadow:18px 18px 34px rgba(110,138,176,0.30),-12px -12px 26px rgba(255,255,255,0.95),inset 1px 1px 0 rgba(255,255,255,0.72) !important;}.keypad-btn,.simple-btn,.submit-btn,.purpose-btn,.user-full-chip,.user-tag,.card-item-wrapper,.cart-item,.digit-box.filled{background:linear-gradient(180deg,#fbfdff 0%,#e8eff8 100%) !important;border:1px solid rgba(255,255,255,0.82) !important;box-shadow:10px 10px 20px rgba(110,138,176,0.30),-8px -8px 18px rgba(255,255,255,0.95),inset 1px 1px 0 rgba(255,255,255,0.68) !important;}.keypad-btn:active:not(:disabled),.simple-btn:not(:disabled):active,.submit-btn:active,.purpose-btn:active,.user-full-chip:active,.cart-item:active,.card-item-wrapper:active:not(.disabled){transform:translateY(2px) scale(0.98) !important;box-shadow:inset 8px 8px 14px rgba(126,156,198,0.22),inset -8px -8px 14px rgba(255,255,255,0.94) !important;}.card-school-icon,.circle-icon,.scan-icon,.loader-card-icon,.cart-item-icon,.text-gradient,.dashboard-amount,.detail-row-content,.stat-value{color:var(--primary-color) !important;-webkit-text-fill-color:initial !important;background:none !important;}#main-title-container .inset-box h2,.loader-card-title,.confirmation-title,.morph-header,.card-name{color:#1f4175 !important;text-shadow:none !important;}.status-badge,.card-header-badge,.loader-step-badge,.main-badge{background:linear-gradient(135deg,#7cb8ff 0%,#1d4fb8 100%) !important;color:#f8fbff !important;border:none !important;box-shadow:0 8px 18px rgba(37,99,216,0.22) !important;}#main-user-label{background:linear-gradient(180deg,#ffffff 0%,#f1f5fb 100%) !important;color:#6882a8 !important;}.morph-overlay{background:radial-gradient(circle at top,#ffffff 0%,#e4edf8 36%,#d6e3f3 100%) !important;}#security-scan-overlay{backdrop-filter:blur(6px) saturate(1.05) !important;-webkit-backdrop-filter:blur(6px) saturate(1.05) !important;}.swal2-input-group-new{background:#dce7f5 !important;box-shadow:inset 6px 6px 12px rgba(126,156,198,0.16),inset -6px -6px 12px rgba(255,255,255,0.96) !important;}.swal2-input-new{color:#2563c9 !important;}.loader-progress-shell,.tube-gauge-wrapper,.loading-progress-bar{background:#dce7f5 !important;box-shadow:inset 4px 4px 8px rgba(126,156,198,0.18),inset -4px -4px 8px rgba(255,255,255,0.96) !important;}.loader-progress-fill,.tube-fill{background:linear-gradient(90deg,#7cb8ff 0%,#1d4fb8 100%) !important;}.mini-card-icon{background:linear-gradient(180deg,#f1f5fb 0%,#e8eff8 100%) !important;border:1px solid rgba(255,255,255,0.7) !important;box-shadow:inset 4px 4px 7px rgba(126,156,198,0.12),inset -4px -4px 7px rgba(255,255,255,0.96) !important;}#cardGrid{gap:18px !important;}.card-item-wrapper.disabled{opacity:0.55 !important;filter:saturate(0.75) !important;}#glass-card .card-school-icon{color:#ffffff !important;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25)) !important;}.card-item-wrapper{background:linear-gradient(180deg,#f8fbff 0%,#e6eef8 100%) !important;box-shadow:12px 12px 22px rgba(120,150,190,0.35),-10px -10px 20px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.72) !important;transition:opacity 0.4s ease,transform 0.22s ease,box-shadow 0.22s ease !important;}.card-item-wrapper:hover:not(.disabled){transform:translateY(-3px) !important;box-shadow:14px 14px 26px rgba(120,150,190,0.38),-12px -12px 22px rgba(255,255,255,0.98),inset 1px 1px 0 rgba(255,255,255,0.74) !important;}.card-item-wrapper:active:not(.disabled){transform:translateY(2px) scale(0.98) !important;box-shadow:inset 8px 8px 14px rgba(120,150,190,0.30),inset -8px -8px 14px rgba(255,255,255,0.96) !important;}.card-item-wrapper.disabled{background:linear-gradient(180deg,#e7eef7 0%,#dbe6f3 100%) !important;opacity:0.78 !important;filter:saturate(0.82) !important;box-shadow:inset 7px 7px 14px rgba(120,150,190,0.28),inset -7px -7px 14px rgba(255,255,255,0.95),0 1px 0 rgba(255,255,255,0.55) !important;}.status-badge{background:linear-gradient(135deg,#8ea7c7 0%,#5c769b 100%) !important;color:#f8fbff !important;box-shadow:0 8px 18px rgba(92,118,155,0.22) !important;}.digit-box{background:linear-gradient(180deg,#e8f0fb 0%,#d8e4f4 100%) !important;border:1px solid rgba(255,255,255,0.82) !important;box-shadow:inset 3px 3px 6px rgba(126,156,198,0.18),inset -3px -3px 6px rgba(255,255,255,0.95) !important;}.digit-box.masked{width:18px !important;height:18px !important;border-radius:50% !important;background:linear-gradient(180deg,#5d9ff3 0%,#2d66d3 100%) !important;border:none !important;color:transparent !important;box-shadow:0 0 0 1px rgba(255,255,255,0.32),0 4px 10px rgba(45,102,211,0.35) !important;}@media (max-width:767px){.display-area{gap:18px !important;height:60px !important;margin-bottom:-25px !important;}.digit-wrapper{width:55px !important;height:55px !important;}.digit-box{width:18px !important;height:18px !important;border-radius:50% !important;line-height:normal !important;font-size:0 !important;margin:0 !important;aspect-ratio:auto !important;}.digit-box.filled{width:55px !important;height:55px !important;border-radius:16px !important;font-size:1.5rem !important;line-height:normal !important;aspect-ratio:auto !important;}.digit-box.masked{width:18px !important;height:18px !important;}}.return-title-stack{display:flex;flex-direction:column;align-items:center;width:100%;}#return-screen-title .return-card-title{font-size:1.8rem;font-weight:850;margin-bottom:2px;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 55%,#4f46e5 100%) !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;text-shadow:none !important;}#return-screen-title .return-user-name{font-size:1.15rem;font-weight:700;color:#64748b !important;margin-bottom:10px;}#receipt-dashboard .dashboard-label{color:#64748b !important;}#receipt-dashboard .dashboard-amount{background:linear-gradient(135deg,#2563eb 0%,#3b82f6 55%,#1d4ed8 100%) !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;}.card-header-badge{display:inline-flex !important;align-items:center;gap:6px;padding:5px 12px !important;border-radius:999px !important;font-weight:800 !important;letter-spacing:-0.01em;}.card-header-badge.badge-purpose-purchase{background:linear-gradient(135deg,#f59e0b 0%,#f97316 100%) !important;color:#fffaf5 !important;box-shadow:0 10px 18px rgba(249,115,22,0.24) !important;}.card-header-badge.badge-purpose-dining{background:linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%) !important;color:#f8fbff !important;box-shadow:0 10px 18px rgba(59,130,246,0.20) !important;}.card-header-badge.badge-purpose-ops{background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 100%) !important;color:#f8f7ff !important;box-shadow:0 10px 18px rgba(99,102,241,0.22) !important;}.card-header-badge.badge-purpose-meal{background:linear-gradient(135deg,#10b981 0%,#059669 100%) !important;color:#f2fffb !important;box-shadow:0 10px 18px rgba(16,185,129,0.24) !important;}.card-header-badge.badge-purpose-default{background:linear-gradient(135deg,#60a5fa 0%,#2563eb 100%) !important;color:#f8fbff !important;}#add-receipt-btn{color:#0f766e !important;background:linear-gradient(180deg,#f7fbff 0%,#edf7ff 100%) !important;border:1px solid rgba(255,255,255,0.82) !important;box-shadow:10px 10px 20px rgba(126,156,194,0.16),-8px -8px 16px rgba(255,255,255,0.94),inset 1px 1px 0 rgba(255,255,255,0.7) !important;}#add-receipt-btn i{color:#14b8a6 !important;}.cart-item{border:1px solid rgba(255,255,255,0.7) !important;}.cart-item-icon{color:#3b82f6 !important;}.cart-item.needs-details{background:linear-gradient(180deg,#fff9fb 0%,#fbeff4 100%) !important;border:1px solid rgba(239,68,68,0.18) !important;box-shadow:10px 10px 20px rgba(126,156,194,0.12),-8px -8px 16px rgba(255,255,255,0.9),inset 0 0 0 1px rgba(255,255,255,0.55) !important;}.cart-item.needs-details .cart-item-icon,.cart-item.needs-details .warning-text,.cart-item.needs-details .cart-item-details{color:#ef4444 !important;}.cart-item-amount{color:#2563eb !important;}.cart-item-delete{background:linear-gradient(180deg,#fff6f7 0%,#ffe9ee 100%) !important;color:#ef4444 !important;box-shadow:6px 6px 12px rgba(239,68,68,0.10),-5px -5px 10px rgba(255,255,255,0.92) !important;}.submit-guide{background:linear-gradient(180deg,rgba(255,236,240,0.95) 0%,rgba(255,225,232,0.95) 100%) !important;color:#e11d48 !important;border:1px solid rgba(244,63,94,0.15) !important;}#screen-confirmation .confirmation-title{color:#1f4175 !important;}#confirmation-details .detail-row-content{background:linear-gradient(135deg,#2563eb 0%,#4f46e5 100%) !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;}.loader-progress-fill{background:linear-gradient(90deg,#3b82f6 0%,#6366f1 52%,#8b5cf6 100%) !important;box-shadow:0 8px 18px rgba(99,102,241,0.22) !important;}.loader-progress-percent{background:linear-gradient(135deg,#2563eb 0%,#7c3aed 100%) !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;}.loader-step-item{opacity:0.42;filter:grayscale(18%) saturate(0.82);}.loader-step-item.done{opacity:0.78 !important;filter:grayscale(8%) saturate(0.92) !important;background:rgba(255,255,255,0.26) !important;}.loader-step-item.done .loader-step-icon{background:linear-gradient(135deg,#dcfce7 0%,#bbf7d0 100%) !important;color:#10b981 !important;box-shadow:inset 1px 1px 0 rgba(255,255,255,0.75),0 8px 16px rgba(16,185,129,0.16) !important;}.loader-step-item.done .loader-step-badge{background:linear-gradient(135deg,#34d399 0%,#10b981 100%) !important;color:#ffffff !important;box-shadow:0 8px 16px rgba(16,185,129,0.20) !important;}.loader-step-item.active{background:rgba(255,255,255,0.72) !important;}#loader-step-1.active{border:2px solid rgba(59,130,246,0.28) !important;box-shadow:0 0 0 2px rgba(59,130,246,0.08),8px 8px 16px rgba(163,177,198,0.18),-8px -8px 16px rgba(255,255,255,0.24) !important;}#loader-step-2.active{border:2px solid rgba(139,92,246,0.24) !important;box-shadow:0 0 0 2px rgba(139,92,246,0.08),8px 8px 16px rgba(163,177,198,0.18),-8px -8px 16px rgba(255,255,255,0.24) !important;}#loader-step-1 .loader-step-icon{color:#3b82f6 !important;}#loader-step-2 .loader-step-icon{color:#8b5cf6 !important;}#loader-step-1.active .loader-step-icon{background:linear-gradient(135deg,#60a5fa 0%,#2563eb 100%) !important;color:#ffffff !important;box-shadow:inset 1px 1px 0 rgba(255,255,255,0.38),0 10px 18px rgba(37,99,235,0.24) !important;}#loader-step-2.active .loader-step-icon{background:linear-gradient(135deg,#a78bfa 0%,#7c3aed 100%) !important;color:#ffffff !important;box-shadow:inset 1px 1px 0 rgba(255,255,255,0.35),0 10px 18px rgba(124,58,237,0.24) !important;}#loader-step-1.active .loader-step-title{color:#1d4ed8 !important;}#loader-step-2.active .loader-step-title{color:#6d28d9 !important;}#loader-step-1.active .loader-step-desc{color:#5b7db0 !important;}#loader-step-2.active .loader-step-desc{color:#7c6cae !important;}#loader-step-1 .loader-step-badge{background:linear-gradient(135deg,#93c5fd 0%,#3b82f6 100%) !important;color:#ffffff !important;box-shadow:0 8px 16px rgba(59,130,246,0.18) !important;}#loader-step-2 .loader-step-badge{background:linear-gradient(135deg,#c4b5fd 0%,#8b5cf6 100%) !important;color:#ffffff !important;box-shadow:0 8px 16px rgba(139,92,246,0.18) !important;}.loader-step-divider{background:linear-gradient(90deg,rgba(59,130,246,0.10),rgba(139,92,246,0.10)) !important;}:root{--primary-color:#255fcb !important;--primary-gradient:linear-gradient(135deg,#3b82f6 0%,#2563eb 55%,#1d4ed8 100%) !important;--accent-color:#f59e0b !important;--danger-color:#ef4444 !important;--success-color:#10b981 !important;--text-primary:#1f4175 !important;--text-secondary:#6882a8 !important;}#keypad-submit-btn,.simple-btn.primary,.submit-btn.primary{background:linear-gradient(135deg,#3b82f6 0%,#2563eb 55%,#1d4ed8 100%) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,0.28) !important;box-shadow:0 14px 24px rgba(37,99,235,0.20),inset 1px 1px 0 rgba(255,255,255,0.32) !important;}#keypad-submit-btn i,.simple-btn.primary i,.submit-btn.primary i{color:#ffffff !important;}#keypad-submit-btn:active,.simple-btn.primary:active,.submit-btn.primary:active{box-shadow:inset 8px 8px 14px rgba(29,78,216,0.32),inset -6px -6px 12px rgba(96,165,250,0.24) !important;}#btn-back,.close-morph-btn,.simple-btn:not(.primary):not(.accent){color:#4d6fa6 !important;}#keypad-add-btn,.simple-btn.accent,#add-receipt-btn,.card-header-badge.badge-purpose-purchase{color:#f59e0b !important;}#keypad-add-btn .btn-icon,.simple-btn.accent i,#add-receipt-btn i{color:#f59e0b !important;}.simple-btn.accent,#add-receipt-btn{background:linear-gradient(180deg,#fffaf0 0%,#ffefcf 100%) !important;border:1px solid rgba(255,255,255,0.78) !important;box-shadow:10px 10px 20px rgba(245,158,11,0.12),-8px -8px 16px rgba(255,255,255,0.94),inset 1px 1px 0 rgba(255,255,255,0.68) !important;}#keypad-back-btn,.cart-item-delete,.warning-text{color:#ef4444 !important;}.cart-item-delete{background:linear-gradient(180deg,#fff7f7 0%,#ffe6e6 100%) !important;}.cart-item.needs-details{background:linear-gradient(180deg,#fff9fa 0%,#ffeef1 100%) !important;border:1px solid rgba(239,68,68,0.18) !important;}.submit-guide{background:linear-gradient(180deg,rgba(255,241,243,0.96) 0%,rgba(255,228,232,0.96) 100%) !important;color:#e11d48 !important;}.animated-check{stroke:var(--success-color) !important;box-shadow:0 10px 20px rgba(16,185,129,0.15),8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light) !important;}#screen-confirmation .confirmation-title{color:#1f4175 !important;}#confirmation-details .detail-row-content,.dashboard-amount{background:linear-gradient(135deg,#0f9f75 0%,#10b981 40%,#2563eb 100%) !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;}.card-item-wrapper:not(.disabled){background:linear-gradient(180deg,#fbfdff 0%,#edf3fb 100%) !important;}.card-item-wrapper .card-name{color:#24497f !important;}.card-item-wrapper:not(.disabled) .status-badge{background:linear-gradient(135deg,#60a5fa 0%,#2563eb 100%) !important;}.card-item-wrapper.disabled .status-badge{background:linear-gradient(135deg,#a8b8cf 0%,#7a8ea9 100%) !important;color:#f8fbff !important;}.purpose-btn[data-purpose="물품구매"]{color:#f59e0b !important;}.purpose-btn[data-purpose="식사다과"]{color:#06b6d4 !important;}.purpose-btn[data-purpose="기타운영"]{color:#8b5cf6 !important;}.purpose-btn[data-purpose="특근매식"]{color:#10b981 !important;}.purpose-btn[data-purpose="물품구매"] i{color:#f59e0b !important;}.purpose-btn[data-purpose="식사다과"] i{color:#06b6d4 !important;}.purpose-btn[data-purpose="기타운영"] i{color:#8b5cf6 !important;}.purpose-btn[data-purpose="특근매식"] i{color:#10b981 !important;}.card-header-badge.badge-purpose-purchase{background:linear-gradient(135deg,#f59e0b 0%,#f97316 100%) !important;color:#fffaf5 !important;}.card-header-badge.badge-purpose-dining{background:linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%) !important;color:#f8fbff !important;}.card-header-badge.badge-purpose-ops{background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 100%) !important;color:#f8f7ff !important;}.card-header-badge.badge-purpose-meal{background:linear-gradient(135deg,#10b981 0%,#059669 100%) !important;color:#f2fffb !important;}.card-header-badge.badge-purpose-default{background:linear-gradient(135deg,#60a5fa 0%,#2563eb 100%) !important;color:#f8fbff !important;}.stat-value,.cart-item-amount,.detail-row-content,.loader-progress-percent{color:#2563eb !important;}.stat-value{text-shadow:none !important;}.loader-card-title{color:#1f4175 !important;}.loader-card-subtitle,.loader-step-desc{color:#6b83a9 !important;}#loader-step-1.active .loader-step-icon{background:linear-gradient(135deg,#60a5fa 0%,#2563eb 100%) !important;}#loader-step-2.active .loader-step-icon{background:linear-gradient(135deg,#a78bfa 0%,#7c3aed 100%) !important;}.loader-step-item.done .loader-step-icon{background:linear-gradient(135deg,#6ee7b7 0%,#10b981 100%) !important;color:#ffffff !important;}.loader-step-item.done .loader-step-badge{background:linear-gradient(135deg,#34d399 0%,#059669 100%) !important;}.user-full-chip .avatar{color:#2563eb !important;}.main-badge{background:linear-gradient(135deg,#f59e0b 0%,#f97316 100%) !important;}#main-user-label{color:#607ba6 !important;}.cart-item-icon{color:#3b82f6 !important;}.morph-subheader,#card-selection-header,.dashboard-label{color:#6b83a9 !important;}.cart-item-delete{background:linear-gradient(135deg,#ff6b6b 0%,#ef4444 100%) !important;color:#ffffff !important;box-shadow:0 8px 18px rgba(239,68,68,0.35),inset 1px 1px 0 rgba(255,255,255,0.3) !important;}.cart-item-delete i{color:#ffffff !important;}.cart-item-delete:hover{transform:scale(1.1);box-shadow:0 12px 24px rgba(239,68,68,0.45),inset 1px 1px 0 rgba(255,255,255,0.35) !important;}.cart-item-delete{transition:opacity 0.2s ease,transform 0.2s ease !important;}.cart-item-delete:hover{transform:scale(1.05) !important;}.cart-item:hover .cart-item-delete{transform:none !important;}#add-receipt-btn{background:linear-gradient(180deg,#eef4fb 0%,#dde8f7 100%) !important;color:#2563eb !important;border:1px solid rgba(255,255,255,0.7) !important;box-shadow:10px 10px 20px rgba(110,138,176,0.18),-8px -8px 16px rgba(255,255,255,0.95),inset 1px 1px 0 rgba(255,255,255,0.6) !important;}#add-receipt-btn i{color:#3b82f6 !important;}.cart-item-delete{transition:none !important;}.cart-item-delete:hover{transform:none !important;box-shadow:0 8px 18px rgba(239,68,68,0.35),inset 1px 1px 0 rgba(255,255,255,0.3) !important;}.cart-item-delete:active{transform:scale(0.92) !important;box-shadow:inset 4px 4px 8px rgba(180,0,0,0.4),inset -2px -2px 6px rgba(255,255,255,0.2) !important;}#add-receipt-btn{background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 50%,#93c5fd 100%) !important;color:#1d4ed8 !important;border:1px solid rgba(255,255,255,0.8) !important;box-shadow:10px 10px 20px rgba(59,130,246,0.18),-8px -8px 16px rgba(255,255,255,0.95),inset 1px 1px 0 rgba(255,255,255,0.7) !important;}#add-receipt-btn i{color:#2563eb !important;}.cart-item-delete{position:absolute !important;right:10px !important;top:50% !important;transform:translateY(-50%) !important;transition:none !important;}.cart-item:hover .cart-item-delete,.cart-item-delete:hover{transform:translateY(-50%) !important;}.cart-item-delete:active{transform:translateY(-50%) scale(0.92) !important;box-shadow:inset 4px 4px 8px rgba(180,0,0,0.4),inset -2px -2px 6px rgba(255,255,255,0.2) !important;}.keypad-btn,.submit-btn,.simple-btn,.purpose-btn,.card-item-wrapper,.cart-item,.user-full-chip,.user-tag,.close-morph-btn,#btn-back,#add-receipt-btn,.cart-item-delete{transition:background 0.18s ease,box-shadow 0.18s ease,border-color 0.18s ease,opacity 0.18s ease,color 0.18s ease !important;}#keypad-submit-btn:hover,.simple-btn.primary:hover,.submit-btn.primary:hover{transform:none !important;filter:brightness(1.02);box-shadow:0 16px 26px rgba(37,99,235,0.22),inset 1px 1px 0 rgba(255,255,255,0.34) !important;}#keypad-submit-btn:active,.simple-btn.primary:active,.submit-btn.primary:active{transform:scale(0.98) !important;filter:none !important;}.simple-btn:not(.primary):not(.accent):hover,#btn-back:hover,.close-morph-btn:hover{transform:none !important;filter:brightness(1.02);}#add-receipt-btn:hover{transform:none !important;filter:brightness(1.02);box-shadow:12px 12px 22px rgba(59,130,246,0.18),-8px -8px 16px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.72) !important;}#add-receipt-btn:active{transform:scale(0.98) !important;}.purpose-btn:hover{transform:none !important;filter:brightness(1.02);box-shadow:7px 7px 14px rgba(110,138,176,0.22),-6px -6px 12px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.54) !important;}.purpose-btn:active{transform:scale(0.97) !important;}.card-item-wrapper:hover:not(.disabled){transform:none !important;filter:brightness(1.015);box-shadow:14px 14px 24px rgba(120,150,190,0.34),-10px -10px 20px rgba(255,255,255,0.98),inset 1px 1px 0 rgba(255,255,255,0.74) !important;}.card-item-wrapper:active:not(.disabled){transform:scale(0.98) !important;}.cart-item:hover{transform:none !important;filter:brightness(1.01);box-shadow:inset 5px 5px 10px var(--shadow-dark),inset -5px -5px 10px var(--shadow-light),0 8px 18px rgba(110,138,176,0.10) !important;}.cart-item:active{transform:scale(0.995) !important;}.user-full-chip:hover,.user-tag:hover{transform:none !important;filter:brightness(1.02);}.user-full-chip:active,.user-tag:active{transform:scale(0.98) !important;}.keypad-btn:hover{transform:none !important;filter:brightness(1.02);}.keypad-btn:active:not(:disabled),.keypad-btn.pressed{transform:scale(0.94) !important;filter:none !important;}.cart-item-delete:hover{transform:translateY(-50%) !important;filter:none !important;}.cart-item-delete:active{transform:translateY(-50%) scale(0.92) !important;}#btn-back:hover,.close-morph-btn:hover,.simple-btn:hover,.submit-btn:hover{transform:none;}#add-receipt-btn{background:linear-gradient(135deg,#ede9fe 0%,#ddd6fe 50%,#c4b5fd 100%) !important;color:#5b21b6 !important;}#add-receipt-btn:hover{transform:none !important;filter:brightness(1.03);}#add-receipt-btn:active{transform:scale(0.97) !important;box-shadow:inset 6px 6px 12px rgba(91,33,182,0.25),inset -4px -4px 10px rgba(255,255,255,0.5) !important;}#add-receipt-btn i{color:#6d28d9 !important;}.swal-input-label-new{color:#6882a8 !important;}.swal-input-label-new .input-label-icon,.swal-input-label-new .input-label-text{color:inherit;}.swal-input-group-new:has(.swal2-input-new[data-field="storeName"]) .swal-input-label-new,.swal-input-group-new.store-name .swal-input-label-new{color:#2563eb !important;}.swal-input-group-new:has(.swal2-input-new[data-field="amount"]) .swal-input-label-new,.swal-input-group-new.amount-field .swal-input-label-new{color:#10b981 !important;}.swal-input-group-new:has(.swal2-input-new[data-field="details"]) .swal-input-label-new,.swal-input-group-new.details-field .swal-input-label-new{color:#7c3aed !important;}.swal2-input-new{color:#36527f !important;}.swal-input-group-new.store-name:focus-within{box-shadow:inset 4px 4px 8px rgba(163,177,198,0.8),inset -4px -4px 8px rgba(255,255,255,0.9),0 0 0 1px #2563eb !important;}.swal-input-group-new.amount-field:focus-within{box-shadow:inset 4px 4px 8px rgba(163,177,198,0.8),inset -4px -4px 8px rgba(255,255,255,0.9),0 0 0 1px #10b981 !important;}.swal-input-group-new.details-field:focus-within{box-shadow:inset 4px 4px 8px rgba(163,177,198,0.8),inset -4px -4px 8px rgba(255,255,255,0.9),0 0 0 1px #7c3aed !important;}
+</style>
+</head> <body class="variant-lockscreen">
+<div class="morph-overlay" id="morph-overlay">
+    <h3 class="morph-header" id="morph-title"></h3>
+    <p class="morph-subheader" id="morph-subheader">카드 사용 목적을 선택하세요</p>
+    <div class="morph-grid" id="morph-actions"></div>
+    <button class="close-morph-btn" id="close-morph-btn">닫기</button>
+</div>
+<div id="lock-screen">
+    <div class="lock-content">
+        <div id="glass-card-container">
+            <div id="glass-card">
+                <div class="card-top"><div class="card-chip"></div><i class="fa-solid fa-school card-school-icon"></i></div>
+                <div class="card-middle"><div class="card-number">**** **** **** 9105</div></div>
+                <div class="card-bottom"><div class="card-holder">WOOSUNG HIGH SCHOOL</div><i class="fa-solid fa-wifi card-nfc"></i></div>
+            </div>
+        </div>
+        <p class="lock-text" id="lock-text-instruction">카드를 눌러 시작하세요</p>
+    </div>
+</div>
+<div id="welcome-screen" class="hidden">
+    <div class="loader-card-v2">
+
+        <div class="loader-card-title" id="loader-title-main">시스템 연결 중</div>
+        <div class="loader-card-subtitle" id="loader-title-sub">안전하게 접속을 준비하고 있습니다</div>
+        <div class="loader-progress-row">
+            <div class="loader-progress-shell">
+                <div class="loader-progress-fill" id="loader-bar"></div>
+            </div>
+            <div class="loader-progress-percent" id="loader-percent">0%</div>
+        </div>
+        <div class="loader-step-panel">
+            <div class="loader-step-item active" id="loader-step-1">
+                <div class="loader-step-icon"><i class="fa-solid fa-server"></i></div>
+                <div class="loader-step-texts">
+                    <div class="loader-step-title">학교 시스템 연결 중...</div>
+                    <div class="loader-step-desc">학교 서버와 안전하게 연결하고 있습니다.</div>
+                </div>
+                <div class="loader-step-badge">1</div>
+            </div>
+            <div class="loader-step-divider"></div>
+            <div class="loader-step-item" id="loader-step-2">
+                <div class="loader-step-icon"><i class="fa-solid fa-shield"></i></div>
+                <div class="loader-step-texts">
+                    <div class="loader-step-title">보안 정보 확인 중...</div>
+                    <div class="loader-step-desc">사용자 정보를 안전하게 확인하고 있습니다.</div>
+                </div>
+                <div class="loader-step-badge">2</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="security-scan-overlay">
+    <div class="scan-box" id="scan-box">
+        <div class="laser" id="laser"></div>
+        <i class="fa-solid fa-user scan-icon" id="scan-icon"></i>
+    </div>
+    <div class="scan-text" id="scan-text">신원 확인 중...</div>
+</div>
+<div id="loadingOverlay" class="hidden">
+    <div class="loading-spinner-container" id="receipt-spinner">
+        <div class="scanner-container">
+            <div class="receipt-paper"><div class="paper-line title"></div><div class="paper-line full"></div><div class="paper-line full"></div><div class="paper-line half"></div><div class="paper-line full"></div></div>
+            <div class="scan-beam"></div>
+        </div>
+    </div>
+    <div class="loading-spinner-container" id="submit-spinner"><div class="loading-progress-bar"></div></div>
+    <div id="loadingMessage" aria-live="polite"></div>
+</div>
+<div class="content-wrapper" style="display:none;">
+    <div class="container">
+        <div id="main-title-container" class="hidden">
+            <div class="inset-box">
+                <h2>우성고 카드 시스템</h2>
+            </div>
+        </div>
+        <div id="screen-login-skeleton" class="screen hidden" aria-hidden="true"></div>
+        <div id="screen-login" class="screen hidden">
+            <div class="main-frame login-frame">
+                <div class="header-dashboard">
+                    <div class="stat-item"><span class="stat-label">대여 가능</span><span class="stat-value" id="dash-available">-</span></div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item"><span class="stat-label">사용 중</span><span class="stat-value" id="dash-inuse">-</span></div>
+                    <div id="login-user-tags"></div>
+                </div>
+                <div class="display-area" id="keypadDisplay">
+                    <div class="digit-wrapper"><div class="digit-box" data-index="0"></div></div>
+                    <div class="digit-wrapper"><div class="digit-box" data-index="1"></div></div>
+                    <div class="digit-wrapper"><div class="digit-box" data-index="2"></div></div>
+                    <div class="digit-wrapper"><div class="digit-box" data-index="3"></div></div>
+                </div>
+                <div id="login-instruction-area" class="login-instruction-area">
+                    <p id="login-instruction" class="instruction">내선번호 4자리를 입력하세요</p>
+                    <div id="login-user-panel" class="login-user-panel hidden" aria-live="polite">
+                        <div class="floating-label" id="main-user-label">추가된 사용자</div>
+                        <div id="login-user-inline" class="login-user-inline"></div>
+                    </div>
+                </div>
+                <div class="keypad-grid" id="keypadContainer"></div>
+                <button id="keypad-submit-btn" class="submit-btn" type="button">
+                    <i class="fa-solid fa-right-to-bracket"></i> 로그인
+                </button>
+            </div>
+        </div>
+        <div id="screen-main" class="screen hidden">
+            <h3 id="main-welcome-message" class="instruction-text"></h3>
+            <div id="card-list-container"><h4 id="card-selection-header" class="instruction-text"></h4><div id="cardGrid"></div></div>
+        </div>
+        <div id="screen-return-details" class="screen hidden">
+            <div id="return-screen-title" class="instruction-text"></div>
+            <div id="return-form-container">
+                <div id="receipt-dashboard" class="hidden"><span class="dashboard-label">총 사용 금액</span><div id="receipt-total-display" class="dashboard-amount">0원</div></div>
+            </div>
+        </div>
+        <div id="screen-confirmation" class="screen hidden">
+            <div class="confirmation-container">
+                <div class="confirmation-icon-wrapper"><svg class="animated-check" viewBox="0 0 52 52"><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg></div>
+                <h3 id="confirmation-title" class="confirmation-title"></h3><div id="confirmation-details"></div><div id="confirmation-countdown"></div>
+            </div>
+        </div>
+        <button id="btn-back" class="hidden"><i class="fa-solid fa-chevron-left"></i> 처음으로</button>
+    </div>
+</div>
+<input type="file" id="receipt-file-input" accept="image/*" multiple style="display:none;">
+<script>
+const IS_GAS = typeof google !== 'undefined' && google.script && google.script.run;
+const isMobile = window.matchMedia('(max-width: 767px)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+// 테스트 데이터
+const mockApi = {
+    getInitialAppData: () => new Promise(r => setTimeout(() => r({
+        allCards: [
+            {id:'법인1', displayName:'법인 1호', status:'사용가능', userInfo:null, savedCart:[]},
+            {id:'법인2', displayName:'법인 2호', status:'사용중', userInfo:{userName:'김철수', receiveDate:'2025-09-25', purpose:'물품구매'}, savedCart:[]},
+            {id:'매식3', displayName:'특근매식 3호', status:'사용중', userInfo:{userName:'이영희, 박민준', receiveDate:'2025-09-24', purpose:'특근매식'}, savedCart:[]},
+            {id:'법인3', displayName:'법인 3호', status:'사용가능', userInfo:null, savedCart:[]},
+            {id:'해외1', displayName:'해외결제', status:'사용가능', userInfo:null, savedCart:[]},
+        ],
+        allUsers: [
+            {extension:'1234', name:'홍길동', role:'사무직원'},
+            {extension:'5678', name:'김철수', role:'교원'},
+            {extension:'1111', name:'이영희', role:'사무직원'},
+            {extension:'2222', name:'박민준', role:'교원'},
+            {extension:'3333', name:'정본부', role:'교원'},
+            {extension:'4444', name:'최지우', role:'교원'}
+        ]
+    }), 800)),
+    getSavedCarts: (ids) => Promise.resolve({ '매식3': [{usagePlace:'Mock 식당', usageDetails:'특근매식비', amount:'18000', receiptImage:''}], '법인2': [{usagePlace:'중앙문구', usageDetails:'', amount:'12000', receiptImage:''}] }),
+    rentNow: (params) => Promise.resolve({status:'success'}),
+    queueRentRequest: (params) => Promise.resolve({status:'ok'}),
+    queueReturnRequest: (params) => new Promise(resolve => setTimeout(() => resolve({status:'ok'}), 1000)),
+    saveCartToMasterFile: (params) => new Promise(resolve => setTimeout(() => resolve({status:'ok'}), 800)),
+    processReceiptImage: (base64) => new Promise(resolve => setTimeout(() => resolve({storeName:'테스트식당', amount:'8500', date: '2025-12-25'}), 1500))
+};
+const Api = {
+    call: (func, ...args) => new Promise((resolve, reject) => {
+        if (!IS_GAS) {
+            if (mockApi[func]) mockApi[func](...args).then(resolve).catch(reject);
+            else resolve({status:'ok', mock:true});
+        } else {
+            google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[func](...args);
+        }
+    })
+};
+function triggerKeypadVisualPress(key){
+    try{
+        let selector = null;
+        if (/^[0-9]$/.test(String(key))) selector = `.keypad-btn[data-key="${key}"]`;
+        else if (key === 'Backspace') selector = '#keypad-back-btn';
+        else if (key === 'Enter') selector = '#keypad-submit-btn';
+        else if (key === '+') selector = '#keypad-add-btn';
+        if (!selector) return;
+        const btn = document.querySelector(selector);
+        if (!btn) return;
+        btn.classList.remove('pressed');
+        void btn.offsetWidth;
+        btn.classList.add('pressed');
+        clearTimeout(btn._pressedTimer);
+        btn._pressedTimer = setTimeout(() => {
+            btn.classList.remove('pressed');
+        }, 120);
+    } catch(e) {}
+}
+const CardApp = (function() {
+    const MEAL_CAP_PER_PERSON = 9000;
+    const INACTIVITY_MS = 3 * 60 * 1000;
+    const CARD_APPEAR_DELAY_MS = 50;
+    let state = {
+        syncReqId: 0,
+        cartSaveTimer: null,
+        cartSaveToken: 0,
+        _renderReceiptScheduled: false,
+        syncPromise: null,
+        syncInFlight: false,
+        lastSyncTs: null,
+        allCardData: null,
+        allUsersData: null,
+        keypadValues: [null, null, null, null],
+        inputTimers: [null, null, null, null],
+        activeDigitIndex: 0,
+        enteredUsers: [],
+        currentReturnCard: null,
+        receiptCart: [],
+        pendingEditIndex: -1,
+        currentScreen: 'lock',
+        isAppActive: false,
+        __keypadInited: false,
+        cardTiltActive: true,
+        countdownInterval: null,
+        inactivityTimer: null,
+        confirmLeaveTimeout1: null,
+        confirmLeaveTimeout2: null,
+        loginTyping: false,
+        isAdminMode: (localStorage.getItem('WS_ADMIN_MODE') === '1'),
+        adminSince: localStorage.getItem('WS_ADMIN_SINCE') || null,
+        adminPinCache: localStorage.getItem('WS_ADMIN_PIN_CACHE') || null,
+        pendingPostReturnSync: false,
+        forceSyncOnNextUnlock: false
+    };
+    let elements = {};
+    async function safeUpdate(updateFn, serverCallFn, rollbackFn, cardId) {
+        let originalCardData = null;
+        if (cardId) {
+            const target = state.allCardData.find(c => c.id === cardId);
+            originalCardData = JSON.parse(JSON.stringify(target));
+        }
+        try {
+            updateFn(state, cardId);
+            await serverCallFn();
+        } catch (e) {
+            if (cardId && originalCardData) Object.assign(state.allCardData.find(c => c.id === cardId), originalCardData);
+            if (rollbackFn) rollbackFn(e);
+            throw e;
+        }
+    }
+    function setAdminMode(on, pin=null){
+        state.isAdminMode = !!on;
+        if (state.isAdminMode) {
+            localStorage.setItem('WS_ADMIN_MODE', '1');
+            const ts = new Date().toISOString();
+            localStorage.setItem('WS_ADMIN_SINCE', ts);
+            state.adminSince = ts;
+            if (pin) {
+                localStorage.setItem('WS_ADMIN_PIN_CACHE', String(pin));
+                state.adminPinCache = String(pin);
+            }
+            Swal.fire({toast:true, position:'top', icon:'success', title:'행정실 관리자 모드 ON', showConfirmButton:false, timer:1800});
+        } else {
+            localStorage.removeItem('WS_ADMIN_MODE');
+            localStorage.removeItem('WS_ADMIN_SINCE');
+            localStorage.removeItem('WS_ADMIN_PIN_CACHE');
+            state.adminSince = null;
+            state.adminPinCache = null;
+            Swal.fire({toast:true, position:'top', icon:'info', title:'관리자 모드 OFF', showConfirmButton:false, timer:1800});
+        }
+    }
+    const Utils = {
+        nfKR: new Intl.NumberFormat('ko-KR'),
+        formatDateKR(d=new Date()){
+            try{
+                const parts=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(d);
+                const get=k=>parts.find(p=>p.type===k)?.value;
+                return `${get('year')}-${get('month')}-${get('day')}`;
+            }catch(e){
+                return new Date().toISOString().split('T')[0];
+            }
+        },
+        esc(s=''){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); },
+        createDetailRow(label, content){
+            return `<div class="detail-row"><span class="detail-row-label">${this.esc(label)}</span><span class="detail-row-content">${this.esc(content)}</span></div>`;
+        },
+        celebrate(){ try{ confetti({particleCount:120,spread:80,origin:{y:.6}}); }catch(_){} },
+        clampMealAmount(amt, cnt){
+            const entered=parseInt((amt||'').replace(/[^\d]/g,''),10)||0;
+            const cap=(Math.max(1,cnt))*MEAL_CAP_PER_PERSON;
+            const clamped=Math.min(entered,cap);
+            if(entered>cap) Swal.fire({toast:true,position:'top',icon:'info',title:`금액 상한액 적용`,html:`${cnt}명 상한액(${this.nfKR.format(cap)}원)으로<br>자동 조정되었습니다.`,showConfirmButton:false,timer:3500});
+            return clamped;
+        },
+        getSmartIcon(place, details){
+            const t=(place+' '+details).toLowerCase();
+            if(t.match(/식당|밥|국밥|찌개|탕|면|버거|피자|치킨|맥도날드|롯데리아|김밥|한식|중식|일식|양식|분식/))return 'fa-utensils';
+            if(t.match(/카페|커피|스타벅스|이디야|투썸|폴바셋|음료|차|베이커리|빵/))return 'fa-mug-hot';
+            if(t.match(/택시|주유|주차|버스|기차|교통|하이패스/))return 'fa-car-side';
+            if(t.match(/마트|편의점|이마트|홈플러스|cu|gs25|세븐일레븐|쇼핑|구매/))return 'fa-cart-shopping';
+            if(t.match(/문구|사무|복사|인쇄|용지/))return 'fa-stapler';
+            return 'fa-file-invoice-dollar';
+        }
+    };
+    const clearTransitionTimers = () => {
+        if (state.countdownInterval) clearInterval(state.countdownInterval);
+        if (state.confirmLeaveTimeout1) clearTimeout(state.confirmLeaveTimeout1);
+        if (state.confirmLeaveTimeout2) clearTimeout(state.confirmLeaveTimeout2);
+        state.countdownInterval = null;
+        state.confirmLeaveTimeout1 = null;
+        state.confirmLeaveTimeout2 = null;
+    };
+    const UIManager = {
+        currentScreenElement: null,
+        _inactivityHandler: null,
+        setLoading: (on, msg='', type='submit') => {
+            const rSpin=document.getElementById('receipt-spinner');
+            const sSpin=document.getElementById('submit-spinner');
+            const ol=document.getElementById("loadingOverlay");
+            if (on) {
+                if(type==='receipt'){rSpin.style.display='flex';sSpin.style.display='none';}
+                else{rSpin.style.display='none';sSpin.style.display='flex';}
+                ol.classList.remove("hidden");
+            } else {
+                ol.classList.add("hidden");
+            }
+            document.getElementById("loadingMessage").textContent = msg;
+        },
+        handleServerError: (err) => {
+            UIManager.setLoading(false);
+            Swal.fire({title:"서버 오류",text:err.message||'알 수 없는 오류',icon:"error"});
+        },
+        showScreen: (sid) => {
+            document.body.style.pointerEvents = 'auto';
+            try { document.getElementById('loadingOverlay')?.classList.add('hidden'); } catch(e) {}
+            document.body.style.overflow = ['login','main','returnDetails','confirmation'].includes(sid) ? 'auto' : 'hidden';
+            if (sid !== 'confirmation') clearTransitionTimers();
+            const next = elements.screens[sid];
+            if (!next) return;
+            Object.values(elements.screens).forEach(s => {
+                if(s !== next) {
+                    s.classList.add('hidden');
+                    s.classList.remove('is-hiding');
+                }
+            });
+            const title = document.getElementById('main-title-container');
+            title.classList.remove('hidden');
+            if (sid === 'main') {
+                elements.contentWrapper.classList.remove('fade-in-up');
+                void elements.contentWrapper.offsetWidth;
+                elements.contentWrapper.classList.add('fade-in-up');
+                setTimeout(() => title.classList.add('is-visible'), 150);
+            } else {
+                setTimeout(() => title.classList.add('is-visible'), 50);
+            }
+            next.classList.remove('hidden');
+            UIManager.currentScreenElement = next;
+            state.currentScreen = sid;
+            elements.btnBack.classList.toggle('hidden', sid === 'login' || sid === 'confirmation');
+            document.querySelector('.container').classList.toggle('wide-mode', ['main','returnDetails','confirmation'].includes(sid));
+            if (sid === 'main') CardLogic.displayCardList();
+            if (sid === 'login') KeypadLogic.updateDashboard();
+        },
+        showScreenImmediate: (sid) => {
+            document.body.style.pointerEvents = 'auto';
+            try { document.getElementById('loadingOverlay')?.classList.add('hidden'); } catch(e) {}
+            if (sid !== 'confirmation') clearTransitionTimers();
+            const next = elements.screens[sid];
+            if (!next) return;
+            Object.values(elements.screens).forEach(s => {
+                s.classList.add('hidden');
+                s.classList.remove('is-hiding');
+            });
+            const title = document.getElementById('main-title-container');
+            title.classList.remove('hidden');
+            title.classList.add('is-visible');
+            next.classList.remove('hidden');
+            UIManager.currentScreenElement = next;
+            state.currentScreen = sid;
+            elements.btnBack.classList.toggle('hidden', sid === 'login' || sid === 'confirmation');
+            document.querySelector('.container').classList.toggle('is-receipt-mode', ['main','returnDetails','confirmation'].includes(sid));
+            if (sid === 'main') CardLogic.displayCardList();
+            if (sid === 'login') KeypadLogic.updateDashboard();
+        },
+        showLockScreen: () => {
+            clearTransitionTimers();
+            document.body.style.overflow = 'hidden';
+            document.body.style.pointerEvents = 'auto';
+            state.enteredUsers = [];
+            state.keypadValues = [null, null, null, null];
+            state.activeDigitIndex = 0;
+            state.receiptCart = [];
+            state.currentReturnCard = null;
+            state.loginTyping = false;
+            if (elements.loginUserTags) {
+                elements.loginUserTags.innerHTML='';
+                document.getElementById('login-user-tags').classList.remove('active');
+                document.querySelector('.header-dashboard').classList.remove('show-tags');
+            }
+            try { document.getElementById('login-user-inline').innerHTML=''; document.getElementById('login-user-panel').classList.add('hidden'); document.getElementById('login-instruction').classList.remove('hidden'); } catch(e) {}
+            if (elements.keypadDisplay) KeypadLogic.renderDisplay();
+            Object.values(elements.screens).forEach(s => {
+                s.classList.add('hidden');
+                s.classList.remove('is-hiding');
+            });
+            [elements.welcomeScreen, elements.skeletonScreen].filter(Boolean).forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('is-visible');
+            });
+            document.getElementById('main-title-container').classList.add('hidden');
+            document.getElementById('main-title-container').classList.remove('is-visible');
+            elements.btnBack.classList.add('hidden');
+            elements.contentWrapper.style.display='none';
+            elements.cardGrid.classList.remove('is-loaded');
+            elements.lockScreen.style.display = 'flex';
+            try { elements.lockScreen.style.opacity = '1'; elements.lockScreen.style.visibility = 'visible'; elements.lockScreen.style.pointerEvents = 'auto'; } catch(e) {}
+            elements.lockScreen.classList.remove('hidden', 'fade-out', 'active-pop');
+            elements.glassCardContainer.classList.remove('hide-card');
+            requestAnimationFrame(() => {
+                elements.lockScreen.style.opacity = '1';
+                document.getElementById('lock-text-instruction').classList.remove('hide');
+            });
+            state.cardTiltActive = true;
+            UIManager.currentScreenElement = elements.lockScreen;
+            state.currentScreen = 'lock';
+            UIManager.stopInactivityDetection();
+            state.isAppActive = false;
+        },
+        resetToLogin: () => {
+            clearTransitionTimers();
+            document.body.style.pointerEvents = 'auto';
+            state.enteredUsers=[];
+            state.keypadValues = [null, null, null, null];
+            state.activeDigitIndex=0;
+            state.loginTyping = false;
+            elements.loginUserTags.innerHTML='';
+            KeypadLogic.renderDisplay();
+            try { document.getElementById('login-user-inline').innerHTML=''; document.getElementById('login-user-panel').classList.add('hidden'); document.getElementById('login-instruction').classList.remove('hidden'); } catch(e) {}
+            UIManager.showScreen('login');
+            UIManager.startInactivityDetection();
+        },
+        resetInactivityTimer: () => {
+            clearTimeout(state.inactivityTimer);
+            state.inactivityTimer = setTimeout(UIManager.showLockScreen, INACTIVITY_MS);
+        },
+        startInactivityDetection: () => {
+            if (!UIManager._inactivityHandler) UIManager._inactivityHandler = () => UIManager.resetInactivityTimer();
+            ['click','keydown','touchstart','mousemove'].forEach(evt => {
+                document.removeEventListener(evt, UIManager._inactivityHandler, {capture:true});
+                document.addEventListener(evt, UIManager._inactivityHandler, {passive:true,capture:true});
+            });
+            UIManager.resetInactivityTimer();
+        },
+        stopInactivityDetection: () => clearTimeout(state.inactivityTimer),
+        async runRandomLoader(chk) {
+            const step1Text = '학교 시스템 연결 중...';
+            const step2Text = '보안 정보 확인 중...';
+            const doneText = '시스템 접속 완료';
+
+            const titleMain = document.getElementById('loader-title-main');
+            const titleSub = document.getElementById('loader-title-sub');
+            const percentEl = document.getElementById('loader-percent');
+            const step1El = document.getElementById('loader-step-1');
+            const step2El = document.getElementById('loader-step-2');
+
+            const wait = (ms) => new Promise(r => setTimeout(r, ms));
+            const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+            let currentStep = 1;
+
+            const setStep = (step) => {
+                currentStep = step;
+                if (!step1El || !step2El) return;
+
+                step1El.classList.remove('active', 'done');
+                step2El.classList.remove('active', 'done');
+
+                if (step === 1) {
+                    step1El.classList.add('active');
+                } else if (step === 2) {
+                    step1El.classList.add('done');
+                    step2El.classList.add('active');
+                } else {
+                    step1El.classList.add('done');
+                    step2El.classList.add('done');
+                }
+            };
+
+            const updateUI = (percent, text) => {
+                if (elements.loaderBar) elements.loaderBar.style.width = `${percent}%`;
+                if (percentEl) percentEl.textContent = `${Math.round(percent)}%`;
+
+                if (currentStep === 1) {
+                    if (titleMain) titleMain.textContent = '시스템 연결 중';
+                    if (titleSub) titleSub.textContent = '안전하게 접속을 준비하고 있습니다';
+                } else if (currentStep === 2) {
+                    if (titleMain) titleMain.textContent = '보안 확인 중';
+                    if (titleSub) titleSub.textContent = '보안 토큰과 사용자 정보를 검증하고 있습니다';
+                } else {
+                    if (titleMain) titleMain.textContent = '시스템 접속 완료';
+                    if (titleSub) titleSub.textContent = '로그인 화면으로 이동합니다';
+                }
+
+                if (elements.loaderText) elements.loaderText.textContent = text;
+            };
+
+            const transitionFor = (durationMs, easing = 'ease-out') => {
+                if (elements.loaderBar) elements.loaderBar.style.transition = `width ${durationMs}ms ${easing}`;
+            };
+
+            const moveTo = async (target, durationMs, text, easing = 'ease-out') => {
+                transitionFor(durationMs, easing);
+                updateUI(target, text);
+                await wait(durationMs);
+            };
+
+            // 4번의 게이지 상승, 하지만 상태는 2단계만 유지
+            // 1단계: 0 -> 랜덤(12~24) -> 45
+            // 2단계: 45 -> 랜덤(58~74) -> 90
+            const firstMid = rand(12, 24);
+            const secondMid = rand(58, 74);
+
+            setStep(1);
+            updateUI(0, step1Text);
+
+            await moveTo(firstMid, 240, step1Text, 'ease-out');
+            await wait(140);
+
+            await moveTo(45, 320, step1Text, 'ease-in-out');
+            await wait(220);
+
+            setStep(2);
+
+            await moveTo(secondMid, 260, step2Text, 'ease-out');
+            await wait(140);
+
+            await moveTo(90, 320, step2Text, 'ease-in-out');
+
+            while (!(chk && chk())) {
+                updateUI(90, step2Text);
+                await wait(35);
+            }
+
+            setStep(3);
+            await moveTo(100, 220, doneText, 'ease-out');
+            await wait(450);
+        }
+    };
+    const KeypadLogic = {
+        isUserActive: () => {
+            if (state.currentScreen !== 'login') return false;
+            return !!state.loginTyping;
+        },
+        markTyping: () => { if (state.currentScreen === 'login') state.loginTyping = true; },
+        clearTyping: () => { state.loginTyping = false; },
+        initializeKeypad: () => {
+            if (state.__keypadInited) return;
+            state.__keypadInited = true;
+            elements.keypadContainer.innerHTML = '';
+            [{v:'1'},{v:'2'},{v:'3'},{v:'4'},{v:'5'},{v:'6'},{v:'7'},{v:'8'},{v:'9'},{v:'add',c:`<i class="fa-solid fa-user-plus"></i>`},{v:'0'},{v:'bs',c:`<i class="fa-solid fa-delete-left"></i>`}]
+            .forEach(({v,c}) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'keypad-btn';
+                if (v === 'add') {
+                    btn.dataset.key = '+';
+                    btn.id = 'keypad-add-btn';
+                    btn.addEventListener('click', KeypadLogic.handleAddUser);
+                } else if (v === 'bs') {
+                    btn.dataset.key = 'Backspace';
+                    btn.id = 'keypad-back-btn';
+                    btn.addEventListener('click', KeypadLogic.processBackspace);
+                } else {
+                    btn.dataset.key = v;
+                    btn.addEventListener('click', () => KeypadLogic.processKeyInput(v));
+                }
+                btn.innerHTML = `<span class="btn-icon">${c||v}</span>`;
+                elements.keypadContainer.appendChild(btn);
+            });
+            elements.keypadSubmitBtn.addEventListener('click', () => KeypadLogic.processLogin());
+        },
+        updateDashboard: () => {
+            if (!state.allCardData) return;
+            const total = state.allCardData.length;
+            const inUse = state.allCardData.filter(c => c.status === '사용중').length;
+            const available = total - inUse;
+            const elAvail = document.getElementById('dash-available');
+            const elInuse = document.getElementById('dash-inuse');
+            if(elAvail) elAvail.textContent = available;
+            if(elInuse) elInuse.textContent = inUse;
+        },
+        renderDisplay: () => {
+            document.querySelectorAll('#keypadDisplay .digit-box').forEach((box, i) => {
+                const data = state.keypadValues[i];
+                box.className = 'digit-box'; // reset
+                box.textContent = '';
+                if (data) {
+                    box.classList.add('filled');
+                    box.textContent = data.value;
+                    if (data.masked) {
+                        box.classList.add('masked');
+                    }
+                }
+            });
+        },
+        processKeyInput: (k) => {
+            triggerKeypadVisualPress(k);
+            if (state.activeDigitIndex > 3) return;
+            KeypadLogic.markTyping();
+            const idx = state.activeDigitIndex;
+            state.keypadValues[idx] = { value: k, masked: false };
+            KeypadLogic.renderDisplay();
+            if (state.inputTimers[idx]) clearTimeout(state.inputTimers[idx]);
+            state.inputTimers[idx] = setTimeout(() => {
+                if (state.keypadValues[idx]) {
+                    state.keypadValues[idx].masked = true;
+                    KeypadLogic.renderDisplay();
+                }
+            }, 700);
+            if (state.activeDigitIndex < 3) state.activeDigitIndex++;
+        },
+        processBackspace: () => {
+            triggerKeypadVisualPress('Backspace');
+            KeypadLogic.markTyping();
+            const idx = state.activeDigitIndex > 3 ? 3 : (state.keypadValues[state.activeDigitIndex] ? state.activeDigitIndex : state.activeDigitIndex - 1);
+            if (idx >= 0) {
+                if (state.inputTimers[idx]) clearTimeout(state.inputTimers[idx]);
+                state.keypadValues[idx] = null;
+                state.activeDigitIndex = idx;
+                KeypadLogic.renderDisplay();
+            }
+            const hasTags = state.enteredUsers && state.enteredUsers.length > 0;
+            state.loginTyping = state.keypadValues.some(v => v !== null) || hasTags;
+        },
+        handleAddUser: () => {
+            triggerKeypadVisualPress('+');
+            if (state.enteredUsers.length >= 5) {
+                return Swal.fire({
+                    toast: true,
+                    position: 'top',
+                    icon: 'warning',
+                    title: '인원 초과',
+                    text: '최대 5명(메인1+추가4)까지 설정 가능합니다.',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+            const ext = state.keypadValues.map(v => v ? v.value : '').join('');
+            if (ext.length !== 4) return Swal.fire('알림', '내선번호 4자리를 입력해주세요.', 'warning');
+            const user = state.allUsersData.find(u => u.extension === ext);
+            if (!user) return Swal.fire('조회 실패', '해당 내선번호를 찾을 수 없습니다.', 'error');
+            if (state.enteredUsers.some(u => u.name === user.name)) return Swal.fire('알림', '이미 추가된 사용자입니다.', 'info');
+            KeypadLogic.markTyping();
+            state.enteredUsers.push({ extension: ext, name: user.name, role: user.role });
+            state.keypadValues = [null, null, null, null];
+            state.activeDigitIndex = 0;
+            KeypadLogic.renderDisplay();
+            KeypadLogic.renderLoginUserTags();
+        },
+        renderLoginUserTags: () => {
+            const inline = document.getElementById('login-user-inline');
+            const panel = document.getElementById('login-user-panel');
+            const instruction = document.getElementById('login-instruction');
+            const instructionArea = document.getElementById('login-instruction-area');
+            if (!inline || !panel) return;
+            inline.innerHTML = '';
+            inline.classList.remove('hidden');
+            if (!state.enteredUsers || state.enteredUsers.length === 0) {
+                panel.classList.add('hidden');
+                if (instructionArea) instructionArea.classList.remove('has-users');
+                const label = document.getElementById('main-user-label');
+                if (label) label.textContent = '추가된 사용자';
+                if (instruction) instruction.classList.remove('hidden');
+                inline.classList.add('hidden');
+                return;
+            }
+            panel.classList.remove('hidden');
+            if (instructionArea) instructionArea.classList.add('has-users');
+            const label = document.getElementById('main-user-label');
+            if (label) {
+                if (state.enteredUsers && state.enteredUsers.length > 0) {
+                    label.innerHTML = `${state.enteredUsers[0].name} <span class="main-badge">메인</span><span class="main-remove-mark" id="btn-remove-main" title="전체 초기화">×</span>`;
+                    const btnRemoveMain = document.getElementById('btn-remove-main');
+                    if(btnRemoveMain) {
+                        btnRemoveMain.onclick = (e) => {
+                            e.stopPropagation();
+                            state.enteredUsers = [];
+                            state.keypadValues = [null, null, null, null];
+                            state.activeDigitIndex = 0;
+                            KeypadLogic.clearTyping();
+                            KeypadLogic.renderDisplay();
+                            KeypadLogic.renderLoginUserTags();
+                        };
+                    }
+                } else {
+                    label.textContent = '추가된 사용자';
+                }
+            }
+            if (instruction) instruction.classList.add('hidden');
+            const extraUsers = state.enteredUsers.slice(1);
+            extraUsers.forEach((u, i) => {
+                const chip = document.createElement('div');
+                chip.className = 'user-full-chip';
+                chip.innerHTML = `
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="content">
+                        <span class="name">${u.name}</span>
+                        <div class="remove-mark">×</div>
+                    </div>
+                `;
+                chip.onclick = () => {
+                    const realIndex = state.enteredUsers.findIndex(x => x.name === u.name);
+                    if(realIndex > -1){
+                        state.enteredUsers.splice(realIndex, 1);
+                        KeypadLogic.renderLoginUserTags();
+                    }
+                };
+                chip.style.opacity = '0';
+                chip.style.transform = 'translateY(10px)';
+                requestAnimationFrame(() => {
+                    chip.style.opacity = '1';
+                    chip.style.transform = 'translateY(0)';
+                });
+                inline.appendChild(chip);
+            });
+        },
+        async processLogin() {
+            triggerKeypadVisualPress('Enter');
+            const ext = state.keypadValues.map(v => v ? v.value : '').join('');
+            UIManager.stopInactivityDetection();
+            if (!state.allUsersData) {
+                UIManager.setLoading(true, '데이터 로딩 중...');
+                await Api.call('getInitialAppData')
+                    .then(d => { state.allCardData = d.allCards; state.allUsersData = d.allUsers; })
+                    .catch(UIManager.handleServerError);
+                UIManager.setLoading(false);
+            }
+            if (state.enteredUsers.length === 0) {
+                if (ext.length !== 4) {
+                    elements.keypadDisplay.classList.add('shake');
+                    setTimeout(()=>elements.keypadDisplay.classList.remove('shake'), 500);
+                    return UIManager.startInactivityDetection();
+                }
+                const user = state.allUsersData.find(u => u.extension === ext);
+                if (!user) {
+                    elements.keypadDisplay.classList.add('shake');
+                    setTimeout(()=>elements.keypadDisplay.classList.remove('shake'), 500);
+                    state.keypadValues = [null,null,null,null];
+                    state.activeDigitIndex=0;
+                    KeypadLogic.renderDisplay();
+                    return UIManager.startInactivityDetection();
+                }
+                state.enteredUsers.push({ extension: ext, name: user.name, role: user.role });
+            }
+            KeypadLogic.clearTyping();
+            document.getElementById('main-welcome-message').innerHTML =
+                `<i class="fa-solid fa-hand-sparkles"></i> <strong>${state.enteredUsers.map(u=>u.name).join(', ')}</strong> 님, 환영합니다!`;
+            await KeypadLogic.runSecurityScan();
+            if (state.syncPromise) {
+                UIManager.setLoading(true, '최신 카드 상태 확인 중...', 'receipt');
+                try { await state.syncPromise; } catch(e) {}
+                UIManager.setLoading(false);
+                state.syncPromise = null;
+            }
+            const mainUser = state.enteredUsers[0].name;
+            const cardToReturn = state.allCardData.find(c => c.status === "사용중" && c.userInfo && c.userInfo.userName.includes(mainUser));
+            if (cardToReturn) {
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+                await new Promise(r => setTimeout(r, 250));
+                CardLogic.setupAndShowReturnScreen(cardToReturn);
+                UIManager.showScreen('returnDetails');
+            }
+            state.keypadValues = [null,null,null,null];
+            state.activeDigitIndex = 0;
+            KeypadLogic.renderDisplay();
+            UIManager.startInactivityDetection();
+        },
+        runSecurityScan: () => new Promise(resolve => {
+            const overlay = document.getElementById('security-scan-overlay');
+            const box = document.getElementById('scan-box');
+            const icon = document.getElementById('scan-icon');
+            const text = document.getElementById('scan-text');
+            box.classList.remove('success', 'scanning');
+            overlay.classList.remove('exit');
+            icon.className = 'fa-solid fa-user scan-icon';
+            text.textContent = '신원 확인 중...';
+            text.style.color = 'var(--text-primary)';
+            text.classList.remove('fade-out');
+            text.classList.add('fade-in');
+            overlay.classList.add('active');
+            void box.offsetWidth;
+            box.classList.add('scanning');
+            setTimeout(() => {
+                box.classList.remove('scanning');
+                box.classList.add('success');
+                icon.className = 'fa-solid fa-check scan-icon';
+                text.classList.remove('fade-in');
+                text.classList.add('fade-out');
+                setTimeout(() => {
+                    text.textContent = '신원 확인 완료!';
+                    text.style.color = 'var(--primary-color)';
+                    text.classList.remove('fade-out');
+                    text.classList.add('fade-in');
+                }, 180);
+                setTimeout(() => {
+                    overlay.classList.add('exit');
+                    document.querySelector('.content-wrapper').style.display = 'flex';
+                    CardLogic.displayCardList();
+                    UIManager.showScreen('main');
+                    setTimeout(() => {
+                        overlay.classList.remove('active', 'exit');
+                        resolve();
+                    }, 450);
+                }, 800);
+            }, 1150);
+        })
+    };
+    const EmbedBridge = {
+        notify(type, payload = {}) {
+            try {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ source: 'WS_CARD', type, ...payload }, '*');
+                }
+            } catch (e) {}
+        }
+    };
+    const CardLogic = {
+        requestRenderReceiptCart: () => {
+            if (state._renderReceiptScheduled) return;
+            state._renderReceiptScheduled = true;
+            requestAnimationFrame(() => {
+                state._renderReceiptScheduled = false;
+                CardLogic.renderReceiptCart();
+            });
+        },
+        queueSaveCart: (backupCart = null) => new Promise((resolve, reject) => {
+            const token = ++state.cartSaveToken;
+            if (state.cartSaveTimer) clearTimeout(state.cartSaveTimer);
+            state.cartSaveTimer = setTimeout(async () => {
+                try {
+                    await Api.call('saveCartToMasterFile', {
+                        cardId: state.currentReturnCard.id,
+                        cartData: state.receiptCart.map(({processing, ...r}) => r)
+                    });
+                    if (token === state.cartSaveToken) {
+                        state.receiptCart.forEach((it, idx) => {
+                            if (it && it.processing === 'saving') {
+                                it.processing = 'saved';
+                                setTimeout(() => {
+                                    const cur = state.receiptCart[idx];
+                                    if (cur && cur.processing === 'saved') {
+                                        delete cur.processing;
+                                        CardLogic.requestRenderReceiptCart();
+                                    }
+                                }, 850);
+                            }
+                        });
+                        CardLogic.requestRenderReceiptCart();
+                    }
+                    resolve(true);
+                } catch (e) {
+                    if (backupCart && token === state.cartSaveToken) {
+                        state.receiptCart = backupCart;
+                        CardLogic.requestRenderReceiptCart();
+                    }
+                    reject(e);
+                }
+            }, 450);
+        }),
+        // 다중 업로드 후 OCR 완료 시 자동 검수(입력) 모드: 새로 추가된 항목들을 순서대로 열어줌
+        startReviewMode: (startIdx, count) => {
+            try {
+                const isMeal = !!(state.currentReturnCard && state.currentReturnCard.userInfo && String(state.currentReturnCard.userInfo.purpose||'').includes('특근'));
+                const q = [];
+                for (let i = 0; i < count; i++) {
+                    const idx = startIdx + i;
+                    const it = state.receiptCart[idx];
+                    if (!it || it.processing === 'error') continue;
+                    // 특근매식비는 기본 내역이 자동 입력되므로 검수 큐에서 제외
+                    if (!isMeal && !String(it.usageDetails||'').trim()) q.push(idx);
+                }
+                state.reviewQueue = q;
+                if (state.reviewQueue.length) {
+                    // 첫 항목 자동 오픈 + 내용칸 자동 포커스
+                    setTimeout(() => CardLogic.openOcrPopup(state.receiptCart[state.reviewQueue[0]], state.reviewQueue[0]), 150);
+                }
+            } catch(e) {}
+        },
+        continueReviewIfNeeded: (savedIdx) => {
+            try {
+                if (!state.reviewQueue || !state.reviewQueue.length) return;
+                if (state.reviewQueue[0] !== savedIdx) return;
+                state.reviewQueue.shift();
+                if (state.reviewQueue.length) {
+                    const nextIdx = state.reviewQueue[0];
+                    // 다음 영수증으로 넘어가기 전 짧은 로딩 토스트 표시(사용자 혼동 방지)
+                    try{
+                        if (window.Swal) {
+                            Swal.fire({
+                                title: '다음 영수증 불러오는 중...',
+                                text: '잠시만 기다려 주세요',
+                                showConfirmButton: false,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                backdrop: true,
+                                didOpen: () => { try { Swal.showLoading(); } catch(e){} }
+                            });
+                        }
+                    } catch(e) {}
+                    setTimeout(() => { try{ if(window.Swal) Swal.close(); }catch(e){}; CardLogic.openOcrPopup(state.receiptCart[nextIdx], nextIdx); }, 650);
+                }
+            } catch(e) {}
+        },
+        isReceiptAnalysisFailed: (ocr) => {
+            if (!ocr || ocr.ok === false) return true;
+            const place = String(ocr.storeName || '').trim();
+            const amount = String(ocr.amount || '').trim();
+            return !place && !amount;
+        },
+        showReceiptAnalysisFallback: (isReplacement = false) => {
+            try {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '영수증 인식 실패',
+                    text: isReplacement
+                        ? '영수증 자동 분석에 실패했어요. 직접 입력창에서 내용만 적어 주세요.'
+                        : '영수증 자동 분석에 실패했어요. 직접 입력으로 계속 진행해 주세요.',
+                    confirmButtonColor: '#007aff'
+                });
+            } catch (e) {}
+        },
+        triggerImageSelection: async (editIndex = -1) => {
+            state.pendingEditIndex = editIndex;
+            const input = document.getElementById('receipt-file-input');
+            if (!input) return;
+            if (editIndex > -1) input.removeAttribute('multiple');
+            else input.setAttribute('multiple', '');
+            input.value = '';
+            EmbedBridge.notify('UPLOAD_PICKER_OPEN');
+            if (state._uploadPickerTimer) clearTimeout(state._uploadPickerTimer);
+            state._uploadPickerTimer = setTimeout(() => {
+                EmbedBridge.notify('UPLOAD_PICKER_TIMEOUT');
+            }, 12000);
+            input.click();
+        },
+        displayCardList: () => {
+            elements.cardGrid.innerHTML = '';
+            elements.cardGrid.classList.remove('is-loaded');
+            if (!state.allCardData) return;
+            const sorted = [...state.allCardData].sort((a,b) => {
+                if(a.id.includes('해외'))return 1;
+                if(b.id.includes('해외'))return -1;
+                return parseInt(a.id.replace(/\D/g,'')) - parseInt(b.id.replace(/\D/g,''));
+            });
+            const icon = state.enteredUsers.length > 1 ? 'fa-utensils' : 'fa-credit-card';
+            elements.cardSelectionHeader.innerHTML =
+                `<i class="fa-solid ${icon}"></i>${state.enteredUsers.length>1?' 사용할 카드를 선택해주세요.':' 사용할 카드를 선택해주세요.'}`;
+            const frag = document.createDocumentFragment();
+            sorted.forEach((c, i) => frag.appendChild(CardLogic.createCardButton(c, i)));
+            elements.cardGrid.appendChild(frag);
+            setTimeout(() => elements.cardGrid.classList.add('is-loaded'), 50);
+        },
+        createCardButton: (card, idx) => {
+            const wrap = document.createElement('div');
+            wrap.className = 'card-item-wrapper';
+            wrap.dataset.cardId = card.id;
+            wrap.style.transitionDelay = `${idx * CARD_APPEAR_DELAY_MS}ms`;
+            if (card.status !== '사용가능') wrap.classList.add('disabled');
+            if (card.id.includes('해외')) wrap.classList.add('special-overseas-card');
+            wrap.innerHTML = `
+                <div class="card-grid-btn">
+                    <div class="mini-card-icon"></div>
+                    <span class="card-name">${Utils.esc(card.displayName)}</span>
+                </div>
+                ${card.status==='사용중'?'<span class="status-badge">사용중</span>':(card.status==='반납대기'?'<span class="status-badge">반납대기</span>':'')}
+            `;
+            if (card.status === '사용가능') {
+                wrap.addEventListener('click', () => CardLogic.openMorphOverlay(card));
+            }
+            return wrap;
+        },
+        openMorphOverlay(card) {
+            const cardEl = document.querySelector(`.card-item-wrapper[data-card-id="${card.id}"]`);
+            const overlay = document.getElementById('morph-overlay');
+            if (cardEl && overlay) {
+                const rect = cardEl.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                overlay.style.setProperty('--morph-origin-x', `${centerX}px`);
+                overlay.style.setProperty('--morph-origin-y', `${centerY}px`);
+            }
+            const title = document.getElementById('morph-title');
+            const actions = document.getElementById('morph-actions');
+            const closeBtn = document.getElementById('close-morph-btn');
+            title.textContent = card.displayName;
+            actions.innerHTML = '';
+            const hasStaff = state.enteredUsers.some(user => user.role === '사무직원');
+            const buttons = [
+                { id: '물품구매', icon: 'fa-box', label: '물품구매' },
+                { id: '식사다과', icon: 'fa-utensils', label: '식사다과' },
+                { id: '기타운영', icon: 'fa-ellipsis', label: '기타운영' }
+            ];
+            if (hasStaff) {
+                buttons.push({ id: '특근매식', icon: 'fa-moon', label: '특근매식' });
+            }
+            buttons.forEach(btn => {
+                const b = document.createElement('button');
+                b.className = 'purpose-btn';
+                b.dataset.purpose = btn.id;
+                b.innerHTML = `<i class="fa-solid ${btn.icon}"></i><span>${btn.label}</span>`;
+                b.onclick = () => CardLogic.submitRentRequest(card.id, btn.id);
+                actions.appendChild(b);
+            });
+            closeBtn.onclick = CardLogic.closeMorphOverlay;
+            overlay.classList.add('active');
+        },
+        closeMorphOverlay() {
+            document.getElementById('morph-overlay').classList.remove('active');
+        },
+        async submitRentRequest(id, purpose) {
+            CardLogic.closeMorphOverlay();
+            const names = state.enteredUsers.map(u => u.name).join(', ');
+            const params = { cardNumber: id, userName: names, purpose, userExtensions: state.enteredUsers.map(u => u.extension) };
+            await safeUpdate(
+                (state, cardId) => {
+                    const t = state.allCardData.find(c => c.id === cardId);
+                    if (t) {
+                        t.status = '사용중';
+                        t.userInfo = t.userInfo || {};
+                        t.userInfo.userName = names;
+                        t.userInfo.purpose = purpose;
+                        t.userInfo.receiveDate = Utils.formatDateKR();
+                        t.savedCart = [];
+                    }
+                    UIManager.showConfirmationScreen('신청 완료',
+                        Utils.createDetailRow('카드번호', id)+
+                        Utils.createDetailRow('사용자', names)+
+                        Utils.createDetailRow('사용 목적', purpose)
+                    );
+                    state.pendingPostReturnSync = true;
+                },
+                async () => {
+                    const r = await Api.call('rentNow', params);
+                    if(r?.status==="conflict") throw new Error('ALREADY_IN_USE');
+                    if(r?.status==="defer") await Api.call('queueRentRequest', params);
+                    state.pendingPostReturnSync = true;
+                    CardLogic.scheduleQuickSync(2, 900);
+                },
+                (e) => {
+                    clearInterval(state.countdownInterval);
+                    UIManager.showScreen('main');
+                    Swal.fire(e.message==='ALREADY_IN_USE'?'신청 실패':'서버 오류', e.message==='ALREADY_IN_USE'?'이미 사용중입니다.':'오류가 발생했습니다.', e.message==='ALREADY_IN_USE'?'warning':'error');
+                    CardLogic.displayCardList();
+                },
+                id
+            );
+        },
+        setupAndShowReturnScreen: (card) => {
+            state.currentReturnCard = card;
+            const isMeal = card.userInfo.purpose && card.userInfo.purpose.includes('특근');
+            const form = document.getElementById('return-form-container');
+            const dash = document.getElementById('receipt-dashboard');
+            form.innerHTML = '';
+            if(dash) { dash.classList.remove('hidden'); form.appendChild(dash); }
+            let purposeIcon = 'fa-credit-card';
+            if(isMeal) purposeIcon = 'fa-utensils';
+            else if(card.userInfo.purpose === '물품구매') purposeIcon = 'fa-box';
+            else if(card.userInfo.purpose === '식사다과') purposeIcon = 'fa-mug-hot';
+            else if(card.userInfo.purpose === '기타운영') purposeIcon = 'fa-ellipsis';
+            const purpose = (card.userInfo?.purpose || '').trim();
+            const showBadge = purpose && purpose !== '일반카드사용';
+            const purposeBadgeClass = isMeal ? 'badge-purpose-meal' :
+                (purpose === '물품구매' ? 'badge-purpose-purchase' :
+                (purpose === '식사다과' ? 'badge-purpose-dining' :
+                (purpose === '기타운영' ? 'badge-purpose-ops' : 'badge-purpose-default')));
+            document.getElementById('return-screen-title').innerHTML =
+                `<div class="return-title-stack">
+                    <div class="text-gradient return-card-title">
+                        ${Utils.esc(card.displayName)}
+                    </div>
+                    <div class="return-user-name">
+                        (${Utils.esc(card.userInfo.userName)})
+                    </div>
+                    ${showBadge ? `
+                    <div class="card-header-badge ${purposeBadgeClass}" style="margin-top:0;">
+                        <i class="fa-solid ${purposeIcon}"></i> ${Utils.esc(purpose)}
+                    </div>` : ''}
+                </div>`;
+            state.receiptCart = card.savedCart || [];
+            const add = document.createElement('button');
+            add.id='add-receipt-btn';
+            add.className='simple-btn accent';
+            add.innerHTML='<i class="fa-solid fa-plus"></i> 영수증 추가';
+            add.onclick=()=>CardLogic.triggerImageSelection(-1);
+            const cw = document.createElement('div');
+            cw.className='cart-wrapper';
+            cw.appendChild(Object.assign(document.createElement('div'),{id:'receipt-cart-container'}));
+            // UX 아이디어 3 적용: 제출 가이드 생성
+            const guide = document.createElement('div');
+            guide.id = 'submit-guide';
+            guide.className = 'submit-guide';
+            guide.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> <b>내용(상세 내역)</b>이 비어있는 영수증이 있습니다.';
+            let subEl = null;
+            if (state.isAdminMode) {
+                const sub = document.createElement('button');
+                sub.id='submit-cart-btn';
+                sub.className='simple-btn primary';
+                sub.innerHTML='<i class="fa-solid fa-check"></i> 반납 및 제출';
+                sub.onclick=CardLogic.submitCart;
+                subEl = sub;
+            } else {
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    width:100%; padding:16px 14px; border-radius:18px;
+                    background: rgba(0,122,255,0.08);
+                    box-shadow: inset 3px 3px 7px rgba(163,177,198, 0.7), inset -3px -3px 7px rgba(255,255,255, 0.8);
+                    color: var(--text-secondary); font-weight:800; text-align:center; line-height:1.5;
+                `;
+                msg.innerHTML = `행정실에 방문하여<br><span class="text-gradient">행정실 태블릿</span>에서 <b>[반납 및 제출]</b> 버튼을 눌러주세요.`;
+                subEl = msg;
+            }
+            form.append(add, cw, guide, subEl);
+            const prim = card.userInfo.userName.split(',')[0].trim();
+            if (state.enteredUsers[0].name !== prim) {
+                add.disabled=true; if(subEl && subEl.tagName==='BUTTON') subEl.disabled=true;
+                const m=document.createElement('p');
+                m.innerHTML=`<strong>${prim}</strong> 님만 반납 가능합니다.`;
+                m.style.cssText='color:var(--danger-color);font-weight:600;margin-top:1rem;text-align:center;';
+                form.appendChild(m);
+            }
+            CardLogic.requestRenderReceiptCart();
+            UIManager.showScreen('returnDetails');
+        },
+        renderReceiptCart: () => {
+            const c = document.getElementById('receipt-cart-container');
+            if (!c || !state.currentReturnCard) return;
+            const isPrim = state.enteredUsers[0].name === state.currentReturnCard.userInfo.userName.split(',')[0].trim();
+            const isMeal = state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
+            let tot = 0;
+            c.innerHTML = state.receiptCart.length ? state.receiptCart.map((it, i) => {
+                tot += Number(it.amount||0);
+                const needDetails = (!isMeal) && !(String(it.usageDetails || '').trim());
+                const isProcessing = (it.processing === 'saving' || it.processing === 'analyzing' || it.processing === 'deleting');
+                const isSaved = it.processing === 'saved';
+                const needWarn = needDetails || (it.processing === 'save_error');
+                // 미입력(또는 저장 실패) 내역이 있을 때 경고 표시
+                const cls = (isProcessing ? 'processing' : '') + (isSaved ? ' saved' : '') + (needWarn ? ' needs-details' : '');
+                if(it.processing === 'error') {
+                    return `<div class="cart-item needs-details" data-index="${i}">
+                         <div class="cart-item-icon" style="color:var(--danger-color);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                         <div class="cart-item-info">
+                            <span class="cart-item-place" style="color:var(--danger-color);">분석 실패</span>
+                            <span class="cart-item-details">탭하여 직접 입력해주세요</span>
+                         </div>
+                         <div class="cart-item-amount-box"></div>
+                         <button class="cart-item-delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>`;
+                }
+                return `<div class="cart-item ${cls}" data-index="${i}" ${isProcessing?`data-processing-text="${it.processing==='deleting'?'삭제 중...':(it.processing==='analyzing'?'분석 중...':'저장 중...')}"`:''}>
+                    <div class="cart-item-icon">
+                        ${it.processing==='analyzing'
+                            ? `<div class="mini-scanner"><div class="mini-paper"></div><div class="mini-beam"></div></div>`
+                            : (needWarn ? `<i class="fa-solid fa-triangle-exclamation"></i>` : `<i class="fa-solid ${Utils.getSmartIcon(it.usagePlace, it.usageDetails)}"></i>`)}
+                    </div>
+                    <div class="cart-item-info">
+                        <span class="cart-item-place">${Utils.esc(it.usagePlace)||'상호명 없음'}</span>
+                        <span class="cart-item-details">${it.processing==='save_error' ? '저장 실패 · 탭하여 재시도' : (Utils.esc(it.usageDetails)||'내역 없음')}</span>
+                    </div>
+                    <div class="cart-item-amount-box"><span class="cart-item-amount">${Utils.nfKR.format(Number(it.amount||0))}원</span></div>
+                    ${!isProcessing?`<button class="cart-item-delete"><i class="fa-solid fa-trash"></i></button>`:''}
+                </div>`;
+            }).join('') : `<div class="cart-placeholder"><i class="fa-regular fa-file-lines"></i><span>추가된 영수증이 없습니다.</span></div>`;
+            document.getElementById('receipt-total-display').textContent = `${Utils.nfKR.format(tot)}원`;
+            c.classList.toggle('empty-cart', state.receiptCart.length===0);
+            // UX 아이디어 3 적용: 제출 가이드 보이기/숨기기
+            const guideEl = document.getElementById('submit-guide');
+            if (guideEl) {
+                const hasEmpty = state.receiptCart.some(r => ((!isMeal) && !(String(r.usageDetails || '').trim()) && (!r.processing || r.processing==='save_error')) || (r.processing==='save_error'));
+                if (hasEmpty && state.receiptCart.length > 0) {
+                    guideEl.classList.add('visible');
+                } else {
+                    guideEl.classList.remove('visible');
+                }
+            }
+            const submitBtn = document.getElementById('submit-cart-btn');
+            if (submitBtn) submitBtn.disabled = !(state.receiptCart.length > 0 && isPrim);
+            if (isPrim) {
+                c.querySelectorAll('.cart-item:not(.processing)').forEach(e => e.onclick=()=>CardLogic.openOcrPopup(state.receiptCart[e.dataset.index], e.dataset.index));
+                c.querySelectorAll('.cart-item-delete').forEach(e => {
+                    e.onclick=(ev)=>{ev.stopPropagation();CardLogic.deleteCartItem(e.closest('.cart-item').dataset.index);}
+                });
+            }
+        },
+        saveCartItemOptimistic: async (item, idx) => {
+            // 입력 완료 후, 화면(검수 흐름)은 즉시 다음 영수증으로 넘어가고
+            // 백그라운드에서 조용히 저장합니다. 저장 실패 시 빨간 경고로 표시합니다.
+            Swal.close();
+            const ghost = { ...item, processing: 'saving' };
+            let targetIdx = idx;
+            if (idx > -1) {
+                state.receiptCart[idx] = ghost;
+            } else {
+                state.receiptCart.push(ghost);
+                targetIdx = state.receiptCart.length - 1;
+            }
+            CardLogic.requestRenderReceiptCart();
+            // UX: 저장을 기다리지 않고 바로 다음 입력으로 진행
+            CardLogic.continueReviewIfNeeded(idx);
+            // 백그라운드 저장
+            CardLogic.queueSaveCart(null).then(() => {
+                // queueSaveCart 내부에서 'saving' 표시는 일괄 제거되지만,
+                // 토큰 경쟁 상황을 대비해 여기서도 안전 처리
+                const it = state.receiptCart[targetIdx];
+                if (it && it.processing === 'saving') {
+                    it.processing = 'saved';
+                    CardLogic.requestRenderReceiptCart();
+                    setTimeout(() => {
+                        const cur = state.receiptCart[targetIdx];
+                        if (cur && cur.processing === 'saved') {
+                            delete cur.processing;
+                            CardLogic.requestRenderReceiptCart();
+                        }
+                    }, 850);
+                }
+            }).catch((e) => {
+                // 저장 실패 표시 (사용자가 탭해서 재시도/수정 가능)
+                const it = state.receiptCart[targetIdx];
+                if (it) it.processing = 'save_error';
+                CardLogic.requestRenderReceiptCart();
+                try {
+                    Swal.fire({toast:true, position:'top', icon:'error', title:'저장 실패 · 네트워크 확인 후 다시 시도해주세요', showConfirmButton:false, timer:2500});
+                } catch(_) {}
+                console.error(e);
+            });
+        },
+        deleteCartItem: (idx) => {
+            Swal.fire({title:'삭제 확인',text:"삭제하시겠습니까?",icon:'warning',showCancelButton:true,confirmButtonText:'삭제',cancelButtonText:'취소',confirmButtonColor:'#d33'})
+                .then(r => {
+                    if (r.isConfirmed) {
+                        const org = [...state.receiptCart];
+                        state.receiptCart[idx] = { ...state.receiptCart[idx], processing: 'deleting' };
+                        CardLogic.requestRenderReceiptCart();
+                        const next = [...state.receiptCart];
+                        next.splice(idx, 1);
+                        state.receiptCart = next;
+                        CardLogic.requestRenderReceiptCart();
+                        CardLogic.queueSaveCart(org).catch(e => {
+                            state.receiptCart = org;
+                            CardLogic.requestRenderReceiptCart();
+                            UIManager.handleServerError(e);
+                        });
+                    }
+                });
+        },
+        async handleReceiptFiles(fileList) {
+            if (!fileList || !fileList.length || !state.currentReturnCard) return;
+            EmbedBridge.notify('UPLOAD_START');
+            const editIndex = state.pendingEditIndex;
+            state.pendingEditIndex = -1;
+            const files = Array.from(fileList);
+            try { if (state._uploadPickerTimer) clearTimeout(state._uploadPickerTimer); } catch(e) {}
+            const addBtn = document.getElementById('add-receipt-btn');
+            const subBtn = document.getElementById('submit-cart-btn');
+            if (addBtn) addBtn.disabled = true;
+            if (subBtn) subBtn.disabled = true;
+            try {
+                if (editIndex > -1) {
+                    UIManager.setLoading(true, '영수증 교체 분석 중...', 'receipt');
+                    const file = files[0];
+                    const b64 = await CardLogic.resizeAndOptimizeImage(file);
+                    const ocr = await Api.call('processReceiptImage', b64);
+                    const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
+                    let amt = (ocr.amount || '').toString();
+                    if (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근')) {
+                        amt = String(Utils.clampMealAmount(amt, state.currentReturnCard.userInfo.userName.split(',').length));
+                    }
+                    UIManager.setLoading(false);
+                    if (analysisFailed) {
+                        CardLogic.showReceiptAnalysisFallback(true);
+                    }
+                    await CardLogic.openOcrPopup({
+                        receiptImage: b64,
+                        usagePlace: analysisFailed ? '' : (ocr.storeName || ''),
+                        usageDetails: (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근') ? '특근매식비' : ''),
+                        amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
+                        date: analysisFailed ? '' : (ocr.date || '')
+                    }, editIndex);
+                    return;
+                }
+                UIManager.setLoading(true, `${files.length}장의 영수증을 분석 중...`, 'receipt');
+                const startIdx = state.receiptCart.length;
+                const newItems = files.map(() => ({
+                    receiptImage: '', usagePlace: '분석 중...', usageDetails: '', amount: '', date: '', processing: 'analyzing'
+                }));
+                state.receiptCart.push(...newItems);
+                CardLogic.requestRenderReceiptCart();
+                const processPromises = files.map(async (file, i) => {
+                    const actualIdx = startIdx + i;
+                    try {
+                        const b64 = await CardLogic.resizeAndOptimizeImage(file);
+                        state.receiptCart[actualIdx].receiptImage = b64;
+                        CardLogic.requestRenderReceiptCart();
+                        const ocr = await Api.call('processReceiptImage', b64);
+                        const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
+                        let amt = (ocr.amount || '').toString();
+                        if (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근')) {
+                            amt = String(Utils.clampMealAmount(amt, state.currentReturnCard.userInfo.userName.split(',').length));
+                        }
+                        state.receiptCart[actualIdx] = {
+                            receiptImage: b64,
+                            usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || ''),
+                            usageDetails: (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근') ? '특근매식비' : ''),
+                            amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
+                            date: analysisFailed ? '' : (ocr.date || ''),
+                            processing: 'pending-save',
+                            needsManualReview: analysisFailed
+                        };
+                    } catch (err) {
+                        state.receiptCart[actualIdx].processing = 'error';
+                        state.receiptCart[actualIdx].usagePlace = '분석 실패';
+                    }
+                    CardLogic.requestRenderReceiptCart();
+                });
+                await Promise.all(processPromises);
+                const manualReviewCount = state.receiptCart.slice(startIdx, startIdx + files.length).filter(item => item && item.needsManualReview).length;
+                UIManager.setLoading(true, '분석 완료! 저장 중...', 'receipt');
+                const itemsToSave = state.receiptCart.filter(item => item.processing !== 'error');
+                state.receiptCart.forEach(item => {
+                    if (item && item.processing && item.processing !== 'error') delete item.processing;
+                    if (item && item.needsManualReview) delete item.needsManualReview;
+                });
+                await Api.call('saveCartToMasterFile', { cardId: state.currentReturnCard.id, cartData: itemsToSave });
+                UIManager.setLoading(false);
+                if (manualReviewCount > 0) {
+                    CardLogic.showReceiptAnalysisFallback(false);
+                }
+                CardLogic.requestRenderReceiptCart();
+                // OCR 완료 후 자동 검수 모드(첫 항목 자동 오픈)
+                CardLogic.startReviewMode(startIdx, files.length);
+            } catch (e) {
+                UIManager.handleServerError(e);
+            } finally {
+                try { document.getElementById('receipt-file-input').value = ''; } catch (e) {}
+                if (addBtn) addBtn.disabled = false;
+                if (subBtn) subBtn.disabled = false;
+                CardLogic.requestRenderReceiptCart();
+            }
+            EmbedBridge.notify('UPLOAD_END');
+        },
+        resizeAndOptimizeImage: (file) => new Promise((res, rej) => {
+            const r = new FileReader();
+            r.onload = e => {
+                const i = new Image();
+                i.onload = () => {
+                    const MAX = 1200;
+                    let w=i.width, h=i.height;
+                    if (w>h){ if(w>MAX){h*=MAX/w;w=MAX;} }
+                    else { if(h>MAX){w*=MAX/h;h=MAX;} }
+                    const c = document.createElement('canvas');
+                    c.width=w; c.height=h;
+                    c.getContext('2d').drawImage(i,0,0,w,h);
+                    c.toBlob(b => {
+                        if(!b) return rej(new Error('이미지 변환 실패'));
+                        const fr=new FileReader();
+                        fr.onload=()=>res(fr.result);
+                        fr.onerror=rej;
+                        fr.readAsDataURL(b);
+                    }, 'image/jpeg', 0.78);
+                };
+                i.onerror=rej;
+                i.src=e.target.result;
+            };
+            r.onerror=rej;
+            r.readAsDataURL(file);
+        }),
+        async openOcrPopup(data = {}, editIndex = -1) {
+            const isMeal = state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
+            const html = `
+                <div class="swal-custom-container">
+                    <div id="swal-image-container">
+                        <img id="swal-image" src="${data.receiptImage||''}" style="${!data.receiptImage?'display:none;':''}" alt="영수증">
+                        <div id="swal-image-instruction">${!data.receiptImage?'이미지 추가 필요':'(이미지 교체)'}</div>
+                    </div>
+                    <div class="swal-input-wrapper-new"><div class="swal-input-group-new">
+                        <input id="swal-store" class="swal2-input-new" placeholder=" " value="${Utils.esc(data.usagePlace)}" enterkeyhint="next" autocomplete="off">
+                        <label class="swal-input-label-new"><i class="fa-solid fa-store"></i> 상호명</label>
+                    </div></div>
+                    <div class="swal-input-wrapper-new"><div class="swal-input-group-new">
+                        <input id="swal-amount" data-field="amount" class="swal2-input-new" inputmode="decimal" placeholder=" " value="${data.amount?Utils.nfKR.format(Number(data.amount)):''}" enterkeyhint="next" autocomplete="off">
+                        <label class="swal-input-label-new"><i class="fa-solid fa-won-sign"></i> 금액</label>
+                    </div></div>
+                    <div class="swal-input-wrapper-new"><div class="swal-input-group-new">
+                        <input id="swal-details" data-field="details" class="swal2-input-new highlight-placeholder" placeholder=" " value="${Utils.esc(data.usageDetails||(isMeal?'특근매식비':''))}" ${isMeal?'readonly':''} enterkeyhint="done" autocomplete="off">
+                        <label class="swal-input-label-new"><i class="fa-solid fa-pencil"></i> 내용</label>
+                    </div></div>
+                </div>`;
+            await Swal.fire({
+                title: '영수증 정보', html, showCancelButton: true,
+                confirmButtonText: editIndex > -1 ? '저장' : '추가', cancelButtonText: '취소',
+                focusConfirm: false, focusCancel: false, allowOutsideClick: false, returnFocus: false,
+                didOpen: () => {
+                    const _prevOverflow = document.body.style.overflow;
+                    document.body.dataset.prevOverflow = _prevOverflow || '';
+                    document.body.style.overflow = 'auto';
+                    const popup = Swal.getPopup();
+                    const vv = window.visualViewport;
+                    let vvHandler = null;
+                    if (isMobile && popup && vv) {
+                        vvHandler = () => {
+                            const kb = Math.max(0, (window.innerHeight - vv.height - vv.offsetTop));
+                            popup.style.paddingBottom = (kb + 16) + 'px';
+                        };
+                        vv.addEventListener('resize', vvHandler);
+                        vv.addEventListener('scroll', vvHandler);
+                        window.__vvHandlerForSwal = vvHandler;
+                        vvHandler();
+                    }
+                    const [store, amount, details] = ['swal-store', 'swal-amount', 'swal-details'].map(id => document.getElementById(id));
+                    document.getElementById('swal-image-container').onclick = () => {
+                        Swal.close(); setTimeout(() => CardLogic.triggerImageSelection(editIndex), 0);
+                    };
+                    amount.oninput = (e) => {
+                        const v = e.target.value.replace(/[^\d]/g, '');
+                        e.target.value = v ? Utils.nfKR.format(parseInt(v)) : '';
+                    };
+                    const handleEnter = (e, nextElem) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault(); e.stopPropagation();
+                            if (nextElem) nextElem.focus();
+                            else Swal.getConfirmButton().click();
+                        }
+                    };
+                    store.onkeydown = e => handleEnter(e, amount);
+                    amount.onkeydown = e => handleEnter(e, details);
+                    details.onkeydown = e => handleEnter(e, null);
+                    if (isMobile) {
+                        const focusHandler = (e) => {
+                            setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
+                        };
+                        store.addEventListener('focus', focusHandler);
+                        amount.addEventListener('focus', focusHandler);
+                        details.addEventListener('focus', focusHandler);
+                    } else {
+                        setTimeout(() => store.focus(), 100);
+                    }
+                    // UX 아이디어 5 적용: 팝업 시 내용 필드 자동 포커스
+                    if (!isMeal) {
+                        setTimeout(() => {
+                            const detailsInput = document.getElementById('swal-details');
+                            if (detailsInput) {
+                                detailsInput.focus();
+                                const len = detailsInput.value.length;
+                                detailsInput.setSelectionRange(len, len);
+                            }
+                        }, 400);
+                    }
+                },
+                didClose: () => {
+                    try {
+                        const prev = document.body.dataset.prevOverflow ?? '';
+                        document.body.style.overflow = prev;
+                        delete document.body.dataset.prevOverflow;
+                    } catch(e) {}
+                    try {
+                        const vv = window.visualViewport;
+                        if (vv && window.__vvHandlerForSwal) {
+                            vv.removeEventListener('resize', window.__vvHandlerForSwal);
+                            vv.removeEventListener('scroll', window.__vvHandlerForSwal);
+                            delete window.__vvHandlerForSwal;
+                        }
+                    } catch(e) {}
+                },
+                preConfirm: () => {
+                    const [store, amtStr, details] = ['swal-store', 'swal-amount', 'swal-details'].map(id => document.getElementById(id).value);
+                    if (!store || !amtStr || !details) return Swal.showValidationMessage('모든 항목을 입력하세요.');
+                    let amount = amtStr.replace(/[^\d]/g, "");
+                    if (isMeal) amount = String(Utils.clampMealAmount(amount, state.currentReturnCard.userInfo.userName.split(',').length));
+                    return { usagePlace: store, usageDetails: details, amount, receiptImage: data.receiptImage, date: data.date||'' };
+                }
+            }).then(res => {
+                if (res.isConfirmed && res.value) CardLogic.saveCartItemOptimistic(res.value, editIndex);
+            });
+        },
+        scheduleQuickSync: (attempts = 3, intervalMs = 1200) => {
+            // 짧은 기간만 서버 최신화 재시도(무한 폴링 방지)
+            if (!attempts || attempts <= 0) return;
+            let n = 0;
+            const tick = async () => {
+                n++;
+                try {
+                    state.pendingPostReturnSync = true;
+                    await CardLogic.handlePendingPostReturnSync();
+                } catch(e) {}
+                if (n >= attempts) return;
+                setTimeout(tick, intervalMs);
+            };
+            setTimeout(tick, intervalMs);
+        },
+        handlePendingPostReturnSync: async () => {
+            const reqId = ++state.syncReqId;
+            if (!state.pendingPostReturnSync) return;
+            state.pendingPostReturnSync = false;
+            try {
+                const data = await Api.call('getInitialAppData');
+                if (data && !data.error) {
+                    state.allCardData = data.allCards;
+                    state.allUsersData = data.allUsers;
+                    state.lastSyncTs = Date.now();
+                    const inUseIds = state.allCardData.filter(c => c.status === '사용중').map(c => c.id);
+                    if (inUseIds.length) {
+                        const carts = await Api.call('getSavedCarts', inUseIds);
+                        state.allCardData.forEach(c => c.savedCart = carts[c.id] || []);
+                        state.lastSyncTs = Date.now();
+                    }
+                }
+            } catch(e) {}
+        },
+        async submitCart() {
+            if (!state.isAdminMode) {
+                await Swal.fire('제출 불가', '행정실 태블릿(관리자 모드)에서만 제출할 수 있습니다.', 'warning');
+                return;
+            }
+            const isMeal = state.currentReturnCard && state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
+            if (!isMeal && state.receiptCart && state.receiptCart.length) {
+                const missing = state.receiptCart
+                    .map((it, idx) => ({ it, idx }))
+                    .filter(x => !(String(x.it.usageDetails || '').trim()));
+                if (missing.length) {
+                    const ok = await Swal.fire({
+                        title: '입력 확인',
+                        html: `<b>${missing.length}건</b>의 영수증에 <b>사용내역(내용)</b>이 비어 있습니다.<br>그래도 제출할까요?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '그대로 제출',
+                        cancelButtonText: '입력하러 가기'
+                    });
+                    if (!ok.isConfirmed) {
+                        const first = missing[0]?.idx;
+                        setTimeout(() => {
+                            const el = document.querySelector(`.cart-item[data-index="${first}"]`);
+                            if (el) {
+                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                el.classList.add('highlight');
+                                setTimeout(() => el.classList.remove('highlight'), 1500);
+                            }
+                        }, 50);
+                        return;
+                    }
+                }
+            }
+            if (!state.receiptCart.length) {
+                const ok = await Swal.fire({title:'영수증 없음',text:'진행하시겠습니까?',icon:'warning',showCancelButton:true});
+                if (!ok.isConfirmed) return;
+            }
+            const btn = document.getElementById('submit-cart-btn');
+            if(btn) { btn.disabled = true; btn.classList.add('is-loading'); }
+            const params = {
+                adminPin: state.isAdminMode ? (state.adminPinCache || '') : '',
+                cardNumber: state.currentReturnCard.id,
+                receiveDate: state.currentReturnCard.userInfo.receiveDate,
+                userName: state.enteredUsers.map(u=>u.name).join(', '),
+                multiEntries: JSON.stringify(state.receiptCart)
+            };
+            await safeUpdate(
+                (state, cardId) => {
+                    const t = state.allCardData.find(c => c.id === cardId);
+                    if (t) {
+                        // 반납 요청 직후: 다른 사용자가 신청하지 못하도록 '반납대기'로 표시
+                        t.status = '반납대기';
+                    }
+                    UIManager.showConfirmationScreen('반납 요청 완료',
+                    Utils.createDetailRow('카드번호', params.cardNumber) +
+                    Utils.createDetailRow('처리 상태', `${state.receiptCart.length}건 반납`)
+                );
+                    state.forceSyncOnNextUnlock = true;
+                },
+                async () => {
+                    await Api.call('queueReturnRequest', params);
+                    state.pendingPostReturnSync = true;
+                    CardLogic.scheduleQuickSync(3, 1200);
+                },
+                (e) => {
+                    clearInterval(state.countdownInterval);
+                    if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); }
+                    Swal.fire('실패', '다시 시도해주세요.', 'error').then(UIManager.showLockScreen);
+                },
+                params.cardNumber
+            );
+        }
+    };
+    async function initializeAppSequence() {
+        const reqId = ++state.syncReqId;
+        elements.welcomeScreen.classList.remove('hidden');
+        elements.welcomeScreen.classList.add('is-visible');
+        UIManager.currentScreenElement = elements.welcomeScreen;
+        state.currentScreen = 'welcome';
+        elements.contentWrapper.style.display = 'flex';
+        await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+        requestAnimationFrame(() => elements.lockScreen.classList.add('fade-out'));
+        const hideLockAfterFade = () => {
+            const onEnd = (ev) => {
+                if (ev.propertyName !== 'opacity') return;
+                elements.lockScreen.removeEventListener('transitionend', onEnd);
+                try { elements.lockScreen.style.display = 'none'; } catch(e) {}
+            };
+            elements.lockScreen.addEventListener('transitionend', onEnd);
+        };
+        hideLockAfterFade();
+        let isDataLoaded = false;
+        const dataPromise = Api.call('getInitialAppData')
+            .then(r => { isDataLoaded = true; return r; })
+            .catch(e => { isDataLoaded = true; throw e; });
+        await UIManager.runRandomLoader(() => isDataLoaded);
+        elements.welcomeScreen.classList.remove('is-visible');
+        elements.welcomeScreen.classList.add('is-hiding');
+        setTimeout(() => {
+            elements.welcomeScreen.classList.add('hidden');
+            elements.welcomeScreen.classList.remove('is-hiding');
+            elements.lockScreen.classList.add('hidden');
+        }, 400);
+        try {
+            const data = await dataPromise;
+            if (!data || data.error) throw new Error(data?.error || 'No Data');
+            if (reqId !== state.syncReqId) return;
+            state.allCardData = data.allCards;
+            state.allUsersData = data.allUsers;
+            state.lastSyncTs = Date.now();
+            const inUseIds = state.allCardData.filter(c => c.status === '사용중').map(c => c.id);
+            if (inUseIds.length) {
+                Api.call('getSavedCarts', inUseIds)
+                    .then(map => state.allCardData.forEach(c => c.savedCart = map[c.id] || []))
+                    .catch(console.error);
+            }
+            UIManager.showScreen('login');
+        } catch (e) {
+            state.allCardData = [];
+            state.allUsersData = [];
+            UIManager.showScreen('login');
+        }
+        UIManager.startInactivityDetection();
+    }
+    async function handleLockScreenClick() {
+        if (state.isAppActive && state.currentScreen !== 'lock') return;
+        state.isAppActive = true;
+        state.cardTiltActive = false;
+        elements.lockScreen.classList.add('active-pop');
+        document.getElementById('lock-text-instruction').classList.add('hide');
+        const hasData = Array.isArray(state.allCardData) && state.allCardData.length &&
+                        Array.isArray(state.allUsersData) && state.allUsersData.length;
+        const stale = !state.lastSyncTs || (Date.now() - state.lastSyncTs > 5000);
+        const needSync = stale || state.forceSyncOnNextUnlock || state.pendingPostReturnSync;
+        if (hasData && needSync && !state.syncInFlight) {
+            state.forceSyncOnNextUnlock = false;
+            state.pendingPostReturnSync = true;
+            state.syncInFlight = true;
+            state.syncPromise = (async () => {
+                try { await CardLogic.handlePendingPostReturnSync(); }
+                finally { state.syncInFlight = false; }
+            })();
+        }
+        if (hasData) {
+            elements.contentWrapper.style.display = 'flex';
+            document.body.style.pointerEvents = 'auto';
+            document.body.style.overflow = 'auto';
+            elements.welcomeScreen.classList.remove('hidden');
+            elements.welcomeScreen.classList.add('is-visible');
+            if (elements.loaderBar) elements.loaderBar.style.width = '0%';
+            if (elements.loaderText) elements.loaderText.textContent = '학교 서버와 동기화 중...';
+            requestAnimationFrame(() => {
+                elements.lockScreen.classList.add('fade-out');
+                requestAnimationFrame(() => {
+                    try { elements.lockScreen.style.display = 'none'; } catch(e) {}
+                    elements.lockScreen.classList.add('hidden');
+                });
+            });
+            await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+            const t0 = Date.now();
+            await UIManager.runRandomLoader(() => (Date.now() - t0) > 1000);
+            elements.welcomeScreen.classList.remove('is-visible');
+            elements.welcomeScreen.classList.add('is-hiding');
+            setTimeout(() => {
+                try { elements.welcomeScreen.classList.add('hidden'); } catch(e) {}
+                try { elements.welcomeScreen.classList.remove('is-hiding'); } catch(e) {}
+            }, 300);
+            UIManager.showScreenImmediate('login');
+            UIManager.startInactivityDetection();
+            return;
+        }
+        requestAnimationFrame(() => { setTimeout(() => initializeAppSequence(), 0); });
+    }
+    function setupEventListeners() {
+        elements.screens = {
+            login: document.getElementById('screen-login'),
+            main: document.getElementById('screen-main'),
+            returnDetails: document.getElementById('screen-return-details'),
+            confirmation: document.getElementById('screen-confirmation')
+        };
+        elements.btnBack = document.getElementById('btn-back');
+        elements.welcomeScreen = document.getElementById('welcome-screen');
+        elements.skeletonScreen = document.getElementById('screen-login-skeleton');
+        elements.mainTitle = document.getElementById('main-title-container');
+        let adminTapCount = 0;
+        let adminTapTimer = null;
+        const ADMIN_PIN = '9100'; // 행정실 PIN
+        function resetAdminTap(){
+            adminTapCount = 0;
+            if (adminTapTimer) clearTimeout(adminTapTimer);
+            adminTapTimer = null;
+        }
+        if (elements.mainTitle) {
+            elements.mainTitle.addEventListener('click', async () => {
+                adminTapCount++;
+                if (!adminTapTimer) adminTapTimer = setTimeout(resetAdminTap, 1500);
+                if (adminTapCount >= 5) {
+                    resetAdminTap();
+                    if (state.isAdminMode) {
+                        const r = await Swal.fire({
+                            title: '관리자 모드',
+                            text: '관리자 모드를 해제(잠금)할까요?',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: '해제',
+                            cancelButtonText: '유지'
+                        });
+                        if (r.isConfirmed) setAdminMode(false);
+                        return;
+                    }
+                    const res = await Swal.fire({
+                        title: '행정실 PIN 입력',
+                        input: 'password',
+                        inputAttributes: { autocapitalize: 'off', inputmode: 'numeric' },
+                        confirmButtonText: '확인',
+                        showCancelButton: true,
+                        cancelButtonText: '취소',
+                    });
+                    if (res.isConfirmed) {
+                        const pin = String(res.value || '').trim();
+                        if (pin === ADMIN_PIN) setAdminMode(true, pin);
+                        else Swal.fire('실패', 'PIN이 올바르지 않습니다.', 'error');
+                    }
+                }
+            });
+        }
+        elements.lockScreen = document.getElementById('lock-screen');
+        elements.glassCardContainer = document.getElementById('glass-card-container');
+        elements.contentWrapper = document.querySelector('.content-wrapper');
+        elements.loaderBar = document.getElementById('loader-bar');
+        elements.loaderText = document.getElementById('loader-text');
+        elements.keypadContainer = document.getElementById('keypadContainer');
+        elements.keypadDisplay = document.getElementById('keypadDisplay');
+        elements.keypadSubmitBtn = document.getElementById('keypad-submit-btn');
+        elements.loginInstruction = document.getElementById('login-instruction');
+        elements.loginUserTags = document.getElementById('login-user-tags');
+        elements.cardGrid = document.getElementById('cardGrid');
+        elements.cardSelectionHeader = document.getElementById('card-selection-header');
+        elements.glassCardContainer.addEventListener('click', handleLockScreenClick);
+        elements.btnBack.addEventListener('click', UIManager.resetToLogin);
+        const fileInput = document.getElementById('receipt-file-input');
+        if (fileInput) {
+            fileInput.addEventListener('change', e => {
+                if (e.target.files && e.target.files.length) { CardLogic.handleReceiptFiles(e.target.files); }
+            });
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                if (Swal.isVisible()) { Swal.close(); return; }
+                const overlay = document.getElementById('morph-overlay');
+                if (overlay && overlay.classList.contains('active')) { e.preventDefault(); CardLogic.closeMorphOverlay(); return; }
+                switch(state.currentScreen) {
+                    case 'returnDetails': UIManager.showScreen('main'); break;
+                    case 'main': UIManager.resetToLogin(); break;
+                    case 'login': UIManager.showLockScreen(); break;
+                }
+                return;
+            }
+            if (Swal.isVisible() || state.currentScreen !== 'login') return;
+            if (e.key >= '0' && e.key <= '9') KeypadLogic.processKeyInput(e.key);
+            else if (e.key === 'Enter') { e.preventDefault(); if (!elements.keypadSubmitBtn.disabled) KeypadLogic.processLogin(); }
+            else if (e.key === '+') { e.preventDefault(); KeypadLogic.handleAddUser(); }
+            else if (e.key === 'Backspace') { e.preventDefault(); KeypadLogic.processBackspace(); }
+        });
+        window.addEventListener('beforeunload', (e) => {
+            if (state.receiptCart.length > 0 || state.syncInFlight) { e.preventDefault();  return ''; }
+        });
+        const cont = elements.glassCardContainer;
+        const card = document.getElementById('glass-card');
+        if(cont && card) {
+            let rect;
+            const cache = () => rect = cont.getBoundingClientRect();
+            window.addEventListener('resize', cache);
+            cont.addEventListener('pointerenter', cache);
+            const onMove = e => {
+                if (!state.cardTiltActive || !rect || state.currentScreen !== 'lock') return;
+                const cx = e.touches ? e.touches[0].clientX : e.clientX;
+                const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                card.style.transform = `rotateX(${((cy-rect.top)/rect.height-.5)*-10}deg) rotateY(${((cx-rect.left)/rect.width-.5)*10}deg)`;
+            };
+            document.body.addEventListener('mousemove', onMove);
+            document.body.addEventListener('touchmove', onMove);
+            cont.addEventListener('pointerleave', () => { if(state.cardTiltActive) card.style.transform = 'rotateX(0) rotateY(0)'; });
+            cache();
+        }
+    }
+    UIManager.showConfirmationScreen = (title, detailsHtml) => {
+        Utils.celebrate();
+        document.getElementById('confirmation-title').textContent = title;
+        document.getElementById('confirmation-details').innerHTML = detailsHtml;
+        UIManager.showScreen('confirmation');
+        clearTransitionTimers();
+        let sec = 3;
+        const cd = document.getElementById('confirmation-countdown');
+        cd.textContent = `${sec}초 후 복귀`;
+        state.countdownInterval = setInterval(() => {
+            sec--;
+            if (sec > 0) { cd.textContent = `${sec}초 후 복귀`; }
+            else {
+                clearInterval(state.countdownInterval);
+                state.countdownInterval = null;
+                cd.textContent = "복귀 중...";
+                state.confirmLeaveTimeout1 = setTimeout(() => {
+                    document.getElementById('screen-confirmation').classList.add('is-hiding');
+                    state.confirmLeaveTimeout2 = setTimeout(() => { state.forceSyncOnNextUnlock = true; UIManager.showLockScreen(); }, 400);
+                }, 500);
+            }
+        }, 1000);
+    };
+    return {
+        init: () => {
+            setupEventListeners();
+            KeypadLogic.initializeKeypad();
+        }
+    };
+})();
+document.addEventListener('DOMContentLoaded', () => {
+    try { CardApp.init(); }
+    catch (e) { Swal.fire('Error', 'Init Fail: ' + e.message, 'error'); }
+});
+</script>
+</body> </html>
