@@ -1521,7 +1521,9 @@ const CardApp = (function() {
                     state.allCardData = data.allCards;
                     state.allUsersData = data.allUsers;
                     state.lastSyncTs = Date.now();
-                    const inUseIds = state.allCardData.filter(c => c.status === '사용중').map(c => c.id);
+                    const inUseIds = state.allCardData
+                        .filter(c => c.status === '사용중' || c.status === '반납처리중')
+                        .map(c => c.id);
                     if (inUseIds.length) {
                         const carts = await Api.call('getSavedCarts', inUseIds);
                         state.allCardData.forEach(c => c.savedCart = carts[c.id] || []);
@@ -1640,7 +1642,9 @@ const CardApp = (function() {
             state.allCardData = data.allCards;
             state.allUsersData = data.allUsers;
             state.lastSyncTs = Date.now();
-            const inUseIds = state.allCardData.filter(c => c.status === '사용중').map(c => c.id);
+            const inUseIds = state.allCardData
+                .filter(c => c.status === '사용중' || c.status === '반납처리중')
+                .map(c => c.id);
             if (inUseIds.length) {
                 Api.call('getSavedCarts', inUseIds)
                     .then(map => state.allCardData.forEach(c => c.savedCart = map[c.id] || []))
