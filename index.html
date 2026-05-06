@@ -474,31 +474,56 @@ const CardApp = (function() {
             const step2El = document.getElementById('loader-step-2');
 
             const wait = (ms) => new Promise(r => setTimeout(r, ms));
-            const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
             let currentStep = 1;
+            let currentPercent = 0;
+
+            const stepVisuals = {
+                1: {
+                    bar: 'linear-gradient(90deg,#3b82f6 0%,#2563eb 100%)',
+                    percent: 'linear-gradient(135deg,#2563eb 0%,#3b82f6 100%)'
+                },
+                2: {
+                    bar: 'linear-gradient(90deg,#3b82f6 0%,#6366f1 58%,#7c3aed 100%)',
+                    percent: 'linear-gradient(135deg,#2563eb 0%,#7c3aed 100%)'
+                },
+                3: {
+                    bar: 'linear-gradient(90deg,#10b981 0%,#2563eb 100%)',
+                    percent: 'linear-gradient(135deg,#10b981 0%,#2563eb 100%)'
+                }
+            };
 
             const setStep = (step) => {
                 currentStep = step;
-                if (!step1El || !step2El) return;
+                if (step1El && step2El) {
+                    step1El.classList.remove('active', 'done');
+                    step2El.classList.remove('active', 'done');
 
-                step1El.classList.remove('active', 'done');
-                step2El.classList.remove('active', 'done');
+                    if (step === 1) {
+                        step1El.classList.add('active');
+                    } else if (step === 2) {
+                        step1El.classList.add('done');
+                        step2El.classList.add('active');
+                    } else {
+                        step1El.classList.add('done');
+                        step2El.classList.add('done');
+                    }
+                }
 
-                if (step === 1) {
-                    step1El.classList.add('active');
-                } else if (step === 2) {
-                    step1El.classList.add('done');
-                    step2El.classList.add('active');
-                } else {
-                    step1El.classList.add('done');
-                    step2El.classList.add('done');
+                const visual = stepVisuals[step] || stepVisuals[1];
+                if (elements.loaderBar) elements.loaderBar.style.background = visual.bar;
+                if (percentEl) {
+                    percentEl.style.background = visual.percent;
+                    percentEl.style.webkitBackgroundClip = 'text';
+                    percentEl.style.webkitTextFillColor = 'transparent';
+                    percentEl.style.backgroundClip = 'text';
                 }
             };
 
             const updateUI = (percent, text) => {
-                if (elements.loaderBar) elements.loaderBar.style.width = `${percent}%`;
-                if (percentEl) percentEl.textContent = `${Math.round(percent)}%`;
+                const safePercent = Math.max(0, Math.min(100, percent));
+                if (elements.loaderBar) elements.loaderBar.style.width = `${safePercent}%`;
+                if (percentEl) percentEl.textContent = `${Math.round(safePercent)}%`;
 
                 if (currentStep === 1) {
                     if (titleMain) titleMain.textContent = '시스템 연결 중';
@@ -514,51 +539,37 @@ const CardApp = (function() {
                 if (elements.loaderText) elements.loaderText.textContent = text;
             };
 
-            const transitionFor = (durationMs, easing = 'ease-out') => {
-                if (elements.loaderBar) elements.loaderBar.style.transition = `width ${durationMs}ms ${easing}`;
-            };
-
-            const moveTo = async (target, durationMs, text, easing = 'ease-out') => {
-                transitionFor(durationMs, easing);
-                updateUI(target, text);
-                await wait(durationMs);
-            };
-
-            // 4번의 게이지 상승, 하지만 상태는 2단계만 유지
-            // 1단계: 0 -> 랜덤(12~24) -> 45
-            // 2단계: 45 -> 랜덤(58~74) -> 90
-            const firstMid = rand(12, 24);
-            const secondMid = rand(58, 74);
+            if (elements.loaderBar) {
+                elements.loaderBar.style.transition = 'width 140ms linear, background 240ms ease';
+            }
+            if (percentEl) {
+                percentEl.style.transition = 'background 240ms ease';
+            }
 
             setStep(1);
             updateUI(0, step1Text);
 
-            await moveTo(firstMid, 240, step1Text, 'ease-out');
-            await wait(140);
-
-            await moveTo(45, 320, step1Text, 'ease-in-out');
-            await wait(220);
-
-            setStep(2);
-
-            await moveTo(secondMid, 260, step2Text, 'ease-out');
-            await wait(140);
-
-            await moveTo(90, 320, step2Text, 'ease-in-out');
-
-            let holdingPercent = 90;
+            const startTs = Date.now();
             while (!(chk && chk())) {
-                // 90%에서 멈춰 보이지 않도록 97%까지 아주 천천히 전진
-                if (holdingPercent < 97) {
-                    holdingPercent += holdingPercent < 94 ? 1.2 : 0.5;
+                const elapsed = Date.now() - startTs;
+
+                if (elapsed < 900) {
+                    setStep(1);
+                    const increment = currentPercent < 20 ? 4.2 : (currentPercent < 35 ? 3.2 : 2.2);
+                    currentPercent = Math.min(45, currentPercent + increment);
+                    updateUI(currentPercent, step1Text);
+                } else {
+                    setStep(2);
+                    const increment = currentPercent < 72 ? 1.9 : (currentPercent < 88 ? 1.1 : 0.42);
+                    currentPercent = Math.min(97, currentPercent + increment);
+                    updateUI(currentPercent, step2Text);
                 }
-                transitionFor(180, 'linear');
-                updateUI(Math.min(97, holdingPercent), step2Text);
-                await wait(180);
+
+                await wait(120);
             }
 
             setStep(3);
-            await moveTo(100, 140, doneText, 'ease-out');
+            updateUI(100, doneText);
             await wait(180);
         }
     };
