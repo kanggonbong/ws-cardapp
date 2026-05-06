@@ -546,14 +546,20 @@ const CardApp = (function() {
 
             await moveTo(90, 320, step2Text, 'ease-in-out');
 
+            let holdingPercent = 90;
             while (!(chk && chk())) {
-                updateUI(90, step2Text);
-                await wait(35);
+                // 90%에서 멈춰 보이지 않도록 97%까지 아주 천천히 전진
+                if (holdingPercent < 97) {
+                    holdingPercent += holdingPercent < 94 ? 1.2 : 0.5;
+                }
+                transitionFor(180, 'linear');
+                updateUI(Math.min(97, holdingPercent), step2Text);
+                await wait(180);
             }
 
             setStep(3);
-            await moveTo(100, 220, doneText, 'ease-out');
-            await wait(450);
+            await moveTo(100, 140, doneText, 'ease-out');
+            await wait(180);
         }
     };
     const KeypadLogic = {
