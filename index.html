@@ -549,28 +549,33 @@ const CardApp = (function() {
             setStep(1);
             updateUI(0, step1Text);
 
-            const startTs = Date.now();
             while (!(chk && chk())) {
-                const elapsed = Date.now() - startTs;
-
-                if (elapsed < 900) {
+                if (currentPercent < 48) {
                     setStep(1);
-                    const increment = currentPercent < 20 ? 4.2 : (currentPercent < 35 ? 3.2 : 2.2);
-                    currentPercent = Math.min(45, currentPercent + increment);
+                    currentPercent = Math.min(48, currentPercent + 4.0);
                     updateUI(currentPercent, step1Text);
-                } else {
-                    setStep(2);
-                    const increment = currentPercent < 72 ? 1.9 : (currentPercent < 88 ? 1.1 : 0.42);
-                    currentPercent = Math.min(97, currentPercent + increment);
-                    updateUI(currentPercent, step2Text);
+                    await wait(110);
+                    continue;
                 }
 
-                await wait(120);
+                setStep(2);
+                if (currentPercent < 90) {
+                    currentPercent = Math.min(90, currentPercent + 2.8);
+                    updateUI(currentPercent, step2Text);
+                    await wait(110);
+                } else {
+                    currentPercent = Math.min(97, currentPercent + 0.55);
+                    updateUI(currentPercent, step2Text);
+                    await wait(170);
+                }
             }
 
             setStep(3);
+            if (elements.loaderBar) {
+                elements.loaderBar.style.transition = 'width 220ms ease-out, background 240ms ease';
+            }
             updateUI(100, doneText);
-            await wait(180);
+            await wait(700);
         }
     };
     const KeypadLogic = {
