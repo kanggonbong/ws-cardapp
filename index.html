@@ -4,6 +4,10 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- ===== STAGE 1 REFACTOR ===== -->
+<!-- Goal: readability-first cleanup inside a single file. -->
+<!-- Scope: comments, tokens, section markers, mobile safety notes. -->
+<!-- Non-goal for this step: adding new business features or changing user flow on purpose. -->
 <!-- ===== CSS QUICK MAP ===== -->
 <!-- theme/base | layout/screen | loader/animation | card/keypad | receipt/modal | responsive -->
 <!-- Search keywords: :root, #lock-screen, #welcome-screen, .screen, .keypad-btn, .card-item-wrapper, .cart-item, .swal2, @media -->
@@ -12,12 +16,34 @@
 </style>
 <style>
 /* ===== MOBILE SAFETY PATCH ===== */
+:root {
+  /* shared timing / radius tokens for future cleanup */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  /* layer system */
+  --z-base: 1;
+  --z-header: 10;
+  --z-floating: 50;
+  --z-overlay: 90;
+  --z-modal: 100;
+  --z-toast: 200;
+  --z-lock: 300;
+  --z-loader: 310;
+}
+
+/* viewport / iOS text behavior */
 html, body {
   overscroll-behavior: none;
   overscroll-behavior-y: none;
   -webkit-text-size-adjust: none;
 }
 
+/* input zoom prevention on iOS */
 body {
   min-height: 100dvh;
 }
@@ -29,10 +55,12 @@ textarea {
   font-size: 16px;
 }
 
+/* media safety */
 img {
   max-width: 100%;
 }
 
+/* flex / overflow safety */
 .content-wrapper,
 .container,
 .screen,
@@ -49,6 +77,7 @@ img {
   min-width: 0;
 }
 
+/* smooth scroll feel on iOS scroll containers */
 .content-wrapper,
 .screen,
 #screen-login,
@@ -56,6 +85,7 @@ img {
   -webkit-overflow-scrolling: touch;
 }
 
+/* safe-area spacing */
 .content-wrapper {
   padding-bottom: max(env(safe-area-inset-bottom), 16px);
 }
@@ -65,10 +95,37 @@ img {
   padding-bottom: max(env(safe-area-inset-bottom), 16px);
 }
 
+/* layered overlays / floating controls */
+#lock-screen {
+  z-index: var(--z-lock);
+}
+
+#welcome-screen {
+  z-index: var(--z-loader);
+}
+
+#security-scan-overlay,
+#loadingOverlay,
+.morph-overlay {
+  z-index: var(--z-modal);
+}
+
+.swal2-container {
+  z-index: var(--z-toast) !important;
+}
+
+#main-title-container,
+.header-dashboard {
+  position: relative;
+  z-index: var(--z-header);
+}
+
 #btn-back,
 #keypad-submit-btn,
 #submit-cart-btn,
 #add-receipt-btn {
+  position: relative;
+  z-index: var(--z-floating);
   margin-bottom: max(env(safe-area-inset-bottom), 0px);
 }
 </style>
@@ -201,6 +258,9 @@ img {
 </div>
 <input type="file" id="receipt-file-input" accept="image/*" multiple style="display:none;">
 <script>
+/* ===== STAGE 1 SCRIPT NOTES ===== */
+/* Goal: keep the single-file structure, but make search and maintenance easier. */
+/* Rule for this stage: organize what already exists before introducing larger logic moves. */
 /* ===== APP CONFIG ===== */
 const IS_GAS = typeof google !== 'undefined' && google.script && google.script.run;
 const WORKER_API_URL = 'https://wscard.kang7762ek.workers.dev';
@@ -249,11 +309,13 @@ function triggerKeypadVisualPress(key){
     } catch(e) {}
 }
 /* ===== APP ROOT ===== */
+/* Main app shell. Subsections below are intentionally grouped by responsibility. */
 const CardApp = (function() {
     const MEAL_CAP_PER_PERSON = 9000;
     const INACTIVITY_MS = 3 * 60 * 1000;
     const CARD_APPEAR_DELAY_MS = 50;
     /* ===== APP STATE ===== */
+    /* Single in-file state store. If a future phase splits state, keep these names as the source of truth. */
     let state = {
         syncReqId: 0,
         cartSaveTimer: null,
@@ -318,6 +380,7 @@ const CardApp = (function() {
         }
     }
     /* ===== UTILS ===== */
+    /* Pure formatting / helper logic should stay here when possible. */
     const Utils = {
         nfKR: new Intl.NumberFormat('ko-KR'),
         formatDateKR(d=new Date()){
@@ -360,9 +423,66 @@ const CardApp = (function() {
         state.confirmLeaveTimeout2 = null;
     };
     /* ===== UI MANAGER ===== */
+    /* Screen switching, loading overlays, inactivity handling, and shared screen shell behavior. */
     const UIManager = {
         currentScreenElement: null,
         _inactivityHandler: null,
+        appScreens: ['login','main','returnDetails','confirmation'],
+        getScreenElement: (sid) => elements.screens[sid] || null,
+        resetLoginUi: () => {
+            if (elements.loginUserTags) {
+                elements.loginUserTags.innerHTML = '';
+            }
+            try {
+                document.getElementById('login-user-tags')?.classList.remove('active');
+                document.querySelector('.header-dashboard')?.classList.remove('show-tags');
+                document.getElementById('login-user-inline').innerHTML = '';
+                document.getElementById('login-user-panel').classList.add('hidden');
+                document.getElementById('login-instruction').classList.remove('hidden');
+            } catch (e) {}
+        },
+        hideAllScreens: () => {
+            Object.values(elements.screens).forEach(s => {
+                s.classList.add('hidden');
+                s.classList.remove('is-hiding');
+            });
+        },
+        syncScrollContext: (sid) => {
+            const isAppScreen = UIManager.appScreens.includes(sid);
+            document.body.style.overflow = 'hidden';
+            if (elements.contentWrapper) {
+                elements.contentWrapper.style.overflowY = isAppScreen ? 'auto' : 'hidden';
+                elements.contentWrapper.style.overscrollBehaviorY = isAppScreen ? 'contain' : 'none';
+            }
+        },
+        showScreenBase: (sid, { immediate = false } = {}) => {
+            document.body.style.pointerEvents = 'auto';
+            try { document.getElementById('loadingOverlay')?.classList.add('hidden'); } catch(e) {}
+            UIManager.syncScrollContext(sid);
+            if (sid !== 'confirmation') clearTransitionTimers();
+            const next = UIManager.getScreenElement(sid);
+            if (!next) return null;
+            UIManager.hideAllScreens();
+            const title = document.getElementById('main-title-container');
+            title.classList.remove('hidden');
+            if (immediate) {
+                title.classList.add('is-visible');
+            } else if (sid === 'main') {
+                elements.contentWrapper.classList.remove('fade-in-up');
+                void elements.contentWrapper.offsetWidth;
+                elements.contentWrapper.classList.add('fade-in-up');
+                setTimeout(() => title.classList.add('is-visible'), 150);
+            } else {
+                setTimeout(() => title.classList.add('is-visible'), 50);
+            }
+            next.classList.remove('hidden');
+            UIManager.currentScreenElement = next;
+            state.currentScreen = sid;
+            elements.btnBack.classList.toggle('hidden', sid === 'login' || sid === 'confirmation');
+            document.querySelector('.container').classList.toggle('wide-mode', ['main','returnDetails','confirmation'].includes(sid));
+            document.querySelector('.container').classList.toggle('is-receipt-mode', ['main','returnDetails','confirmation'].includes(sid));
+            return next;
+        },
         setLoading: (on, msg='', type='submit') => {
             const rSpin=document.getElementById('receipt-spinner');
             const sSpin=document.getElementById('submit-spinner');
@@ -381,54 +501,14 @@ const CardApp = (function() {
             Swal.fire({title:"서버 오류",text:err.message||'알 수 없는 오류',icon:"error"});
         },
         showScreen: (sid) => {
-            document.body.style.pointerEvents = 'auto';
-            try { document.getElementById('loadingOverlay')?.classList.add('hidden'); } catch(e) {}
-            document.body.style.overflow = ['login','main','returnDetails','confirmation'].includes(sid) ? 'auto' : 'hidden';
-            if (sid !== 'confirmation') clearTransitionTimers();
-            const next = elements.screens[sid];
+            const next = UIManager.showScreenBase(sid, { immediate: false });
             if (!next) return;
-            Object.values(elements.screens).forEach(s => {
-                if(s !== next) {
-                    s.classList.add('hidden');
-                    s.classList.remove('is-hiding');
-                }
-            });
-            const title = document.getElementById('main-title-container');
-            title.classList.remove('hidden');
-            if (sid === 'main') {
-                elements.contentWrapper.classList.remove('fade-in-up');
-                void elements.contentWrapper.offsetWidth;
-                elements.contentWrapper.classList.add('fade-in-up');
-                setTimeout(() => title.classList.add('is-visible'), 150);
-            } else {
-                setTimeout(() => title.classList.add('is-visible'), 50);
-            }
-            next.classList.remove('hidden');
-            UIManager.currentScreenElement = next;
-            state.currentScreen = sid;
-            elements.btnBack.classList.toggle('hidden', sid === 'login' || sid === 'confirmation');
-            document.querySelector('.container').classList.toggle('wide-mode', ['main','returnDetails','confirmation'].includes(sid));
             if (sid === 'main') CardLogic.displayCardList();
             if (sid === 'login') KeypadLogic.updateDashboard();
         },
         showScreenImmediate: (sid) => {
-            document.body.style.pointerEvents = 'auto';
-            try { document.getElementById('loadingOverlay')?.classList.add('hidden'); } catch(e) {}
-            if (sid !== 'confirmation') clearTransitionTimers();
-            const next = elements.screens[sid];
+            const next = UIManager.showScreenBase(sid, { immediate: true });
             if (!next) return;
-            Object.values(elements.screens).forEach(s => {
-                s.classList.add('hidden');
-                s.classList.remove('is-hiding');
-            });
-            const title = document.getElementById('main-title-container');
-            title.classList.remove('hidden');
-            title.classList.add('is-visible');
-            next.classList.remove('hidden');
-            UIManager.currentScreenElement = next;
-            state.currentScreen = sid;
-            elements.btnBack.classList.toggle('hidden', sid === 'login' || sid === 'confirmation');
-            document.querySelector('.container').classList.toggle('is-receipt-mode', ['main','returnDetails','confirmation'].includes(sid));
             if (sid === 'main') CardLogic.displayCardList();
             if (sid === 'login') KeypadLogic.updateDashboard();
         },
@@ -442,17 +522,9 @@ const CardApp = (function() {
             state.receiptCart = [];
             state.currentReturnCard = null;
             state.loginTyping = false;
-            if (elements.loginUserTags) {
-                elements.loginUserTags.innerHTML='';
-                document.getElementById('login-user-tags').classList.remove('active');
-                document.querySelector('.header-dashboard').classList.remove('show-tags');
-            }
-            try { document.getElementById('login-user-inline').innerHTML=''; document.getElementById('login-user-panel').classList.add('hidden'); document.getElementById('login-instruction').classList.remove('hidden'); } catch(e) {}
+            UIManager.resetLoginUi();
             if (elements.keypadDisplay) KeypadLogic.renderDisplay();
-            Object.values(elements.screens).forEach(s => {
-                s.classList.add('hidden');
-                s.classList.remove('is-hiding');
-            });
+            UIManager.hideAllScreens();
             [elements.welcomeScreen].filter(Boolean).forEach(el => {
                 el.classList.add('hidden');
                 el.classList.remove('is-visible');
@@ -461,6 +533,8 @@ const CardApp = (function() {
             document.getElementById('main-title-container').classList.remove('is-visible');
             elements.btnBack.classList.add('hidden');
             elements.contentWrapper.style.display='none';
+            elements.contentWrapper.style.overflowY='hidden';
+            elements.contentWrapper.style.overscrollBehaviorY='none';
             elements.cardGrid.classList.remove('is-loaded');
             elements.lockScreen.style.display = 'flex';
             try { elements.lockScreen.style.opacity = '1'; elements.lockScreen.style.visibility = 'visible'; elements.lockScreen.style.pointerEvents = 'auto'; } catch(e) {}
@@ -483,9 +557,8 @@ const CardApp = (function() {
             state.keypadValues = [null, null, null, null];
             state.activeDigitIndex=0;
             state.loginTyping = false;
-            elements.loginUserTags.innerHTML='';
+            UIManager.resetLoginUi();
             KeypadLogic.renderDisplay();
-            try { document.getElementById('login-user-inline').innerHTML=''; document.getElementById('login-user-panel').classList.add('hidden'); document.getElementById('login-instruction').classList.remove('hidden'); } catch(e) {}
             UIManager.showScreen('login');
             UIManager.startInactivityDetection();
         },
@@ -618,6 +691,7 @@ const CardApp = (function() {
         }
     };
     /* ===== KEYPAD LOGIC ===== */
+    /* Login keypad input, display masking, and security scan flow. */
     const KeypadLogic = {
         isUserActive: () => {
             if (state.currentScreen !== 'login') return false;
@@ -897,7 +971,53 @@ const CardApp = (function() {
         }
     };
     /* ===== CARD / RECEIPT LOGIC ===== */
+    /* Card selection, return flow, receipt OCR, cart rendering, and submit flow. */
     const CardLogic = {
+        renderCardButtonHTML: (card) => `
+            <div class="card-grid-btn">
+                <div class="mini-card-icon"></div>
+                <span class="card-name">${Utils.esc(card.displayName)}</span>
+            </div>
+            ${card.status==='사용중'?'<span class="status-badge">사용중</span>':(card.status==='반납처리중'?'<span class="status-badge">반납처리중</span>':'')}
+        `,
+        renderPurposeButtonHTML: (btn) => `
+            <button class="purpose-btn" type="button" data-purpose="${Utils.esc(btn.id)}">
+                <i class="fa-solid ${btn.icon}"></i><span>${Utils.esc(btn.label)}</span>
+            </button>
+        `,
+        renderReceiptCartItemHTML: (it, i, isMeal) => {
+            const needDetails = (!isMeal) && !(String(it.usageDetails || '').trim());
+            const isProcessing = (it.processing === 'saving' || it.processing === 'analyzing' || it.processing === 'deleting');
+            const isSaved = it.processing === 'saved';
+            const needWarn = needDetails || (it.processing === 'save_error');
+            const cls = (isProcessing ? 'processing' : '') + (isSaved ? ' saved' : '') + (needWarn ? ' needs-details' : '');
+
+            if (it.processing === 'error') {
+                return `<div class="cart-item needs-details" data-index="${i}">
+                     <div class="cart-item-icon" style="color:var(--danger-color);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                     <div class="cart-item-info">
+                        <span class="cart-item-place" style="color:var(--danger-color);">분석 실패</span>
+                        <span class="cart-item-details">탭하여 직접 입력해주세요</span>
+                     </div>
+                     <div class="cart-item-amount-box"></div>
+                     <button class="cart-item-delete"><i class="fa-solid fa-trash"></i></button>
+                </div>`;
+            }
+
+            return `<div class="cart-item ${cls}" data-index="${i}" ${isProcessing?`data-processing-text="${it.processing==='deleting'?'삭제 중...':(it.processing==='analyzing'?'분석 중...':'저장 중...')}"`:''}>
+                <div class="cart-item-icon">
+                    ${it.processing==='analyzing'
+                        ? `<div class="mini-scanner"><div class="mini-paper"></div><div class="mini-beam"></div></div>`
+                        : (needWarn ? `<i class="fa-solid fa-triangle-exclamation"></i>` : `<i class="fa-solid ${Utils.getSmartIcon(it.usagePlace, it.usageDetails)}"></i>`)}
+                </div>
+                <div class="cart-item-info">
+                    <span class="cart-item-place">${Utils.esc(it.usagePlace)||'상호명 없음'}</span>
+                    <span class="cart-item-details">${it.processing==='save_error' ? '저장 실패 · 탭하여 재시도' : (Utils.esc(it.usageDetails)||'내역 없음')}</span>
+                </div>
+                <div class="cart-item-amount-box"><span class="cart-item-amount">${Utils.nfKR.format(Number(it.amount||0))}원</span></div>
+                ${!isProcessing?`<button class="cart-item-delete"><i class="fa-solid fa-trash"></i></button>`:''}
+            </div>`;
+        },
         requestRenderReceiptCart: () => {
             if (state._renderReceiptScheduled) return;
             state._renderReceiptScheduled = true;
@@ -1040,16 +1160,7 @@ const CardApp = (function() {
             wrap.style.transitionDelay = `${idx * CARD_APPEAR_DELAY_MS}ms`;
             if (card.status !== '사용가능') wrap.classList.add('disabled');
             if (card.id.includes('해외')) wrap.classList.add('special-overseas-card');
-            wrap.innerHTML = `
-                <div class="card-grid-btn">
-                    <div class="mini-card-icon"></div>
-                    <span class="card-name">${Utils.esc(card.displayName)}</span>
-                </div>
-                ${card.status==='사용중'?'<span class="status-badge">사용중</span>':(card.status==='반납처리중'?'<span class="status-badge">반납처리중</span>':'')}
-            `;
-            if (card.status === '사용가능') {
-                wrap.addEventListener('click', () => CardLogic.openMorphOverlay(card));
-            }
+            wrap.innerHTML = CardLogic.renderCardButtonHTML(card);
             return wrap;
         },
         openMorphOverlay(card) {
@@ -1065,8 +1176,8 @@ const CardApp = (function() {
             const title = document.getElementById('morph-title');
             const actions = document.getElementById('morph-actions');
             const closeBtn = document.getElementById('close-morph-btn');
+            overlay.dataset.cardId = card.id;
             title.textContent = card.displayName;
-            actions.innerHTML = '';
             const hasStaff = state.enteredUsers.some(user => user.role === '사무직원');
             const buttons = [
                 { id: '물품구매', icon: 'fa-box', label: '물품구매' },
@@ -1076,19 +1187,14 @@ const CardApp = (function() {
             if (hasStaff) {
                 buttons.push({ id: '특근매식', icon: 'fa-moon', label: '특근매식' });
             }
-            buttons.forEach(btn => {
-                const b = document.createElement('button');
-                b.className = 'purpose-btn';
-                b.dataset.purpose = btn.id;
-                b.innerHTML = `<i class="fa-solid ${btn.icon}"></i><span>${btn.label}</span>`;
-                b.onclick = () => CardLogic.submitRentRequest(card.id, btn.id);
-                actions.appendChild(b);
-            });
+            actions.innerHTML = buttons.map(CardLogic.renderPurposeButtonHTML).join('');
             closeBtn.onclick = CardLogic.closeMorphOverlay;
             overlay.classList.add('active');
         },
         closeMorphOverlay() {
-            document.getElementById('morph-overlay').classList.remove('active');
+            const overlay = document.getElementById('morph-overlay');
+            overlay.classList.remove('active');
+            delete overlay.dataset.cardId;
         },
         async submitRentRequest(id, purpose) {
             CardLogic.closeMorphOverlay();
@@ -1212,36 +1318,7 @@ const CardApp = (function() {
             let tot = 0;
             c.innerHTML = state.receiptCart.length ? state.receiptCart.map((it, i) => {
                 tot += Number(it.amount||0);
-                const needDetails = (!isMeal) && !(String(it.usageDetails || '').trim());
-                const isProcessing = (it.processing === 'saving' || it.processing === 'analyzing' || it.processing === 'deleting');
-                const isSaved = it.processing === 'saved';
-                const needWarn = needDetails || (it.processing === 'save_error');
-                // 미입력(또는 저장 실패) 내역이 있을 때 경고 표시
-                const cls = (isProcessing ? 'processing' : '') + (isSaved ? ' saved' : '') + (needWarn ? ' needs-details' : '');
-                if(it.processing === 'error') {
-                    return `<div class="cart-item needs-details" data-index="${i}">
-                         <div class="cart-item-icon" style="color:var(--danger-color);"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                         <div class="cart-item-info">
-                            <span class="cart-item-place" style="color:var(--danger-color);">분석 실패</span>
-                            <span class="cart-item-details">탭하여 직접 입력해주세요</span>
-                         </div>
-                         <div class="cart-item-amount-box"></div>
-                         <button class="cart-item-delete"><i class="fa-solid fa-trash"></i></button>
-                    </div>`;
-                }
-                return `<div class="cart-item ${cls}" data-index="${i}" ${isProcessing?`data-processing-text="${it.processing==='deleting'?'삭제 중...':(it.processing==='analyzing'?'분석 중...':'저장 중...')}"`:''}>
-                    <div class="cart-item-icon">
-                        ${it.processing==='analyzing'
-                            ? `<div class="mini-scanner"><div class="mini-paper"></div><div class="mini-beam"></div></div>`
-                            : (needWarn ? `<i class="fa-solid fa-triangle-exclamation"></i>` : `<i class="fa-solid ${Utils.getSmartIcon(it.usagePlace, it.usageDetails)}"></i>`)}
-                    </div>
-                    <div class="cart-item-info">
-                        <span class="cart-item-place">${Utils.esc(it.usagePlace)||'상호명 없음'}</span>
-                        <span class="cart-item-details">${it.processing==='save_error' ? '저장 실패 · 탭하여 재시도' : (Utils.esc(it.usageDetails)||'내역 없음')}</span>
-                    </div>
-                    <div class="cart-item-amount-box"><span class="cart-item-amount">${Utils.nfKR.format(Number(it.amount||0))}원</span></div>
-                    ${!isProcessing?`<button class="cart-item-delete"><i class="fa-solid fa-trash"></i></button>`:''}
-                </div>`;
+                return CardLogic.renderReceiptCartItemHTML(it, i, isMeal);
             }).join('') : `<div class="cart-placeholder"><i class="fa-regular fa-file-lines"></i><span>추가된 영수증이 없습니다.</span></div>`;
             document.getElementById('receipt-total-display').textContent = `${Utils.nfKR.format(tot)}원`;
             c.classList.toggle('empty-cart', state.receiptCart.length===0);
@@ -1257,12 +1334,6 @@ const CardApp = (function() {
             }
             const submitBtn = document.getElementById('submit-cart-btn');
             if (submitBtn) submitBtn.disabled = !(state.receiptCart.length > 0 && isPrim);
-            if (isPrim) {
-                c.querySelectorAll('.cart-item:not(.processing)').forEach(e => e.onclick=()=>CardLogic.openOcrPopup(state.receiptCart[e.dataset.index], e.dataset.index));
-                c.querySelectorAll('.cart-item-delete').forEach(e => {
-                    e.onclick=(ev)=>{ev.stopPropagation();CardLogic.deleteCartItem(e.closest('.cart-item').dataset.index);}
-                });
-            }
         },
         saveCartItemOptimistic: async (item, idx) => {
             // 입력 완료 후, 화면(검수 흐름)은 즉시 다음 영수증으로 넘어가고
@@ -1829,6 +1900,52 @@ const CardApp = (function() {
         elements.cardSelectionHeader = document.getElementById('card-selection-header');
         elements.glassCardContainer.addEventListener('click', handleLockScreenClick);
         elements.btnBack.addEventListener('click', UIManager.resetToLogin);
+        elements.contentWrapper.addEventListener('click', (e) => {
+            const cardEl = e.target.closest('.card-item-wrapper[data-card-id]');
+            if (cardEl && elements.cardGrid.contains(cardEl)) {
+                const card = state.allCardData?.find(c => c.id === cardEl.dataset.cardId);
+                if (card && card.status === '사용가능') {
+                    CardLogic.openMorphOverlay(card);
+                    return;
+                }
+            }
+
+            const purposeBtn = e.target.closest('.purpose-btn[data-purpose]');
+            const morphActions = document.getElementById('morph-actions');
+            if (purposeBtn && morphActions && morphActions.contains(purposeBtn)) {
+                const overlay = document.getElementById('morph-overlay');
+                const cardId = overlay?.dataset.cardId;
+                if (cardId) {
+                    CardLogic.submitRentRequest(cardId, purposeBtn.dataset.purpose);
+                    return;
+                }
+            }
+
+            const cartDeleteBtn = e.target.closest('.cart-item-delete');
+            if (cartDeleteBtn) {
+                const cartItem = cartDeleteBtn.closest('.cart-item[data-index]');
+                const cartContainer = document.getElementById('receipt-cart-container');
+                if (cartItem && cartContainer && cartContainer.contains(cartItem)) {
+                    const prim = state.currentReturnCard?.userInfo?.userName?.split(',')[0]?.trim();
+                    if (!prim || state.enteredUsers[0]?.name !== prim) return;
+                    e.stopPropagation();
+                    CardLogic.deleteCartItem(cartItem.dataset.index);
+                    return;
+                }
+            }
+
+            const cartItem = e.target.closest('.cart-item[data-index]');
+            const cartContainer = document.getElementById('receipt-cart-container');
+            if (cartItem && cartContainer && cartContainer.contains(cartItem)) {
+                const prim = state.currentReturnCard?.userInfo?.userName?.split(',')[0]?.trim();
+                if (!prim || state.enteredUsers[0]?.name !== prim) return;
+                if (cartItem.classList.contains('processing')) return;
+                const idx = Number(cartItem.dataset.index);
+                if (Number.isInteger(idx) && state.receiptCart[idx]) {
+                    CardLogic.openOcrPopup(state.receiptCart[idx], idx);
+                }
+            }
+        });
         const fileInput = document.getElementById('receipt-file-input');
         if (fileInput) {
             fileInput.addEventListener('change', e => {
@@ -1906,6 +2023,7 @@ const CardApp = (function() {
     };
 })();
 /* ===== BOOTSTRAP ===== */
+/* Keep startup wiring at the very bottom so the file reads top-to-bottom. */
 document.addEventListener('DOMContentLoaded', () => {
     try { CardApp.init(); }
     catch (e) { Swal.fire('Error', 'Init Fail: ' + e.message, 'error'); }
