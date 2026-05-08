@@ -60,6 +60,40 @@ img {
   max-width: 100%;
 }
 
+.school-mark {
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.school-mark--card {
+  width: 46px;
+  height: 46px;
+  padding: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.16);
+}
+
+.school-mark--title {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.school-mark--loader {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 2px;
+  filter: drop-shadow(0 10px 20px rgba(37,95,203,0.12));
+}
+
+#main-title-container .inset-box {
+  gap: 12px;
+  padding-inline: 20px;
+}
+
 /* flex / overflow safety */
 .content-wrapper,
 .container,
@@ -142,7 +176,7 @@ img {
     <div class="lock-content">
         <div id="glass-card-container">
             <div id="glass-card">
-                <div class="card-top"><div class="card-chip"></div><i class="fa-solid fa-school card-school-icon"></i></div>
+                <div class="card-top"><div class="card-chip"></div><img src="./assets/icon-192.png" alt="우성고 마크" class="school-mark school-mark--card"></div>
                 <div class="card-middle"><div class="card-number">**** **** **** 9105</div></div>
                 <div class="card-bottom"><div class="card-holder">WOOSUNG HIGH SCHOOL</div><i class="fa-solid fa-wifi card-nfc"></i></div>
             </div>
@@ -153,7 +187,9 @@ img {
 <!-- ===== HTML: WELCOME / LOADER ===== -->
 <div id="welcome-screen" class="hidden">
     <div class="loader-card-v2">
-
+        <div class="loader-card-icon-wrap">
+            <img src="./assets/icon-192.png" alt="우성고 마크" class="school-mark school-mark--loader">
+        </div>
         <div class="loader-card-title" id="loader-title-main">시스템 연결 중</div>
         <div class="loader-card-subtitle" id="loader-title-sub">안전하게 접속을 준비하고 있습니다</div>
         <div class="loader-progress-row">
@@ -207,6 +243,7 @@ img {
     <div class="container">
         <div id="main-title-container" class="hidden">
             <div class="inset-box">
+                <img src="./assets/icon-192.png" alt="우성고 마크" class="school-mark school-mark--title">
                 <h2>우성고 카드 시스템</h2>
             </div>
         </div>
