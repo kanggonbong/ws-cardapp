@@ -1010,6 +1010,14 @@ const CardApp = (function() {
     /* ===== CARD / RECEIPT LOGIC ===== */
     /* Card selection, return flow, receipt OCR, cart rendering, and submit flow. */
     const CardLogic = {
+        isCardVisibleToCurrentUsers: (card) => {
+            const allowedUsers = Array.isArray(card?.allowedUsers)
+                ? card.allowedUsers
+                : (card?.visibleTo ? [card.visibleTo] : null);
+            if (!allowedUsers || allowedUsers.length === 0) return true;
+            const currentNames = state.enteredUsers.map(u => u.name);
+            return allowedUsers.some(name => currentNames.includes(name));
+        },
         renderCardButtonHTML: (card) => `
             <div class="card-grid-btn">
                 <div class="mini-card-icon"></div>
@@ -1177,7 +1185,8 @@ const CardApp = (function() {
             elements.cardGrid.innerHTML = '';
             elements.cardGrid.classList.remove('is-loaded');
             if (!state.allCardData) return;
-            const sorted = [...state.allCardData].sort((a,b) => {
+            const visibleCards = state.allCardData.filter(CardLogic.isCardVisibleToCurrentUsers);
+            const sorted = [...visibleCards].sort((a,b) => {
                 if(a.id.includes('해외'))return 1;
                 if(b.id.includes('해외'))return -1;
                 return parseInt(a.id.replace(/\D/g,'')) - parseInt(b.id.replace(/\D/g,''));
@@ -1215,15 +1224,12 @@ const CardApp = (function() {
             const closeBtn = document.getElementById('close-morph-btn');
             overlay.dataset.cardId = card.id;
             title.textContent = card.displayName;
-            const hasStaff = state.enteredUsers.some(user => user.role === '사무직원');
             const buttons = [
                 { id: '물품구매', icon: 'fa-box', label: '물품구매' },
                 { id: '식사다과', icon: 'fa-utensils', label: '식사다과' },
-                { id: '기타운영', icon: 'fa-ellipsis', label: '기타운영' }
+                { id: '기타운영', icon: 'fa-ellipsis', label: '기타운영' },
+                { id: '특근매식', icon: 'fa-moon', label: '특근매식' }
             ];
-            if (hasStaff) {
-                buttons.push({ id: '특근매식', icon: 'fa-moon', label: '특근매식' });
-            }
             actions.innerHTML = buttons.map(CardLogic.renderPurposeButtonHTML).join('');
             closeBtn.onclick = CardLogic.closeMorphOverlay;
             overlay.classList.add('active');
@@ -1937,7 +1943,7 @@ const CardApp = (function() {
         elements.cardSelectionHeader = document.getElementById('card-selection-header');
         elements.glassCardContainer.addEventListener('click', handleLockScreenClick);
         elements.btnBack.addEventListener('click', UIManager.resetToLogin);
-        elements.contentWrapper.addEventListener('click', (e) => {
+        document.addEventListener('click', (e) => {
             const cardEl = e.target.closest('.card-item-wrapper[data-card-id]');
             if (cardEl && elements.cardGrid.contains(cardEl)) {
                 const card = state.allCardData?.find(c => c.id === cardEl.dataset.cardId);
