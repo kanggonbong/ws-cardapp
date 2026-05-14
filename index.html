@@ -581,6 +581,12 @@ img {
 const IS_GAS = typeof google !== 'undefined' && google.script && google.script.run;
 const WORKER_API_URL = 'https://wscard.kang7762ek.workers.dev';
 const isMobile = window.matchMedia('(max-width: 767px)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const RECEIPT_IMAGE_OPTIMIZE_CONFIG = {
+    maxSide: 1280,
+    targetBytes: 450 * 1024,
+    minSide: 900,
+    qualities: [0.68, 0.60, 0.52, 0.46]
+};
 /* ===== API BRIDGE ===== */
 const Api = {
     call: async (func, ...args) => {
@@ -1400,37 +1406,44 @@ const CardApp = (function() {
         },
         queueSaveCart: (backupCart = null) => new Promise((resolve, reject) => {
             const token = ++state.cartSaveToken;
+            state.cartSavePending = state.cartSavePending || [];
+            state.cartSavePending.push({ resolve, reject, backupCart, token });
+
             if (state.cartSaveTimer) clearTimeout(state.cartSaveTimer);
             state.cartSaveTimer = setTimeout(async () => {
+                const pending = state.cartSavePending || [];
+                state.cartSavePending = [];
+                state.cartSaveTimer = null;
+
                 try {
                     await Api.call('saveCartToMasterFile', {
                         cardId: state.currentReturnCard.id,
-                        cartData: state.receiptCart.map(({processing, ...r}) => r)
+                        cartData: state.receiptCart.map(({processing, analysisMeta, ...r}) => r)
                     });
-                    if (token === state.cartSaveToken) {
-                        state.receiptCart.forEach((it, idx) => {
-                            if (it && it.processing === 'saving') {
-                                it.processing = 'saved';
-                                setTimeout(() => {
-                                    const cur = state.receiptCart[idx];
-                                    if (cur && cur.processing === 'saved') {
-                                        delete cur.processing;
-                                        CardLogic.requestRenderReceiptCart();
-                                    }
-                                }, 850);
-                            }
-                        });
-                        CardLogic.requestRenderReceiptCart();
-                    }
-                    resolve(true);
+
+                    state.receiptCart.forEach((it, idx) => {
+                        if (it && it.processing === 'saving') {
+                            it.processing = 'saved';
+                            setTimeout(() => {
+                                const cur = state.receiptCart[idx];
+                                if (cur && cur.processing === 'saved') {
+                                    delete cur.processing;
+                                    CardLogic.requestRenderReceiptCart();
+                                }
+                            }, 850);
+                        }
+                    });
+                    CardLogic.requestRenderReceiptCart();
+                    pending.forEach(p => p.resolve(true));
                 } catch (e) {
-                    if (backupCart && token === state.cartSaveToken) {
-                        state.receiptCart = backupCart;
+                    const rollback = [...pending].reverse().find(p => p.backupCart);
+                    if (rollback && rollback.backupCart) {
+                        state.receiptCart = rollback.backupCart;
                         CardLogic.requestRenderReceiptCart();
                     }
-                    reject(e);
+                    pending.forEach(p => p.reject(e));
                 }
-            }, 450);
+            }, 220);
         }),
         startReviewMode: (startIdx, count) => {
             try {
@@ -1472,8 +1485,10 @@ const CardApp = (function() {
         isReceiptAnalysisFailed: (ocr) => {
             if (!ocr || ocr.ok === false) return true;
             const place = String(ocr.storeName || '').trim();
-            const amount = String(ocr.amount || '').trim();
-            return !place && !amount;
+            const amount = String(ocr.amount || '').replace(/[^\d]/g, '').trim();
+
+            // 금액은 필수입니다. 상호명이 비면 제출 데이터 품질이 떨어져서 직접 확인 대상으로 둡니다.
+            return !place || !amount;
         },
         // 변경 부분: getReceiptProcessingLabel 처리 상태 추가 매핑
         getReceiptProcessingLabel: (processing) => {
@@ -1801,7 +1816,7 @@ const CardApp = (function() {
             const isMeal = !!(state.currentReturnCard && state.currentReturnCard.userInfo && String(state.currentReturnCard.userInfo.purpose || '').includes('특근'));
             const newItems = files.map(() => ({
                 receiptImage: '',
-                usagePlace: '영수증 분석 중...',
+                usagePlace: '영수증 분석 대기 중...',
                 usageDetails: '',
                 amount: '',
                 date: '',
@@ -1810,14 +1825,16 @@ const CardApp = (function() {
             state.receiptCart.push(...newItems);
             CardLogic.requestRenderReceiptCart();
 
-            const processPromises = files.map(async (file, i) => {
+            const processOne = async (file, i) => {
                 const actualIdx = startIdx + i;
+                let b64 = '';
+
                 try {
                     state.receiptCart[actualIdx].processing = 'optimizing';
-                    state.receiptCart[actualIdx].usagePlace = '영수증 분석 중...';
+                    state.receiptCart[actualIdx].usagePlace = '영수증 압축 중...';
                     CardLogic.requestRenderReceiptCart();
 
-                    const b64 = await CardLogic.resizeAndOptimizeImage(file);
+                    b64 = await CardLogic.resizeAndOptimizeImage(file);
                     state.receiptCart[actualIdx].receiptImage = b64;
                     state.receiptCart[actualIdx].processing = 'ocr';
                     state.receiptCart[actualIdx].usagePlace = '영수증 분석 중...';
@@ -1825,24 +1842,31 @@ const CardApp = (function() {
 
                     const ocr = await Api.call('processReceiptImage', b64);
                     const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
-                    const recognizedAmount = String(ocr.amount || '');
+                    const recognizedAmount = String(ocr && ocr.amount ? ocr.amount : '');
                     let amt = recognizedAmount;
+
                     state.receiptCart[actualIdx].processing = 'postprocessing';
-                    state.receiptCart[actualIdx].usagePlace = analysisFailed ? '직접 입력 필요' : '영수증 분석 중...';
+                    state.receiptCart[actualIdx].usagePlace = analysisFailed ? '직접 입력 필요' : '분석 완료';
                     CardLogic.requestRenderReceiptCart();
-                    if (isMeal) {
+
+                    if (!analysisFailed && isMeal) {
                         amt = String(Utils.clampMealAmount(amt, state.currentReturnCard.userInfo.userName.split(',').length));
                         CardLogic.showMealAutoAdjustToast(recognizedAmount, amt);
                     }
 
                     state.receiptCart[actualIdx] = {
                         receiptImage: b64,
-                        usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || ''),
+                        usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || '상호명 없음'),
                         usageDetails: isMeal ? '특근매식비' : '',
                         amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
                         date: analysisFailed ? '' : (ocr.date || ''),
                         processing: 'saving',
-                        needsManualReview: analysisFailed
+                        needsManualReview: analysisFailed,
+                        analysisMeta: {
+                            mediaResolution: ocr && ocr.mediaResolution ? ocr.mediaResolution : '',
+                            usedFallback: !!(ocr && ocr.usedFallback),
+                            elapsedMs: ocr && ocr.elapsedMs ? ocr.elapsedMs : ''
+                        }
                     };
                     CardLogic.requestRenderReceiptCart();
 
@@ -1853,19 +1877,43 @@ const CardApp = (function() {
                         if (currentItem) currentItem.processing = 'save_error';
                     }
                 } catch (err) {
-                    state.receiptCart[actualIdx].processing = 'error';
-                        state.receiptCart[actualIdx].usagePlace = '분석 실패';
+                    console.error('Receipt analysis failed:', err);
+                    state.receiptCart[actualIdx] = {
+                        receiptImage: b64,
+                        usagePlace: '분석 실패',
+                        usageDetails: '',
+                        amount: '',
+                        date: '',
+                        processing: 'error',
+                        needsManualReview: true
+                    };
                 }
+
                 CardLogic.requestRenderReceiptCart();
+            };
+
+            // Apps Script와 Gemini를 동시에 너무 많이 두드리면 오히려 느려질 수 있어 2개씩만 처리합니다.
+            const concurrency = Math.min(2, files.length);
+            let nextIndex = 0;
+            const workers = Array.from({ length: concurrency }, async () => {
+                while (nextIndex < files.length) {
+                    const i = nextIndex++;
+                    await processOne(files[i], i);
+                }
             });
 
-            Promise.allSettled(processPromises).then(() => {
-                const manualReviewCount = state.receiptCart
-                    .slice(startIdx, startIdx + files.length)
-                    .filter(item => item && item.needsManualReview).length;
-                CardLogic.requestRenderReceiptCart();
-                CardLogic.startReviewMode(startIdx, files.length);
-            });
+            await Promise.allSettled(workers);
+
+            const manualReviewCount = state.receiptCart
+                .slice(startIdx, startIdx + files.length)
+                .filter(item => item && item.needsManualReview).length;
+
+            if (manualReviewCount > 0) {
+                CardLogic.showReceiptAnalysisFallback(false);
+            }
+
+            CardLogic.requestRenderReceiptCart();
+            CardLogic.startReviewMode(startIdx, files.length);
         },
         async handleReceiptFiles(fileList) {
             if (!fileList || !fileList.length || !state.currentReturnCard) return;
@@ -1929,32 +1977,89 @@ const CardApp = (function() {
             }
             EmbedBridge.notify('UPLOAD_END');
         },
-        resizeAndOptimizeImage: (file) => new Promise((res, rej) => {
-            const r = new FileReader();
-            r.onload = e => {
-                const i = new Image();
-                i.onload = () => {
-                    const MAX = 1200;
-                    let w=i.width, h=i.height;
-                    if (w>h){ if(w>MAX){h*=MAX/w;w=MAX;} }
-                    else { if(h>MAX){w*=MAX/h;h=MAX;} }
-                    const c = document.createElement('canvas');
-                    c.width=w; c.height=h;
-                    c.getContext('2d').drawImage(i,0,0,w,h);
-                    c.toBlob(b => {
-                        if(!b) return rej(new Error('이미지 변환 실패'));
-                        const fr=new FileReader();
-                        fr.onload=()=>res(fr.result);
-                        fr.onerror=rej;
-                        fr.readAsDataURL(b);
-                    }, 'image/jpeg', 0.78);
+        resizeAndOptimizeImage: async (file) => {
+            if (!file || !String(file.type || '').startsWith('image/')) {
+                throw new Error('이미지 파일만 업로드할 수 있습니다.');
+            }
+
+            const cfg = RECEIPT_IMAGE_OPTIMIZE_CONFIG;
+            const MAX_SIDE = cfg.maxSide;
+            const TARGET_BYTES = cfg.targetBytes;
+            const QUALITY_STEPS = cfg.qualities;
+
+            const blobToDataUrl = (blob) => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ''));
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+
+            const canvasToBlob = (canvas, quality) => new Promise((resolve) => {
+                canvas.toBlob(resolve, 'image/jpeg', quality);
+            });
+
+            const loadImage = () => new Promise((resolve, reject) => {
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    URL.revokeObjectURL(url);
+                    resolve(img);
                 };
-                i.onerror=rej;
-                i.src=e.target.result;
-            };
-            r.onerror=rej;
-            r.readAsDataURL(file);
-        }),
+                img.onerror = (e) => {
+                    URL.revokeObjectURL(url);
+                    reject(e);
+                };
+                img.src = url;
+            });
+
+            const img = await loadImage();
+            const originalW = img.naturalWidth || img.width;
+            const originalH = img.naturalHeight || img.height;
+
+            if (!originalW || !originalH) {
+                throw new Error('이미지 크기를 읽을 수 없습니다.');
+            }
+
+            const scale = Math.min(1, MAX_SIDE / Math.max(originalW, originalH));
+            const width = Math.max(1, Math.round(originalW * scale));
+            const height = Math.max(1, Math.round(originalH * scale));
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d', { alpha: false });
+            if (!ctx) throw new Error('이미지 캔버스를 만들 수 없습니다.');
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(img, 0, 0, width, height);
+
+            let bestBlob = null;
+            for (const quality of QUALITY_STEPS) {
+                const blob = await canvasToBlob(canvas, quality);
+                if (!blob) continue;
+                bestBlob = blob;
+                if (blob.size <= TARGET_BYTES) break;
+            }
+
+            if (!bestBlob) {
+                throw new Error('이미지 변환 실패');
+            }
+
+            const dataUrl = await blobToDataUrl(bestBlob);
+
+            try {
+                console.log('receipt image optimized', {
+                    originalKB: Math.round(file.size / 1024),
+                    optimizedKB: Math.round(bestBlob.size / 1024),
+                    width,
+                    height
+                });
+            } catch (e) {}
+
+            return dataUrl;
+        },
         async openOcrPopup(data = {}, editIndex = -1) {
             const isMeal = state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
             const html = `
