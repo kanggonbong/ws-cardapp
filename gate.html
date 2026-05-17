@@ -20,6 +20,7 @@
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: linear-gradient(180deg, #eef5ff 0%, #dbeafe 100%);
       display: flex;
@@ -90,6 +91,10 @@
       text-align: left;
     }
 
+    .guide strong {
+      color: #1d4ed8;
+    }
+
     .guide ol {
       margin: 10px 0 0;
       padding-left: 22px;
@@ -119,20 +124,27 @@
 
     <h1>우성고 카드 시스템</h1>
     <p>
-      휴대폰 홈 화면에 추가하면<br>
+      휴대폰 홈 화면에 추가하면<br />
       앱처럼 바로 사용할 수 있습니다.
     </p>
 
     <section id="androidView" class="hidden">
       <h2>Android 설치</h2>
-      <p>안드로이드는 아래 버튼으로 앱 설치를 진행할 수 있습니다.</p>
+      <p>안드로이드는 Chrome 메뉴에서 홈 화면에 추가하면 됩니다.</p>
 
-      <button id="installBtn" class="btn">앱 설치하기</button>
+      <div class="guide">
+        <strong>설치 방법</strong>
+        <ol>
+          <li>Chrome 오른쪽 위 <strong>점 3개 메뉴(⋮)</strong>를 누릅니다.</li>
+          <li><strong>홈 화면에 추가</strong> 또는 <strong>앱 설치</strong>를 선택합니다.</li>
+          <li><strong>추가</strong> 또는 <strong>설치</strong>를 누르면 홈 화면에 아이콘이 생깁니다.</li>
+        </ol>
+      </div>
 
-      <a href="./index.html" class="btn sub">설치 없이 바로 열기</a>
+      <a href="./index.html" class="btn">웹앱 바로 열기</a>
 
       <p class="notice">
-        설치 버튼이 작동하지 않으면 Chrome에서 다시 접속해주세요.
+        경고가 뜨는 설치 버튼 방식 대신, 브라우저 기본 메뉴로 추가하는 안정 방식입니다.
       </p>
     </section>
 
@@ -145,11 +157,11 @@
         <ol>
           <li>화면 아래 또는 위의 <strong>공유 버튼</strong>을 누릅니다.</li>
           <li><strong>홈 화면에 추가</strong>를 선택합니다.</li>
-          <li>오른쪽 위 <strong>추가</strong>를 누릅니다.</li>
+          <li>오른쪽 위 <strong>추가</strong>를 누르면 홈 화면에 아이콘이 생깁니다.</li>
         </ol>
       </div>
 
-      <a href="./index.html" class="btn">설치 없이 바로 열기</a>
+      <a href="./index.html" class="btn">웹앱 바로 열기</a>
     </section>
 
     <section id="installedView" class="hidden">
@@ -184,25 +196,6 @@
     } else {
       document.getElementById("etcView").classList.remove("hidden");
     }
-
-    let deferredPrompt = null;
-    const installBtn = document.getElementById("installBtn");
-
-    window.addEventListener("beforeinstallprompt", (event) => {
-      event.preventDefault();
-      deferredPrompt = event;
-    });
-
-    installBtn.addEventListener("click", async () => {
-      if (!deferredPrompt) {
-        alert("설치 준비가 아직 되지 않았습니다. Chrome에서 다시 접속해주세요.");
-        return;
-      }
-
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-    });
   </script>
 </body>
 </html>
