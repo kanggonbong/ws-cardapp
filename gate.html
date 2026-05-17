@@ -1,351 +1,355 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>우성고 카드 시스템 설치</title>
+<title>우성고 카드 시스템</title>
 
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="apple-touch-icon" href="./assets/icon-192.png" />
+<link rel="manifest" href="./manifest.json" />
+<link rel="apple-touch-icon" href="./assets/icon-192.png" />
 
-  <meta name="theme-color" content="#2563eb" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="우성고카드" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="theme-color" content="#2563eb" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="우성고카드" />
 
-  <style>
-    :root {
-      --primary: #2563eb;
-      --text: #1f4175;
-      --sub: #6882a8;
-      --bg: #d6e3f3;
-      --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
-      --shadow-dark: rgba(110, 138, 176, 0.30);
-      --shadow-light: rgba(255, 255, 255, 0.95);
-    }
+<style>
+:root{
+  --primary:#2563eb;
+  --bg:#dce7f5;
+  --text:#1f4175;
+  --sub:#6b84a8;
+}
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      background: radial-gradient(circle at top left, #f5f9fe 0%, #e4edf8 32%, #d6e3f3 100%);
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:linear-gradient(135deg,#eef4fb 0%,#dce7f5 100%);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+}
 
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 22px;
-      text-align: center;
-    }
+.card{
+  width:min(420px,95vw);
+  background:white;
+  border-radius:30px;
+  padding:32px 24px;
+  box-shadow:0 15px 40px rgba(0,0,0,.08);
+  text-align:center;
+}
 
-    .hide {
-      display: none !important;
-    }
+.icon{
+  width:90px;
+  height:90px;
+  margin:0 auto 18px;
+}
 
-    .wrap {
-      width: min(420px, 94vw);
-    }
+.icon img{
+  width:100%;
+  height:100%;
+  border-radius:22px;
+}
 
-    .card {
-      padding: 32px 24px;
-      border-radius: 34px;
-      background: linear-gradient(180deg, #f1f5fb 0%, #dce7f5 100%);
-      border: 1px solid rgba(255, 255, 255, 0.62);
-      box-shadow:
-        18px 18px 34px var(--shadow-dark),
-        -12px -12px 26px var(--shadow-light),
-        inset 1px 1px 0 rgba(255, 255, 255, 0.72);
-    }
+h1{
+  margin:0 0 10px;
+  font-size:1.8rem;
+  font-weight:900;
+}
 
-    .app-icon {
-      width: 88px;
-      height: 88px;
-      margin: 0 auto 16px;
-    }
+.desc{
+  margin:0;
+  color:var(--sub);
+  line-height:1.6;
+  font-weight:700;
+}
 
-    .app-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 22px;
-      filter: drop-shadow(0 8px 15px rgba(37, 99, 235, 0.15));
-    }
+.badge{
+  display:inline-block;
+  margin-top:16px;
+  padding:8px 14px;
+  border-radius:999px;
+  background:#edf4ff;
+  color:var(--primary);
+  font-weight:800;
+  font-size:.9rem;
+}
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: 1.72rem;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-    }
+.guide{
+  margin-top:22px;
+  padding:18px;
+  border-radius:20px;
+  background:#f5f8fd;
+  text-align:left;
+}
 
-    .desc {
-      margin: 0;
-      color: var(--sub);
-      line-height: 1.55;
-      font-size: 0.96rem;
-      font-weight: 700;
-      word-break: keep-all;
-    }
+.guide ol{
+  margin:0;
+  padding-left:20px;
+}
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 16px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #fbfdff 0%, #e8eff8 100%);
-      border: 1px solid rgba(255, 255, 255, 0.82);
-      color: #4d6fa6;
-      font-size: 0.86rem;
-      font-weight: 800;
-    }
+.guide li{
+  margin:10px 0;
+  color:#3e5d8f;
+  line-height:1.5;
+  font-weight:700;
+}
 
-    .guide {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, #fbfdff 0%, #e8eff8 100%);
-      border: 1px solid rgba(255, 255, 255, 0.82);
-      text-align: left;
-    }
+.btns{
+  margin-top:24px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
 
-    .guide-title {
-      display: block;
-      margin-bottom: 10px;
-      color: var(--primary);
-      font-weight: 900;
-      font-size: 0.96rem;
-    }
+.btn{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:16px;
+  font-size:1rem;
+  font-weight:900;
+  cursor:pointer;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .guide ol {
-      margin: 0;
-      padding-left: 20px;
-    }
+.primary{
+  background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);
+  color:white;
+}
 
-    .guide li {
-      margin: 8px 0;
-      color: #36527f;
-      font-size: 0.92rem;
-      font-weight: 700;
-      line-height: 1.45;
-    }
+.secondary{
+  background:#eef4ff;
+  color:#2563eb;
+}
 
-    .btns {
-      width: 100%;
-      margin-top: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+.small{
+  margin-top:16px;
+  color:#93a7c4;
+  font-size:.82rem;
+  line-height:1.5;
+  font-weight:700;
+}
 
-    .btn {
-      width: 100%;
-      border: 0;
-      border-radius: 16px;
-      padding: 16px;
-      background: var(--gradient);
-      color: #fff;
-      font-weight: 900;
-      font-size: 1.05rem;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.20);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn.secondary {
-      background: linear-gradient(180deg, #fbfdff 0%, #e8eff8 100%);
-      color: var(--primary);
-      border: 1px solid rgba(255, 255, 255, 0.82);
-      box-shadow: 0 8px 18px rgba(110, 138, 176, 0.12);
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .small {
-      margin-top: 14px;
-      font-size: 0.8rem;
-      color: #8ea2bf;
-      font-weight: 700;
-      line-height: 1.5;
-    }
-  </style>
+.hide{
+  display:none!important;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="app-icon">
-        <img src="./assets/icon-192.png" alt="우성고 카드 아이콘">
-      </div>
 
-      <h1>우성고 카드 시스템</h1>
-      <p class="desc" id="topMsg">설치 환경을 확인하고 있습니다.</p>
+<div class="card">
 
-      <span class="badge" id="envBadge">확인 중...</span>
-
-      <div id="iosGuide" class="guide hide">
-        <span class="guide-title">iPhone 설치 방법</span>
-        <ol>
-          <li>공유 버튼을 누릅니다.</li>
-          <li>더보기를 누른 뒤 홈 화면에 추가를 선택합니다.</li>
-          <li>오른쪽 위 추가를 누르면 완료됩니다.</li>
-        </ol>
-      </div>
-
-      <div class="btns">
-        <a id="chromeInstallBtn" class="btn hide" href="#">
-          Chrome에서 설치하기
-        </a>
-
-        <button id="installBtn" class="btn hide" type="button">
-          앱 설치하기
-        </button>
-
-        <a id="goAppBtn" class="btn secondary hide" href="./index.html">
-          앱 바로가기
-        </a>
-      </div>
-
-      <div id="androidSmallText" class="small hide">
-        설치가 안 되면 Chrome 메뉴(⋮) → 홈 화면에 추가
-      </div>
-
-      <div id="defaultSmallText" class="small">
-        이미 설치했다면 홈 화면의 우성고카드 아이콘을 눌러 실행하세요.
-      </div>
-    </div>
+  <div class="icon">
+    <img src="./assets/icon-192.png" alt="icon">
   </div>
 
+  <h1>우성고 카드 시스템</h1>
+
+  <p class="desc" id="desc">
+    환경을 확인하고 있습니다.
+  </p>
+
+  <div class="badge" id="badge">
+    확인 중...
+  </div>
+
+  <div class="guide hide" id="iosSafariGuide">
+    <ol>
+      <li>Safari 공유 버튼을 누릅니다.</li>
+      <li>더보기를 누른 뒤 홈 화면에 추가를 선택합니다.</li>
+      <li>추가를 누르면 홈 화면에 앱 아이콘이 생성됩니다.</li>
+    </ol>
+  </div>
+
+  <div class="guide hide" id="iosNotSafariGuide">
+    <ol>
+      <li>아래 주소 복사하기 버튼을 누릅니다.</li>
+      <li>Safari 브라우저를 실행합니다.</li>
+      <li>주소창에 붙여넣기 후 접속합니다.</li>
+      <li>Safari에서 홈 화면에 추가를 진행합니다.</li>
+    </ol>
+  </div>
+
+  <div class="btns">
+
+    <a id="chromeBtn" class="btn primary hide" href="#">
+      Chrome에서 설치하기
+    </a>
+
+    <button id="installBtn" class="btn primary hide">
+      앱 설치하기
+    </button>
+
+    <button id="copyBtn" class="btn primary hide">
+      주소 복사하기
+    </button>
+
+    <a id="goBtn" class="btn secondary hide" href="./index.html">
+      앱 바로가기
+    </a>
+
+  </div>
+
+  <div class="small hide" id="androidText">
+    설치가 안 되면 Chrome 메뉴(⋮) → 홈 화면에 추가
+  </div>
+
+  <div class="small">
+    이미 설치했다면 홈 화면의 우성고카드 아이콘으로 실행하세요.
+  </div>
+
+</div>
+
 <script>
-  const APP_PAGE_URL = "https://kanggonbong.github.io/ws-cardapp/";
-  const GATE_PAGE_URL = "https://kanggonbong.github.io/ws-cardapp/gate.html";
+const APP_URL = "https://kanggonbong.github.io/ws-cardapp/";
+const GATE_URL = "https://kanggonbong.github.io/ws-cardapp/gate.html";
 
-  const $ = (id) => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
 
-  let deferredPrompt = null;
+let deferredPrompt = null;
 
-  function show(id) {
-    $(id).classList.remove("hide");
+function show(id){
+  $(id).classList.remove("hide");
+}
+
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  if(isStandalone()){
+    location.replace(APP_URL);
+    return;
   }
 
-  function setChromeIntent() {
-    const cleanUrl = GATE_PAGE_URL.replace("https://", "");
-    $("chromeInstallBtn").href =
-      `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(GATE_PAGE_URL)};end`;
-  }
+  const ua = navigator.userAgent.toLowerCase();
 
-  function isInstalledMode() {
-    return window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone === true;
-  }
+  const isAndroid = /android/.test(ua);
+  const isiOS = /iphone|ipad|ipod/.test(ua);
 
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(() => {});
-    });
-  }
+  const isSamsung = /samsungbrowser/.test(ua);
+  const isKakao = /kakaotalk/.test(ua);
+  const isNaver = /naver/.test(ua);
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const ua = navigator.userAgent.toLowerCase();
+  const isChrome =
+    /chrome/.test(ua) &&
+    !isSamsung &&
+    !isKakao &&
+    !isNaver &&
+    !/edg\//.test(ua) &&
+    !/opr\//.test(ua);
 
-    const isAndroid = /android/.test(ua);
-    const isiOS = /iphone|ipad|ipod/.test(ua);
+  const isSafari =
+    isiOS &&
+    /safari/.test(ua) &&
+    !/crios/.test(ua) &&
+    !/fxios/.test(ua) &&
+    !isKakao &&
+    !isNaver;
 
-    const isSamsung = /samsungbrowser/.test(ua);
-    const isKakao = /kakaotalk/.test(ua);
-    const isNaver = /naver/.test(ua);
-    const isInstagram = /instagram/.test(ua);
-    const isFacebook = /fbav|fban/.test(ua);
-    const isLine = /\bline\b/.test(ua);
+  show("goBtn");
 
-    const isChrome =
-      isAndroid &&
-      /chrome/.test(ua) &&
-      !isSamsung &&
-      !isKakao &&
-      !isNaver &&
-      !isInstagram &&
-      !isFacebook &&
-      !isLine &&
-      !/edg\//.test(ua) &&
-      !/opr\//.test(ua);
+  // Android
+  if(isAndroid){
 
-    setChromeIntent();
+    if(isChrome){
 
-    $("installBtn").onclick = async () => {
-      if (!deferredPrompt) {
-        alert("설치가 안 되면 Chrome 메뉴(⋮) → 홈 화면에 추가를 선택해 주세요.");
-        return;
-      }
+      $("badge").innerText = "Android Chrome";
+      $("desc").innerText = "앱을 설치하거나 바로 사용할 수 있습니다.";
 
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-    };
+      show("androidText");
 
-    if (isInstalledMode()) {
-      window.location.replace(APP_PAGE_URL);
-      return;
-    }
-
-    if (isAndroid && !isChrome) {
-      $("envBadge").innerText = "Android";
-      $("topMsg").innerText = "안정적인 설치를 위해 Chrome 브라우저를 이용해주세요.";
-
-      show("chromeInstallBtn");
-      show("goAppBtn");
-
-      return;
-    }
-
-    if (isAndroid && isChrome) {
-      $("envBadge").innerText = "Android Chrome";
-      $("topMsg").innerText = "앱을 설치하거나 바로 사용할 수 있습니다.";
-
-      show("goAppBtn");
-      show("androidSmallText");
-
-      window.addEventListener("beforeinstallprompt", (event) => {
-        event.preventDefault();
-        deferredPrompt = event;
-
-        // Chrome일 때만 설치 버튼 표시
+      window.addEventListener("beforeinstallprompt", (e)=>{
+        e.preventDefault();
+        deferredPrompt = e;
         show("installBtn");
       });
 
-      return;
+      $("installBtn").onclick = async () => {
+        if(!deferredPrompt){
+          alert("설치가 안 되면 Chrome 메뉴(⋮) → 홈 화면에 추가");
+          return;
+        }
+
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+      };
+
+    } else {
+
+      $("badge").innerText = "Android";
+      $("desc").innerText = "안정적인 설치를 위해 Chrome 브라우저를 이용해주세요.";
+
+      const clean = GATE_URL.replace("https://","");
+
+      $("chromeBtn").href =
+        `intent://${clean}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(GATE_URL)};end`;
+
+      show("chromeBtn");
     }
 
-    if (isiOS) {
-      $("envBadge").innerText = "iPhone";
-      $("topMsg").innerText = "홈 화면에 추가하면 앱처럼 사용할 수 있습니다.";
+    return;
+  }
 
-      show("iosGuide");
-      show("goAppBtn");
+  // iPhone Safari
+  if(isSafari){
 
-      return;
-    }
+    $("badge").innerText = "iPhone Safari";
+    $("desc").innerText = "Safari에서 홈 화면에 추가하면 앱처럼 사용할 수 있습니다.";
 
-    $("envBadge").innerText = "PC / 기타";
-    $("topMsg").innerText = "휴대폰 카메라로 QR을 찍어 접속해주세요.";
+    show("iosSafariGuide");
 
-    show("goAppBtn");
-  });
+    return;
+  }
+
+  // iPhone Safari 아님
+  if(isiOS){
+
+    $("badge").innerText = "iPhone";
+    $("desc").innerText = "안정적인 설치를 위해 Safari에서 열어주세요.";
+
+    show("iosNotSafariGuide");
+    show("copyBtn");
+
+    $("copyBtn").onclick = async () => {
+      try{
+        await navigator.clipboard.writeText(GATE_URL);
+        alert("주소가 복사되었습니다.");
+      }catch(e){
+        prompt("아래 주소를 복사해주세요.", GATE_URL);
+      }
+    };
+
+    return;
+  }
+
+  // PC
+  $("badge").innerText = "PC / 기타";
+  $("desc").innerText = "휴대폰 카메라로 QR 코드를 찍어 접속해주세요.";
+
+});
 </script>
+
 </body>
 </html>
