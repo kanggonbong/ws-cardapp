@@ -236,14 +236,11 @@
   const GATE_PAGE_URL = "https://kanggonbong.github.io/ws-cardapp/gate.html";
 
   const $ = (id) => document.getElementById(id);
+
   let deferredPrompt = null;
 
   function show(id) {
     $(id).classList.remove("hide");
-  }
-
-  function hide(id) {
-    $(id).classList.add("hide");
   }
 
   function setChromeIntent() {
@@ -262,12 +259,6 @@
       navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(() => {});
     });
   }
-
-  window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    deferredPrompt = event;
-    show("installBtn");
-  });
 
   document.addEventListener("DOMContentLoaded", () => {
     const ua = navigator.userAgent.toLowerCase();
@@ -315,29 +306,44 @@
     if (isAndroid && !isChrome) {
       $("envBadge").innerText = "Android";
       $("topMsg").innerText = "안정적인 설치를 위해 Chrome 브라우저를 이용해주세요.";
+
       show("chromeInstallBtn");
       show("goAppBtn");
+
       return;
     }
 
     if (isAndroid && isChrome) {
       $("envBadge").innerText = "Android Chrome";
-      $("topMsg").innerText = "아래 버튼으로 앱을 설치하거나 바로 사용할 수 있습니다.";
+      $("topMsg").innerText = "앱을 설치하거나 바로 사용할 수 있습니다.";
+
       show("goAppBtn");
       show("androidSmallText");
+
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        deferredPrompt = event;
+
+        // Chrome일 때만 설치 버튼 표시
+        show("installBtn");
+      });
+
       return;
     }
 
     if (isiOS) {
       $("envBadge").innerText = "iPhone";
       $("topMsg").innerText = "홈 화면에 추가하면 앱처럼 사용할 수 있습니다.";
+
       show("iosGuide");
       show("goAppBtn");
+
       return;
     }
 
     $("envBadge").innerText = "PC / 기타";
     $("topMsg").innerText = "휴대폰 카메라로 QR을 찍어 접속해주세요.";
+
     show("goAppBtn");
   });
 </script>
