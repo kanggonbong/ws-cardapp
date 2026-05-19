@@ -1643,7 +1643,7 @@ const CardApp = (function() {
             const label = document.getElementById('main-user-label');
             if (label) {
                 if (state.enteredUsers && state.enteredUsers.length > 0) {
-                    label.innerHTML = `${state.enteredUsers[0].name} <span class="main-badge">메인</span><span class="main-remove-mark" id="btn-remove-main" title="전체 초기화">횞</span>`;
+                    label.innerHTML = `${state.enteredUsers[0].name} <span class="main-badge">메인</span><span class="main-remove-mark" id="btn-remove-main" title="전체 초기화"><i class="fa-solid fa-xmark"></i></span>`;
                     const btnRemoveMain = document.getElementById('btn-remove-main');
                     if(btnRemoveMain) {
                         btnRemoveMain.onclick = (e) => {
@@ -1669,7 +1669,7 @@ const CardApp = (function() {
                     <div class="avatar"><i class="fa-solid fa-user"></i></div>
                     <div class="content">
                         <span class="name">${u.name}</span>
-                        <div class="remove-mark">횞</div>
+                        <div class="remove-mark"><i class="fa-solid fa-xmark"></i></div>
                     </div>
                 `;
                 chip.onclick = () => {
@@ -2056,7 +2056,10 @@ const CardApp = (function() {
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SERVER_CALL - 현재 장바구니를 master 파일에 저장 */
                     await Api.call('saveCartToMasterFile', {
                         cardId: state.currentReturnCard.id,
-                        cartData: state.receiptCart.map(({processing, analysisMeta, ...r}) => r)
+                        cartData: state.receiptCart.map(({processing, analysisMeta, receiptImage, ...r}) => ({
+                            ...r,
+                            ...(String(receiptImage || '').startsWith('id:') ? { receiptImage } : {})
+                        }))
                     });
 
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SUCCESS_MARK - saving 상태를 saved로 잠깐 표시 후 정리 */
@@ -2197,6 +2200,24 @@ const CardApp = (function() {
         영수증 파일 선택창 열기와 upload picker 상태 전달
         ========================================================= */
         triggerImageSelection: async (editIndex = -1) => {
+            // 이미 분석/저장 작업이 진행 중이면 파일 선택창을 다시 열지 않는다.
+            const hasActiveUpload = Array.isArray(state.receiptCart) && state.receiptCart.some(it =>
+                it && ['queued', 'optimizing', 'ocr', 'postprocessing', 'saving'].includes(it.processing)
+            );
+            if (hasActiveUpload) {
+                try {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top',
+                        icon: 'warning',
+                        title: '이전 영수증 분석이 진행 중입니다',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } catch (e) {}
+                return;
+            }
+
             state.pendingEditIndex = editIndex;
             const input = document.getElementById('receipt-file-input');
             if (!input) return;
@@ -2210,6 +2231,8 @@ const CardApp = (function() {
             }, 12000);
             input.click();
         },
+        /* =========================================================
+        @SUBSECTION: JS_CARD_LIST_RENDERING        },
         /* =========================================================
         @SUBSECTION: JS_CARD_LIST_RENDERING
         카드 목록 정렬/필터링/버튼 생성
@@ -2277,43 +2300,55 @@ const CardApp = (function() {
             delete overlay.dataset.cardId;
         },
         async submitRentRequest(id, purpose) {
+            if (CardLogic._rentInFlight) return;
+            CardLogic._rentInFlight = true;
+
             CardLogic.closeMorphOverlay();
             const names = state.enteredUsers.map(u => u.name).join(', ');
             const params = { cardNumber: id, userName: names, purpose, userExtensions: state.enteredUsers.map(u => u.extension) };
-            await safeUpdate(
-                (state, cardId) => {
-                    const t = state.allCardData.find(c => c.id === cardId);
-                    if (t) {
-                        t.status = '사용중';
-                        t.userInfo = t.userInfo || {};
-                        t.userInfo.userName = names;
-                        t.userInfo.purpose = purpose;
-                        t.userInfo.receiveDate = Utils.formatDateKR();
-                        t.savedCart = [];
-                    }
-                    UIManager.showConfirmationScreen('신청 완료',
-                        Utils.createDetailRow('카드번호', id)+
-                        Utils.createDetailRow('사용자', names)+
-                        Utils.createDetailRow('사용 목적', purpose)
-                    );
-                    state.pendingPostReturnSync = true;
-                },
-                async () => {
-                    const r = await Api.call('rentNow', params);
-                    if(r?.status==="conflict") throw new Error('ALREADY_IN_USE');
-                    if(r?.status==="defer") await Api.call('queueRentRequest', params);
-                    state.pendingPostReturnSync = true;
-                    CardLogic.scheduleQuickSync(2, 900);
-                },
-                (e) => {
-                    clearInterval(state.countdownInterval);
-                    UIManager.showScreen('main');
-                    Swal.fire(e.message==='ALREADY_IN_USE'?'신청 실패':'서버 오류', e.message==='ALREADY_IN_USE'?'이미 사용중입니다.':'오류가 발생했습니다.', e.message==='ALREADY_IN_USE'?'warning':'error');
-                    CardLogic.displayCardList();
-                },
-                id
-            );
+            try {
+                await safeUpdate(
+                    (state, cardId) => {
+                        const t = state.allCardData.find(c => c.id === cardId);
+                        if (t) {
+                            t.status = '사용중';
+                            t.userInfo = t.userInfo || {};
+                            t.userInfo.userName = names;
+                            t.userInfo.purpose = purpose;
+                            t.userInfo.receiveDate = Utils.formatDateKR();
+                            t.savedCart = [];
+                        }
+                        UIManager.showConfirmationScreen('신청 완료',
+                            Utils.createDetailRow('카드번호', id)+
+                            Utils.createDetailRow('사용자', names)+
+                            Utils.createDetailRow('사용 목적', purpose)
+                        );
+                        state.pendingPostReturnSync = true;
+                        CardLogic._rentInFlight = false;
+                    },
+                    async () => {
+                        const r = await Api.call('rentNow', params);
+                        if(r?.status==="conflict") throw new Error('ALREADY_IN_USE');
+                        if(r?.status==="defer") await Api.call('queueRentRequest', params);
+                        state.pendingPostReturnSync = true;
+                        CardLogic.scheduleQuickSync(2, 900);
+                    },
+                    (e) => {
+                        CardLogic._rentInFlight = false;
+                        clearInterval(state.countdownInterval);
+                        UIManager.showScreen('main');
+                        Swal.fire(e.message==='ALREADY_IN_USE'?'신청 실패':'서버 오류', e.message==='ALREADY_IN_USE'?'이미 사용중입니다.':'오류가 발생했습니다.', e.message==='ALREADY_IN_USE'?'warning':'error');
+                        CardLogic.displayCardList();
+                    },
+                    id
+                );
+            } catch (e) {
+                CardLogic._rentInFlight = false;
+                throw e;
+            }
         },
+        /* =========================================================
+        @SUBSECTION: JS_RETURN_SCREEN_LAYOUT        },
         /* =========================================================
         @SUBSECTION: JS_RETURN_SCREEN_LAYOUT
         반납 화면 제목/버튼/권한 안내 구성
@@ -2539,7 +2574,7 @@ const CardApp = (function() {
                     }
 
                     state.receiptCart[actualIdx] = {
-                        receiptImage: b64,
+                        receiptImage: (ocr && ocr.tempFileId) ? ocr.tempFileId : b64,
                         usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || '상호명 없음'),
                         usageDetails: isMeal ? '특근매식비' : '',
                         amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
@@ -2554,13 +2589,9 @@ const CardApp = (function() {
                     };
                     CardLogic.requestRenderReceiptCart();
 
-                    /* @PHASE: JS_RECEIPT_BATCH_SAVE_CART - 분석 결과를 장바구니 저장 큐에 전달 */
-                    try {
-                        await CardLogic.queueSaveCart(null);
-                    } catch (saveErr) {
-                        const currentItem = state.receiptCart[actualIdx];
-                        if (currentItem) currentItem.processing = 'save_error';
-                    }
+                    /* @PHASE: JS_RECEIPT_BATCH_SAVE_CART_DEFERRED
+                     * 다중 업로드 중에는 개별 파일마다 저장하지 않고 전체 처리 후 한 번만 저장한다.
+                     */
                 } catch (err) {
                     console.error('Receipt analysis failed:', err);
                     state.receiptCart[actualIdx] = {
@@ -2589,6 +2620,16 @@ const CardApp = (function() {
             });
 
             await Promise.allSettled(workers);
+
+            /* @PHASE: JS_RECEIPT_BATCH_SAVE_CART_ONCE - 전체 배치 처리 완료 후 서버 자동저장을 한 번만 실행 */
+            try {
+                await CardLogic.queueSaveCart(null);
+            } catch (e) {
+                console.error('Batch cart save failed:', e);
+                try {
+                    Swal.fire({toast:true, position:'top', icon:'error', title:'장바구니 저장 실패 · 네트워크를 확인해주세요', showConfirmButton:false, timer:2500});
+                } catch (_) {}
+            }
 
             /* @PHASE: JS_RECEIPT_BATCH_MANUAL_REVIEW - 직접 확인이 필요한 항목 안내 및 검토 큐 시작 */
             const manualReviewCount = state.receiptCart
@@ -2656,7 +2697,8 @@ const CardApp = (function() {
                 }
                 /* @PHASE: JS_RECEIPT_REPLACE_OPEN_REVIEW_POPUP - 교체 OCR 결과를 확인 팝업으로 전달 */
                 await CardLogic.openOcrPopup({
-                    receiptImage: b64,
+                    receiptImage: (ocr && ocr.tempFileId) ? ocr.tempFileId : b64,
+                    previewImage: b64,
                     usagePlace: analysisFailed ? '' : (ocr.storeName || ''),
                     usageDetails: (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근') ? '특근매식비' : ''),
                     amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
@@ -2697,21 +2739,31 @@ const CardApp = (function() {
                 canvas.toBlob(resolve, 'image/jpeg', quality);
             });
 
-            const loadImage = () => new Promise((resolve, reject) => {
-                const url = URL.createObjectURL(file);
-                const img = new Image();
-                img.onload = () => {
-                    URL.revokeObjectURL(url);
-                    resolve(img);
-                };
-                img.onerror = (e) => {
-                    URL.revokeObjectURL(url);
-                    reject(e);
-                };
-                img.src = url;
-            });
+            // EXIF 회전을 반영하여 ImageBitmap을 생성한다. 실패하면 기존 Image 객체 방식으로 폴백한다.
+            const loadImageBitmap = async (imgFile) => {
+                if ('createImageBitmap' in window) {
+                    try {
+                        return await createImageBitmap(imgFile, { imageOrientation: 'from-image' });
+                    } catch (e) {
+                        console.warn('createImageBitmap failed, fallback to Image object:', e);
+                    }
+                }
+                return new Promise((resolve, reject) => {
+                    const url = URL.createObjectURL(imgFile);
+                    const img = new Image();
+                    img.onload = () => {
+                        URL.revokeObjectURL(url);
+                        resolve(img);
+                    };
+                    img.onerror = (e) => {
+                        URL.revokeObjectURL(url);
+                        reject(e);
+                    };
+                    img.src = url;
+                });
+            };
 
-            const img = await loadImage();
+            const img = await loadImageBitmap(file);
             const originalW = img.naturalWidth || img.width;
             const originalH = img.naturalHeight || img.height;
 
@@ -2733,6 +2785,10 @@ const CardApp = (function() {
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(img, 0, 0, width, height);
+
+            try {
+                if (img && typeof img.close === 'function') img.close();
+            } catch (e) {}
 
             let bestBlob = null;
             for (const quality of QUALITY_STEPS) {
@@ -2760,6 +2816,8 @@ const CardApp = (function() {
             return dataUrl;
         },
         /* =========================================================
+        @SUBSECTION: JS_RECEIPT_EDIT_POPUP        },
+        /* =========================================================
         @SUBSECTION: JS_RECEIPT_EDIT_POPUP
         OCR 결과 확인/직접입력 SweetAlert 팝업
         ========================================================= */
@@ -2769,8 +2827,8 @@ const CardApp = (function() {
             const html = `
                 <div class="swal-custom-container">
                     <div id="swal-image-container">
-                        <img id="swal-image" src="${data.receiptImage||''}" style="${!data.receiptImage?'display:none;':''}" alt="영수증">
-                        <div id="swal-image-instruction">${!data.receiptImage?'이미지 추가 필요':'(이미지 교체)'}</div>
+                        <img id="swal-image" src="${data.previewImage || (String(data.receiptImage || '').startsWith('id:') ? '' : (data.receiptImage || ''))}" style="${!(data.previewImage || (data.receiptImage && !String(data.receiptImage).startsWith('id:')))?'display:none;':''}" alt="영수증">
+                        <div id="swal-image-instruction">${!data.receiptImage?'이미지 추가 필요':(String(data.receiptImage || '').startsWith('id:') ? '이미지는 임시 서버 파일로 보관 중' : '(이미지 교체)')}</div>
                     </div>
                     <div class="swal-input-wrapper-new"><div class="swal-input-group-new">
                         <input id="swal-store" class="swal2-input-new" placeholder=" " value="${Utils.esc(data.usagePlace)}" enterkeyhint="next" autocomplete="off">
@@ -2925,6 +2983,8 @@ const CardApp = (function() {
                 await Swal.fire('제출 불가', '행정실의 태블릿(관리자 모드)에서만 제출할 수 있습니다.', 'warning');
                 return;
             }
+            if (CardLogic._submitInFlight) return;
+
             /* @PHASE: JS_RETURN_SUBMIT_MISSING_DETAILS_CONFIRM - 일반 영수증의 사용내역 누락 확인 */
             const isMeal = state.currentReturnCard && state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
             if (!isMeal && state.receiptCart && state.receiptCart.length) {
@@ -2959,6 +3019,8 @@ const CardApp = (function() {
                 const ok = await Swal.fire({title:'영수증 없음',text:'진행하시겠습니까?',icon:'warning',showCancelButton:true});
                 if (!ok.isConfirmed) return;
             }
+
+            CardLogic._submitInFlight = true;
             /* @PHASE: JS_RETURN_SUBMIT_PARAMS - 서버 queueReturnRequest에 전달할 payload 구성 */
             const btn = document.getElementById('submit-cart-btn');
             if(btn) { btn.disabled = true; btn.classList.add('is-loading'); }
@@ -2969,32 +3031,43 @@ const CardApp = (function() {
                 userName: state.enteredUsers.map(u=>u.name).join(', '),
                 multiEntries: JSON.stringify(state.receiptCart)
             };
-            /* @PHASE: JS_RETURN_SUBMIT_OPTIMISTIC_UPDATE - 화면에는 먼저 반납처리중으로 반영하고 서버 큐에 저장 */
-            await safeUpdate(
-                (state, cardId) => {
-                    const t = state.allCardData.find(c => c.id === cardId);
-                    if (t) {
-                        t.status = '반납처리중';
-                    }
-                    UIManager.showConfirmationScreen('반납 요청 완료',
-                    Utils.createDetailRow('카드번호', params.cardNumber) +
-                    Utils.createDetailRow('처리 상태', `${state.receiptCart.length}건 반납`)
+            try {
+                /* @PHASE: JS_RETURN_SUBMIT_OPTIMISTIC_UPDATE - 화면에는 먼저 반납처리중으로 반영하고 서버 큐에 저장 */
+                await safeUpdate(
+                    (state, cardId) => {
+                        const t = state.allCardData.find(c => c.id === cardId);
+                        if (t) {
+                            t.status = '반납처리중';
+                        }
+                        UIManager.showConfirmationScreen('반납 요청 완료',
+                            Utils.createDetailRow('카드번호', params.cardNumber) +
+                            Utils.createDetailRow('처리 상태', `${state.receiptCart.length}건 반납`)
+                        );
+                        state.forceSyncOnNextUnlock = true;
+                        CardLogic._submitInFlight = false;
+                    },
+                    async () => {
+                        await Api.call('queueReturnRequest', params);
+                        state.pendingPostReturnSync = true;
+                        CardLogic.scheduleQuickSync(3, 1200);
+                    },
+                    (e) => {
+                        CardLogic._submitInFlight = false;
+                        clearInterval(state.countdownInterval);
+                        if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); }
+                        Swal.fire('실패', '다시 시도해주세요.', 'error').then(UIManager.showLockScreen);
+                    },
+                    params.cardNumber
                 );
-                    state.forceSyncOnNextUnlock = true;
-                },
-                async () => {
-                    await Api.call('queueReturnRequest', params);
-                    state.pendingPostReturnSync = true;
-                    CardLogic.scheduleQuickSync(3, 1200);
-                },
-                (e) => {
-                    clearInterval(state.countdownInterval);
-                    if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); }
-                    Swal.fire('실패', '다시 시도해주세요.', 'error').then(UIManager.showLockScreen);
-                },
-                params.cardNumber
-            );
+            } catch (e) {
+                CardLogic._submitInFlight = false;
+                if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); }
+                throw e;
+            }
         }
+    };
+    /* =========================================================
+    @SECTION: JS_APP_SEQUENCE        }
     };
     /* =========================================================
     @SECTION: JS_APP_SEQUENCE
@@ -3249,7 +3322,14 @@ const CardApp = (function() {
             else if (e.key === 'Backspace') { e.preventDefault(); KeypadLogic.processBackspace(); }
         });
         window.addEventListener('beforeunload', (e) => {
-            if (state.receiptCart.length > 0 || state.syncInFlight) { e.preventDefault();  return ''; }
+            const unsafeStates = ['queued', 'optimizing', 'ocr', 'postprocessing', 'saving', 'save_error'];
+            const hasUnsavedReceiptWork = Array.isArray(state.receiptCart) &&
+                state.receiptCart.some(it => it && unsafeStates.includes(it.processing));
+
+            if (hasUnsavedReceiptWork || state.syncInFlight) {
+                e.preventDefault();
+                return '';
+            }
         });
         const cont = elements.glassCardContainer;
         const card = document.getElementById('glass-card');
