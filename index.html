@@ -845,6 +845,80 @@ img {
 
 
     <!-- =========================================================
+      @SECTION: CSS_DASHBOARD_PRIVACY_MASK_STATUS
+      로그인 대시보드 중앙을 개인정보 보호 마스킹 상태 표시로 교체.
+      토글 없이 항상 보안 마스킹 상태를 안내합니다.
+    ========================================================= -->
+    <style>
+
+/* @SECTION: CSS_DASHBOARD_PRIVACY_MASK_STATUS - 대시보드 중앙 보안 마스킹 상태 표시 */
+.dashboard-center-status.privacy-mask-status{
+  width:92px;
+  height:42px;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:#2563eb;
+  font-size:.72rem;
+  font-weight:950;
+  letter-spacing:-0.02em;
+  background:linear-gradient(180deg,#f8fbff 0%,#e5eef9 100%);
+  border:1px solid rgba(255,255,255,0.72);
+  box-shadow:
+    7px 7px 14px rgba(110,138,176,0.18),
+    -6px -6px 12px rgba(255,255,255,0.9),
+    inset 1px 1px 0 rgba(255,255,255,0.7);
+}
+
+.dashboard-center-status.privacy-mask-status i{
+  font-size:1rem;
+  color:#2563eb;
+  animation:privacyEyePulse 1.9s ease-in-out infinite;
+}
+
+.dashboard-center-status.privacy-mask-status span{
+  font-size:.68rem;
+  line-height:1;
+  white-space:nowrap;
+}
+
+@keyframes privacyEyePulse{
+  0%,100%{
+    opacity:.62;
+    transform:scale(.96);
+    filter:drop-shadow(0 0 0 rgba(37,99,235,0));
+  }
+  50%{
+    opacity:1;
+    transform:scale(1.08);
+    filter:drop-shadow(0 0 6px rgba(37,99,235,.35));
+  }
+}
+
+/* 로그인 준비완료 문구 강조: 신원 노출 없이 로그인 상태만 초록색으로 강조 */
+#login-instruction.login-ready{
+  color:#166534 !important;
+  text-shadow:none !important;
+}
+
+#login-instruction .login-ready-keyword{
+  display:inline-flex;
+  align-items:center;
+  padding:3px 10px;
+  margin-right:4px;
+  border-radius:999px;
+  color:#ffffff !important;
+  background:linear-gradient(135deg,#34d399 0%,#10b981 55%,#059669 100%);
+  box-shadow:0 6px 14px rgba(16,185,129,0.22), inset 1px 1px 0 rgba(255,255,255,0.35);
+  font-weight:950;
+}
+
+    </style>
+
+    <!-- =========================================================
       @SECTION: CSS_FINAL_HOTFIX_ANALYSIS_OVERLAY
       기존 파일 맨 아래에 있던 style 블록을 head 안으로 이동.
       분석중 오버레이가 장바구니 아이템 위에 안정적으로 보이도록 하는 마지막 핫픽스.
@@ -1504,6 +1578,466 @@ img {
 
 </style>
 
+
+
+<!-- @SECTION: CSS_FINAL_DASHBOARD_STATUS_PATCH
+     대시보드 중앙을 입력 상태창으로 통합하고, 신원확인 전 이름 노출을 막는 최종 패치 -->
+<style>
+.header-dashboard{
+  display:grid !important;
+  grid-template-columns:1fr auto 1fr !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+.dashboard-center-screen{
+  width:142px !important;
+  height:58px !important;
+  padding:6px 12px !important;
+  border-radius:16px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  overflow:hidden !important;
+  position:relative !important;
+  background:linear-gradient(180deg,#d8e5f5 0%,#edf3fb 100%) !important;
+  border:1px solid rgba(255,255,255,0.64) !important;
+  box-shadow:
+    inset 3px 3px 6px rgba(110,138,176,0.22),
+    inset -3px -3px 6px rgba(255,255,255,0.86),
+    0 4px 12px rgba(37,99,235,0.04) !important;
+  transition:border-color .25s ease, box-shadow .25s ease, background .25s ease !important;
+}
+.dashboard-center-screen.success{
+  border-color:rgba(16,185,129,0.46) !important;
+  box-shadow:
+    inset 0 0 12px rgba(16,185,129,0.14),
+    inset 3px 3px 6px rgba(110,138,176,0.18),
+    inset -3px -3px 6px rgba(255,255,255,0.86) !important;
+}
+.dashboard-center-screen.invalid{
+  border-color:rgba(231,72,95,0.46) !important;
+  box-shadow:
+    inset 0 0 12px rgba(231,72,95,0.13),
+    inset 3px 3px 6px rgba(110,138,176,0.18),
+    inset -3px -3px 6px rgba(255,255,255,0.86) !important;
+}
+.status-badge-wrap{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:4px !important;
+  margin-bottom:3px !important;
+  font-size:.62rem !important;
+  line-height:1 !important;
+  font-weight:850 !important;
+  color:var(--text-secondary) !important;
+  letter-spacing:-.02em !important;
+  white-space:nowrap !important;
+}
+.status-badge-wrap i{font-size:.72rem !important;}
+.dashboard-center-screen.success .status-badge-wrap{color:#10b981 !important;}
+.dashboard-center-screen.invalid .status-badge-wrap{color:#e7485f !important;}
+.status-text-main{
+  position:static !important;
+  transform:none !important;
+  width:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-align:center !important;
+  background:none !important;
+  box-shadow:none !important;
+  font-size:.82rem !important;
+  font-weight:950 !important;
+  line-height:1.15 !important;
+  color:var(--text-primary) !important;
+  letter-spacing:-.03em !important;
+  white-space:nowrap !important;
+}
+.dashboard-center-screen.success .status-text-main{color:#15803d !important;}
+.dashboard-center-screen.invalid .status-text-main{color:#b91c1c !important;}
+#login-instruction .login-ready-keyword,
+.login-ready-keyword{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:2px 8px !important;
+  margin-right:4px !important;
+  border-radius:999px !important;
+  color:#fff !important;
+  font-size:.76rem !important;
+  font-weight:950 !important;
+  background:linear-gradient(135deg,#34d399 0%,#10b981 100%) !important;
+  box-shadow:0 5px 12px rgba(16,185,129,.22) !important;
+}
+.login-instruction-area{
+  min-height:24px !important;
+  height:auto !important;
+  margin-top:12px !important;
+  margin-bottom:8px !important;
+}
+.login-instruction-area.has-users{
+  min-height:124px !important;
+  height:124px !important;
+}
+.main-user-box .main-name-highlight,
+.companion-chip .name{
+  letter-spacing:-.02em !important;
+}
+@media (max-width:767px){
+  .header-dashboard{gap:8px !important;padding:0 12px !important;}
+  .dashboard-center-screen{width:128px !important;height:56px !important;padding:6px 8px !important;}
+  .status-text-main{font-size:.78rem !important;}
+  .status-badge-wrap{font-size:.58rem !important;}
+  .login-instruction-area.has-users{min-height:116px !important;height:116px !important;}
+}
+</style>
+
+
+
+<!-- @SECTION: CSS_FINAL_LOGIN_PANEL_MOTION_PATCH
+     동행자 패널 덜컥거림 방지, 대표 사용자 위계 강화, 제거 버튼 터치 영역 확대 -->
+<style>
+/* 로그인 사용자 패널 공간 예약: 패널이 생길 때 키패드가 갑자기 밀리지 않도록 완충 영역 확보 */
+#screen-login .login-instruction-area{
+  min-height:36px !important;
+  height:36px !important;
+  margin-top:10px !important;
+  margin-bottom:8px !important;
+  overflow:visible !important;
+  transition:
+    height .34s cubic-bezier(.22,1,.36,1),
+    min-height .34s cubic-bezier(.22,1,.36,1),
+    margin .24s ease !important;
+}
+#screen-login .login-instruction-area.has-users{
+  min-height:142px !important;
+  height:142px !important;
+  margin-top:12px !important;
+  margin-bottom:10px !important;
+}
+#screen-login .login-user-panel{
+  top:50% !important;
+  transform:translate(-50%,-50%) scale(1) !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  transition:
+    opacity .24s ease,
+    transform .34s cubic-bezier(.22,1,.36,1),
+    filter .24s ease !important;
+  will-change:opacity, transform;
+}
+#screen-login .login-user-panel.hidden{
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  transform:translate(-50%,-46%) scale(.965) !important;
+  filter:blur(.2px);
+}
+#screen-login .login-instruction-area.has-users .login-user-panel:not(.hidden){
+  animation:loginPanelMount .34s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes loginPanelMount{
+  from{opacity:0;transform:translate(-50%,-45%) scale(.965);}
+  to{opacity:1;transform:translate(-50%,-50%) scale(1);}
+}
+
+/* 대표 사용자 박스: 실명은 숨기고 대표 상태만 강하게 보이도록 메탈릭 테두리 + live dot 적용 */
+#screen-login .main-user-box{
+  position:relative !important;
+  overflow:visible !important;
+  border:1px solid transparent !important;
+  background-image:
+    linear-gradient(180deg,#fbfdff 0%,#eaf2fd 100%),
+    linear-gradient(135deg,rgba(52,211,153,.75),rgba(59,130,246,.55),rgba(255,255,255,.9)) !important;
+  background-origin:border-box !important;
+  background-clip:padding-box,border-box !important;
+  box-shadow:
+    7px 7px 16px rgba(110,138,176,.16),
+    -6px -6px 14px rgba(255,255,255,.92),
+    inset 1px 1px 0 rgba(255,255,255,.78) !important;
+}
+#screen-login .main-user-info .main-user-icon{
+  position:relative !important;
+  background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(37,99,235,.10)) !important;
+  color:#2563eb !important;
+}
+#screen-login .main-user-info .main-user-icon::after{
+  content:'';
+  position:absolute;
+  right:-1px;
+  bottom:-1px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#10b981;
+  border:1.5px solid #fff;
+  box-shadow:0 0 0 rgba(16,185,129,0);
+  animation:loginLiveDot 1.65s ease-in-out infinite;
+}
+@keyframes loginLiveDot{
+  0%,100%{opacity:.62;transform:scale(.86);box-shadow:0 0 0 0 rgba(16,185,129,.34);}
+  50%{opacity:1;transform:scale(1.18);box-shadow:0 0 8px 2px rgba(16,185,129,.18);}
+}
+#screen-login .main-user-info .main-user-role{
+  color:#0f766e !important;
+}
+#screen-login .main-user-info .main-name-highlight{
+  color:#166534 !important;
+}
+#screen-login .main-user-info .main-name-suffix{
+  color:#1f4175 !important;
+}
+
+/* 동행자 칩: 생성 모션과 안전한 삭제 버튼 히트박스 */
+#screen-login .companion-grid{
+  align-items:center !important;
+}
+#screen-login .companion-chip{
+  position:relative !important;
+  cursor:default !important;
+  padding:7px 10px !important;
+  transform-origin:center center;
+  animation:companionChipBounce .26s cubic-bezier(.34,1.56,.64,1) both !important;
+}
+#screen-login .companion-chip .name-wrapper{
+  pointer-events:none;
+}
+#screen-login .companion-remove-btn{
+  position:relative !important;
+  width:28px !important;
+  height:28px !important;
+  border:none !important;
+  padding:0 !important;
+  border-radius:50% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:linear-gradient(180deg,#fff7f7 0%,#ffe7e7 100%) !important;
+  color:#ef4444 !important;
+  box-shadow:3px 3px 7px rgba(239,68,68,.10),-3px -3px 7px rgba(255,255,255,.85),inset 1px 1px 0 rgba(255,255,255,.72) !important;
+  cursor:pointer !important;
+  flex-shrink:0 !important;
+  z-index:2;
+  transition:transform .12s ease, box-shadow .12s ease, background .12s ease !important;
+}
+#screen-login .companion-remove-btn::before{
+  content:'';
+  position:absolute;
+  inset:-10px;
+  border-radius:50%;
+}
+#screen-login .companion-remove-btn:active{
+  transform:scale(.88) !important;
+  background:linear-gradient(180deg,#ffe7e7 0%,#ffd2d2 100%) !important;
+  box-shadow:inset 3px 3px 7px rgba(180,0,0,.20),inset -2px -2px 5px rgba(255,255,255,.55) !important;
+}
+#screen-login .main-reset-btn{
+  position:relative !important;
+  width:32px !important;
+  height:32px !important;
+}
+#screen-login .main-reset-btn::before{
+  content:'';
+  position:absolute;
+  inset:-10px;
+  border-radius:50%;
+}
+@keyframes companionChipBounce{
+  0%{opacity:0;transform:translateY(8px) scale(.88);}
+  70%{opacity:1;transform:translateY(-1px) scale(1.035);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+
+@media (max-width:767px){
+  #screen-login .login-instruction-area{min-height:34px !important;height:34px !important;margin-top:8px !important;margin-bottom:7px !important;}
+  #screen-login .login-instruction-area.has-users{min-height:136px !important;height:136px !important;}
+  #screen-login .companion-remove-btn{width:30px !important;height:30px !important;}
+  #screen-login .companion-chip{padding:6px 8px !important;}
+}
+
+.login-added-ext{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:3px 7px;
+  margin-right:4px;
+  border-radius:999px;
+  color:#2563eb;
+  font-weight:950;
+  background:rgba(37,99,235,0.08);
+  border:1px solid rgba(37,99,235,0.14);
+}
+</style>
+
+
+
+<!-- =========================================================
+  @SECTION: CSS_FINAL_DIGIT_INTERACTION_UPGRADE
+  입력 도트 박스 영역 프리미엄 인터랙션 최종 패치
+  - 기능 로직/GAS 연결부는 건드리지 않음
+  - filled/masked/active-cursor 표현만 안전하게 덮어쓰기
+========================================================= -->
+<style>
+#keypadDisplay{
+  perspective:720px;
+  transform-style:preserve-3d;
+}
+
+#keypadDisplay .digit-wrapper{
+  position:relative !important;
+  transform-style:preserve-3d;
+}
+
+@keyframes digitJellyPopFinal{
+  0%{transform:scale(.60);opacity:.42;}
+  55%{transform:scale(1.12);opacity:1;}
+  80%{transform:scale(.96);}
+  100%{transform:scale(1);opacity:1;}
+}
+
+@keyframes digitFlipMaskFinal{
+  0%{transform:scale(1.08) rotateX(0deg);opacity:.9;}
+  50%{transform:scale(.74) rotateX(90deg);opacity:.55;}
+  100%{transform:scale(1) rotateX(0deg);opacity:1;}
+}
+
+@keyframes cursorPulseFinal{
+  0%,100%{
+    opacity:.22;
+    transform:translate(-50%,-50%) scale(.80);
+  }
+  50%{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1.32);
+  }
+}
+
+#keypadDisplay .digit-box.filled{
+  width:48px !important;
+  height:48px !important;
+  border-radius:14px !important;
+  color:#2563eb !important;
+  font-size:1.35rem !important;
+  font-weight:750 !important;
+  background:linear-gradient(180deg,#fbfdff 0%,#e8eff8 100%) !important;
+  border:1px solid rgba(37,99,235,.24) !important;
+  box-shadow:
+    6px 6px 12px rgba(110,138,176,.21),
+    -6px -6px 12px rgba(255,255,255,.96),
+    inset 1px 1px 0 rgba(255,255,255,.78) !important;
+  animation:digitJellyPopFinal .20s cubic-bezier(.175,.885,.32,1.275) both !important;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform-origin:center center;
+}
+
+#keypadDisplay .digit-box.masked{
+  width:18px !important;
+  height:18px !important;
+  border-radius:50% !important;
+  font-size:0 !important;
+  color:transparent !important;
+  background:linear-gradient(180deg,#5d9ff3 0%,#2d66d3 100%) !important;
+  border:none !important;
+  box-shadow:
+    inset 3px 3px 6px rgba(15,32,65,.36),
+    inset -1px -1px 2px rgba(255,255,255,.22),
+    0 1px 0 rgba(255,255,255,.60),
+    0 5px 13px rgba(37,99,235,.26) !important;
+  animation:
+    digitFlipMaskFinal .24s cubic-bezier(.4,0,.2,1) forwards,
+    pulse-breathing 2.2s infinite ease-in-out .25s !important;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform-origin:center center;
+}
+
+#keypadDisplay .digit-wrapper.active-cursor::after,
+#keypadDisplay .digit-box.current-active::after{
+  content:'';
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--primary-color);
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 8px rgba(37,99,235,.62);
+  animation:cursorPulseFinal 1.2s ease-in-out infinite;
+  pointer-events:none;
+}
+</style>
+
+
+    <!-- =========================================================
+      @SECTION: CSS_FINAL_HOTFIX_MASKED_DOT_STABLE
+      플립 마스킹은 유지하고, 마스킹 완료 후 반복 숨쉬기/떨림 애니메이션은 제거
+    ========================================================= -->
+    <style>
+#keypadDisplay .digit-box.masked{
+  animation: digitFlipMask 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  transform-origin: center center !important;
+}
+    </style>
+
+
+
+<!-- =========================================================
+  @SECTION: CSS_FINAL_HOTFIX_STABLE_DIGIT_FLIP
+  입력 도트 마스킹 마지막 잔떨림 방지 패치
+  - masked 상태에서 transition 제거
+  - transform은 digitFlipMaskStable 애니메이션 하나만 담당
+  - pulse-breathing 반복 애니메이션 제거
+========================================================= -->
+<style>
+@keyframes digitFlipMaskStable {
+  0% {
+    transform: translateZ(0) scale(1) rotateX(0deg);
+    opacity: 1;
+  }
+  45% {
+    transform: translateZ(0) scale(0.76) rotateX(90deg);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateZ(0) scale(1) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+#keypadDisplay .digit-wrapper {
+  position: relative !important;
+  perspective: 700px !important;
+}
+
+#keypadDisplay .digit-box.masked {
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 50% !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  background: linear-gradient(180deg, #5d9ff3 0%, #2d66d3 100%) !important;
+  border: none !important;
+  box-shadow:
+    inset 3px 3px 6px rgba(15, 32, 65, 0.36),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.22),
+    0 1px 0 rgba(255, 255, 255, 0.6) !important;
+
+  transition: none !important;
+  animation: digitFlipMaskStable 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+
+  transform: translateZ(0);
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+  will-change: transform, opacity;
+}
+</style>
+
 </head>
 <body class="variant-lockscreen">
 
@@ -1623,11 +2157,12 @@ img {
         <span class="stat-value" id="dash-available">-</span>
     </div>
 
-    <div class="dashboard-progress-container">
-        <div class="dash-mini-track">
-            <div class="dash-mini-fill" id="dash-mini-fill"></div>
+    <div class="dashboard-center-screen" id="dash-center-screen" aria-label="내선번호 입력 상태 창">
+        <div class="status-badge-wrap" id="dash-badge-area">
+            <i class="fa-solid fa-keyboard" id="dash-badge-icon" aria-hidden="true"></i>
+            <span id="dash-badge-text">대기 중</span>
         </div>
-        <span class="dash-progress-caption" id="dash-progress-percent">0%</span>
+        <p id="login-instruction" class="status-text-main instruction">내선번호 입력</p>
     </div>
 
     <div class="stat-item">
@@ -1639,7 +2174,6 @@ img {
 </div>
 
                 <div id="login-instruction-area" class="login-instruction-area">
-                    <p id="login-instruction" class="instruction">내선번호 4자리를 입력하세요</p>
                     <div id="login-user-panel" class="login-user-panel hidden" aria-live="polite">
                         <div class="main-user-box" id="main-user-box"></div>
                         <div class="companion-grid" id="login-user-inline"></div>
@@ -1850,6 +2384,9 @@ const CardApp = (function() {
         activeDigitIndex: 0,
         enteredUsers: [],
         loginTyping: false,
+        _lastAddedExt: null,
+        _showAddedFeedback: false,
+        _addedFeedbackTimer: null,
 
         /* =========================================================
         @SUBSECTION: JS_STATE_RECEIPT
@@ -2466,6 +3003,9 @@ const CardApp = (function() {
             const submitBtn = document.getElementById('keypad-submit-btn');
             const preview = document.getElementById('login-user-preview');
             const instruction = document.getElementById('login-instruction');
+            const badgeText = document.getElementById('dash-badge-text');
+            const badgeIcon = document.getElementById('dash-badge-icon');
+            const centerScreen = document.getElementById('dash-center-screen');
 
             if (addBtn) addBtn.disabled = !hasFullPin;
             if (submitBtn) submitBtn.disabled = !(hasFullPin || hasUsers);
@@ -2476,29 +3016,57 @@ const CardApp = (function() {
                 preview.classList.remove('invalid');
             }
 
-            if (instruction && (!hasUsers)) {
-                instruction.classList.remove('login-ready', 'login-invalid');
-                if (hasFullPin && Array.isArray(state.allUsersData)) {
-                    const user = state.allUsersData.find(u => u.extension === ext);
-                    if (user) {
-                        instruction.classList.add('login-ready');
-                        instruction.innerHTML = `<span class="login-confirm-name">${Utils.esc(user.name)} 선생님</span> 확인됨`;
-                    } else {
-                        instruction.classList.add('login-invalid');
-                        instruction.innerHTML = '등록되지 않은 내선번호입니다';
-                    }
+            if (centerScreen) centerScreen.classList.remove('success', 'invalid');
+            if (!instruction) return;
+
+            instruction.classList.remove('login-ready', 'login-invalid', 'hidden');
+
+            // 동행자 추가 직후에는 방금 입력한 내선번호만 잠깐 보여주고,
+            // 이후에는 중앙 상태창을 다시 현재 입력 대기 상태로 되돌립니다.
+            if (state._showAddedFeedback && state._lastAddedExt) {
+                instruction.classList.add('login-ready');
+                instruction.innerHTML = `<span class="login-added-ext">[${Utils.esc(state._lastAddedExt)}]</span> 추가완료`;
+                if (centerScreen) centerScreen.classList.add('success');
+                if (badgeText) badgeText.textContent = '추가 성공';
+                if (badgeIcon) badgeIcon.className = 'fa-solid fa-user-plus';
+                return;
+            }
+
+            if (hasFullPin && Array.isArray(state.allUsersData)) {
+                const user = state.allUsersData.find(u => String(u.extension) === ext);
+                if (user) {
+                    instruction.classList.add('login-ready');
+                    instruction.innerHTML = '<span class="login-ready-keyword">로그인</span> 준비완료';
+                    if (centerScreen) centerScreen.classList.add('success');
+                    if (badgeText) badgeText.textContent = '확인 완료';
+                    if (badgeIcon) badgeIcon.className = 'fa-solid fa-circle-check';
                 } else {
-                    instruction.textContent = '내선번호 4자리를 입력하세요';
+                    instruction.classList.add('login-invalid');
+                    instruction.innerHTML = '번호 확인 필요';
+                    if (centerScreen) centerScreen.classList.add('invalid');
+                    if (badgeText) badgeText.textContent = '조회 실패';
+                    if (badgeIcon) badgeIcon.className = 'fa-solid fa-circle-exclamation';
                 }
+            } else if (ext.length > 0) {
+                instruction.textContent = `${ext.length}자리 입력됨`;
+                if (badgeText) badgeText.textContent = '입력 중';
+                if (badgeIcon) badgeIcon.className = 'fa-solid fa-keyboard';
+            } else {
+                instruction.textContent = '내선번호 입력';
+                if (badgeText) badgeText.textContent = '대기 중';
+                if (badgeIcon) badgeIcon.className = 'fa-solid fa-keyboard';
             }
         },
         renderDisplay: () => {
-            document.querySelectorAll('#keypadDisplay .digit-box').forEach((box, i) => {
+            document.querySelectorAll('#keypadDisplay .digit-wrapper').forEach((wrap, i) => {
+                const box = wrap.querySelector('.digit-box');
+                if (!box) return;
                 const data = state.keypadValues[i];
 
                 // filled / masked 상태만 안전하게 초기화합니다.
                 // 다른 레이아웃/애니메이션 클래스가 추가되어도 같이 지워지지 않도록 보호합니다.
-                box.classList.remove('filled', 'masked');
+                box.classList.remove('filled', 'masked', 'current-active');
+                wrap.classList.remove('active-cursor');
                 box.textContent = '';
 
                 if (data) {
@@ -2508,6 +3076,11 @@ const CardApp = (function() {
                         box.classList.add('filled');
                         box.textContent = data.value;
                     }
+                }
+
+                if (i === state.activeDigitIndex && state.activeDigitIndex < 4 && !state.keypadValues[i]) {
+                    wrap.classList.add('active-cursor');
+                    box.classList.add('current-active');
                 }
             });
             KeypadLogic.updateLoginPreviewAndActions();
@@ -2564,15 +3137,22 @@ const CardApp = (function() {
             }
             const ext = state.keypadValues.map(v => v ? v.value : '').join('');
             if (ext.length !== 4) return Swal.fire('알림', '내선번호 4자리를 입력해주세요.', 'warning');
-            const user = state.allUsersData.find(u => u.extension === ext);
+            const user = state.allUsersData.find(u => String(u.extension) === ext);
             if (!user) return Swal.fire('조회 실패', '해당 내선번호를 찾을 수 없습니다.', 'error');
-            if (state.enteredUsers.some(u => u.name === user.name)) return Swal.fire('알림', '이미 추가된 사용자입니다.', 'info');
+            if (state.enteredUsers.some(u => String(u.extension) === ext)) return Swal.fire('알림', '이미 추가된 사용자입니다.', 'info');
             KeypadLogic.markTyping();
             state.enteredUsers.push({ extension: ext, name: user.name, role: user.role });
+            state._lastAddedExt = ext;
+            state._showAddedFeedback = true;
+            if (state._addedFeedbackTimer) clearTimeout(state._addedFeedbackTimer);
             state.keypadValues = [null, null, null, null];
             state.activeDigitIndex = 0;
             KeypadLogic.renderDisplay();
             KeypadLogic.renderLoginUserTags();
+            state._addedFeedbackTimer = setTimeout(() => {
+                state._showAddedFeedback = false;
+                if (state.currentScreen === 'login') KeypadLogic.updateLoginPreviewAndActions();
+            }, 1500);
         },
         renderLoginUserTags: () => {
             const inline = document.getElementById('login-user-inline');
@@ -2591,7 +3171,7 @@ const CardApp = (function() {
                 if (instructionArea) instructionArea.classList.remove('has-users');
                 if (instruction) {
                     instruction.classList.remove('hidden', 'login-ready', 'login-invalid');
-                    instruction.textContent = '내선번호 4자리를 입력하세요';
+                    instruction.textContent = '내선번호 입력';
                 }
                 inline.classList.add('hidden');
                 KeypadLogic.updateLoginPreviewAndActions();
@@ -2600,15 +3180,16 @@ const CardApp = (function() {
 
             panel.classList.remove('hidden');
             if (instructionArea) instructionArea.classList.add('has-users');
-            if (instruction) instruction.classList.add('hidden');
+            if (instruction) instruction.classList.remove('hidden');
 
             const mainUser = state.enteredUsers[0];
+            const mainExt = Utils.esc(String(mainUser.extension || ''));
             mainBox.innerHTML = `
                 <div class="main-user-info">
-                    <span class="main-user-icon"><i class="fa-solid fa-user-check"></i></span>
+                    <span class="main-user-icon"><i class="fa-solid fa-user-shield"></i></span>
                     <span class="main-user-text">
                         <span class="main-user-role">대표 사용자</span>
-                        <span class="name"><span class="main-name-highlight">${Utils.esc(mainUser.name)}</span><span class="main-name-suffix">님</span></span>
+                        <span class="name"><span class="main-name-highlight">${mainExt}</span><span class="main-name-suffix"> 등록됨</span></span>
                     </span>
                 </div>
                 <button class="main-reset-btn" id="btn-remove-main" type="button" title="전체 초기화" aria-label="전체 사용자 초기화">
@@ -2622,6 +3203,9 @@ const CardApp = (function() {
                     state.enteredUsers = [];
                     state.keypadValues = [null, null, null, null];
                     state.activeDigitIndex = 0;
+                    state._lastAddedExt = null;
+                    state._showAddedFeedback = false;
+                    if (state._addedFeedbackTimer) clearTimeout(state._addedFeedbackTimer);
                     KeypadLogic.clearTyping();
                     KeypadLogic.renderDisplay();
                     KeypadLogic.renderLoginUserTags();
@@ -2629,24 +3213,32 @@ const CardApp = (function() {
             }
 
             const extraUsers = state.enteredUsers.slice(1);
-            extraUsers.forEach((u) => {
+            extraUsers.forEach((u, i) => {
                 const chip = document.createElement('div');
                 chip.className = 'companion-chip';
+                const extLabel = Utils.esc(String(u.extension || ''));
                 chip.innerHTML = `
                     <div class="name-wrapper">
-                        <span class="name">${Utils.esc(u.name)}님</span>
+                        <span class="name">${extLabel}</span>
                     </div>
-                    <div class="companion-remove-btn" aria-label="동행자 삭제">
+                    <button class="companion-remove-btn" type="button" aria-label="내선번호 ${extLabel} 삭제">
                         <i class="fa-solid fa-xmark"></i>
-                    </div>
+                    </button>
                 `;
-                chip.onclick = () => {
-                    const realIndex = state.enteredUsers.findIndex(x => x.name === u.name && x.extension === u.extension);
-                    if (realIndex > -1) {
-                        state.enteredUsers.splice(realIndex, 1);
-                        KeypadLogic.renderLoginUserTags();
-                    }
-                };
+                const removeBtn = chip.querySelector('.companion-remove-btn');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        Utils.haptic(8);
+                        const realIndex = state.enteredUsers.findIndex(x => x.name === u.name && x.extension === u.extension);
+                        if (realIndex > -1) {
+                            state.enteredUsers.splice(realIndex, 1);
+                            KeypadLogic.renderLoginUserTags();
+                            KeypadLogic.renderDisplay();
+                        }
+                    });
+                }
                 inline.appendChild(chip);
             });
             KeypadLogic.updateLoginPreviewAndActions();
@@ -2674,7 +3266,7 @@ const CardApp = (function() {
                     setTimeout(()=>elements.keypadDisplay.classList.remove('shake'), 500);
                     return UIManager.startInactivityDetection();
                 }
-                const user = state.allUsersData.find(u => u.extension === ext);
+                const user = state.allUsersData.find(u => String(u.extension) === ext);
                 if (!user) {
                     elements.keypadDisplay.classList.add('shake');
                     setTimeout(()=>elements.keypadDisplay.classList.remove('shake'), 500);
