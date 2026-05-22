@@ -2038,6 +2038,162 @@ img {
 }
 </style>
 
+
+
+    <!-- =========================================================
+      @SECTION: CSS_FINAL_KEYPAD_BUTTON_UX_PATCH
+      하단 키패드/로그인 버튼 프리미엄 UX 안정화 패치
+      - 기능 로직/GAS 연결부 변경 없음
+      - 키패드 타건감, 로그인 버튼 활성 상태 시머만 보강
+    ========================================================= -->
+    <style>
+/* @SECTION: CSS_FINAL_KEYPAD_BUTTON_UX_PATCH - 키패드/로그인 버튼 터치감 최종 보강 */
+.keypad-grid{
+  width:100%;
+  padding:0 4px !important;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px !important;
+  margin-bottom:12px !important;
+}
+
+.keypad-btn{
+  aspect-ratio:1.15 / 1 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:1.8rem !important;
+  font-weight:800 !important;
+  color:var(--text-secondary) !important;
+  cursor:pointer;
+  border-radius:18px !important;
+  border:1px solid rgba(255,255,255,0.85) !important;
+  background:linear-gradient(180deg,#fbfdff 0%,#e8eff8 100%) !important;
+  box-shadow:
+    6px 6px 12px var(--shadow-dark),
+    -6px -6px 12px var(--shadow-light),
+    inset 1px 1px 0 rgba(255,255,255,0.6) !important;
+  transition:transform 0.08s ease,box-shadow 0.08s ease,color 0.08s ease,filter 0.08s ease !important;
+}
+
+.keypad-btn:hover{
+  filter:brightness(1.015);
+}
+
+.keypad-btn:active,
+.keypad-btn.pressed{
+  transform:scale(0.93) translateY(2px) !important;
+  box-shadow:
+    inset 5px 5px 10px rgba(126,156,198,0.25),
+    inset -5px -5px 10px rgba(255,255,255,0.85) !important;
+  color:var(--primary-color) !important;
+  filter:none !important;
+}
+
+#keypad-add-btn{
+  color:#f59e0b !important;
+}
+
+#keypad-back-btn{
+  color:var(--danger-color) !important;
+}
+
+#keypad-add-btn:active,
+#keypad-add-btn.pressed{
+  color:#f59e0b !important;
+}
+
+#keypad-back-btn:active,
+#keypad-back-btn.pressed{
+  color:var(--danger-color) !important;
+}
+
+#keypad-submit-btn{
+  width:100%;
+  padding:20px 0 !important;
+  font-size:1.25rem !important;
+  font-weight:900 !important;
+  margin-top:16px !important;
+  border-radius:22px !important;
+  border:1px solid rgba(255,255,255,0.4) !important;
+  color:#8b9eb9 !important;
+  background:linear-gradient(180deg,#dce3ec 0%,#cbd5e1 100%) !important;
+  box-shadow:
+    inset 1px 1px 2px rgba(255,255,255,0.4),
+    4px 4px 10px rgba(110,138,176,0.12) !important;
+  cursor:not-allowed;
+  transition:transform 0.16s ease,box-shadow 0.16s ease,background 0.22s ease,color 0.22s ease,filter 0.16s ease !important;
+  position:relative;
+  overflow:hidden;
+}
+
+#keypad-submit-btn:not(:disabled){
+  background:linear-gradient(135deg,#7cb8ff 0%,#2563eb 54%,#1d4ed8 100%) !important;
+  color:#ffffff !important;
+  border:1px solid rgba(255,255,255,0.3) !important;
+  box-shadow:
+    0 12px 24px rgba(37,99,216,0.24),
+    inset 1px 1px 0 rgba(255,255,255,0.35) !important;
+  cursor:pointer;
+}
+
+@keyframes buttonGlowShimmer{
+  0%,76%{left:-120%;}
+  100%{left:220%;}
+}
+
+#keypad-submit-btn:not(:disabled)::after{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:45%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.30),transparent);
+  transform:skewX(-25deg);
+  animation:buttonGlowShimmer 4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+#keypad-submit-btn:disabled::after{
+  content:none !important;
+  display:none !important;
+}
+
+#keypad-submit-btn:not(:disabled):hover{
+  filter:brightness(1.02);
+}
+
+#keypad-submit-btn:not(:disabled):active,
+#keypad-submit-btn.pressed:not(:disabled){
+  transform:scale(0.975) translateY(1px) !important;
+  box-shadow:
+    0 6px 12px rgba(37,99,216,0.18),
+    inset 6px 6px 12px rgba(29,78,216,0.35) !important;
+  filter:none !important;
+}
+
+@media (max-width:767px){
+  .keypad-grid{
+    gap:12px !important;
+    padding:0 2px !important;
+    margin-bottom:10px !important;
+  }
+
+  .keypad-btn{
+    aspect-ratio:1.12 / 1 !important;
+    font-size:1.65rem !important;
+    border-radius:17px !important;
+  }
+
+  #keypad-submit-btn{
+    padding:18px 0 !important;
+    margin-top:14px !important;
+    font-size:1.18rem !important;
+  }
+}
+    </style>
+
 </head>
 <body class="variant-lockscreen">
 
