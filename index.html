@@ -3315,6 +3315,238 @@ img {
     padding-right:12px !important;
   }
 }
+
+
+/* =========================================================
+  @SECTION: CSS_TABLET_KIOSK_VISUAL_SCALE_V2
+  태블릿 세로 키오스크 크기/배치 최종 보정 v2
+  - 해외결제카드: PC와 동일하게 8번 카드 아래 중앙 배치
+  - 내선번호 입력/로그인: 태블릿에서 더 크게, 화면 중앙에 가깝게
+  - 잠금화면/로딩화면: 태블릿에서 존재감 있게 확대
+  - 햅틱/반납/OCR/GAS/API/저장 로직 변경 없음
+========================================================= */
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
+  .content-wrapper{
+    justify-content:center !important;
+    padding:calc(env(safe-area-inset-top,0px) + 26px) 26px calc(env(safe-area-inset-bottom,0px) + 26px) !important;
+  }
+  .container{
+    max-width:min(98vw, 980px) !important;
+  }
+
+  /* 태블릿 잠금화면 확대 */
+  .lock-content{
+    gap:48px !important;
+    transform:translateY(-8px) !important;
+  }
+  #glass-card-container{
+    width:min(58vw, 450px) !important;
+    height:min(36vw, 282px) !important;
+  }
+  #glass-card{
+    border-radius:22px !important;
+    padding:32px !important;
+  }
+  #glass-card .card-chip{
+    width:58px !important;
+    height:44px !important;
+    border-radius:8px !important;
+  }
+  #glass-card .card-school-icon{
+    font-size:2.8rem !important;
+  }
+  #glass-card .card-number{
+    font-size:1.72rem !important;
+    letter-spacing:4px !important;
+  }
+  #glass-card .card-holder{
+    font-size:.9rem !important;
+  }
+  #glass-card .card-nfc{
+    font-size:2rem !important;
+  }
+  .lock-text{
+    margin-top:20px !important;
+    font-size:1.55rem !important;
+    letter-spacing:.08em !important;
+  }
+
+  /* 태블릿 로딩화면 확대 */
+  .loader-card-v2{
+    width:min(88vw, 760px) !important;
+    padding:44px 38px 34px !important;
+    border-radius:42px !important;
+    gap:22px !important;
+  }
+  .loader-card-icon{
+    font-size:3rem !important;
+  }
+  .loader-card-title{
+    font-size:3rem !important;
+  }
+  .loader-card-subtitle{
+    font-size:1.22rem !important;
+  }
+  .loader-progress-shell{
+    height:30px !important;
+  }
+  .loader-progress-percent{
+    font-size:1.18rem !important;
+  }
+  .loader-step-panel{
+    padding:18px !important;
+    border-radius:30px !important;
+    gap:12px !important;
+  }
+  .loader-step-item{
+    grid-template-columns:62px 1fr auto !important;
+    padding:15px !important;
+    border-radius:24px !important;
+  }
+  .loader-step-icon{
+    width:62px !important;
+    height:62px !important;
+    font-size:1.4rem !important;
+  }
+  .loader-step-title{
+    font-size:1.12rem !important;
+  }
+  .loader-step-desc{
+    font-size:.98rem !important;
+  }
+
+  /* 태블릿 내선번호 입력/로그인 화면 확대 및 중앙 배치 */
+  #main-title-container{
+    max-width:min(90vw, 820px) !important;
+    margin:0 auto 24px !important;
+  }
+  #main-title-container .inset-box{
+    padding:24px 48px !important;
+    border-radius:34px !important;
+  }
+  #main-title-container .inset-box h2{
+    font-size:2.48rem !important;
+  }
+  #screen-login{
+    width:min(86vw, 720px) !important;
+    max-width:720px !important;
+    padding:42px 36px 34px !important;
+    border-radius:48px !important;
+    max-height:calc(100dvh - 112px) !important;
+    overflow-y:auto !important;
+  }
+  #screen-login .header-dashboard{
+    height:92px !important;
+    border-radius:26px !important;
+    margin-bottom:18px !important;
+  }
+  #screen-login .stat-label{
+    font-size:.98rem !important;
+  }
+  #screen-login .stat-value{
+    font-size:1.82rem !important;
+  }
+  #screen-login .login-instruction-area{
+    min-height:86px !important;
+    height:86px !important;
+    margin-top:6px !important;
+    margin-bottom:10px !important;
+  }
+  #screen-login .login-instruction-area.has-users{
+    min-height:170px !important;
+    height:170px !important;
+  }
+  #login-instruction{
+    font-size:1.28rem !important;
+  }
+  #screen-login .display-area{
+    height:76px !important;
+    margin:6px 0 22px !important;
+    gap:24px !important;
+  }
+  #screen-login .digit-wrapper{
+    width:70px !important;
+    height:70px !important;
+  }
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:64px !important;
+    height:64px !important;
+    border-radius:18px !important;
+    font-size:1.72rem !important;
+  }
+  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login .digit-box{
+    width:22px !important;
+    height:22px !important;
+  }
+  #screen-login .keypad-grid{
+    gap:22px !important;
+  }
+  #screen-login .keypad-btn{
+    border-radius:26px !important;
+    font-size:2.36rem !important;
+  }
+  #screen-login #keypad-add-btn,
+  #screen-login #keypad-back-btn{
+    font-size:1.42rem !important;
+  }
+  #screen-login #keypad-submit-btn{
+    padding:26px 0 !important;
+    margin-top:24px !important;
+    font-size:1.42rem !important;
+    border-radius:26px !important;
+  }
+
+  /* 태블릿 카드 선택 화면 확대 */
+  #screen-card-selection,
+  .screen:not(#screen-login):not(#screen-return):not(#screen-confirmation){
+    max-width:min(98vw, 980px) !important;
+    padding:32px 32px 34px !important;
+  }
+  #main-welcome-message{
+    font-size:1.74rem !important;
+    margin-bottom:22px !important;
+  }
+  #card-selection-header{
+    font-size:1.24rem !important;
+    margin-bottom:20px !important;
+  }
+  #cardGrid{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:18px !important;
+    padding:20px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot{
+    min-height:132px !important;
+    aspect-ratio:1.44 / 1 !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:1.50rem !important;
+  }
+
+  /* 해외결제카드: PC와 동일하게 8번 카드 아래 중앙 */
+  .card-item-wrapper.hybrid-card-slot.special-overseas-card{
+    grid-row:4 !important;
+    grid-column:2 !important;
+  }
+}
+
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse) and (max-height:900px){
+  #screen-login{
+    width:min(82vw, 660px) !important;
+    padding:32px 30px 28px !important;
+    max-height:calc(100dvh - 64px) !important;
+  }
+  #screen-login .header-dashboard{height:78px !important;margin-bottom:12px !important;}
+  #screen-login .login-instruction-area{min-height:66px !important;height:66px !important;}
+  #screen-login .login-instruction-area.has-users{min-height:146px !important;height:146px !important;}
+  #screen-login .display-area{height:64px !important;margin:2px 0 16px !important;}
+  #screen-login .keypad-grid{gap:16px !important;}
+  #screen-login #keypad-submit-btn{padding:22px 0 !important;margin-top:18px !important;}
+  .loader-card-v2{width:min(86vw, 700px) !important;padding:34px 30px 28px !important;}
+  .loader-card-title{font-size:2.62rem !important;}
+  #glass-card-container{width:min(52vw, 410px) !important;height:min(33vw, 256px) !important;}
+}
 </style>
 
 </head>
