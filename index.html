@@ -412,6 +412,480 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   color:#6882a8;
 }
 
+
+
+/* =========================================================
+  @SECTION: CSS_SMART_RACK_SKEUOMORPHISM_THEME
+  라이트 스키오모피즘: 뉴모피즘 보관함 트레이 + 고대비 실물 카드 슬롯
+  - 디자인 컨셉만 적용
+  - 기존 카드 클릭 로직 / GAS / 타이머 / 로그인 흐름은 유지
+========================================================= */
+#card-list-container{
+  width:100%;
+}
+#cardGrid{
+  position:relative;
+  display:grid !important;
+  grid-template-columns:repeat(3,1fr) !important;
+  gap:18px !important;
+  width:100%;
+  padding:20px !important;
+  border-radius:30px !important;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255,255,255,.38) 0%, transparent 28%),
+    linear-gradient(180deg,#cbd5e1 0%,#d8e3f0 52%,#c3cfdd 100%) !important;
+  border:1px solid rgba(255,255,255,.72) !important;
+  box-shadow:
+    inset 7px 7px 16px rgba(30,41,59,.22),
+    inset -7px -7px 16px rgba(255,255,255,.78),
+    0 12px 28px rgba(31,65,117,.08) !important;
+  overflow:visible;
+}
+#cardGrid::before{
+  content:'SMART CARD RACK';
+  position:absolute;
+  top:-11px;
+  left:22px;
+  z-index:3;
+  padding:4px 11px;
+  border-radius:999px;
+  font-size:.62rem;
+  font-weight:950;
+  letter-spacing:.08em;
+  color:#475569;
+  background:linear-gradient(180deg,#f8fbff 0%,#e8eff8 100%);
+  border:1px solid rgba(255,255,255,.82);
+  box-shadow:4px 4px 10px rgba(51,65,85,.14),-4px -4px 10px rgba(255,255,255,.86);
+}
+.card-item-wrapper.hybrid-card-slot{
+  aspect-ratio:1.45 / 1 !important;
+  border-radius:22px !important;
+  display:flex !important;
+  position:relative !important;
+  overflow:visible !important;
+  opacity:0;
+  transform:translateY(16px) scale(.985);
+  transition:
+    opacity .32s ease,
+    transform .42s cubic-bezier(.34,1.56,.64,1),
+    box-shadow .18s ease,
+    filter .18s ease !important;
+  box-shadow:none !important;
+  background:transparent !important;
+  filter:none !important;
+}
+#cardGrid.is-loaded .card-item-wrapper.hybrid-card-slot{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+.card-item-wrapper.hybrid-card-slot .hybrid-card-btn{
+  width:100%;
+  height:100%;
+  padding:14px 12px 12px !important;
+  border-radius:22px !important;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:8px;
+  position:relative;
+  overflow:hidden;
+  border:none;
+  background:transparent;
+}
+/* [상태 1] 보관함에 실제로 꽂혀 있는 카드: 대여 가능 */
+.card-item-wrapper.hybrid-card-slot.card-status-available{
+  cursor:pointer !important;
+  background:
+    linear-gradient(120deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 34%),
+    linear-gradient(135deg,#1e293b 0%,#0f172a 58%,#203a43 100%) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  box-shadow:
+    2px 10px 20px rgba(15,23,42,.28),
+    inset 1px 1px 0 rgba(255,255,255,.22),
+    inset -1px -1px 0 rgba(0,0,0,.22) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 5px);
+  mix-blend-mode:screen;
+  pointer-events:none;
+  opacity:.65;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available::after{
+  content:'';
+  position:absolute;
+  inset:-4px;
+  border-radius:26px;
+  border:2.5px solid rgba(37,99,235,.86);
+  filter:drop-shadow(0 0 7px rgba(37,99,235,.42));
+  pointer-events:none;
+  animation:smartRackBluePulse 2.15s ease-in-out infinite;
+}
+/* 특수/식대 성격 카드는 초록빛 메탈 카드로 구분 */
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available,
+.card-item-wrapper.hybrid-card-slot.meal-style.card-status-available{
+  background:
+    linear-gradient(120deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,0) 34%),
+    linear-gradient(135deg,#064e3b 0%,#022c22 68%,#064e3b 100%) !important;
+}
+/* [상태 2] 카드가 밖으로 나간 자리: 깊게 파인 빈 트레이 */
+.card-item-wrapper.hybrid-card-slot.card-status-inuse,
+.card-item-wrapper.hybrid-card-slot.card-status-returning,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown{
+  cursor:not-allowed !important;
+  opacity:1 !important;
+  filter:none !important;
+  background:
+    radial-gradient(circle at 45% 34%, rgba(255,255,255,.055) 0%, transparent 42%),
+    linear-gradient(180deg,#475569 0%,#334155 50%,#1e293b 100%) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  box-shadow:
+    inset 7px 7px 15px rgba(0,0,0,.46),
+    inset -4px -4px 10px rgba(255,255,255,.075),
+    1px 1px 0 rgba(255,255,255,.18) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-inuse::before,
+.card-item-wrapper.hybrid-card-slot.card-status-returning::before,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown::before{
+  content:'';
+  position:absolute;
+  inset:10px;
+  border-radius:16px;
+  border:1.5px dashed rgba(203,213,225,.16);
+  pointer-events:none;
+}
+/* 기존 로직상 반납처리중은 비활성 슬롯으로 유지하되 초록 계열 힌트만 살짝 표시 */
+.card-item-wrapper.hybrid-card-slot.card-status-returning{
+  box-shadow:
+    inset 7px 7px 15px rgba(0,0,0,.42),
+    inset -4px -4px 10px rgba(255,255,255,.07),
+    0 0 0 1px rgba(16,185,129,.18) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available:hover{
+  transform:translateY(-2px) scale(1.014) !important;
+  filter:brightness(1.035);
+  box-shadow:
+    3px 14px 24px rgba(15,23,42,.30),
+    inset 1px 1px 0 rgba(255,255,255,.26),
+    inset -1px -1px 0 rgba(0,0,0,.22) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available:active{
+  transform:scale(.955) translateY(1px) !important;
+  filter:none;
+  box-shadow:
+    1px 5px 10px rgba(15,23,42,.24),
+    inset 5px 5px 10px rgba(0,0,0,.28),
+    inset -3px -3px 8px rgba(255,255,255,.10) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-inuse:hover,
+.card-item-wrapper.hybrid-card-slot.card-status-returning:hover,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown:hover{
+  transform:none !important;
+  filter:none !important;
+}
+.card-item-wrapper.hybrid-card-slot .hybrid-card-topline{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:14px;
+  position:relative;
+  z-index:3;
+}
+.hybrid-card-chip{
+  width:24px;
+  height:16px;
+  border-radius:4px;
+  background:linear-gradient(135deg,#fde68a 0%,#f59e0b 52%,#92400e 100%) !important;
+  box-shadow:
+    inset 1px 1px 2px rgba(255,255,255,.55),
+    inset -1px -1px 1px rgba(0,0,0,.22),
+    0 2px 5px rgba(0,0,0,.22);
+  opacity:.96;
+}
+.hybrid-card-state-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#60a5fa;
+  box-shadow:0 0 11px rgba(96,165,250,.82);
+}
+.card-status-inuse .hybrid-card-chip,
+.card-status-returning .hybrid-card-chip,
+.card-status-unknown .hybrid-card-chip{
+  opacity:0 !important;
+}
+.card-status-inuse .hybrid-card-state-dot,
+.card-status-unknown .hybrid-card-state-dot{
+  background:rgba(148,163,184,.22);
+  box-shadow:none;
+}
+.card-status-returning .hybrid-card-state-dot{
+  background:#10b981;
+  box-shadow:0 0 10px rgba(16,185,129,.42);
+}
+.card-item-wrapper.hybrid-card-slot .hybrid-card-visual{
+  width:100% !important;
+  height:auto !important;
+  flex:1;
+  min-height:18px;
+  margin:0 !important;
+  border-radius:15px !important;
+  background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(255,255,255,.045)) !important;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.18) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  position:relative;
+  z-index:2;
+}
+.card-item-wrapper.hybrid-card-slot .hybrid-card-visual::before,
+.card-item-wrapper.hybrid-card-slot .hybrid-card-visual::after{
+  display:none !important;
+}
+.card-status-inuse .hybrid-card-visual,
+.card-status-returning .hybrid-card-visual,
+.card-status-unknown .hybrid-card-visual{
+  background:repeating-linear-gradient(135deg,rgba(15,23,42,.12) 0 7px,rgba(255,255,255,.035) 7px 14px) !important;
+  border:1px dashed rgba(203,213,225,.10) !important;
+  box-shadow:inset 2px 2px 5px rgba(0,0,0,.16) !important;
+}
+.hybrid-card-texts{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+  position:relative;
+  z-index:3;
+}
+.card-item-wrapper.hybrid-card-slot .card-name{
+  margin:0 !important;
+  font-size:1.08rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.04em;
+  line-height:1.05;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.card-status-available .card-name{
+  color:#ffffff !important;
+  text-shadow:0 2px 6px rgba(0,0,0,.32);
+}
+.card-status-inuse .card-name,
+.card-status-returning .card-name,
+.card-status-unknown .card-name{
+  color:rgba(226,232,240,.34) !important;
+  text-shadow:none !important;
+}
+.hybrid-card-sub-label{
+  font-size:.72rem;
+  font-weight:850;
+  letter-spacing:-.02em;
+}
+.card-status-available .hybrid-card-sub-label{color:rgba(255,255,255,.72);}
+.card-status-inuse .hybrid-card-sub-label,
+.card-status-returning .hybrid-card-sub-label,
+.card-status-unknown .hybrid-card-sub-label{color:rgba(226,232,240,.18);}
+.card-item-wrapper.hybrid-card-slot .card-usage-meta{
+  margin-top:2px !important;
+  font-size:.68rem !important;
+  font-weight:850 !important;
+  color:rgba(226,232,240,.30) !important;
+  max-width:100% !important;
+}
+.hybrid-status-badge.status-badge{
+  top:10px !important;
+  right:10px !important;
+  z-index:4;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px !important;
+  border-radius:999px !important;
+  font-size:.68rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.02em;
+  backdrop-filter:none !important;
+}
+.card-status-available .hybrid-status-badge{
+  color:#1d4ed8 !important;
+  background:rgba(255,255,255,.94) !important;
+  border:1px solid rgba(255,255,255,.76) !important;
+  box-shadow:0 6px 14px rgba(15,23,42,.18) !important;
+}
+.card-status-inuse .hybrid-status-badge{
+  color:rgba(226,232,240,.58) !important;
+  background:rgba(15,23,42,.32) !important;
+  border:1px solid rgba(226,232,240,.08) !important;
+  box-shadow:none !important;
+}
+.card-status-returning .hybrid-status-badge{
+  color:#34d399 !important;
+  background:rgba(2,44,34,.35) !important;
+  border:1px solid rgba(16,185,129,.18) !important;
+  box-shadow:none !important;
+}
+.card-status-unknown .hybrid-status-badge{
+  color:rgba(226,232,240,.50) !important;
+  background:rgba(15,23,42,.30) !important;
+  border:1px solid rgba(226,232,240,.08) !important;
+  box-shadow:none !important;
+}
+@keyframes smartRackBluePulse{
+  0%,100%{opacity:.34;transform:scale(.985);}
+  50%{opacity:1;transform:scale(1.016);}
+}
+@media (max-width:1023px){
+  #cardGrid{grid-template-columns:repeat(2,1fr) !important;gap:14px !important;padding:14px !important;}
+  .card-item-wrapper.hybrid-card-slot{aspect-ratio:1.38 / 1 !important;}
+}
+@media (max-width:767px){
+  #cardGrid{gap:12px !important;padding:12px !important;border-radius:24px !important;}
+  #cardGrid::before{left:16px;font-size:.56rem;}
+  .card-item-wrapper.hybrid-card-slot{border-radius:20px !important;}
+  .card-item-wrapper.hybrid-card-slot .hybrid-card-btn{border-radius:20px !important;padding:12px 10px 10px !important;}
+  .card-item-wrapper.hybrid-card-slot .card-name{font-size:1rem !important;}
+  .hybrid-status-badge.status-badge{font-size:.62rem !important;padding:4px 7px !important;}
+}
+
+
+
+/* =========================================================
+  @SECTION: SMART_RACK_MINIMAL_STATUS_FINAL
+  카드 선택 화면 최종 표시 규칙
+  - 대여 가능: 카드명만 중앙 표시, 상태 문구 없음
+  - 사용 중: 빈 슬롯 느낌 + 사용중 배지 + 대여일만 표시
+  - 사용자 이름/대여자 정보는 노출하지 않음
+========================================================= */
+.card-item-wrapper.hybrid-card-slot .hybrid-card-btn{
+  justify-content:center !important;
+  align-items:center !important;
+  text-align:center !important;
+  padding:12px !important;
+}
+.card-item-wrapper.hybrid-card-slot .hybrid-card-topline{
+  position:absolute !important;
+  top:13px !important;
+  left:15px !important;
+  right:15px !important;
+  z-index:3 !important;
+}
+.card-item-wrapper.hybrid-card-slot .hybrid-card-texts{
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  gap:6px !important;
+  width:100% !important;
+  min-height:100% !important;
+}
+.card-item-wrapper.hybrid-card-slot .card-name{
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+/* 대여 가능: 글자 설명 없이 카드명만 중앙에 배치 */
+.card-item-wrapper.hybrid-card-slot.card-status-available .hybrid-card-texts{
+  min-height:auto !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+  font-size:1.34rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.04em !important;
+  color:#fff !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available .hybrid-status-badge,
+.card-item-wrapper.hybrid-card-slot.card-status-available .hybrid-card-sub-label,
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-usage-meta,
+.card-item-wrapper.hybrid-card-slot.card-status-available .hybrid-card-visual{
+  display:none !important;
+}
+
+/* 사용 중: 카드가 빠져나간 밝은 빈 슬롯으로 표현 */
+.card-item-wrapper.hybrid-card-slot.card-status-inuse,
+.card-item-wrapper.hybrid-card-slot.card-status-returning,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown{
+  background:linear-gradient(180deg,#eef4fb 0%,#dfe9f5 100%) !important;
+  border:1.5px dashed rgba(148,163,184,.78) !important;
+  box-shadow:
+    inset 4px 4px 10px rgba(110,138,176,.24),
+    inset -4px -4px 10px rgba(255,255,255,.88) !important;
+  cursor:not-allowed !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-inuse::before,
+.card-item-wrapper.hybrid-card-slot.card-status-returning::before,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown::before{
+  content:'' !important;
+  position:absolute !important;
+  inset:9px !important;
+  border-radius:16px !important;
+  border:1px dashed rgba(148,163,184,.28) !important;
+  background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,0)) !important;
+  pointer-events:none !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-inuse .hybrid-card-topline,
+.card-item-wrapper.hybrid-card-slot.card-status-returning .hybrid-card-topline,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown .hybrid-card-topline,
+.card-item-wrapper.hybrid-card-slot.card-status-inuse .hybrid-card-visual,
+.card-item-wrapper.hybrid-card-slot.card-status-returning .hybrid-card-visual,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown .hybrid-card-visual,
+.card-item-wrapper.hybrid-card-slot.card-status-inuse .hybrid-card-sub-label,
+.card-item-wrapper.hybrid-card-slot.card-status-returning .hybrid-card-sub-label,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown .hybrid-card-sub-label,
+.card-item-wrapper.hybrid-card-slot.card-status-inuse .card-usage-meta,
+.card-item-wrapper.hybrid-card-slot.card-status-returning .card-usage-meta,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown .card-usage-meta{
+  display:none !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+.card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+  color:#5f7594 !important;
+  font-size:1.18rem !important;
+  font-weight:900 !important;
+  text-shadow:1px 1px 0 rgba(255,255,255,.75) !important;
+}
+.card-borrow-date{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:.74rem !important;
+  font-weight:900 !important;
+  color:#7c8faa !important;
+  letter-spacing:-.02em !important;
+}
+
+/* 사용중 배지만 유지 */
+.hybrid-status-badge.inuse-only-badge{
+  top:10px !important;
+  right:10px !important;
+  z-index:5 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:5px 10px !important;
+  border-radius:999px !important;
+  font-size:.66rem !important;
+  font-weight:950 !important;
+  color:#f8fafc !important;
+  background:linear-gradient(135deg,#94a3b8 0%,#64748b 100%) !important;
+  border:1px solid rgba(255,255,255,.58) !important;
+  box-shadow:0 5px 12px rgba(100,116,139,.20) !important;
+}
+
+@media (max-width:767px){
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{font-size:1.12rem !important;}
+  .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{font-size:1.02rem !important;}
+  .card-borrow-date{font-size:.66rem !important;}
+  .hybrid-status-badge.inuse-only-badge{font-size:.58rem !important;padding:4px 8px !important;}
+}
 </style>
 
     <!-- =========================================================
@@ -2194,6 +2668,73 @@ img {
 }
     </style>
 
+
+
+<style>
+/* =========================================================
+  @SECTION: SMART_RACK_BLUE_RED_COLOR_FINAL
+  - 일반 대여 가능 카드: 잠금화면과 이어지는 딥 블루 카드 톤
+  - 해외결제카드: 레드 계열로 별도 강조
+  - 기존 카드 클릭/GAS/로그인/타이머 로직은 변경하지 않음
+========================================================= */
+.card-item-wrapper.hybrid-card-slot.card-status-available{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,.30) 0%, rgba(255,255,255,.10) 20%, transparent 42%),
+    linear-gradient(135deg,#021B79 0%,#0575E6 100%) !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  box-shadow:
+    0 12px 24px rgba(2,27,121,.28),
+    inset 1px 1px 0 rgba(255,255,255,.28),
+    inset -1px -1px 0 rgba(0,0,0,.18) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available::before{
+  background:
+    linear-gradient(120deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,0) 35%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 5px) !important;
+  opacity:.72 !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available::after{
+  border-color:rgba(5,117,230,.88) !important;
+  filter:drop-shadow(0 0 8px rgba(5,117,230,.50)) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+  color:#ffffff !important;
+  text-shadow:0 2px 7px rgba(0,0,0,.38) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available:hover{
+  box-shadow:
+    0 16px 30px rgba(2,27,121,.32),
+    inset 1px 1px 0 rgba(255,255,255,.30),
+    inset -1px -1px 0 rgba(0,0,0,.18) !important;
+}
+
+/* 해외결제카드는 빨간 실물 카드처럼 분리 */
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,.28) 0%, rgba(255,255,255,.08) 20%, transparent 42%),
+    linear-gradient(135deg,#7f1d1d 0%,#dc2626 54%,#ef4444 100%) !important;
+  box-shadow:
+    0 12px 24px rgba(185,28,28,.28),
+    inset 1px 1px 0 rgba(255,255,255,.28),
+    inset -1px -1px 0 rgba(0,0,0,.18) !important;
+}
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available::after{
+  border-color:rgba(239,68,68,.9) !important;
+  filter:drop-shadow(0 0 8px rgba(239,68,68,.50)) !important;
+}
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:hover{
+  box-shadow:
+    0 16px 30px rgba(185,28,28,.32),
+    inset 1px 1px 0 rgba(255,255,255,.30),
+    inset -1px -1px 0 rgba(0,0,0,.18) !important;
+}
+
+@keyframes smartRackBluePulse{
+  0%,100%{opacity:.32;transform:scale(.985);}
+  50%{opacity:.96;transform:scale(1.014);}
+}
+</style>
+
 </head>
 <body class="variant-lockscreen">
 
@@ -3670,16 +4211,32 @@ const CardApp = (function() {
             return allowedUsers.some(name => currentNames.includes(name));
         },
         renderCardButtonHTML: (card) => {
-            const meta = (card.status === '사용중' && card.userInfo)
-                ? `<div class="card-usage-meta"><i class="fa-regular fa-user"></i> ${Utils.esc(card.userInfo.userName || '')}${card.userInfo.receiveDate ? ` · ${Utils.esc(String(card.userInfo.receiveDate).slice(5).replace('-', '/'))}` : ''}</div>`
+            const status = String(card.status || '').trim();
+            const isAvailable = status === '사용가능';
+            const isInUse = status === '사용중';
+            const isReturning = status === '반납처리중';
+            const statusLabel = isAvailable ? '신청 가능' : (isInUse ? '사용중' : (isReturning ? '반납 처리중' : (status || '상태 확인')));
+            const rawDate = card.userInfo && card.userInfo.receiveDate ? String(card.userInfo.receiveDate) : '';
+            const borrowDate = rawDate ? rawDate.slice(5, 10).replace('-', '/') : '';
+            const dateHTML = (isInUse && borrowDate)
+                ? `<span class="card-borrow-date">대여일 ${Utils.esc(borrowDate)}</span>`
                 : '';
+            const badgeHTML = isInUse
+                ? `<span class="status-badge hybrid-status-badge inuse-only-badge">사용중</span>`
+                : '';
+
             return `
-            <div class="card-grid-btn">
-                <div class="mini-card-icon"></div>
-                <span class="card-name">${Utils.esc(card.displayName)}</span>
-                ${meta}
+            <div class="card-grid-btn hybrid-card-btn" aria-label="${Utils.esc(card.displayName)} ${Utils.esc(statusLabel)}">
+                <div class="hybrid-card-topline">
+                    <span class="hybrid-card-chip"></span>
+                    <span class="hybrid-card-state-dot"></span>
+                </div>
+                <div class="hybrid-card-texts">
+                    <span class="card-name">${Utils.esc(card.displayName)}</span>
+                    ${dateHTML}
+                </div>
             </div>
-            ${card.status==='사용중'?`<span class="status-badge">사용중</span>`:(card.status==='반납처리중'?`<span class="status-badge">반납처리중</span>`:'')}
+            ${badgeHTML}
         `;
         },
         renderPurposeButtonHTML: (btn) => `
@@ -4002,11 +4559,17 @@ const CardApp = (function() {
         },
         createCardButton: (card, idx) => {
             const wrap = document.createElement('div');
-            wrap.className = 'card-item-wrapper';
+            wrap.className = 'card-item-wrapper hybrid-card-slot';
             wrap.dataset.cardId = card.id;
             wrap.style.transitionDelay = `${idx * CARD_APPEAR_DELAY_MS}ms`;
-            if (card.status !== '사용가능') wrap.classList.add('disabled');
-            if (card.id.includes('해외')) wrap.classList.add('special-overseas-card');
+
+            const status = String(card.status || '').trim();
+            if (status === '사용가능') wrap.classList.add('card-status-available');
+            else if (status === '사용중') wrap.classList.add('card-status-inuse', 'disabled');
+            else if (status === '반납처리중') wrap.classList.add('card-status-returning', 'disabled');
+            else wrap.classList.add('card-status-unknown', 'disabled');
+
+            if (String(card.id || '').includes('해외') || String(card.name || '').includes('해외') || String(card.displayName || '').includes('해외')) wrap.classList.add('special-overseas-card');
             wrap.innerHTML = CardLogic.renderCardButtonHTML(card);
             return wrap;
         },
