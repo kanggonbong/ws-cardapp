@@ -2108,8 +2108,10 @@ img {
   font-weight:850 !important;
   color:var(--text-secondary) !important;
   letter-spacing:-.02em !important;
-  white-space:nowrap !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
 }
+
 .status-badge-wrap i{font-size:.72rem !important;}
 .dashboard-center-screen.success .status-badge-wrap{color:#10b981 !important;}
 .dashboard-center-screen.invalid .status-badge-wrap{color:#e7485f !important;}
@@ -2733,6 +2735,376 @@ img {
   0%,100%{opacity:.32;transform:scale(.985);}
   50%{opacity:.96;transform:scale(1.014);}
 }
+
+
+/* =========================================================
+  @SECTION: PURPOSE_SELECTION_SIMPLE_LIST_FINAL
+  카드 신청 목적 선택 화면 최종 정리
+  - 기타운영 제거
+  - 3개 목적을 세로 리스트형으로 표시
+  - 제목/설명을 굵고 또렷하게 정리
+  - 기존 data-purpose/대여 저장 로직 유지
+========================================================= */
+.morph-overlay{
+  position:fixed !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  padding:20px !important;
+  padding-bottom:max(22px, env(safe-area-inset-bottom)) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:rgba(15,23,42,.34) !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  transform:none !important;
+  backdrop-filter:blur(8px) saturate(1.08) !important;
+  -webkit-backdrop-filter:blur(8px) saturate(1.08) !important;
+  transition:opacity .22s ease, visibility .22s ease !important;
+}
+.morph-overlay.active{
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  transform:none !important;
+}
+.purpose-sheet{
+  width:min(420px, calc(100vw - 28px)) !important;
+  padding:14px 16px 16px !important;
+  border-radius:30px !important;
+  background:linear-gradient(180deg,#ffffff 0%,#eef5ff 100%) !important;
+  border:1px solid rgba(255,255,255,.82) !important;
+  box-shadow:0 24px 55px rgba(15,23,42,.22), inset 1px 1px 0 rgba(255,255,255,.82) !important;
+  position:fixed !important;
+  left:50% !important;
+  top:50% !important;
+  margin:0 !important;
+  transform:translate(-50%, calc(-50% + 24px)) scale(.985) !important;
+  transition:transform .32s cubic-bezier(.22,1,.36,1) !important;
+  overflow:hidden !important;
+}
+.morph-overlay.active .purpose-sheet{
+  transform:translate(-50%, -50%) scale(1) !important;
+}
+.purpose-sheet::before{
+  content:'';
+  position:absolute;
+  top:-120px;
+  left:50%;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(37,99,235,.16) 0%,rgba(37,99,235,0) 64%);
+  pointer-events:none;
+}
+.purpose-sheet-handle{
+  width:46px !important;
+  height:5px !important;
+  border-radius:999px !important;
+  background:#cbd5e1 !important;
+  margin:0 auto 14px !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.purpose-card-chip{
+  width:max-content !important;
+  max-width:100% !important;
+  margin:0 auto 8px !important;
+  padding:7px 13px !important;
+  border-radius:999px !important;
+  background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%) !important;
+  color:#1d4ed8 !important;
+  font-size:.84rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.03em !important;
+  white-space:nowrap !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.morph-header{
+  margin:0 !important;
+  color:#0f2547 !important;
+  text-align:center !important;
+  font-size:1.55rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.055em !important;
+  line-height:1.1 !important;
+  text-shadow:none !important;
+  opacity:1 !important;
+  transform:none !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.morph-subheader{
+  margin:7px 0 16px !important;
+  color:#64748b !important;
+  text-align:center !important;
+  font-size:1rem !important;
+  font-weight:850 !important;
+  letter-spacing:-.035em !important;
+  line-height:1.35 !important;
+  text-shadow:none !important;
+  opacity:1 !important;
+  transform:none !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.morph-grid{
+  width:100% !important;
+  max-width:none !important;
+  padding:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.morph-grid .purpose-btn,
+.purpose-btn{
+  width:100% !important;
+  min-height:78px !important;
+  aspect-ratio:auto !important;
+  padding:13px 14px !important;
+  border-radius:20px !important;
+  display:grid !important;
+  grid-template-columns:48px 1fr 24px !important;
+  align-items:center !important;
+  gap:13px !important;
+  text-align:left !important;
+  background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%) !important;
+  border:1px solid rgba(226,232,240,.95) !important;
+  box-shadow:0 8px 18px rgba(15,23,42,.055), inset 1px 1px 0 rgba(255,255,255,.8) !important;
+  color:#1e293b !important;
+  opacity:0;
+  transform:translateY(10px);
+  white-space:normal !important;
+  cursor:pointer !important;
+}
+.morph-overlay.active .purpose-btn:nth-child(1){animation:purposeListIn .28s .04s cubic-bezier(.22,1,.36,1) forwards !important;}
+.morph-overlay.active .purpose-btn:nth-child(2){animation:purposeListIn .28s .09s cubic-bezier(.22,1,.36,1) forwards !important;}
+.morph-overlay.active .purpose-btn:nth-child(3){animation:purposeListIn .28s .14s cubic-bezier(.22,1,.36,1) forwards !important;}
+@keyframes purposeListIn{
+  to{opacity:1;transform:translateY(0);}
+}
+.purpose-btn:active{
+  transform:scale(.985) !important;
+  box-shadow:inset 4px 4px 10px rgba(110,138,176,.14), inset -4px -4px 10px rgba(255,255,255,.9) !important;
+}
+.purpose-icon-wrap{
+  width:48px !important;
+  height:48px !important;
+  border-radius:16px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex:0 0 auto !important;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.6), 0 8px 16px rgba(15,23,42,.07) !important;
+}
+.purpose-icon-wrap i{
+  font-size:1.18rem !important;
+  margin:0 !important;
+}
+.purpose-text-wrap{
+  min-width:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:4px !important;
+}
+.purpose-title{
+  display:block !important;
+  font-size:1.28rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.055em !important;
+  line-height:1.05 !important;
+  color:#172033 !important;
+  white-space:nowrap !important;
+}
+.purpose-desc{
+  display:block !important;
+  font-size:.98rem !important;
+  font-weight:850 !important;
+  letter-spacing:-.035em !important;
+  line-height:1.28 !important;
+  color:#64748b !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+}
+.purpose-chevron{
+  color:#94a3b8 !important;
+  font-size:.9rem !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.purpose-btn[data-purpose="물품구매"] .purpose-icon-wrap{
+  background:#fff7ed !important;
+  color:#f97316 !important;
+}
+.purpose-btn[data-purpose="식사다과"] .purpose-icon-wrap{
+  background:#eff6ff !important;
+  color:#2563eb !important;
+}
+.purpose-btn[data-purpose="특근매식"] .purpose-icon-wrap{
+  background:#ecfdf5 !important;
+  color:#059669 !important;
+}
+.purpose-btn[data-purpose="기타운영"]{
+  display:none !important;
+}
+.close-morph-btn{
+  width:100% !important;
+  margin:12px 0 0 !important;
+  padding:14px 0 !important;
+  border-radius:18px !important;
+  background:#e2e8f0 !important;
+  color:#64748b !important;
+  border:none !important;
+  font-size:1rem !important;
+  font-weight:900 !important;
+  opacity:1 !important;
+  position:relative !important;
+  z-index:2 !important;
+  box-shadow:none !important;
+}
+@media (max-width:767px){
+  .morph-overlay{
+    padding:14px !important;
+    padding-bottom:max(16px, env(safe-area-inset-bottom)) !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+  .purpose-sheet{
+    width:min(420px, calc(100vw - 24px)) !important;
+    border-radius:26px !important;
+    padding:12px 12px 14px !important;
+  }
+  .morph-grid .purpose-btn,
+  .purpose-btn{
+    min-height:72px !important;
+    grid-template-columns:44px 1fr 20px !important;
+    gap:11px !important;
+    padding:12px !important;
+    border-radius:18px !important;
+  }
+  .purpose-icon-wrap{
+    width:44px !important;
+    height:44px !important;
+    border-radius:15px !important;
+  }
+  .purpose-title{font-size:1.18rem !important;}
+  .purpose-desc{font-size:.92rem !important;}
+}
+
+
+
+/* =========================================================
+  @SECTION: PURPOSE_LIST_VISIBILITY_HOTFIX_FINAL
+  목적 선택 리스트 3개가 보이지 않던 문제 보정
+  원인: .purpose-btn 기본 opacity:0 !important가 keyframe opacity보다 우선 적용됨
+  조치: overlay 활성 상태에서 3개 목적 버튼을 명시적으로 표시
+  - 반납/OCR/GAS/카드 선택 로직은 변경 없음
+========================================================= */
+.morph-overlay.active .morph-grid .purpose-btn,
+.morph-overlay.active .purpose-btn[data-purpose="물품구매"],
+.morph-overlay.active .purpose-btn[data-purpose="식사다과"],
+.morph-overlay.active .purpose-btn[data-purpose="특근매식"]{
+  display:grid !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+}
+.morph-overlay.active .purpose-btn[data-purpose="기타운영"],
+.purpose-btn[data-purpose="기타운영"]{
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+.morph-grid{
+  min-height:254px !important;
+}
+.purpose-btn{
+  position:relative !important;
+}
+.purpose-btn .purpose-icon-wrap,
+.purpose-btn .purpose-text-wrap,
+.purpose-btn .purpose-chevron{
+  position:relative !important;
+  z-index:2 !important;
+}
+
+
+/* =========================================================
+  @SECTION: CSS_TRANSITION_TUNING_FINAL
+  화면 전환감 통일용 최종 미세 조정
+  - 기능 로직 / 반납 / OCR / GAS 연결부 변경 없음
+  - 카드 선택, 목적 선택 모달, 화면 fade 계열만 대상으로 함
+========================================================= */
+:root{
+  --ws-transition-fast: .22s;
+  --ws-transition-mid: .34s;
+  --ws-transition-slow: .42s;
+  --ws-ease-soft: cubic-bezier(.22,1,.36,1);
+  --ws-ease-pop: cubic-bezier(.34,1.56,.64,1);
+}
+.content-wrapper{
+  transition:
+    opacity var(--ws-transition-slow) var(--ws-ease-soft),
+    transform var(--ws-transition-slow) var(--ws-ease-soft) !important;
+}
+.screen{
+  transition:
+    opacity var(--ws-transition-mid) var(--ws-ease-soft),
+    transform var(--ws-transition-mid) var(--ws-ease-soft) !important;
+}
+.screen.is-hiding{
+  opacity:0 !important;
+  transform:translateY(8px) scale(.992) !important;
+}
+#cardGrid.is-loaded .card-item-wrapper.hybrid-card-slot{
+  transition-timing-function:var(--ws-ease-soft), var(--ws-ease-pop), ease, ease !important;
+}
+.card-item-wrapper.hybrid-card-slot{
+  transition:
+    opacity var(--ws-transition-mid) var(--ws-ease-soft),
+    transform var(--ws-transition-slow) var(--ws-ease-pop),
+    box-shadow var(--ws-transition-fast) ease,
+    filter var(--ws-transition-fast) ease !important;
+}
+.morph-overlay{
+  transition:
+    opacity var(--ws-transition-mid) var(--ws-ease-soft),
+    visibility var(--ws-transition-mid) var(--ws-ease-soft) !important;
+}
+.purpose-sheet{
+  transition:
+    transform var(--ws-transition-slow) var(--ws-ease-pop),
+    opacity var(--ws-transition-mid) var(--ws-ease-soft) !important;
+  opacity:0;
+}
+.morph-overlay.active .purpose-sheet{
+  opacity:1 !important;
+}
+.morph-header,
+.morph-subheader{
+  transition:
+    opacity var(--ws-transition-mid) var(--ws-ease-soft),
+    transform var(--ws-transition-mid) var(--ws-ease-soft) !important;
+}
+.morph-overlay.active .purpose-btn:nth-child(1){animation:purposeListIn .34s .05s var(--ws-ease-soft) forwards !important;}
+.morph-overlay.active .purpose-btn:nth-child(2){animation:purposeListIn .34s .10s var(--ws-ease-soft) forwards !important;}
+.morph-overlay.active .purpose-btn:nth-child(3){animation:purposeListIn .34s .15s var(--ws-ease-soft) forwards !important;}
+.purpose-btn{
+  transition:
+    background var(--ws-transition-fast) ease,
+    box-shadow var(--ws-transition-fast) ease,
+    border-color var(--ws-transition-fast) ease,
+    color var(--ws-transition-fast) ease,
+    transform var(--ws-transition-fast) ease !important;
+}
+
 </style>
 
 </head>
@@ -2743,10 +3115,14 @@ img {
   카드 대여 시 사용 목적을 선택하는 전체 화면 오버레이
 ========================================================= -->
 <div class="morph-overlay" id="morph-overlay">
-    <h3 class="morph-header" id="morph-title"></h3>
-    <p class="morph-subheader" id="morph-subheader">카드 사용 목적을 선택하세요</p>
-    <div class="morph-grid" id="morph-actions"></div>
-    <button class="close-morph-btn" id="close-morph-btn">닫기</button>
+    <div class="purpose-sheet" role="dialog" aria-modal="true" aria-labelledby="morph-title">
+        <div class="purpose-sheet-handle" aria-hidden="true"></div>
+        <div class="purpose-card-chip" id="purpose-card-chip">카드 신청</div>
+        <h3 class="morph-header" id="morph-title">사용 목적 선택</h3>
+        <p class="morph-subheader" id="morph-subheader">신청할 용도를 선택해 주세요</p>
+        <div class="morph-grid" id="morph-actions"></div>
+        <button class="close-morph-btn" id="close-morph-btn">취소</button>
+    </div>
 </div>
 
 <!-- =========================================================
@@ -4240,8 +4616,13 @@ const CardApp = (function() {
         `;
         },
         renderPurposeButtonHTML: (btn) => `
-            <button class="purpose-btn" type="button" data-purpose="${Utils.esc(btn.id)}">
-                <i class="fa-solid ${btn.icon}"></i><span>${Utils.esc(btn.label)}</span>
+            <button class="purpose-btn" type="button" data-purpose="${Utils.esc(btn.id)}" aria-label="${Utils.esc(btn.label)} ${Utils.esc(btn.desc || '')}">
+                <span class="purpose-icon-wrap"><i class="fa-solid ${btn.icon}"></i></span>
+                <span class="purpose-text-wrap">
+                    <span class="purpose-title">${Utils.esc(btn.label)}</span>
+                    <span class="purpose-desc">${Utils.esc(btn.desc || '')}</span>
+                </span>
+                <span class="purpose-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
             </button>
         `,
         /* =========================================================
@@ -4591,12 +4972,15 @@ const CardApp = (function() {
             const actions = document.getElementById('morph-actions');
             const closeBtn = document.getElementById('close-morph-btn');
             overlay.dataset.cardId = card.id;
-            title.textContent = card.displayName;
+            const chip = document.getElementById('purpose-card-chip');
+            const subheader = document.getElementById('morph-subheader');
+            if (chip) chip.textContent = `${card.displayName} 신청`;
+            title.textContent = '사용 목적 선택';
+            if (subheader) subheader.textContent = '신청할 용도를 선택해 주세요';
             const buttons = [
-                { id: '물품구매', icon: 'fa-box', label: '물품구매' },
-                { id: '식사다과', icon: 'fa-utensils', label: '식사다과' },
-                { id: '기타운영', icon: 'fa-ellipsis', label: '기타운영' },
-                { id: '특근매식', icon: 'fa-moon', label: '특근매식' }
+                { id: '물품구매', icon: 'fa-box', label: '물품구매', desc: '비품 · 소모품 · 행사 준비물' },
+                { id: '식사다과', icon: 'fa-mug-hot', label: '식사다과', desc: '식사 · 간식 · 다과' },
+                { id: '특근매식', icon: 'fa-utensils', label: '특근매식', desc: '특근매식비' }
             ];
             actions.innerHTML = buttons.map(CardLogic.renderPurposeButtonHTML).join('');
             closeBtn.onclick = CardLogic.closeMorphOverlay;
