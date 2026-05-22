@@ -2501,7 +2501,21 @@ function triggerKeypadVisualPress(key){
 /* Main app shell. Subsections below are intentionally grouped by responsibility. */
 const CardApp = (function() {
     const MEAL_CAP_PER_PERSON = 9000;
-    const INACTIVITY_MS = 3 * 60 * 1000;
+    /* =========================================================
+    @SUBSECTION: JS_KIOSK_IDLE_POLICY
+    행정실 키오스크 운영 규칙.
+    - 화면 깨움/방치 복귀: 세션 청소 후 잠금화면만 표시
+    - 실제 카드/사용자 데이터 갱신: 잠금화면 카드를 누른 뒤 로딩 단계에서만 실행
+    - 기기별 방치 제한: PC 2분 / 태블릿 30초 / 모바일 1분
+    ========================================================= */
+    const getInactivityLimitMs = () => {
+        const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const isTabletKiosk = isTouch && window.innerWidth >= 768;
+        const isMobileDevice = isTouch && window.innerWidth < 768;
+        if (isTabletKiosk) return 30 * 1000;
+        if (isMobileDevice) return 1 * 60 * 1000;
+        return 2 * 60 * 1000;
+    };
     const CARD_APPEAR_DELAY_MS = 50;
     /* =========================================================
     @SECTION: JS_STATE
@@ -2896,17 +2910,27 @@ const CardApp = (function() {
         ========================================================= */
         resetInactivityTimer: () => {
             clearTimeout(state.inactivityTimer);
-            state.inactivityTimer = setTimeout(UIManager.showLockScreen, INACTIVITY_MS);
+            state.inactivityTimer = setTimeout(() => {
+                try { if (typeof Swal !== 'undefined' && Swal.isVisible()) Swal.close(); } catch(e) {}
+                UIManager.showLockScreen();
+            }, getInactivityLimitMs());
         },
         startInactivityDetection: () => {
             if (!UIManager._inactivityHandler) UIManager._inactivityHandler = () => UIManager.resetInactivityTimer();
-            ['click','keydown','touchstart','mousemove'].forEach(evt => {
+            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+            const events = isTouch
+                ? ['touchstart','touchmove','keydown','scroll']
+                : ['mousemove','keydown','click','scroll'];
+            events.forEach(evt => {
                 document.removeEventListener(evt, UIManager._inactivityHandler, {capture:true});
                 document.addEventListener(evt, UIManager._inactivityHandler, {passive:true,capture:true});
             });
             UIManager.resetInactivityTimer();
         },
-        stopInactivityDetection: () => clearTimeout(state.inactivityTimer),
+        stopInactivityDetection: () => {
+            clearTimeout(state.inactivityTimer);
+            state.inactivityTimer = null;
+        },
         /* =========================================================
         @SUBSECTION: JS_UI_MANAGER_LOADER_SEQUENCE
         초기 연결/보안 확인 로더 진행 애니메이션
@@ -4896,49 +4920,21 @@ const CardApp = (function() {
         if (state.isAppActive && state.currentScreen !== 'lock') return;
         state.isAppActive = true;
         state.cardTiltActive = false;
+        state.forceSyncOnNextUnlock = false;
+        state.pendingPostReturnSync = false;
+        state.syncPromise = null;
         elements.lockScreen.classList.add('active-pop');
         document.getElementById('lock-text-instruction').classList.add('hide');
-        const hasData = Array.isArray(state.allCardData) && state.allCardData.length &&
-                        Array.isArray(state.allUsersData) && state.allUsersData.length;
-        const stale = !state.lastSyncTs || (Date.now() - state.lastSyncTs > 5000);
-        const needSync = stale || state.forceSyncOnNextUnlock || state.pendingPostReturnSync;
-        if (hasData && needSync && !state.syncInFlight) {
-            state.forceSyncOnNextUnlock = false;
-            state.pendingPostReturnSync = true;
-            state.syncInFlight = true;
-            state.syncPromise = (async () => {
-                try { await CardLogic.handlePendingPostReturnSync(); }
-                finally { state.syncInFlight = false; }
-            })();
-        }
-        if (hasData) {
-            elements.contentWrapper.style.display = 'flex';
-            document.body.style.pointerEvents = 'auto';
-            document.body.style.overflow = 'hidden';
-            elements.welcomeScreen.classList.remove('hidden');
-            elements.welcomeScreen.classList.add('is-visible');
-            if (elements.loaderBar) elements.loaderBar.style.width = '0%';
-            requestAnimationFrame(() => {
-                elements.lockScreen.classList.add('fade-out');
-                requestAnimationFrame(() => {
-                    try { elements.lockScreen.style.display = 'none'; } catch(e) {}
-                    elements.lockScreen.classList.add('hidden');
-                });
-            });
-            await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
-            const t0 = Date.now();
-            await UIManager.runRandomLoader(() => (Date.now() - t0) > 1000);
-            elements.welcomeScreen.classList.remove('is-visible');
-            elements.welcomeScreen.classList.add('is-hiding');
-            setTimeout(() => {
-                try { elements.welcomeScreen.classList.add('hidden'); } catch(e) {}
-                try { elements.welcomeScreen.classList.remove('is-hiding'); } catch(e) {}
-            }, 300);
-            UIManager.showScreenImmediate('login');
-            UIManager.startInactivityDetection();
-            return;
-        }
-        requestAnimationFrame(() => { setTimeout(() => initializeAppSequence(), 0); });
+
+        /*
+          행정실 키오스크 갱신 규칙:
+          - 화면이 다시 켜질 때는 잠금화면으로만 복귀합니다.
+          - 실제 카드/사용자 최신 데이터는 잠금화면 카드를 누른 이 순간,
+            로딩 화면을 거치며 getInitialAppData로 항상 새로 가져옵니다.
+        */
+        requestAnimationFrame(() => {
+            setTimeout(() => initializeAppSequence(), 0);
+        });
     }
     /* =========================================================
     @SECTION: JS_EVENT_LISTENERS
@@ -5011,6 +5007,19 @@ const CardApp = (function() {
         elements.loginUserTags = document.getElementById('login-user-tags');
         elements.cardGrid = document.getElementById('cardGrid');
         elements.cardSelectionHeader = document.getElementById('card-selection-header');
+
+        /*
+          행정실 태블릿 화면 깨움 처리:
+          화면이 꺼졌다가 다시 보이면 서버를 호출하지 않고 세션만 청소한 뒤
+          잠금화면으로 복귀합니다. 최신 데이터 갱신은 잠금화면 카드 터치 시 로딩 단계에서만 실행됩니다.
+        */
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible') return;
+            if (state.currentScreen === 'lock') return;
+            try { if (typeof Swal !== 'undefined' && Swal.isVisible()) Swal.close(); } catch(e) {}
+            UIManager.showLockScreen();
+        });
+
         elements.glassCardContainer.addEventListener('click', handleLockScreenClick);
         elements.btnBack.addEventListener('click', UIManager.resetToLogin);
         document.addEventListener('click', (e) => {
