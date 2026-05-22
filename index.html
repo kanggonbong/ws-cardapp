@@ -71,7 +71,7 @@
     ========================================================= -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>우성고 카드</title>
+    <title>우성고 카드 - 옵션1</title>
 
     <!-- =========================================================
       @SECTION: PWA_INSTALL_METADATA
@@ -3105,6 +3105,216 @@ img {
     transform var(--ws-transition-fast) ease !important;
 }
 
+
+
+/* =========================================================
+  @SECTION: CSS_TABLET_KIOSK_SIZE_FINAL
+  태블릿 키오스크 최종 크기 보정
+  - 태블릿 세로: 모바일처럼 작아 보이지 않도록 전체 폭/카드 선택 화면 확대
+  - 태블릿 카드 선택: 3열 유지
+  - 모바일: 2열 유지하되 카드 높이/간격 압축
+  - 반납/OCR/GAS/API/저장 로직 변경 없음
+========================================================= */
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
+  .content-wrapper{
+    justify-content:flex-start !important;
+    padding:calc(env(safe-area-inset-top,0px) + 18px) 24px calc(env(safe-area-inset-bottom,0px) + 18px) !important;
+  }
+  .container{
+    width:100% !important;
+    max-width:min(96vw, 940px) !important;
+  }
+  #main-title-container{
+    width:100% !important;
+    max-width:min(88vw, 760px) !important;
+    margin:0 auto 20px !important;
+  }
+  #main-title-container .inset-box{
+    padding:22px 42px !important;
+    border-radius:30px !important;
+  }
+  #main-title-container .inset-box h2{
+    font-size:2.28rem !important;
+    letter-spacing:-.045em !important;
+  }
+  #screen-card-selection,
+  .screen:not(#screen-login):not(#screen-return):not(#screen-confirmation){
+    width:100% !important;
+    max-width:min(96vw, 940px) !important;
+    padding:28px 28px 30px !important;
+    border-radius:34px !important;
+  }
+  #main-welcome-message{
+    margin-bottom:20px !important;
+    font-size:1.62rem !important;
+    line-height:1.25 !important;
+  }
+  #card-selection-header{
+    margin-bottom:18px !important;
+    font-size:1.18rem !important;
+  }
+  #card-list-container{
+    width:100% !important;
+  }
+  #cardGrid{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:16px !important;
+    padding:18px !important;
+    border-radius:30px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot{
+    aspect-ratio:1.48 / 1 !important;
+    min-height:118px !important;
+    border-radius:22px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:1.42rem !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+    font-size:1.18rem !important;
+  }
+  .hybrid-status-badge.inuse-only-badge,
+  .hybrid-status-badge.status-badge{
+    font-size:.70rem !important;
+    padding:5px 9px !important;
+  }
+  .card-borrow-date{
+    font-size:.74rem !important;
+  }
+  #screen-login{
+    width:min(72vw, 560px) !important;
+    max-width:560px !important;
+    padding:34px 24px 24px !important;
+    border-radius:42px !important;
+  }
+  #screen-login .header-dashboard{
+    height:82px !important;
+  }
+  .stat-label{font-size:.86rem !important;}
+  .stat-value{font-size:1.56rem !important;}
+  .keypad-grid{
+    gap:18px !important;
+  }
+  .keypad-btn{
+    border-radius:22px !important;
+    font-size:2.08rem !important;
+  }
+  #keypad-submit-btn{
+    padding:22px 0 !important;
+    font-size:1.28rem !important;
+  }
+  .purpose-sheet{
+    width:min(560px, calc(100vw - 48px)) !important;
+    border-radius:34px !important;
+    padding:22px 22px 24px !important;
+  }
+}
+
+@media (max-width:767px){
+  .content-wrapper{
+    justify-content:flex-start !important;
+    padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px) !important;
+  }
+  .container{
+    max-width:100% !important;
+  }
+  #main-title-container{
+    max-width:94vw !important;
+    margin-bottom:10px !important;
+  }
+  #main-title-container .inset-box{
+    padding:14px 18px !important;
+    border-radius:22px !important;
+  }
+  #main-title-container .inset-box h2{
+    font-size:1.42rem !important;
+  }
+  #main-welcome-message{
+    margin-bottom:10px !important;
+    font-size:1.12rem !important;
+    line-height:1.25 !important;
+  }
+  #card-selection-header{
+    margin-bottom:10px !important;
+    font-size:.92rem !important;
+  }
+  #cardGrid{
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    gap:8px !important;
+    padding:9px !important;
+    border-radius:22px !important;
+  }
+  #cardGrid::before{
+    top:-9px !important;
+    left:14px !important;
+    font-size:.50rem !important;
+    padding:3px 8px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot{
+    aspect-ratio:1.72 / 1 !important;
+    min-height:82px !important;
+    border-radius:16px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot .hybrid-card-btn{
+    border-radius:16px !important;
+    padding:8px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:1.04rem !important;
+    letter-spacing:-.045em !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+    font-size:.92rem !important;
+  }
+  .hybrid-status-badge.inuse-only-badge,
+  .hybrid-status-badge.status-badge{
+    top:7px !important;
+    right:7px !important;
+    font-size:.52rem !important;
+    padding:3px 6px !important;
+  }
+  .card-borrow-date{
+    font-size:.58rem !important;
+  }
+  .purpose-sheet{
+    width:min(420px, calc(100vw - 18px)) !important;
+    max-height:calc(100dvh - 22px) !important;
+    overflow-y:auto !important;
+    padding:12px 12px 14px !important;
+  }
+  .morph-grid{
+    min-height:auto !important;
+    gap:8px !important;
+  }
+  .morph-grid .purpose-btn,
+  .purpose-btn{
+    min-height:66px !important;
+  }
+}
+
+@media (max-width:390px){
+  .card-item-wrapper.hybrid-card-slot{
+    aspect-ratio:1.82 / 1 !important;
+    min-height:76px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:.96rem !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+    font-size:.86rem !important;
+  }
+  #screen-login{
+    width:96vw !important;
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+}
 </style>
 
 </head>
@@ -4980,7 +5190,7 @@ const CardApp = (function() {
             const buttons = [
                 { id: '물품구매', icon: 'fa-box', label: '물품구매', desc: '비품 · 소모품 · 행사 준비물' },
                 { id: '식사다과', icon: 'fa-mug-hot', label: '식사다과', desc: '식사 · 간식 · 다과' },
-                { id: '특근매식', icon: 'fa-utensils', label: '특근매식', desc: '특근매식비' }
+                { id: '특근매식', icon: 'fa-utensils', label: '특근매식', desc: '특근 · 매식비' }
             ];
             actions.innerHTML = buttons.map(CardLogic.renderPurposeButtonHTML).join('');
             closeBtn.onclick = CardLogic.closeMorphOverlay;
@@ -5957,11 +6167,25 @@ const CardApp = (function() {
 
         /*
           행정실 태블릿 화면 깨움 처리:
-          화면이 꺼졌다가 다시 보이면 서버를 호출하지 않고 세션만 청소한 뒤
-          잠금화면으로 복귀합니다. 최신 데이터 갱신은 잠금화면 카드 터치 시 로딩 단계에서만 실행됩니다.
+          태블릿 키오스크에서 화면이 꺼졌다가 다시 보이면 서버를 호출하지 않고 세션만 청소한 뒤
+          잠금화면으로 복귀합니다. PC 개발/테스트 환경에서는 탭 전환만으로 잠금화면에 가지 않도록 제한합니다.
+          최신 데이터 갱신은 잠금화면 카드 터치 시 로딩 단계에서만 실행됩니다.
         */
+        function isKioskTabletDevice() {
+            const ua = navigator.userAgent || '';
+            const platform = navigator.platform || '';
+            const hasTouch = (navigator.maxTouchPoints || 0) > 0 || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+            const shortSide = Math.min(window.innerWidth || 0, window.innerHeight || 0);
+            const longSide = Math.max(window.innerWidth || 0, window.innerHeight || 0);
+            const tabletSize = shortSide >= 600 && shortSide <= 1100 && longSide >= 800 && longSide <= 1400;
+            const isiPad = /iPad/i.test(ua) || (platform === 'MacIntel' && (navigator.maxTouchPoints || 0) > 1);
+            const isAndroidTablet = /Android/i.test(ua) && !/Mobile/i.test(ua);
+            return hasTouch && (isiPad || isAndroidTablet || tabletSize);
+        }
+
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState !== 'visible') return;
+            if (!isKioskTabletDevice()) return;
             if (state.currentScreen === 'lock') return;
             try { if (typeof Swal !== 'undefined' && Swal.isVisible()) Swal.close(); } catch(e) {}
             UIManager.showLockScreen();
