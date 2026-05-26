@@ -3105,428 +3105,529 @@ img {
     transform var(--ws-transition-fast) ease !important;
 }
 
-/* 태블릿 전용 풀폭 레이아웃
-   - PC/모바일은 유지
-   - 태블릿에서만 로그인/카드신청/반납/완료 화면을 더 넓게 사용 */
-@media (min-width:768px) and (max-width:1366px) and (pointer:coarse){
+
+
+/* =========================================================
+  @SECTION: CSS_TABLET_KIOSK_SIZE_FINAL
+  태블릿 키오스크 최종 크기 보정
+  - 태블릿 세로: 모바일처럼 작아 보이지 않도록 전체 폭/카드 선택 화면 확대
+  - 태블릿 카드 선택: 3열 유지
+  - 모바일: 2열 유지하되 카드 높이/간격 압축
+  - 반납/OCR/GAS/API/저장 로직 변경 없음
+========================================================= */
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
   .content-wrapper{
-    width:100vw !important;
-    min-height:100dvh !important;
-    justify-content:center !important;
-    align-items:center !important;
-    padding:
-      calc(env(safe-area-inset-top,0px) + 18px)
-      clamp(18px, 2.4vw, 32px)
-      calc(env(safe-area-inset-bottom,0px) + 18px) !important;
+    justify-content:flex-start !important;
+    padding:calc(env(safe-area-inset-top,0px) + 18px) 24px calc(env(safe-area-inset-bottom,0px) + 18px) !important;
   }
-
   .container{
-    width:min(96vw, 1200px) !important;
-    max-width:1200px !important;
-    min-height:auto !important;
-    justify-content:center !important;
-    align-items:center !important;
+    width:100% !important;
+    max-width:min(96vw, 940px) !important;
   }
-
   #main-title-container{
     width:100% !important;
-    max-width:min(94vw, 980px) !important;
-    margin:0 auto clamp(18px, 2.2vw, 28px) !important;
+    max-width:min(88vw, 760px) !important;
+    margin:0 auto 20px !important;
   }
-
   #main-title-container .inset-box{
-    width:100% !important;
-    padding:clamp(22px, 2.8vw, 34px) clamp(40px, 5vw, 72px) !important;
-    border-radius:clamp(30px, 3.5vw, 44px) !important;
+    padding:22px 42px !important;
+    border-radius:30px !important;
   }
-
   #main-title-container .inset-box h2{
-    font-size:clamp(2.2rem, 3.5vw, 3.1rem) !important;
-    letter-spacing:-.05em !important;
+    font-size:2.28rem !important;
+    letter-spacing:-.045em !important;
   }
-
-  #screen-main,
-  #screen-return-details,
-  #screen-confirmation{
+  #screen-card-selection,
+  .screen:not(#screen-login):not(#screen-return):not(#screen-confirmation){
     width:100% !important;
-    max-width:min(96vw, 1200px) !important;
-    padding:clamp(28px, 3vw, 42px) !important;
-    border-radius:clamp(36px, 4vw, 52px) !important;
+    max-width:min(96vw, 940px) !important;
+    padding:28px 28px 30px !important;
+    border-radius:34px !important;
   }
-
   #main-welcome-message{
-    font-size:clamp(1.6rem, 2.4vw, 2.1rem) !important;
-    line-height:1.22 !important;
-    margin-bottom:clamp(18px, 2vw, 26px) !important;
+    margin-bottom:20px !important;
+    font-size:1.62rem !important;
+    line-height:1.25 !important;
   }
-
   #card-selection-header{
-    font-size:clamp(1.12rem, 1.7vw, 1.38rem) !important;
-    margin-bottom:clamp(16px, 1.9vw, 24px) !important;
+    margin-bottom:18px !important;
+    font-size:1.18rem !important;
   }
-
   #card-list-container{
     width:100% !important;
   }
-
   #cardGrid{
     grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
-    gap:clamp(16px, 2vw, 24px) !important;
-    width:100% !important;
-    padding:clamp(18px, 2.2vw, 28px) !important;
-    border-radius:clamp(28px, 3.2vw, 42px) !important;
+    gap:16px !important;
+    padding:18px !important;
+    border-radius:30px !important;
   }
-
-  .card-item-wrapper{
+  .card-item-wrapper.hybrid-card-slot{
     aspect-ratio:1.48 / 1 !important;
-    min-height:clamp(128px, 15vw, 172px) !important;
-    border-radius:clamp(22px, 2.6vw, 30px) !important;
+    min-height:118px !important;
+    border-radius:22px !important;
   }
-
-  .card-grid-btn{
-    padding:clamp(16px, 2vw, 22px) clamp(10px, 1.4vw, 16px) !important;
-    gap:clamp(8px, 1vw, 12px) !important;
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:1.42rem !important;
   }
-
-  .card-grid-btn .card-name{
-    font-size:clamp(1.18rem, 1.8vw, 1.46rem) !important;
+  .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+    font-size:1.18rem !important;
   }
-
-  .mini-card-icon{
-    width:clamp(76px, 8vw, 96px) !important;
-    height:clamp(48px, 5vw, 62px) !important;
+  .hybrid-status-badge.inuse-only-badge,
+  .hybrid-status-badge.status-badge{
+    font-size:.70rem !important;
+    padding:5px 9px !important;
   }
-
-  .status-badge{
-    top:clamp(10px, 1.2vw, 14px) !important;
-    right:clamp(10px, 1.2vw, 14px) !important;
-    font-size:clamp(.68rem, .95vw, .82rem) !important;
-    padding:clamp(5px, .75vw, 7px) clamp(9px, 1.2vw, 13px) !important;
+  .card-borrow-date{
+    font-size:.74rem !important;
   }
-
-  #screen-return-details .confirmation-container,
-  #screen-confirmation .confirmation-container{
-    width:100% !important;
-    max-width:min(100%, 760px) !important;
-    margin:0 auto !important;
-    gap:clamp(22px, 2.8vw, 34px) !important;
-  }
-
-  #return-form-container{
-    width:100% !important;
-    max-width:min(100%, 760px) !important;
-    gap:clamp(22px, 2.6vw, 34px) !important;
-    margin-top:clamp(18px, 2vw, 28px) !important;
-  }
-
-  #return-screen-title{
-    width:100% !important;
-    gap:clamp(8px, 1vw, 12px) !important;
-  }
-
-  .simple-btn{
-    padding:clamp(18px, 2.2vw, 26px) 0 !important;
-    font-size:clamp(1.08rem, 1.6vw, 1.34rem) !important;
-    border-radius:clamp(22px, 2.8vw, 30px) !important;
-  }
-
-  #screen-confirmation .confirmation-container{
-    max-width:min(100%, 820px) !important;
-  }
-
-  #screen-confirmation .confirmation-icon-wrapper{
-    width:clamp(88px, 9vw, 118px) !important;
-    height:clamp(88px, 9vw, 118px) !important;
-    margin-bottom:clamp(18px, 2vw, 28px) !important;
-  }
-
-  #screen-confirmation .animated-check{
-    width:100% !important;
-    height:100% !important;
-  }
-
-  #screen-confirmation .confirmation-title{
-    font-size:clamp(1.6rem, 2.4vw, 2rem) !important;
-    margin-bottom:clamp(18px, 2vw, 26px) !important;
-  }
-
-  #screen-confirmation #confirmation-details{
-    width:100% !important;
-    max-width:min(100%, 680px) !important;
-    margin:0 auto clamp(22px, 2.6vw, 34px) !important;
-    gap:clamp(14px, 1.7vw, 20px) !important;
-  }
-
-  #screen-confirmation #confirmation-details .detail-row-label,
-  #screen-confirmation #confirmation-details .detail-row-content{
-    font-size:clamp(1.08rem, 1.55vw, 1.32rem) !important;
-  }
-
-  #screen-confirmation #confirmation-countdown{
-    margin-top:clamp(18px, 2vw, 28px) !important;
-    font-size:clamp(1rem, 1.4vw, 1.2rem) !important;
-  }
-}
-
-/* 태블릿 세로 전용
-   - 높이를 더 적극적으로 사용해서 위아래가 비어 보이지 않게 조정 */
-@media (min-width:768px) and (max-width:1366px) and (pointer:coarse) and (orientation:portrait){
-  .content-wrapper{
-    justify-content:flex-start !important;
-    align-items:stretch !important;
-    padding:
-      calc(env(safe-area-inset-top,0px) + 12px)
-      clamp(12px, 2vw, 22px)
-      calc(env(safe-area-inset-bottom,0px) + 12px) !important;
-  }
-
-  .container{
-    width:100% !important;
-    max-width:min(100vw, 1180px) !important;
-    min-height:100dvh !important;
-    justify-content:flex-start !important;
-    align-items:stretch !important;
-  }
-
-  #main-title-container{
-    max-width:min(96vw, 1080px) !important;
-    margin:0 auto clamp(14px, 1.8vw, 22px) !important;
-  }
-
-  #screen-main,
-  #screen-return-details,
-  #screen-confirmation{
-    width:100% !important;
-    max-width:min(96vw, 1120px) !important;
-    min-height:calc(100dvh - 120px) !important;
-    margin:0 auto !important;
-  }
-
   #screen-login{
-    width:min(96vw, 860px) !important;
-    max-width:860px !important;
-    min-height:calc(100dvh - 120px) !important;
-    max-height:none !important;
-    margin:0 auto !important;
+    width:min(72vw, 560px) !important;
+    max-width:560px !important;
+    padding:34px 24px 24px !important;
+    border-radius:42px !important;
   }
-
-  #screen-login .login-instruction-area{
-    height:clamp(80px, 8vw, 98px) !important;
-    min-height:clamp(80px, 8vw, 98px) !important;
+  #screen-login .header-dashboard{
+    height:82px !important;
   }
-
-  #screen-login .login-instruction-area.has-users{
-    height:clamp(150px, 15vw, 180px) !important;
-    min-height:clamp(150px, 15vw, 180px) !important;
+  .stat-label{font-size:.86rem !important;}
+  .stat-value{font-size:1.56rem !important;}
+  .keypad-grid{
+    gap:18px !important;
   }
-
-  #screen-login .display-area{
-    margin:8px auto 12px !important;
+  .keypad-btn{
+    border-radius:22px !important;
+    font-size:2.08rem !important;
   }
-
-  #screen-login .keypad-grid{
-    margin-bottom:14px !important;
+  #keypad-submit-btn{
+    padding:22px 0 !important;
+    font-size:1.28rem !important;
   }
-
-  #screen-login #keypad-submit-btn{
-    margin-top:18px !important;
-  }
-
-  #cardGrid{
-    gap:clamp(14px, 1.8vw, 20px) !important;
-    padding:clamp(16px, 2vw, 22px) !important;
-  }
-
-  .card-item-wrapper{
-    min-height:clamp(124px, 14vw, 160px) !important;
-  }
-
-  #return-form-container{
-    min-height:calc(100dvh - 220px) !important;
-    justify-content:space-between !important;
-  }
-
-  #screen-confirmation .confirmation-container{
-    min-height:calc(100dvh - 220px) !important;
-    justify-content:center !important;
+  .purpose-sheet{
+    width:min(560px, calc(100vw - 48px)) !important;
+    border-radius:34px !important;
+    padding:22px 22px 24px !important;
   }
 }
 
-/* FINAL TABLET KIOSK FIT
-   Tablet gets a mobile-like, full-screen layout. Desktop and phone rules stay unchanged. */
-@media (min-width:768px) and (max-width:1366px) and (pointer:coarse){
-  html,
-  body{
-    width:100% !important;
-    min-height:100dvh !important;
-    overflow:hidden !important;
-  }
-
-  #lock-screen{
-    padding:10px !important;
-  }
-
-  #lock-screen .lock-content{
-    width:100% !important;
-    height:100dvh !important;
-    justify-content:center !important;
-    gap:24px !important;
-    transform:none !important;
-  }
-
-  #glass-card-container{
-    width:min(90vw, 680px) !important;
-    height:auto !important;
-    aspect-ratio:1.6 / 1 !important;
-    max-height:48dvh !important;
-  }
-
-  #glass-card{
-    border-radius:28px !important;
-    padding:34px !important;
-  }
-
-  .card-number{
-    font-size:1.75rem !important;
-  }
-
-  .card-holder{
-    font-size:1rem !important;
-  }
-
-  .lock-text{
-    margin-top:0 !important;
-    font-size:1.45rem !important;
-    line-height:1.35 !important;
-  }
-
+@media (max-width:767px){
   .content-wrapper{
-    width:100vw !important;
-    height:100dvh !important;
-    min-height:100dvh !important;
-    padding:10px !important;
     justify-content:flex-start !important;
-    align-items:stretch !important;
-    overflow:hidden !important;
+    padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px) !important;
   }
-
   .container{
-    width:100% !important;
-    max-width:none !important;
-    height:100% !important;
-    min-height:0 !important;
-    align-items:stretch !important;
-    justify-content:flex-start !important;
+    max-width:100% !important;
   }
-
   #main-title-container{
-    width:100% !important;
-    max-width:none !important;
-    height:76px !important;
-    margin:0 0 10px !important;
-    flex:0 0 auto !important;
+    max-width:94vw !important;
+    margin-bottom:10px !important;
+  }
+  #main-title-container .inset-box{
+    padding:14px 18px !important;
+    border-radius:22px !important;
+  }
+  #main-title-container .inset-box h2{
+    font-size:1.42rem !important;
+  }
+  #main-welcome-message{
+    margin-bottom:10px !important;
+    font-size:1.12rem !important;
+    line-height:1.25 !important;
+  }
+  #card-selection-header{
+    margin-bottom:10px !important;
+    font-size:.92rem !important;
+  }
+  #cardGrid{
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    gap:8px !important;
+    padding:9px !important;
+    border-radius:22px !important;
+  }
+  #cardGrid::before{
+    top:-9px !important;
+    left:14px !important;
+    font-size:.50rem !important;
+    padding:3px 8px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot{
+    aspect-ratio:1.72 / 1 !important;
+    min-height:82px !important;
+    border-radius:16px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot .hybrid-card-btn{
+    border-radius:16px !important;
+    padding:8px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:1.04rem !important;
+    letter-spacing:-.045em !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+    font-size:.92rem !important;
+  }
+  .hybrid-status-badge.inuse-only-badge,
+  .hybrid-status-badge.status-badge{
+    top:7px !important;
+    right:7px !important;
+    font-size:.52rem !important;
+    padding:3px 6px !important;
+  }
+  .card-borrow-date{
+    font-size:.58rem !important;
+  }
+  .purpose-sheet{
+    width:min(420px, calc(100vw - 18px)) !important;
+    max-height:calc(100dvh - 22px) !important;
+    overflow-y:auto !important;
+    padding:12px 12px 14px !important;
+  }
+  .morph-grid{
+    min-height:auto !important;
+    gap:8px !important;
+  }
+  .morph-grid .purpose-btn,
+  .purpose-btn{
+    min-height:66px !important;
+  }
+}
+
+@media (max-width:390px){
+  .card-item-wrapper.hybrid-card-slot{
+    aspect-ratio:1.82 / 1 !important;
+    min-height:76px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:.96rem !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+  .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+    font-size:.86rem !important;
+  }
+  #screen-login{
+    width:96vw !important;
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+}
+
+
+/* =========================================================
+  @SECTION: CSS_TABLET_KIOSK_VISUAL_SCALE_V2
+  태블릿 세로 키오스크 크기/배치 최종 보정 v2
+  - 해외결제카드: PC와 동일하게 8번 카드 아래 중앙 배치
+  - 내선번호 입력/로그인: 태블릿에서 더 크게, 화면 중앙에 가깝게
+  - 잠금화면/로딩화면: 태블릿에서 존재감 있게 확대
+  - 햅틱/반납/OCR/GAS/API/저장 로직 변경 없음
+========================================================= */
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
+  .content-wrapper{
+    justify-content:center !important;
+    padding:calc(env(safe-area-inset-top,0px) + 26px) 26px calc(env(safe-area-inset-bottom,0px) + 26px) !important;
+  }
+  .container{
+    max-width:min(98vw, 980px) !important;
   }
 
+  /* 태블릿 잠금화면 확대 */
+  .lock-content{
+    gap:48px !important;
+    transform:translateY(-8px) !important;
+  }
+  #glass-card-container{
+    width:min(58vw, 450px) !important;
+    height:min(36vw, 282px) !important;
+  }
+  #glass-card{
+    border-radius:22px !important;
+    padding:32px !important;
+  }
+  #glass-card .card-chip{
+    width:58px !important;
+    height:44px !important;
+    border-radius:8px !important;
+  }
+  #glass-card .card-school-icon{
+    font-size:2.8rem !important;
+  }
+  #glass-card .card-number{
+    font-size:1.72rem !important;
+    letter-spacing:4px !important;
+  }
+  #glass-card .card-holder{
+    font-size:.9rem !important;
+  }
+  #glass-card .card-nfc{
+    font-size:2rem !important;
+  }
+  .lock-text{
+    margin-top:20px !important;
+    font-size:1.55rem !important;
+    letter-spacing:.08em !important;
+  }
+
+  /* 태블릿 로딩화면 확대 */
+  .loader-card-v2{
+    width:min(88vw, 760px) !important;
+    padding:44px 38px 34px !important;
+    border-radius:42px !important;
+    gap:22px !important;
+  }
+  .loader-card-icon{
+    font-size:3rem !important;
+  }
+  .loader-card-title{
+    font-size:3rem !important;
+  }
+  .loader-card-subtitle{
+    font-size:1.22rem !important;
+  }
+  .loader-progress-shell{
+    height:30px !important;
+  }
+  .loader-progress-percent{
+    font-size:1.18rem !important;
+  }
+  .loader-step-panel{
+    padding:18px !important;
+    border-radius:30px !important;
+    gap:12px !important;
+  }
+  .loader-step-item{
+    grid-template-columns:62px 1fr auto !important;
+    padding:15px !important;
+    border-radius:24px !important;
+  }
+  .loader-step-icon{
+    width:62px !important;
+    height:62px !important;
+    font-size:1.4rem !important;
+  }
+  .loader-step-title{
+    font-size:1.12rem !important;
+  }
+  .loader-step-desc{
+    font-size:.98rem !important;
+  }
+
+  /* 태블릿 내선번호 입력/로그인 화면 확대 및 중앙 배치 */
+  #main-title-container{
+    max-width:min(90vw, 820px) !important;
+    margin:0 auto 24px !important;
+  }
   #main-title-container .inset-box{
-    height:100% !important;
-    padding:10px 24px !important;
+    padding:24px 48px !important;
+    border-radius:34px !important;
+  }
+  #main-title-container .inset-box h2{
+    font-size:2.48rem !important;
+  }
+  #screen-login{
+    width:min(86vw, 720px) !important;
+    max-width:720px !important;
+    padding:42px 36px 34px !important;
+    border-radius:48px !important;
+    max-height:calc(100dvh - 112px) !important;
+    overflow-y:auto !important;
+  }
+  #screen-login .header-dashboard{
+    height:92px !important;
+    border-radius:26px !important;
+    margin-bottom:18px !important;
+  }
+  #screen-login .stat-label{
+    font-size:.98rem !important;
+  }
+  #screen-login .stat-value{
+    font-size:1.82rem !important;
+  }
+  #screen-login .login-instruction-area{
+    min-height:86px !important;
+    height:86px !important;
+    margin-top:6px !important;
+    margin-bottom:10px !important;
+  }
+  #screen-login .login-instruction-area.has-users{
+    min-height:170px !important;
+    height:170px !important;
+  }
+  #login-instruction{
+    font-size:1.28rem !important;
+  }
+  #screen-login .display-area{
+    height:76px !important;
+    margin:6px 0 22px !important;
+    gap:24px !important;
+  }
+  #screen-login .digit-wrapper{
+    width:70px !important;
+    height:70px !important;
+  }
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:64px !important;
+    height:64px !important;
+    border-radius:18px !important;
+    font-size:1.72rem !important;
+  }
+  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login .digit-box{
+    width:22px !important;
+    height:22px !important;
+  }
+  #screen-login .keypad-grid{
+    gap:22px !important;
+  }
+  #screen-login .keypad-btn{
+    border-radius:26px !important;
+    font-size:2.36rem !important;
+  }
+  #screen-login #keypad-add-btn,
+  #screen-login #keypad-back-btn{
+    font-size:1.42rem !important;
+  }
+  #screen-login #keypad-submit-btn{
+    padding:26px 0 !important;
+    margin-top:24px !important;
+    font-size:1.42rem !important;
     border-radius:26px !important;
   }
 
-  #main-title-container .inset-box h2{
-    font-size:2.1rem !important;
-    letter-spacing:0 !important;
+  /* 태블릿 카드 선택 화면 확대 */
+  #screen-card-selection,
+  .screen:not(#screen-login):not(#screen-return):not(#screen-confirmation){
+    max-width:min(98vw, 980px) !important;
+    padding:32px 32px 34px !important;
+  }
+  #main-welcome-message{
+    font-size:1.74rem !important;
+    margin-bottom:22px !important;
+  }
+  #card-selection-header{
+    font-size:1.24rem !important;
+    margin-bottom:20px !important;
+  }
+  #cardGrid{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:18px !important;
+    padding:20px !important;
+  }
+  .card-item-wrapper.hybrid-card-slot{
+    min-height:132px !important;
+    aspect-ratio:1.44 / 1 !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+    font-size:1.50rem !important;
   }
 
-  #screen-login,
-  #screen-main,
-  #screen-return-details,
-  #screen-confirmation{
-    width:100% !important;
-    max-width:none !important;
-    height:calc(100dvh - 96px) !important;
-    min-height:0 !important;
-    max-height:none !important;
-    margin:0 !important;
-    padding:22px !important;
-    border-radius:30px !important;
-    overflow:hidden !important;
+  /* 해외결제카드: PC와 동일하게 8번 카드 아래 중앙 */
+  .card-item-wrapper.hybrid-card-slot.special-overseas-card{
+    grid-row:4 !important;
+    grid-column:2 !important;
   }
+}
 
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse) and (max-height:900px){
   #screen-login{
-    justify-content:flex-start !important;
+    width:min(82vw, 660px) !important;
+    padding:32px 30px 28px !important;
+    max-height:calc(100dvh - 64px) !important;
+  }
+  #screen-login .header-dashboard{height:78px !important;margin-bottom:12px !important;}
+  #screen-login .login-instruction-area{min-height:66px !important;height:66px !important;}
+  #screen-login .login-instruction-area.has-users{min-height:146px !important;height:146px !important;}
+  #screen-login .display-area{height:64px !important;margin:2px 0 16px !important;}
+  #screen-login .keypad-grid{gap:16px !important;}
+  #screen-login #keypad-submit-btn{padding:22px 0 !important;margin-top:18px !important;}
+  .loader-card-v2{width:min(86vw, 700px) !important;padding:34px 30px 28px !important;}
+  .loader-card-title{font-size:2.62rem !important;}
+  #glass-card-container{width:min(52vw, 410px) !important;height:min(33vw, 256px) !important;}
+}
+</style>
+
+
+
+    <!-- =========================================================
+      @SECTION: CSS_TABLET_LOGIN_SCALE_ONLY_FINAL
+      태블릿 내선번호 입력 화면만 확대 최종 패치
+      - 좌우 전체 폭/카드선택/반납/OCR/API/저장 로직은 건드리지 않음
+      - 기존 태블릿 키오스크 UI 패치 이후에 적용되도록 head 마지막에 배치
+    ========================================================= -->
+    <style id="tablet-login-scale-only-final">
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
+
+  /* 로그인 카드 자체만 살짝 확대 */
+  #screen-login{
+    width:min(94vw, 560px) !important;
+    max-width:560px !important;
+    padding:34px 30px 30px !important;
+    border-radius:42px !important;
   }
 
+  /* 상단 대시보드 확대 */
   #screen-login .header-dashboard{
-    height:82px !important;
-    min-height:82px !important;
-    margin-bottom:12px !important;
-    border-radius:22px !important;
+    height:92px !important;
+    margin-bottom:18px !important;
+    border-radius:24px !important;
   }
 
   #screen-login .stat-label{
-    font-size:.95rem !important;
+    font-size:1rem !important;
   }
 
   #screen-login .stat-value{
     font-size:1.75rem !important;
   }
 
+  /* 안내 문구 영역 확대 */
   #screen-login .login-instruction-area{
-    height:74px !important;
-    min-height:74px !important;
-    margin:0 0 8px !important;
+    height:108px !important;
   }
 
   #screen-login .login-instruction-area.has-users{
-    height:142px !important;
-    min-height:142px !important;
+    height:164px !important;
   }
 
   #screen-login #login-instruction{
-    font-size:1.2rem !important;
+    font-size:1.28rem !important;
   }
 
+  /* 입력 숫자 표시 영역 확대 */
   #screen-login .display-area{
+    height:78px !important;
+    gap:22px !important;
+    margin-bottom:-8px !important;
+  }
+
+  #screen-login .digit-wrapper{
+    width:72px !important;
     height:72px !important;
-    min-height:72px !important;
-    margin:0 auto 12px !important;
-    gap:18px !important;
-    align-items:center !important;
   }
 
-  #screen-login #keypadDisplay{
-    margin:0 auto !important;
+  #screen-login .digit-box.filled{
+    width:70px !important;
+    height:70px !important;
+    border-radius:20px !important;
+    font-size:2rem !important;
   }
 
-  #screen-login #keypadDisplay .digit-wrapper{
-    width:68px !important;
-    height:68px !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.filled{
-    width:64px !important;
-    height:64px !important;
-    border-radius:18px !important;
-    font-size:1.8rem !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login .digit-box.masked,
   #screen-login .digit-box{
-    width:24px !important;
-    height:24px !important;
+    width:22px !important;
+    height:22px !important;
   }
 
+  /* 키패드 버튼 확대 */
   #screen-login .keypad-grid{
-    width:100% !important;
-    max-width:560px !important;
-    margin:0 auto 12px !important;
-    gap:14px !important;
+    gap:18px !important;
+    margin-bottom:10px !important;
   }
 
   #screen-login .keypad-btn{
-    aspect-ratio:auto !important;
-    min-height:86px !important;
     border-radius:24px !important;
     font-size:2.25rem !important;
   }
@@ -3537,192 +3638,71 @@ img {
   }
 
   #screen-login #keypad-submit-btn{
-    width:100% !important;
-    max-width:560px !important;
-    margin:0 auto !important;
-    padding:22px 0 !important;
-    border-radius:24px !important;
+    padding:24px 0 !important;
     font-size:1.35rem !important;
+    margin-top:18px !important;
+    border-radius:24px !important;
   }
+}
+    </style>
 
-  #screen-main{
-    display:flex !important;
-    flex-direction:column !important;
-  }
 
-  #main-welcome-message{
-    flex:0 0 auto !important;
-    margin-bottom:10px !important;
-    font-size:1.6rem !important;
-    line-height:1.25 !important;
-  }
-
-  #card-selection-header{
-    margin-bottom:10px !important;
-    font-size:1.15rem !important;
-    line-height:1.3 !important;
-  }
-
-  #card-list-container{
-    flex:1 1 auto !important;
-    min-height:0 !important;
-    display:flex !important;
-    flex-direction:column !important;
-  }
-
-  #cardGrid{
-    flex:1 1 auto !important;
-    min-height:0 !important;
-    display:grid !important;
-    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
-    grid-template-rows:repeat(4, minmax(0, 1fr)) !important;
-    gap:12px !important;
-    padding:10px !important;
-    width:100% !important;
-  }
-
-  .card-item-wrapper{
-    min-height:0 !important;
-    height:100% !important;
-    aspect-ratio:auto !important;
-    border-radius:22px !important;
-  }
-
-  .card-grid-btn{
-    padding:12px 8px !important;
-    gap:8px !important;
-  }
-
-  .mini-card-icon{
-    width:86px !important;
-    height:54px !important;
-    margin-bottom:4px !important;
-  }
-
-  .card-grid-btn .card-name{
-    font-size:1.25rem !important;
-    line-height:1.15 !important;
-    letter-spacing:0 !important;
-  }
-
-  .status-badge{
-    top:10px !important;
-    right:10px !important;
-    font-size:.72rem !important;
-    padding:5px 9px !important;
-  }
-
-  #screen-return-details{
-    display:flex !important;
-    flex-direction:column !important;
-  }
-
-  #return-form-container{
-    flex:1 1 auto !important;
-    min-height:0 !important;
-    max-width:none !important;
-    margin-top:0 !important;
-    gap:14px !important;
-    justify-content:stretch !important;
-  }
-
-  #return-screen-title{
-    gap:8px !important;
-  }
-
-  #receipt-cart-container{
-    flex:1 1 auto !important;
-    min-height:0 !important;
-    max-height:none !important;
-    overflow:auto !important;
-  }
-
-  .cart-item{
-    min-height:76px !important;
-    padding:14px 54px 14px 16px !important;
-    border-radius:20px !important;
-  }
-
-  .simple-btn,
-  #add-receipt-btn,
-  #submit-cart-btn{
-    min-height:74px !important;
-    padding:18px 0 !important;
-    border-radius:22px !important;
-    font-size:1.25rem !important;
-  }
-
-  #screen-confirmation{
-    display:flex !important;
+    <!-- =========================================================
+      @SECTION: CSS_TABLET_LOGIN_DOT_SPACING_FIX
+      태블릿 내선번호 입력 도트 위아래 간격 보정
+      - 입력 점(.digit-box / .digit-box.masked)의 세로 중앙 정렬 고정
+      - 태블릿에서 점 영역과 키패드 사이 여백을 음수에서 정상값으로 복원
+      - 기능 로직 변경 없음
+    ========================================================= -->
+    <style id="tablet-login-dot-spacing-fix">
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
+  #screen-login .display-area{
+    height:74px !important;
+    margin:8px 0 18px !important;
+    gap:22px !important;
     align-items:center !important;
     justify-content:center !important;
   }
 
-  #screen-confirmation .confirmation-container{
-    width:100% !important;
-    max-width:780px !important;
-    margin:0 auto !important;
+  #screen-login .digit-wrapper,
+  #screen-login #keypadDisplay .digit-wrapper{
+    width:68px !important;
+    height:68px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    line-height:1 !important;
   }
 
-  #screen-confirmation .confirmation-icon-wrapper{
-    width:110px !important;
-    height:110px !important;
-    margin-bottom:22px !important;
+  #screen-login #keypadDisplay .digit-box{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    line-height:1 !important;
+    margin:0 !important;
+    transform-origin:center center !important;
   }
 
-  #screen-confirmation .animated-check{
-    width:110px !important;
-    height:110px !important;
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:62px !important;
+    height:62px !important;
+    border-radius:18px !important;
+    font-size:1.72rem !important;
   }
 
-  #screen-confirmation .confirmation-title{
-    font-size:1.9rem !important;
-    line-height:1.25 !important;
-    margin-bottom:20px !important;
+  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login #keypadDisplay .digit-box:not(.filled){
+    width:20px !important;
+    height:20px !important;
+    border-radius:50% !important;
+    font-size:0 !important;
   }
 
-  #screen-confirmation #confirmation-details{
-    max-width:680px !important;
-    margin:0 auto 24px !important;
-  }
-}
-
-@media (min-width:768px) and (max-width:1366px) and (pointer:coarse) and (orientation:portrait){
-  #screen-login,
-  #screen-main,
-  #screen-return-details,
-  #screen-confirmation{
-    height:calc(100dvh - 92px) !important;
-    padding:18px !important;
-  }
-
-  #main-title-container{
-    height:72px !important;
-    margin-bottom:8px !important;
-  }
-
-  #screen-login .keypad-btn{
-    min-height:82px !important;
-  }
-
-  #cardGrid{
-    gap:10px !important;
-    padding:8px !important;
-  }
-
-  .mini-card-icon{
-    width:76px !important;
-    height:48px !important;
-  }
-
-  .simple-btn,
-  #add-receipt-btn,
-  #submit-cart-btn{
-    min-height:72px !important;
+  #screen-login .keypad-grid{
+    margin-top:0 !important;
   }
 }
-
-</style>
+    </style>
 
 </head>
 <body class="variant-lockscreen">
@@ -5597,7 +5577,7 @@ const CardApp = (function() {
             const buttons = [
                 { id: '물품구매', icon: 'fa-box', label: '물품구매', desc: '비품 · 소모품 · 행사 준비물' },
                 { id: '식사다과', icon: 'fa-mug-hot', label: '식사다과', desc: '식사 · 간식 · 다과' },
-                { id: '특근매식', icon: 'fa-utensils', label: '특근매식', desc: '특근매식비' }
+                { id: '특근매식', icon: 'fa-utensils', label: '특근매식', desc: '특근 · 매식비' }
             ];
             actions.innerHTML = buttons.map(CardLogic.renderPurposeButtonHTML).join('');
             closeBtn.onclick = CardLogic.closeMorphOverlay;
@@ -6574,11 +6554,25 @@ const CardApp = (function() {
 
         /*
           행정실 태블릿 화면 깨움 처리:
-          화면이 꺼졌다가 다시 보이면 서버를 호출하지 않고 세션만 청소한 뒤
-          잠금화면으로 복귀합니다. 최신 데이터 갱신은 잠금화면 카드 터치 시 로딩 단계에서만 실행됩니다.
+          태블릿 키오스크에서 화면이 꺼졌다가 다시 보이면 서버를 호출하지 않고 세션만 청소한 뒤
+          잠금화면으로 복귀합니다. PC 개발/테스트 환경에서는 탭 전환만으로 잠금화면에 가지 않도록 제한합니다.
+          최신 데이터 갱신은 잠금화면 카드 터치 시 로딩 단계에서만 실행됩니다.
         */
+        function isKioskTabletDevice() {
+            const ua = navigator.userAgent || '';
+            const platform = navigator.platform || '';
+            const hasTouch = (navigator.maxTouchPoints || 0) > 0 || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+            const shortSide = Math.min(window.innerWidth || 0, window.innerHeight || 0);
+            const longSide = Math.max(window.innerWidth || 0, window.innerHeight || 0);
+            const tabletSize = shortSide >= 600 && shortSide <= 1100 && longSide >= 800 && longSide <= 1400;
+            const isiPad = /iPad/i.test(ua) || (platform === 'MacIntel' && (navigator.maxTouchPoints || 0) > 1);
+            const isAndroidTablet = /Android/i.test(ua) && !/Mobile/i.test(ua);
+            return hasTouch && (isiPad || isAndroidTablet || tabletSize);
+        }
+
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState !== 'visible') return;
+            if (!isKioskTabletDevice()) return;
             if (state.currentScreen === 'lock') return;
             try { if (typeof Swal !== 'undefined' && Swal.isVisible()) Swal.close(); } catch(e) {}
             UIManager.showLockScreen();
