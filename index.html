@@ -3704,6 +3704,142 @@ img {
 }
     </style>
 
+
+
+    <!-- =========================================================
+      @SECTION: CSS_LOGIN_DISPLAY_CENTER_AXIS_FINAL
+      PC/태블릿 공통 내선번호 입력 표시 영역 중앙축 보정
+      - #keypadDisplay 자체를 4칸 고정 grid로 재정의하여 좌우/상하 중심을 통일
+      - cursor pseudo-element는 wrapper 기준 하나만 사용하여 중복/미세 오프셋 제거
+      - 기능 로직 변경 없음
+    ========================================================= -->
+    <style id="login-display-center-axis-final">
+/* PC 기본: 입력칸 전체를 로그인 카드 중앙축에 고정 */
+#screen-login #keypadDisplay.display-area,
+#screen-login .display-area#keypadDisplay{
+  --login-digit-slot:56px;
+  --login-digit-dot:18px;
+  --login-digit-filled:48px;
+  width:100% !important;
+  min-height:64px !important;
+  height:64px !important;
+  margin:10px auto 22px !important;
+  padding:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(4, var(--login-digit-slot)) !important;
+  justify-content:center !important;
+  justify-items:center !important;
+  align-items:center !important;
+  column-gap:18px !important;
+  row-gap:0 !important;
+  line-height:1 !important;
+  transform:none !important;
+}
+
+#screen-login #keypadDisplay .digit-wrapper{
+  width:var(--login-digit-slot) !important;
+  height:var(--login-digit-slot) !important;
+  min-width:var(--login-digit-slot) !important;
+  min-height:var(--login-digit-slot) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  position:relative !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1 !important;
+}
+
+#screen-login #keypadDisplay .digit-box{
+  width:var(--login-digit-dot) !important;
+  height:var(--login-digit-dot) !important;
+  min-width:var(--login-digit-dot) !important;
+  min-height:var(--login-digit-dot) !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  line-height:1 !important;
+  position:relative !important;
+  transform-origin:center center !important;
+}
+
+#screen-login #keypadDisplay .digit-box.filled{
+  width:var(--login-digit-filled) !important;
+  height:var(--login-digit-filled) !important;
+  min-width:var(--login-digit-filled) !important;
+  min-height:var(--login-digit-filled) !important;
+  border-radius:14px !important;
+  font-size:1.35rem !important;
+  line-height:1 !important;
+}
+
+#screen-login #keypadDisplay .digit-box.masked,
+#screen-login #keypadDisplay .digit-box:not(.filled){
+  width:var(--login-digit-dot) !important;
+  height:var(--login-digit-dot) !important;
+  min-width:var(--login-digit-dot) !important;
+  min-height:var(--login-digit-dot) !important;
+  border-radius:50% !important;
+  font-size:0 !important;
+  line-height:1 !important;
+}
+
+/* 커서 점은 wrapper 중앙 기준 하나만 표시 */
+#screen-login #keypadDisplay .digit-box.current-active::after{
+  content:none !important;
+  display:none !important;
+}
+#screen-login #keypadDisplay .digit-wrapper.active-cursor::after{
+  content:'' !important;
+  position:absolute !important;
+  width:7px !important;
+  height:7px !important;
+  top:50% !important;
+  left:50% !important;
+  border-radius:50% !important;
+  background:var(--primary-color) !important;
+  transform:translate(-50%,-50%) !important;
+  box-shadow:0 0 8px rgba(37,99,235,.62) !important;
+  animation:cursorPulseFinal 1.2s ease-in-out infinite !important;
+  pointer-events:none !important;
+}
+
+/* 태블릿: 확대된 키패드 기준으로 슬롯 크기만 키우고 중앙축은 동일하게 유지 */
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay{
+    --login-digit-slot:68px;
+    --login-digit-dot:20px;
+    --login-digit-filled:62px;
+    min-height:76px !important;
+    height:76px !important;
+    margin:12px auto 24px !important;
+    column-gap:20px !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.filled{
+    border-radius:18px !important;
+    font-size:1.72rem !important;
+  }
+}
+
+/* 낮은 태블릿 화면에서는 세로만 살짝 압축하되, 중앙 정렬은 유지 */
+@media (min-width:768px) and (max-width:1023px) and (pointer:coarse) and (max-height:900px){
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay{
+    --login-digit-slot:64px;
+    --login-digit-dot:20px;
+    --login-digit-filled:58px;
+    min-height:70px !important;
+    height:70px !important;
+    margin:8px auto 20px !important;
+    column-gap:18px !important;
+  }
+}
+    </style>
+
 </head>
 <body class="variant-lockscreen">
 
