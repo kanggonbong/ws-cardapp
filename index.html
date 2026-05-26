@@ -3838,7 +3838,334 @@ img {
     column-gap:18px !important;
   }
 }
-    </style>
+    
+
+/* =========================================================
+  @SECTION: CSS_TABLET_KEYPAD_TOUCH_COMFORT_PATCH
+  태블릿 터치 키패드 개선 최종 패치
+  - 모바일은 유지
+  - PC 마우스 환경은 유지
+  - 태블릿/터치 환경에서만 키패드 터치 영역 확대
+  - 내선번호 입력 점은 로그인 카드 중앙축에 고정
+========================================================= */
+
+@media (min-width:768px) and (max-width:1180px) and (pointer:coarse){
+
+  /* 로그인 카드 자체를 태블릿에서 살짝 넓힘 */
+  #screen-login{
+    width:min(88vw,540px) !important;
+    max-width:540px !important;
+    padding:34px 30px 28px !important;
+  }
+
+  /* 내선번호 점 표시 영역은 중앙축 고정 */
+  #keypadDisplay.display-area,
+  #screen-login .display-area{
+    display:grid !important;
+    grid-template-columns:repeat(4,64px) !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:18px !important;
+    width:100% !important;
+    height:76px !important;
+    margin:10px 0 22px !important;
+  }
+
+  #keypadDisplay .digit-wrapper,
+  #screen-login .digit-wrapper{
+    width:64px !important;
+    height:64px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  #keypadDisplay .digit-box{
+    margin:0 !important;
+    flex:0 0 auto !important;
+  }
+
+  #keypadDisplay .digit-box.filled{
+    width:56px !important;
+    height:56px !important;
+    border-radius:16px !important;
+    font-size:1.55rem !important;
+  }
+
+  #keypadDisplay .digit-box.masked{
+    width:20px !important;
+    height:20px !important;
+    border-radius:50% !important;
+  }
+
+  /* 키패드 전체를 태블릿 터치용으로 확대 */
+  #screen-login .keypad-grid{
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:20px !important;
+    margin-top:4px !important;
+    margin-bottom:16px !important;
+    padding:0 !important;
+  }
+
+  /* 숫자 버튼 터치 영역 확대 */
+  #screen-login .keypad-btn{
+    min-height:104px !important;
+    aspect-ratio:1 / 1 !important;
+    border-radius:24px !important;
+    font-size:2.25rem !important;
+    line-height:1 !important;
+    touch-action:manipulation !important;
+  }
+
+  /* 눌렀을 때 너무 많이 줄어들지 않게 */
+  #screen-login .keypad-btn:active:not(:disabled),
+  #screen-login .keypad-btn.pressed{
+    transform:scale(0.97) !important;
+  }
+
+  /* 추가 / 삭제 버튼도 누르기 편하게 */
+  #screen-login #keypad-add-btn,
+  #screen-login #keypad-back-btn{
+    font-size:1.45rem !important;
+  }
+
+  /* 확인 버튼은 손가락으로 확실히 누르게 높이 확보 */
+  #screen-login #keypad-submit-btn{
+    min-height:72px !important;
+    padding:0 !important;
+    margin-top:18px !important;
+    border-radius:24px !important;
+    font-size:1.35rem !important;
+    touch-action:manipulation !important;
+  }
+
+  #screen-login #keypad-submit-btn:active,
+  #screen-login #keypad-submit-btn.pressed{
+    transform:scale(0.98) !important;
+  }
+}
+
+
+
+/* =========================================================
+  @SECTION: CSS_FINAL_MOBILE_TABLET_DIGIT_CENTER_FIX
+  모바일/태블릿 내선번호 점 중앙정렬 최종 보정
+  - PC 중앙정렬은 유지
+  - 모바일/태블릿 터치 환경에서만 #keypadDisplay를 4칸 grid로 고정
+  - 기존 .display-area 반응형 값이 덮어써도 마지막 패치가 우선 적용
+========================================================= */
+
+@media (max-width:767px) and (pointer:coarse){
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay{
+    --login-digit-slot:56px !important;
+    --login-digit-gap:14px !important;
+    --login-digit-dot:18px !important;
+    --login-digit-filled:48px !important;
+
+    display:grid !important;
+    grid-template-columns:repeat(4, var(--login-digit-slot)) !important;
+    grid-auto-rows:var(--login-digit-slot) !important;
+    justify-content:center !important;
+    justify-items:center !important;
+    align-content:center !important;
+    align-items:center !important;
+    column-gap:var(--login-digit-gap) !important;
+    row-gap:0 !important;
+
+    width:100% !important;
+    max-width:calc((var(--login-digit-slot) * 4) + (var(--login-digit-gap) * 3)) !important;
+    height:66px !important;
+    min-height:66px !important;
+    margin:8px auto 16px !important;
+    padding:0 !important;
+    line-height:1 !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-wrapper{
+    width:var(--login-digit-slot) !important;
+    height:var(--login-digit-slot) !important;
+    min-width:var(--login-digit-slot) !important;
+    min-height:var(--login-digit-slot) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    position:relative !important;
+    margin:0 !important;
+    padding:0 !important;
+    line-height:1 !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box{
+    width:var(--login-digit-dot) !important;
+    height:var(--login-digit-dot) !important;
+    min-width:var(--login-digit-dot) !important;
+    min-height:var(--login-digit-dot) !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    line-height:1 !important;
+    position:relative !important;
+    left:auto !important;
+    top:auto !important;
+    flex:0 0 auto !important;
+    aspect-ratio:auto !important;
+    transform-origin:center center !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:var(--login-digit-filled) !important;
+    height:var(--login-digit-filled) !important;
+    min-width:var(--login-digit-filled) !important;
+    min-height:var(--login-digit-filled) !important;
+    border-radius:14px !important;
+    font-size:1.34rem !important;
+    line-height:1 !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login #keypadDisplay .digit-box:not(.filled){
+    width:var(--login-digit-dot) !important;
+    height:var(--login-digit-dot) !important;
+    min-width:var(--login-digit-dot) !important;
+    min-height:var(--login-digit-dot) !important;
+    border-radius:50% !important;
+    font-size:0 !important;
+    line-height:1 !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.current-active::after{
+    content:none !important;
+    display:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-wrapper.active-cursor::after{
+    content:'' !important;
+    position:absolute !important;
+    width:7px !important;
+    height:7px !important;
+    top:50% !important;
+    left:50% !important;
+    border-radius:50% !important;
+    background:var(--primary-color) !important;
+    transform:translate(-50%,-50%) !important;
+    box-shadow:0 0 8px rgba(37,99,235,.62) !important;
+    animation:cursorPulseFinal 1.2s ease-in-out infinite !important;
+    pointer-events:none !important;
+  }
+}
+
+@media (min-width:768px) and (max-width:1180px) and (pointer:coarse){
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay{
+    --login-digit-slot:64px !important;
+    --login-digit-gap:18px !important;
+    --login-digit-dot:20px !important;
+    --login-digit-filled:56px !important;
+
+    display:grid !important;
+    grid-template-columns:repeat(4, var(--login-digit-slot)) !important;
+    grid-auto-rows:var(--login-digit-slot) !important;
+    justify-content:center !important;
+    justify-items:center !important;
+    align-content:center !important;
+    align-items:center !important;
+    column-gap:var(--login-digit-gap) !important;
+    row-gap:0 !important;
+
+    width:100% !important;
+    max-width:calc((var(--login-digit-slot) * 4) + (var(--login-digit-gap) * 3)) !important;
+    height:76px !important;
+    min-height:76px !important;
+    margin:10px auto 22px !important;
+    padding:0 !important;
+    line-height:1 !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-wrapper{
+    width:var(--login-digit-slot) !important;
+    height:var(--login-digit-slot) !important;
+    min-width:var(--login-digit-slot) !important;
+    min-height:var(--login-digit-slot) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    position:relative !important;
+    margin:0 !important;
+    padding:0 !important;
+    line-height:1 !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box{
+    width:var(--login-digit-dot) !important;
+    height:var(--login-digit-dot) !important;
+    min-width:var(--login-digit-dot) !important;
+    min-height:var(--login-digit-dot) !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    line-height:1 !important;
+    position:relative !important;
+    left:auto !important;
+    top:auto !important;
+    flex:0 0 auto !important;
+    aspect-ratio:auto !important;
+    transform-origin:center center !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:var(--login-digit-filled) !important;
+    height:var(--login-digit-filled) !important;
+    min-width:var(--login-digit-filled) !important;
+    min-height:var(--login-digit-filled) !important;
+    border-radius:16px !important;
+    font-size:1.55rem !important;
+    line-height:1 !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login #keypadDisplay .digit-box:not(.filled){
+    width:var(--login-digit-dot) !important;
+    height:var(--login-digit-dot) !important;
+    min-width:var(--login-digit-dot) !important;
+    min-height:var(--login-digit-dot) !important;
+    border-radius:50% !important;
+    font-size:0 !important;
+    line-height:1 !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.current-active::after{
+    content:none !important;
+    display:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-wrapper.active-cursor::after{
+    content:'' !important;
+    position:absolute !important;
+    width:7px !important;
+    height:7px !important;
+    top:50% !important;
+    left:50% !important;
+    border-radius:50% !important;
+    background:var(--primary-color) !important;
+    transform:translate(-50%,-50%) !important;
+    box-shadow:0 0 8px rgba(37,99,235,.62) !important;
+    animation:cursorPulseFinal 1.2s ease-in-out infinite !important;
+    pointer-events:none !important;
+  }
+}
+
+</style>
 
 </head>
 <body class="variant-lockscreen">
