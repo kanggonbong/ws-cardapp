@@ -3782,582 +3782,309 @@ img {
       - cursor pseudo-element는 wrapper 기준 하나만 사용하여 중복/미세 오프셋 제거
       - 기능 로직 변경 없음
     ========================================================= -->
-    <style id="login-display-center-axis-final">
-/* PC 기본: 입력칸 전체를 로그인 카드 중앙축에 고정 */
-#screen-login #keypadDisplay.display-area,
-#screen-login .display-area#keypadDisplay{
-  --login-digit-slot:56px;
-  --login-digit-dot:18px;
-  --login-digit-filled:48px;
-  width:100% !important;
-  min-height:64px !important;
-  height:64px !important;
-  margin:10px auto 22px !important;
-  padding:0 !important;
-  display:grid !important;
-  grid-template-columns:repeat(4, var(--login-digit-slot)) !important;
-  justify-content:center !important;
-  justify-items:center !important;
-  align-items:center !important;
-  column-gap:18px !important;
-  row-gap:0 !important;
-  line-height:1 !important;
-  transform:none !important;
-}
 
-#screen-login #keypadDisplay .digit-wrapper{
-  width:var(--login-digit-slot) !important;
-  height:var(--login-digit-slot) !important;
-  min-width:var(--login-digit-slot) !important;
-  min-height:var(--login-digit-slot) !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  position:relative !important;
-  margin:0 !important;
-  padding:0 !important;
-  line-height:1 !important;
-}
-
-#screen-login #keypadDisplay .digit-box{
-  width:var(--login-digit-dot) !important;
-  height:var(--login-digit-dot) !important;
-  min-width:var(--login-digit-dot) !important;
-  min-height:var(--login-digit-dot) !important;
-  margin:0 !important;
-  padding:0 !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  line-height:1 !important;
-  position:relative !important;
-  transform-origin:center center !important;
-}
-
-#screen-login #keypadDisplay .digit-box.filled{
-  width:var(--login-digit-filled) !important;
-  height:var(--login-digit-filled) !important;
-  min-width:var(--login-digit-filled) !important;
-  min-height:var(--login-digit-filled) !important;
-  border-radius:14px !important;
-  font-size:1.35rem !important;
-  line-height:1 !important;
-}
-
-#screen-login #keypadDisplay .digit-box.masked,
-#screen-login #keypadDisplay .digit-box:not(.filled){
-  width:var(--login-digit-dot) !important;
-  height:var(--login-digit-dot) !important;
-  min-width:var(--login-digit-dot) !important;
-  min-height:var(--login-digit-dot) !important;
-  border-radius:50% !important;
-  font-size:0 !important;
-  line-height:1 !important;
-}
-
-/* 커서 점은 wrapper 중앙 기준 하나만 표시 */
-#screen-login #keypadDisplay .digit-box.current-active::after{
-  content:none !important;
-  display:none !important;
-}
-#screen-login #keypadDisplay .digit-wrapper.active-cursor::after{
-  content:'' !important;
-  position:absolute !important;
-  width:7px !important;
-  height:7px !important;
-  top:50% !important;
-  left:50% !important;
-  border-radius:50% !important;
-  background:var(--primary-color) !important;
-  transform:translate(-50%,-50%) !important;
-  box-shadow:0 0 8px rgba(37,99,235,.62) !important;
-  animation:cursorPulseFinal 1.2s ease-in-out infinite !important;
-  pointer-events:none !important;
-}
-
-/* 태블릿: 확대된 키패드 기준으로 슬롯 크기만 키우고 중앙축은 동일하게 유지 */
-@media (min-width:768px) and (max-width:1023px) and (pointer:coarse){
-  #screen-login #keypadDisplay.display-area,
-  #screen-login .display-area#keypadDisplay{
-    --login-digit-slot:68px;
-    --login-digit-dot:20px;
-    --login-digit-filled:62px;
-    min-height:76px !important;
-    height:76px !important;
-    margin:12px auto 24px !important;
-    column-gap:20px !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.filled{
-    border-radius:18px !important;
-    font-size:1.72rem !important;
-  }
-}
-
-/* 낮은 태블릿 화면에서는 세로만 살짝 압축하되, 중앙 정렬은 유지 */
-@media (min-width:768px) and (max-width:1023px) and (pointer:coarse) and (max-height:900px){
-  #screen-login #keypadDisplay.display-area,
-  #screen-login .display-area#keypadDisplay{
-    --login-digit-slot:64px;
-    --login-digit-dot:20px;
-    --login-digit-filled:58px;
-    min-height:70px !important;
-    height:70px !important;
-    margin:8px auto 20px !important;
-    column-gap:18px !important;
-  }
-}
-    
-
+<style id="woosung-final-portrait-keypad-stability-patch">
 /* =========================================================
-  @SECTION: CSS_TABLET_KEYPAD_TOUCH_COMFORT_PATCH
-  태블릿 터치 키패드 개선 최종 패치
-  - 모바일은 유지
-  - PC 마우스 환경은 유지
-  - 태블릿/터치 환경에서만 키패드 터치 영역 확대
-  - 내선번호 입력 점은 로그인 카드 중앙축에 고정
+  @SECTION: WOOSUNG_FINAL_PORTRAIT_KEYPAD_STABILITY_PATCH
+  적용 목적
+  - PC 중앙정렬은 유지
+  - 모바일/태블릿 세로모드에서 내선번호 점 4칸 중앙축 고정
+  - 모바일 하단 과도한 빈 공간 완화
+  - 태블릿 세로모드 키패드 터치 영역 안정화
+  - 기존 기능/JS는 건드리지 않음
 ========================================================= */
 
-@media (min-width:768px) and (max-width:1180px) and (pointer:coarse){
+/* 공통: 화면 기준을 dvh로 안정화 */
+html,
+body {
+  min-height: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden !important;
+}
 
-  /* 로그인 카드 자체를 태블릿에서 살짝 넓힘 */
-  #screen-login{
-    width:min(88vw,540px) !important;
-    max-width:540px !important;
-    padding:34px 30px 28px !important;
+body {
+  min-height: 100dvh;
+}
+
+/* 모바일/태블릿 세로모드 공통: 앱 래퍼가 화면 높이를 자연스럽게 채움 */
+@media (max-width: 1180px) and (orientation: portrait) {
+  .content-wrapper {
+    min-height: 100dvh !important;
+    height: auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
   }
 
-  /* 내선번호 점 표시 영역은 중앙축 고정 */
-  #keypadDisplay.display-area,
-  #screen-login .display-area{
-    display:grid !important;
-    grid-template-columns:repeat(4,64px) !important;
-    justify-content:center !important;
-    align-items:center !important;
-    gap:18px !important;
-    width:100% !important;
-    height:76px !important;
-    margin:10px 0 22px !important;
+  .container {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
   }
 
-  #keypadDisplay .digit-wrapper,
-  #screen-login .digit-wrapper{
-    width:64px !important;
-    height:64px !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
+  /* 내선번호 점: width 100% flex가 아니라 4칸 grid 자체를 가운데 놓음 */
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay {
+    --login-digit-slot: 52px;
+    --login-digit-dot: 17px;
+    --login-digit-filled: 48px;
+
+    display: grid !important;
+    grid-template-columns: repeat(4, var(--login-digit-slot)) !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    height: 62px !important;
+    min-height: 62px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 !important;
+
+    justify-content: center !important;
+    justify-items: center !important;
+    align-items: center !important;
+    column-gap: 16px !important;
+    row-gap: 0 !important;
+    transform: none !important;
+    line-height: 1 !important;
   }
 
-  #keypadDisplay .digit-box{
-    margin:0 !important;
-    flex:0 0 auto !important;
+  #screen-login #keypadDisplay .digit-wrapper {
+    width: var(--login-digit-slot) !important;
+    height: var(--login-digit-slot) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  #keypadDisplay .digit-box.filled{
-    width:56px !important;
-    height:56px !important;
-    border-radius:16px !important;
-    font-size:1.55rem !important;
+  #screen-login #keypadDisplay .digit-box {
+    width: var(--login-digit-dot) !important;
+    height: var(--login-digit-dot) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    position: relative !important;
   }
 
-  #keypadDisplay .digit-box.masked{
-    width:20px !important;
-    height:20px !important;
-    border-radius:50% !important;
+  #screen-login #keypadDisplay .digit-box.filled {
+    width: var(--login-digit-filled) !important;
+    height: var(--login-digit-filled) !important;
+    border-radius: 14px !important;
+    font-size: 1.35rem !important;
+    font-weight: 800 !important;
   }
 
-  /* 키패드 전체를 태블릿 터치용으로 확대 */
-  #screen-login .keypad-grid{
-    width:100% !important;
-    display:grid !important;
-    grid-template-columns:repeat(3,1fr) !important;
-    gap:20px !important;
-    margin-top:4px !important;
-    margin-bottom:16px !important;
-    padding:0 !important;
+  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login #keypadDisplay .digit-box:not(.filled) {
+    width: var(--login-digit-dot) !important;
+    height: var(--login-digit-dot) !important;
+    border-radius: 50% !important;
+    font-size: 0 !important;
   }
 
-  /* 숫자 버튼 터치 영역 확대 */
-  #screen-login .keypad-btn{
-    min-height:104px !important;
-    aspect-ratio:1 / 1 !important;
-    border-radius:24px !important;
-    font-size:2.25rem !important;
-    line-height:1 !important;
-    touch-action:manipulation !important;
+  /* 기존 digit-box/current-active 커서와 겹치지 않게 wrapper 커서만 사용 */
+  #screen-login #keypadDisplay .digit-box.current-active::after {
+    content: none !important;
+    display: none !important;
   }
 
-  /* 눌렀을 때 너무 많이 줄어들지 않게 */
+  #screen-login #keypadDisplay .digit-wrapper.active-cursor::after {
+    content: '' !important;
+    position: absolute !important;
+    width: 7px !important;
+    height: 7px !important;
+    top: 50% !important;
+    left: 50% !important;
+    border-radius: 50% !important;
+    background: var(--primary-color) !important;
+    transform: translate(-50%, -50%) !important;
+    box-shadow: 0 0 8px rgba(37, 99, 235, .62) !important;
+    animation: woosungCursorPulseFinal 1.2s infinite ease-in-out !important;
+  }
+}
+
+@keyframes woosungCursorPulseFinal {
+  0%, 100% {
+    opacity: .22;
+    transform: translate(-50%, -50%) scale(.8);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+
+/* 모바일 세로모드: 스크린샷의 빨간 박스처럼 남는 하단 여백 완화 */
+@media (max-width: 767px) and (orientation: portrait) {
+  .content-wrapper {
+    padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 14px) !important;
+  }
+
+  #main-title-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 4px auto 12px !important;
+  }
+
+  #main-title-container .inset-box {
+    padding: 12px 18px !important;
+    border-radius: 22px !important;
+  }
+
+  #main-title-container .inset-box h2 {
+    font-size: 1.35rem !important;
+  }
+
+  #screen-login {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: calc(100dvh - 154px - env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    padding: 18px 16px 20px !important;
+    border-radius: 28px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  #screen-login .header-dashboard {
+    height: 64px !important;
+    margin-bottom: 8px !important;
+  }
+
+  #screen-login .login-instruction-area {
+    min-height: 34px !important;
+    height: 34px !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  #screen-login .login-instruction-area.has-users {
+    min-height: 126px !important;
+    height: 126px !important;
+  }
+
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay {
+    --login-digit-slot: 50px;
+    --login-digit-dot: 17px;
+    --login-digit-filled: 46px;
+    height: 58px !important;
+    min-height: 58px !important;
+    margin-top: 6px !important;
+    margin-bottom: 12px !important;
+    column-gap: 14px !important;
+  }
+
+  #screen-login .keypad-grid {
+    gap: 10px !important;
+    margin-bottom: 6px !important;
+  }
+
+  #screen-login .keypad-btn {
+    min-height: 86px !important;
+    border-radius: 20px !important;
+    font-size: 1.9rem !important;
+  }
+
+  #screen-login #keypad-submit-btn {
+    min-height: 58px !important;
+    margin-top: 8px !important;
+    padding: 0 !important;
+    border-radius: 20px !important;
+  }
+}
+
+/* 태블릿 세로모드: 실제 키오스크 사용 기준 */
+@media (min-width: 768px) and (max-width: 1180px) and (orientation: portrait) {
+  .content-wrapper {
+    padding: 24px 24px calc(env(safe-area-inset-bottom, 0px) + 24px) !important;
+  }
+
+  #main-title-container {
+    width: 100% !important;
+    max-width: 560px !important;
+    margin: 0 auto 22px !important;
+  }
+
+  #main-title-container .inset-box {
+    padding: 18px 32px !important;
+    border-radius: 28px !important;
+  }
+
+  #main-title-container .inset-box h2 {
+    font-size: 1.85rem !important;
+  }
+
+  #screen-login {
+    width: min(92vw, 560px) !important;
+    max-width: 560px !important;
+    min-height: calc(100dvh - 150px - env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 auto !important;
+    padding: 34px 30px 30px !important;
+    border-radius: 38px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  #screen-login .header-dashboard {
+    height: 84px !important;
+    margin-bottom: 14px !important;
+  }
+
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay {
+    --login-digit-slot: 64px;
+    --login-digit-dot: 20px;
+    --login-digit-filled: 56px;
+    height: 72px !important;
+    min-height: 72px !important;
+    margin-top: 14px !important;
+    margin-bottom: 20px !important;
+    column-gap: 18px !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.filled {
+    font-size: 1.6rem !important;
+    border-radius: 16px !important;
+  }
+
+  #screen-login .keypad-grid {
+    gap: 16px !important;
+    margin-bottom: 12px !important;
+  }
+
+  #screen-login .keypad-btn {
+    min-height: 96px !important;
+    border-radius: 22px !important;
+    font-size: 2.12rem !important;
+  }
+
   #screen-login .keypad-btn:active:not(:disabled),
-  #screen-login .keypad-btn.pressed{
-    transform:scale(0.97) !important;
+  #screen-login .keypad-btn.pressed {
+    transform: scale(.97) !important;
   }
 
-  /* 추가 / 삭제 버튼도 누르기 편하게 */
-  #screen-login #keypad-add-btn,
-  #screen-login #keypad-back-btn{
-    font-size:1.45rem !important;
-  }
-
-  /* 확인 버튼은 손가락으로 확실히 누르게 높이 확보 */
-  #screen-login #keypad-submit-btn{
-    min-height:72px !important;
-    padding:0 !important;
-    margin-top:18px !important;
-    border-radius:24px !important;
-    font-size:1.35rem !important;
-    touch-action:manipulation !important;
-  }
-
-  #screen-login #keypad-submit-btn:active,
-  #screen-login #keypad-submit-btn.pressed{
-    transform:scale(0.98) !important;
+  #screen-login #keypad-submit-btn {
+    min-height: 66px !important;
+    margin-top: 14px !important;
+    padding: 0 !important;
+    border-radius: 22px !important;
+    font-size: 1.32rem !important;
   }
 }
-
-
-
-/* =========================================================
-  @SECTION: CSS_FINAL_MOBILE_TABLET_DIGIT_CENTER_FIX
-  모바일/태블릿 내선번호 점 중앙정렬 최종 보정
-  - PC 중앙정렬은 유지
-  - 모바일/태블릿 터치 환경에서만 #keypadDisplay를 4칸 grid로 고정
-  - 기존 .display-area 반응형 값이 덮어써도 마지막 패치가 우선 적용
-========================================================= */
-
-@media (max-width:767px) and (pointer:coarse){
-  #screen-login #keypadDisplay.display-area,
-  #screen-login .display-area#keypadDisplay{
-    --login-digit-slot:56px !important;
-    --login-digit-gap:14px !important;
-    --login-digit-dot:18px !important;
-    --login-digit-filled:48px !important;
-
-    display:grid !important;
-    grid-template-columns:repeat(4, var(--login-digit-slot)) !important;
-    grid-auto-rows:var(--login-digit-slot) !important;
-    justify-content:center !important;
-    justify-items:center !important;
-    align-content:center !important;
-    align-items:center !important;
-    column-gap:var(--login-digit-gap) !important;
-    row-gap:0 !important;
-
-    width:100% !important;
-    max-width:calc((var(--login-digit-slot) * 4) + (var(--login-digit-gap) * 3)) !important;
-    height:66px !important;
-    min-height:66px !important;
-    margin:8px auto 16px !important;
-    padding:0 !important;
-    line-height:1 !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-wrapper{
-    width:var(--login-digit-slot) !important;
-    height:var(--login-digit-slot) !important;
-    min-width:var(--login-digit-slot) !important;
-    min-height:var(--login-digit-slot) !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    position:relative !important;
-    margin:0 !important;
-    padding:0 !important;
-    line-height:1 !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box{
-    width:var(--login-digit-dot) !important;
-    height:var(--login-digit-dot) !important;
-    min-width:var(--login-digit-dot) !important;
-    min-height:var(--login-digit-dot) !important;
-    margin:0 !important;
-    padding:0 !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    line-height:1 !important;
-    position:relative !important;
-    left:auto !important;
-    top:auto !important;
-    flex:0 0 auto !important;
-    aspect-ratio:auto !important;
-    transform-origin:center center !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.filled{
-    width:var(--login-digit-filled) !important;
-    height:var(--login-digit-filled) !important;
-    min-width:var(--login-digit-filled) !important;
-    min-height:var(--login-digit-filled) !important;
-    border-radius:14px !important;
-    font-size:1.34rem !important;
-    line-height:1 !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.masked,
-  #screen-login #keypadDisplay .digit-box:not(.filled){
-    width:var(--login-digit-dot) !important;
-    height:var(--login-digit-dot) !important;
-    min-width:var(--login-digit-dot) !important;
-    min-height:var(--login-digit-dot) !important;
-    border-radius:50% !important;
-    font-size:0 !important;
-    line-height:1 !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.current-active::after{
-    content:none !important;
-    display:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-wrapper.active-cursor::after{
-    content:'' !important;
-    position:absolute !important;
-    width:7px !important;
-    height:7px !important;
-    top:50% !important;
-    left:50% !important;
-    border-radius:50% !important;
-    background:var(--primary-color) !important;
-    transform:translate(-50%,-50%) !important;
-    box-shadow:0 0 8px rgba(37,99,235,.62) !important;
-    animation:cursorPulseFinal 1.2s ease-in-out infinite !important;
-    pointer-events:none !important;
-  }
-}
-
-@media (min-width:768px) and (max-width:1180px) and (pointer:coarse){
-  #screen-login #keypadDisplay.display-area,
-  #screen-login .display-area#keypadDisplay{
-    --login-digit-slot:64px !important;
-    --login-digit-gap:18px !important;
-    --login-digit-dot:20px !important;
-    --login-digit-filled:56px !important;
-
-    display:grid !important;
-    grid-template-columns:repeat(4, var(--login-digit-slot)) !important;
-    grid-auto-rows:var(--login-digit-slot) !important;
-    justify-content:center !important;
-    justify-items:center !important;
-    align-content:center !important;
-    align-items:center !important;
-    column-gap:var(--login-digit-gap) !important;
-    row-gap:0 !important;
-
-    width:100% !important;
-    max-width:calc((var(--login-digit-slot) * 4) + (var(--login-digit-gap) * 3)) !important;
-    height:76px !important;
-    min-height:76px !important;
-    margin:10px auto 22px !important;
-    padding:0 !important;
-    line-height:1 !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-wrapper{
-    width:var(--login-digit-slot) !important;
-    height:var(--login-digit-slot) !important;
-    min-width:var(--login-digit-slot) !important;
-    min-height:var(--login-digit-slot) !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    position:relative !important;
-    margin:0 !important;
-    padding:0 !important;
-    line-height:1 !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box{
-    width:var(--login-digit-dot) !important;
-    height:var(--login-digit-dot) !important;
-    min-width:var(--login-digit-dot) !important;
-    min-height:var(--login-digit-dot) !important;
-    margin:0 !important;
-    padding:0 !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    line-height:1 !important;
-    position:relative !important;
-    left:auto !important;
-    top:auto !important;
-    flex:0 0 auto !important;
-    aspect-ratio:auto !important;
-    transform-origin:center center !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.filled{
-    width:var(--login-digit-filled) !important;
-    height:var(--login-digit-filled) !important;
-    min-width:var(--login-digit-filled) !important;
-    min-height:var(--login-digit-filled) !important;
-    border-radius:16px !important;
-    font-size:1.55rem !important;
-    line-height:1 !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.masked,
-  #screen-login #keypadDisplay .digit-box:not(.filled){
-    width:var(--login-digit-dot) !important;
-    height:var(--login-digit-dot) !important;
-    min-width:var(--login-digit-dot) !important;
-    min-height:var(--login-digit-dot) !important;
-    border-radius:50% !important;
-    font-size:0 !important;
-    line-height:1 !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.current-active::after{
-    content:none !important;
-    display:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-wrapper.active-cursor::after{
-    content:'' !important;
-    position:absolute !important;
-    width:7px !important;
-    height:7px !important;
-    top:50% !important;
-    left:50% !important;
-    border-radius:50% !important;
-    background:var(--primary-color) !important;
-    transform:translate(-50%,-50%) !important;
-    box-shadow:0 0 8px rgba(37,99,235,.62) !important;
-    animation:cursorPulseFinal 1.2s ease-in-out infinite !important;
-    pointer-events:none !important;
-  }
-}
-
-
-
-/* =========================================================
-  @SECTION: CSS_TABLET_PORTRAIT_DIGIT_CENTER_FINAL
-  모바일/태블릿 세로모드 내선번호 점 중앙정렬 최종 보정
-  - PC 중앙정렬은 유지
-  - 태블릿 가로모드는 기존 레이아웃 유지
-  - 태블릿 세로모드와 모바일에서 점 4칸을 화면/카드 중앙축에 고정
-========================================================= */
-
-@media (max-width:767px) and (pointer:coarse){
-  #screen-login #keypadDisplay.display-area,
-  #screen-login .display-area#keypadDisplay{
-    display:grid !important;
-    grid-template-columns:repeat(4,56px) !important;
-    justify-content:center !important;
-    justify-items:center !important;
-    align-items:center !important;
-    align-content:center !important;
-    column-gap:12px !important;
-    row-gap:0 !important;
-    width:max-content !important;
-    max-width:100% !important;
-    height:64px !important;
-    min-height:64px !important;
-    margin:8px auto 16px !important;
-    padding:0 !important;
-    position:relative !important;
-    left:auto !important;
-    right:auto !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-wrapper{
-    width:56px !important;
-    height:56px !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    margin:0 !important;
-    padding:0 !important;
-    position:relative !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box{
-    margin:0 !important;
-    flex:0 0 auto !important;
-    position:relative !important;
-    left:auto !important;
-    right:auto !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.filled{
-    width:50px !important;
-    height:50px !important;
-    border-radius:15px !important;
-    font-size:1.42rem !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.masked{
-    width:19px !important;
-    height:19px !important;
-    border-radius:50% !important;
-  }
-}
-
-@media (min-width:768px) and (max-width:1180px) and (orientation:portrait) and (pointer:coarse){
-  #screen-login #keypadDisplay.display-area,
-  #screen-login .display-area#keypadDisplay{
-    display:grid !important;
-    grid-template-columns:repeat(4,66px) !important;
-    justify-content:center !important;
-    justify-items:center !important;
-    align-items:center !important;
-    align-content:center !important;
-    column-gap:18px !important;
-    row-gap:0 !important;
-    width:max-content !important;
-    max-width:100% !important;
-    height:78px !important;
-    min-height:78px !important;
-    margin:10px auto 22px !important;
-    padding:0 !important;
-    position:relative !important;
-    left:auto !important;
-    right:auto !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-wrapper{
-    width:66px !important;
-    height:66px !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    margin:0 !important;
-    padding:0 !important;
-    position:relative !important;
-    transform:none !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box{
-    margin:0 !important;
-    flex:0 0 auto !important;
-    position:relative !important;
-    left:auto !important;
-    right:auto !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.filled{
-    width:58px !important;
-    height:58px !important;
-    border-radius:17px !important;
-    font-size:1.6rem !important;
-  }
-
-  #screen-login #keypadDisplay .digit-box.masked{
-    width:21px !important;
-    height:21px !important;
-    border-radius:50% !important;
-  }
-}
-
 </style>
 
 </head>
@@ -7406,6 +7133,204 @@ document.addEventListener('DOMContentLoaded', () => {
 
     animateDashboardCounts();
   });
+})();
+</script>
+
+<script id="woosung-fast-touch-keypad-final">
+/* =========================================================
+  @SECTION: WOOSUNG_FAST_TOUCH_KEYPAD_FINAL
+  모바일/태블릿 키패드 빠른 터치 반응 패치
+  - 터치 기기에서만 pointerdown/touchstart 즉시 입력
+  - PC 마우스 click 방식은 기존 유지
+  - pointerdown 후 발생하는 지연 click은 중복 방지
+  - 기존 KeypadLogic / CardApp 내부 로직은 직접 수정하지 않음
+========================================================= */
+(function() {
+  const isFastTouchDevice = () => {
+    try {
+      return (
+        window.matchMedia &&
+        window.matchMedia('(pointer: coarse)').matches
+      ) || navigator.maxTouchPoints > 0;
+    } catch (e) {
+      return navigator.maxTouchPoints > 0;
+    }
+  };
+
+  if (!isFastTouchDevice()) return;
+
+  let suppressTrustedClickUntil = 0;
+  let lastFastButton = null;
+  let lastFastTouchAt = 0;
+  let dispatchingSyntheticClick = false;
+
+  const FAST_CLICK_SUPPRESS_MS = 650;
+  const TOUCHSTART_GUARD_MS = 420;
+
+  function getFastKeypadButton(target) {
+    if (!target || !target.closest) return null;
+    const btn = target.closest(
+      '#screen-login .keypad-btn, ' +
+      '#screen-login #keypad-submit-btn, ' +
+      '#screen-login #keypad-add-btn, ' +
+      '#screen-login #keypad-back-btn'
+    );
+    if (!btn) return null;
+    if (btn.disabled || btn.getAttribute('aria-disabled') === 'true') return null;
+    return btn;
+  }
+
+  function pressVisual(btn) {
+    try {
+      btn.classList.remove('pressed');
+      void btn.offsetWidth;
+      btn.classList.add('pressed');
+      clearTimeout(btn.__woosungFastPressedTimer);
+      btn.__woosungFastPressedTimer = setTimeout(() => {
+        btn.classList.remove('pressed');
+      }, 95);
+    } catch (e) {}
+  }
+
+  function haptic() {
+    try {
+      if (navigator && typeof navigator.vibrate === 'function') {
+        navigator.vibrate(8);
+      }
+    } catch (e) {}
+  }
+
+  function runButtonNow(btn, ev) {
+    const now = Date.now();
+
+    // pointerdown과 touchstart가 동시에 오는 브라우저에서 중복 방지
+    if (lastFastButton === btn && now - lastFastTouchAt < TOUCHSTART_GUARD_MS) {
+      if (ev && ev.cancelable) ev.preventDefault();
+      if (ev) ev.stopPropagation();
+      return;
+    }
+
+    lastFastButton = btn;
+    lastFastTouchAt = now;
+    suppressTrustedClickUntil = now + FAST_CLICK_SUPPRESS_MS;
+
+    if (ev && ev.cancelable) ev.preventDefault();
+    if (ev) ev.stopPropagation();
+
+    pressVisual(btn);
+    haptic();
+
+    // 기존 click 핸들러를 그대로 재사용하되, 손가락 닿는 순간 실행
+    dispatchingSyntheticClick = true;
+    try {
+      btn.click();
+    } finally {
+      setTimeout(() => {
+        dispatchingSyntheticClick = false;
+      }, 0);
+    }
+  }
+
+  function handlePointerDown(ev) {
+    if (!isFastTouchDevice()) return;
+    if (ev.pointerType && ev.pointerType !== 'touch' && ev.pointerType !== 'pen') return;
+
+    const btn = getFastKeypadButton(ev.target);
+    if (!btn) return;
+
+    runButtonNow(btn, ev);
+  }
+
+  function handleTouchStart(ev) {
+    if (!isFastTouchDevice()) return;
+
+    const btn = getFastKeypadButton(ev.target);
+    if (!btn) return;
+
+    runButtonNow(btn, ev);
+  }
+
+  function suppressDelayedClick(ev) {
+    if (!isFastTouchDevice()) return;
+
+    const btn = getFastKeypadButton(ev.target);
+    if (!btn) return;
+
+    // pointerdown에서 직접 실행한 synthetic click은 허용
+    if (dispatchingSyntheticClick || ev.isTrusted === false) return;
+
+    // 손가락을 뗄 때 뒤늦게 발생하는 실제 click은 중복 방지
+    if (Date.now() < suppressTrustedClickUntil && btn === lastFastButton) {
+      if (ev.cancelable) ev.preventDefault();
+      ev.stopImmediatePropagation();
+      ev.stopPropagation();
+    }
+  }
+
+  function applyFastTouchCss() {
+    if (document.getElementById('woosung-fast-touch-keypad-style')) return;
+
+    const style = document.createElement('style');
+    style.id = 'woosung-fast-touch-keypad-style';
+    style.textContent = `
+      @media (pointer: coarse) {
+        #screen-login .keypad-grid,
+        #screen-login .keypad-btn,
+        #screen-login #keypad-submit-btn,
+        #screen-login #keypad-add-btn,
+        #screen-login #keypad-back-btn {
+          touch-action: manipulation !important;
+          -webkit-tap-highlight-color: transparent !important;
+        }
+
+        #screen-login .keypad-btn,
+        #screen-login #keypad-submit-btn {
+          transition:
+            transform 0.045s ease,
+            box-shadow 0.045s ease,
+            color 0.045s ease,
+            filter 0.045s ease !important;
+          will-change: transform;
+        }
+
+        #screen-login .keypad-btn.pressed {
+          transform: scale(0.97) !important;
+        }
+
+        #screen-login #keypad-submit-btn.pressed {
+          transform: scale(0.985) !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function initFastTouch() {
+    applyFastTouchCss();
+
+    // capture 단계에서 먼저 처리해야 기존 click보다 즉시 반응함
+    document.addEventListener('pointerdown', handlePointerDown, {
+      capture: true,
+      passive: false
+    });
+
+    // 일부 구형 iOS WebView 대응
+    document.addEventListener('touchstart', handleTouchStart, {
+      capture: true,
+      passive: false
+    });
+
+    document.addEventListener('click', suppressDelayedClick, {
+      capture: true,
+      passive: false
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFastTouch, { once: true });
+  } else {
+    initFastTouch();
+  }
 })();
 </script>
 
