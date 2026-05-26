@@ -4165,6 +4165,130 @@ img {
   }
 }
 
+
+
+/* =========================================================
+  @SECTION: CSS_TABLET_PORTRAIT_DIGIT_CENTER_FINAL
+  모바일/태블릿 세로모드 내선번호 점 중앙정렬 최종 보정
+  - PC 중앙정렬은 유지
+  - 태블릿 가로모드는 기존 레이아웃 유지
+  - 태블릿 세로모드와 모바일에서 점 4칸을 화면/카드 중앙축에 고정
+========================================================= */
+
+@media (max-width:767px) and (pointer:coarse){
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay{
+    display:grid !important;
+    grid-template-columns:repeat(4,56px) !important;
+    justify-content:center !important;
+    justify-items:center !important;
+    align-items:center !important;
+    align-content:center !important;
+    column-gap:12px !important;
+    row-gap:0 !important;
+    width:max-content !important;
+    max-width:100% !important;
+    height:64px !important;
+    min-height:64px !important;
+    margin:8px auto 16px !important;
+    padding:0 !important;
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-wrapper{
+    width:56px !important;
+    height:56px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin:0 !important;
+    padding:0 !important;
+    position:relative !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box{
+    margin:0 !important;
+    flex:0 0 auto !important;
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:50px !important;
+    height:50px !important;
+    border-radius:15px !important;
+    font-size:1.42rem !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.masked{
+    width:19px !important;
+    height:19px !important;
+    border-radius:50% !important;
+  }
+}
+
+@media (min-width:768px) and (max-width:1180px) and (orientation:portrait) and (pointer:coarse){
+  #screen-login #keypadDisplay.display-area,
+  #screen-login .display-area#keypadDisplay{
+    display:grid !important;
+    grid-template-columns:repeat(4,66px) !important;
+    justify-content:center !important;
+    justify-items:center !important;
+    align-items:center !important;
+    align-content:center !important;
+    column-gap:18px !important;
+    row-gap:0 !important;
+    width:max-content !important;
+    max-width:100% !important;
+    height:78px !important;
+    min-height:78px !important;
+    margin:10px auto 22px !important;
+    padding:0 !important;
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-wrapper{
+    width:66px !important;
+    height:66px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin:0 !important;
+    padding:0 !important;
+    position:relative !important;
+    transform:none !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box{
+    margin:0 !important;
+    flex:0 0 auto !important;
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:58px !important;
+    height:58px !important;
+    border-radius:17px !important;
+    font-size:1.6rem !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.masked{
+    width:21px !important;
+    height:21px !important;
+    border-radius:50% !important;
+  }
+}
+
 </style>
 
 </head>
