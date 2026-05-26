@@ -3268,6 +3268,90 @@ img {
   }
 }
 
+/* 태블릿 세로 전용
+   - 높이를 더 적극적으로 사용해서 위아래가 비어 보이지 않게 조정 */
+@media (min-width:768px) and (max-width:1366px) and (pointer:coarse) and (orientation:portrait){
+  .content-wrapper{
+    justify-content:flex-start !important;
+    align-items:stretch !important;
+    padding:
+      calc(env(safe-area-inset-top,0px) + 12px)
+      clamp(12px, 2vw, 22px)
+      calc(env(safe-area-inset-bottom,0px) + 12px) !important;
+  }
+
+  .container{
+    width:100% !important;
+    max-width:min(100vw, 1180px) !important;
+    min-height:100dvh !important;
+    justify-content:flex-start !important;
+    align-items:stretch !important;
+  }
+
+  #main-title-container{
+    max-width:min(96vw, 1080px) !important;
+    margin:0 auto clamp(14px, 1.8vw, 22px) !important;
+  }
+
+  #screen-main,
+  #screen-return-details,
+  #screen-confirmation{
+    width:100% !important;
+    max-width:min(96vw, 1120px) !important;
+    min-height:calc(100dvh - 120px) !important;
+    margin:0 auto !important;
+  }
+
+  #screen-login{
+    width:min(96vw, 860px) !important;
+    max-width:860px !important;
+    min-height:calc(100dvh - 120px) !important;
+    max-height:none !important;
+    margin:0 auto !important;
+  }
+
+  #screen-login .login-instruction-area{
+    height:clamp(80px, 8vw, 98px) !important;
+    min-height:clamp(80px, 8vw, 98px) !important;
+  }
+
+  #screen-login .login-instruction-area.has-users{
+    height:clamp(150px, 15vw, 180px) !important;
+    min-height:clamp(150px, 15vw, 180px) !important;
+  }
+
+  #screen-login .display-area{
+    margin:8px auto 12px !important;
+  }
+
+  #screen-login .keypad-grid{
+    margin-bottom:14px !important;
+  }
+
+  #screen-login #keypad-submit-btn{
+    margin-top:18px !important;
+  }
+
+  #cardGrid{
+    gap:clamp(14px, 1.8vw, 20px) !important;
+    padding:clamp(16px, 2vw, 22px) !important;
+  }
+
+  .card-item-wrapper{
+    min-height:clamp(124px, 14vw, 160px) !important;
+  }
+
+  #return-form-container{
+    min-height:calc(100dvh - 220px) !important;
+    justify-content:space-between !important;
+  }
+
+  #screen-confirmation .confirmation-container{
+    min-height:calc(100dvh - 220px) !important;
+    justify-content:center !important;
+  }
+}
+
 </style>
 
 </head>
