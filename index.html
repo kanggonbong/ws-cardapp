@@ -3352,6 +3352,376 @@ img {
   }
 }
 
+/* FINAL TABLET KIOSK FIT
+   Tablet gets a mobile-like, full-screen layout. Desktop and phone rules stay unchanged. */
+@media (min-width:768px) and (max-width:1366px) and (pointer:coarse){
+  html,
+  body{
+    width:100% !important;
+    min-height:100dvh !important;
+    overflow:hidden !important;
+  }
+
+  #lock-screen{
+    padding:10px !important;
+  }
+
+  #lock-screen .lock-content{
+    width:100% !important;
+    height:100dvh !important;
+    justify-content:center !important;
+    gap:24px !important;
+    transform:none !important;
+  }
+
+  #glass-card-container{
+    width:min(90vw, 680px) !important;
+    height:auto !important;
+    aspect-ratio:1.6 / 1 !important;
+    max-height:48dvh !important;
+  }
+
+  #glass-card{
+    border-radius:28px !important;
+    padding:34px !important;
+  }
+
+  .card-number{
+    font-size:1.75rem !important;
+  }
+
+  .card-holder{
+    font-size:1rem !important;
+  }
+
+  .lock-text{
+    margin-top:0 !important;
+    font-size:1.45rem !important;
+    line-height:1.35 !important;
+  }
+
+  .content-wrapper{
+    width:100vw !important;
+    height:100dvh !important;
+    min-height:100dvh !important;
+    padding:10px !important;
+    justify-content:flex-start !important;
+    align-items:stretch !important;
+    overflow:hidden !important;
+  }
+
+  .container{
+    width:100% !important;
+    max-width:none !important;
+    height:100% !important;
+    min-height:0 !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+  }
+
+  #main-title-container{
+    width:100% !important;
+    max-width:none !important;
+    height:76px !important;
+    margin:0 0 10px !important;
+    flex:0 0 auto !important;
+  }
+
+  #main-title-container .inset-box{
+    height:100% !important;
+    padding:10px 24px !important;
+    border-radius:26px !important;
+  }
+
+  #main-title-container .inset-box h2{
+    font-size:2.1rem !important;
+    letter-spacing:0 !important;
+  }
+
+  #screen-login,
+  #screen-main,
+  #screen-return-details,
+  #screen-confirmation{
+    width:100% !important;
+    max-width:none !important;
+    height:calc(100dvh - 96px) !important;
+    min-height:0 !important;
+    max-height:none !important;
+    margin:0 !important;
+    padding:22px !important;
+    border-radius:30px !important;
+    overflow:hidden !important;
+  }
+
+  #screen-login{
+    justify-content:flex-start !important;
+  }
+
+  #screen-login .header-dashboard{
+    height:82px !important;
+    min-height:82px !important;
+    margin-bottom:12px !important;
+    border-radius:22px !important;
+  }
+
+  #screen-login .stat-label{
+    font-size:.95rem !important;
+  }
+
+  #screen-login .stat-value{
+    font-size:1.75rem !important;
+  }
+
+  #screen-login .login-instruction-area{
+    height:74px !important;
+    min-height:74px !important;
+    margin:0 0 8px !important;
+  }
+
+  #screen-login .login-instruction-area.has-users{
+    height:142px !important;
+    min-height:142px !important;
+  }
+
+  #screen-login #login-instruction{
+    font-size:1.2rem !important;
+  }
+
+  #screen-login .display-area{
+    height:72px !important;
+    min-height:72px !important;
+    margin:0 auto 12px !important;
+    gap:18px !important;
+    align-items:center !important;
+  }
+
+  #screen-login #keypadDisplay{
+    margin:0 auto !important;
+  }
+
+  #screen-login #keypadDisplay .digit-wrapper{
+    width:68px !important;
+    height:68px !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.filled{
+    width:64px !important;
+    height:64px !important;
+    border-radius:18px !important;
+    font-size:1.8rem !important;
+  }
+
+  #screen-login #keypadDisplay .digit-box.masked,
+  #screen-login .digit-box{
+    width:24px !important;
+    height:24px !important;
+  }
+
+  #screen-login .keypad-grid{
+    width:100% !important;
+    max-width:560px !important;
+    margin:0 auto 12px !important;
+    gap:14px !important;
+  }
+
+  #screen-login .keypad-btn{
+    aspect-ratio:auto !important;
+    min-height:86px !important;
+    border-radius:24px !important;
+    font-size:2.25rem !important;
+  }
+
+  #screen-login #keypad-add-btn,
+  #screen-login #keypad-back-btn{
+    font-size:1.45rem !important;
+  }
+
+  #screen-login #keypad-submit-btn{
+    width:100% !important;
+    max-width:560px !important;
+    margin:0 auto !important;
+    padding:22px 0 !important;
+    border-radius:24px !important;
+    font-size:1.35rem !important;
+  }
+
+  #screen-main{
+    display:flex !important;
+    flex-direction:column !important;
+  }
+
+  #main-welcome-message{
+    flex:0 0 auto !important;
+    margin-bottom:10px !important;
+    font-size:1.6rem !important;
+    line-height:1.25 !important;
+  }
+
+  #card-selection-header{
+    margin-bottom:10px !important;
+    font-size:1.15rem !important;
+    line-height:1.3 !important;
+  }
+
+  #card-list-container{
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    display:flex !important;
+    flex-direction:column !important;
+  }
+
+  #cardGrid{
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    display:grid !important;
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows:repeat(4, minmax(0, 1fr)) !important;
+    gap:12px !important;
+    padding:10px !important;
+    width:100% !important;
+  }
+
+  .card-item-wrapper{
+    min-height:0 !important;
+    height:100% !important;
+    aspect-ratio:auto !important;
+    border-radius:22px !important;
+  }
+
+  .card-grid-btn{
+    padding:12px 8px !important;
+    gap:8px !important;
+  }
+
+  .mini-card-icon{
+    width:86px !important;
+    height:54px !important;
+    margin-bottom:4px !important;
+  }
+
+  .card-grid-btn .card-name{
+    font-size:1.25rem !important;
+    line-height:1.15 !important;
+    letter-spacing:0 !important;
+  }
+
+  .status-badge{
+    top:10px !important;
+    right:10px !important;
+    font-size:.72rem !important;
+    padding:5px 9px !important;
+  }
+
+  #screen-return-details{
+    display:flex !important;
+    flex-direction:column !important;
+  }
+
+  #return-form-container{
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    max-width:none !important;
+    margin-top:0 !important;
+    gap:14px !important;
+    justify-content:stretch !important;
+  }
+
+  #return-screen-title{
+    gap:8px !important;
+  }
+
+  #receipt-cart-container{
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:auto !important;
+  }
+
+  .cart-item{
+    min-height:76px !important;
+    padding:14px 54px 14px 16px !important;
+    border-radius:20px !important;
+  }
+
+  .simple-btn,
+  #add-receipt-btn,
+  #submit-cart-btn{
+    min-height:74px !important;
+    padding:18px 0 !important;
+    border-radius:22px !important;
+    font-size:1.25rem !important;
+  }
+
+  #screen-confirmation{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  #screen-confirmation .confirmation-container{
+    width:100% !important;
+    max-width:780px !important;
+    margin:0 auto !important;
+  }
+
+  #screen-confirmation .confirmation-icon-wrapper{
+    width:110px !important;
+    height:110px !important;
+    margin-bottom:22px !important;
+  }
+
+  #screen-confirmation .animated-check{
+    width:110px !important;
+    height:110px !important;
+  }
+
+  #screen-confirmation .confirmation-title{
+    font-size:1.9rem !important;
+    line-height:1.25 !important;
+    margin-bottom:20px !important;
+  }
+
+  #screen-confirmation #confirmation-details{
+    max-width:680px !important;
+    margin:0 auto 24px !important;
+  }
+}
+
+@media (min-width:768px) and (max-width:1366px) and (pointer:coarse) and (orientation:portrait){
+  #screen-login,
+  #screen-main,
+  #screen-return-details,
+  #screen-confirmation{
+    height:calc(100dvh - 92px) !important;
+    padding:18px !important;
+  }
+
+  #main-title-container{
+    height:72px !important;
+    margin-bottom:8px !important;
+  }
+
+  #screen-login .keypad-btn{
+    min-height:82px !important;
+  }
+
+  #cardGrid{
+    gap:10px !important;
+    padding:8px !important;
+  }
+
+  .mini-card-icon{
+    width:76px !important;
+    height:48px !important;
+  }
+
+  .simple-btn,
+  #add-receipt-btn,
+  #submit-cart-btn{
+    min-height:72px !important;
+  }
+}
+
 </style>
 
 </head>
