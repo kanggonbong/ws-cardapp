@@ -886,6 +886,75 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   .card-borrow-date{font-size:.66rem !important;}
   .hybrid-status-badge.inuse-only-badge{font-size:.58rem !important;padding:4px 8px !important;}
 }
+
+
+/* =========================================================
+  @SECTION: CSS_FINAL_PORTRAIT_VERTICAL_SPACE_FIX
+  모바일/태블릿 세로모드 하단 여백 보정
+  - PC/가로모드는 유지
+  - 세로모드에서 로그인 카드가 auto height로 끝나며 아래가 비는 현상 완화
+  - 키패드/내선번호 점 중앙정렬은 기존 최종 패치 유지
+========================================================= */
+
+@media (max-width:767px) and (orientation:portrait) and (pointer:coarse){
+  .content-wrapper{
+    min-height:100dvh !important;
+    padding:16px 20px calc(env(safe-area-inset-bottom,0px) + 12px) !important;
+    justify-content:flex-start !important;
+    overflow-x:hidden !important;
+  }
+
+  .container{
+    min-height:calc(100dvh - 28px) !important;
+    justify-content:flex-start !important;
+  }
+
+  #main-title-container{
+    flex:0 0 auto !important;
+    margin-top:0 !important;
+    margin-bottom:clamp(22px, 3.8dvh, 42px) !important;
+  }
+
+  #screen-login{
+    width:min(94vw, 440px) !important;
+    min-height:calc(100dvh - 185px) !important;
+    max-height:none !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    overflow:visible !important;
+  }
+}
+
+@media (min-width:768px) and (max-width:1180px) and (orientation:portrait) and (pointer:coarse){
+  .content-wrapper{
+    min-height:100dvh !important;
+    padding:20px 24px calc(env(safe-area-inset-bottom,0px) + 20px) !important;
+    justify-content:flex-start !important;
+    overflow-x:hidden !important;
+  }
+
+  .container{
+    min-height:calc(100dvh - 40px) !important;
+    justify-content:flex-start !important;
+  }
+
+  #main-title-container{
+    flex:0 0 auto !important;
+    margin-top:0 !important;
+    margin-bottom:clamp(28px, 4dvh, 54px) !important;
+  }
+
+  #screen-login{
+    min-height:calc(100dvh - 205px) !important;
+    max-height:none !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    overflow:visible !important;
+  }
+}
+
 </style>
 
     <!-- =========================================================
