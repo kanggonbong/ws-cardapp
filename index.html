@@ -5908,20 +5908,16 @@ const CardApp = (function() {
             }
         },
         showMealAutoAdjustToast: (originalAmount, adjustedAmount) => {
+            // 자동 금액 보정 안내 모달/토스트 비활성화
+            // 화면 깨짐과 반쪽 흐림 현상을 막기 위해 사용자에게 알림을 띄우지 않습니다.
+            // 금액 보정 로직 자체는 기존대로 실행되고, 최종 보정된 금액만 화면/장바구니에 반영됩니다.
             const from = String(originalAmount || '').replace(/[^\d]/g, '');
             const to = String(adjustedAmount || '').replace(/[^\d]/g, '');
             if (!from || !to || from === to) return;
             try {
-                Swal.fire({
-                    toast: true,
-                    position: 'top',
-                    icon: 'info',
-                    title: `특근매식 금액을 ${Utils.nfKR.format(Number(to))}원으로 자동 조정했어요`,
-                    text: `OCR 인식값 ${Utils.nfKR.format(Number(from))}원`,
-                    showConfirmButton: false,
-                    timer: 2400,
-                    timerProgressBar: true
-                });
+                console.info(
+                    `특근매식 금액 자동 조정: OCR ${Utils.nfKR.format(Number(from))}원 -> ${Utils.nfKR.format(Number(to))}원`
+                );
             } catch (e) {}
         },
         showReceiptAnalysisFallback: (isReplacement = false) => {
