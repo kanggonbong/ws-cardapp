@@ -90,6 +90,24 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      /* @SECTION: JS_SWAL_TOAST_BACKDROP_PATCH
+         토스트 알림은 배경 레이어를 띄우지 않게 해서
+         영수증 분석/저장 오버레이와 SweetAlert 배경이 겹쳐 화면이 반만 흐려지는 현상을 방지합니다.
+      */
+      (function patchSwalToastBackdrop() {
+        if (!window.Swal || window.Swal.__wsToastBackdropPatched) return;
+        const originalFire = window.Swal.fire.bind(window.Swal);
+        window.Swal.fire = function patchedSwalFire(...args) {
+          if (args.length === 1 && args[0] && typeof args[0] === 'object' && args[0].toast === true) {
+            args[0] = Object.assign({ backdrop: false, heightAuto: false }, args[0]);
+          }
+          return originalFire(...args);
+        };
+        window.Swal.__wsToastBackdropPatched = true;
+      })();
+    </script>
+
 
     <!-- =========================================================
       @SECTION: CSS_CASCADE_GUIDE
@@ -955,7 +973,73 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 }
 
-</style>
+
+
+/* =========================================================
+  @SECTION: CSS_FINAL_HOTFIX_SWAL_AND_LOADING_OVERLAY
+  SweetAlert 토스트/로딩 오버레이 겹침 방지 최종 패치
+  - 토스트 배경 레이어가 반쪽 화면처럼 보이는 현상 방지
+  - 분석/저장 오버레이와 SweetAlert z-index 기준 통일
+========================================================= */
+.swal2-container {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  z-index: 10080 !important;
+}
+
+.swal2-container.swal2-backdrop-show {
+  background: rgba(15, 23, 42, 0.28) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
+.swal2-container:has(.swal2-toast),
+.swal2-container.swal2-top,
+.swal2-container.swal2-top-start,
+.swal2-container.swal2-top-end {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none !important;
+}
+
+.swal2-container:has(.swal2-toast) .swal2-toast,
+.swal2-container.swal2-top .swal2-toast,
+.swal2-container.swal2-top-start .swal2-toast,
+.swal2-container.swal2-top-end .swal2-toast {
+  pointer-events: auto !important;
+}
+
+#loadingOverlay,
+#security-scan-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+}
+
+#loadingOverlay {
+  z-index: 10040 !important;
+}
+
+#security-scan-overlay {
+  z-index: 10050 !important;
+}
+
+body.swal2-shown.swal2-height-auto {
+  height: auto !important;
+}
+
+    </style>
 
     <!-- =========================================================
       @SECTION: CSS_MOBILE_SAFETY_PATCH
