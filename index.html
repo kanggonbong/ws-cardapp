@@ -5715,10 +5715,18 @@ const CardApp = (function() {
                 state.cartSaveTimer = null;
 
                 try {
+                    const hasUnpersistedReceiptImage = state.receiptCart.some(it => {
+                        const img = String((it && it.receiptImage) || '');
+                        return img && !img.startsWith('id:');
+                    });
+                    if (hasUnpersistedReceiptImage) {
+                        throw new Error('RECEIPT_IMAGE_NOT_PERSISTED');
+                    }
+
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SERVER_CALL - 현재 장바구니를 master 파일에 저장 */
                     await Api.call('saveCartToMasterFile', {
                         cardId: state.currentReturnCard.id,
-                        cartData: state.receiptCart.map(({processing, analysisMeta, receiptImage, ...r}) => ({
+                        cartData: state.receiptCart.map(({processing, analysisMeta, receiptImage, previewImage, imageSaveError, ...r}) => ({
                             ...r,
                             ...(String(receiptImage || '').startsWith('id:') ? { receiptImage } : {})
                         }))
@@ -6270,8 +6278,13 @@ const CardApp = (function() {
                         CardLogic.showMealAutoAdjustToast(recognizedAmount, amt);
                     }
 
+                    if (!ocr || !ocr.tempFileId) {
+                        throw new Error('영수증 이미지를 서버에 저장하지 못했습니다. 다시 첨부해 주세요.');
+                    }
+
                     state.receiptCart[actualIdx] = {
-                        receiptImage: (ocr && ocr.tempFileId) ? ocr.tempFileId : b64,
+                        receiptImage: ocr.tempFileId,
+                        previewImage: b64,
                         usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || '상호명 없음'),
                         usageDetails: isMeal ? '특근매식비' : '',
                         amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
@@ -6281,7 +6294,8 @@ const CardApp = (function() {
                         analysisMeta: {
                             mediaResolution: ocr && ocr.mediaResolution ? ocr.mediaResolution : '',
                             usedFallback: !!(ocr && ocr.usedFallback),
-                            elapsedMs: ocr && ocr.elapsedMs ? ocr.elapsedMs : ''
+                            elapsedMs: ocr && ocr.elapsedMs ? ocr.elapsedMs : '',
+                            imageSaveError: ocr && ocr.imageSaveError ? ocr.imageSaveError : ''
                         }
                     };
                     Utils.haptic(analysisFailed ? [20, 40, 20] : 18);
@@ -6294,13 +6308,15 @@ const CardApp = (function() {
                     console.error('Receipt analysis failed:', err);
                     Utils.haptic([20, 40, 20]);
                     state.receiptCart[actualIdx] = {
-                        receiptImage: b64,
-                        usagePlace: '분석 실패',
+                        receiptImage: '',
+                        previewImage: b64,
+                        usagePlace: '이미지 저장 실패',
                         usageDetails: '',
                         amount: '',
                         date: '',
                         processing: 'error',
-                        needsManualReview: true
+                        needsManualReview: true,
+                        imageSaveError: String(err && err.message ? err.message : err)
                     };
                 }
 
@@ -6397,6 +6413,9 @@ const CardApp = (function() {
                 const file = files[0];
                 const b64 = await CardLogic.resizeAndOptimizeImage(file);
                 const ocr = await Api.call('processReceiptImage', b64);
+                if (!ocr || !ocr.tempFileId) {
+                    throw new Error('영수증 이미지를 서버에 저장하지 못했습니다. 다시 첨부해 주세요.');
+                }
                 const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
                 const recognizedAmount = (ocr.amount || '').toString();
                 let amt = recognizedAmount;
@@ -6410,7 +6429,7 @@ const CardApp = (function() {
                 }
                 /* @PHASE: JS_RECEIPT_REPLACE_OPEN_REVIEW_POPUP - 교체 OCR 결과를 확인 팝업으로 전달 */
                 await CardLogic.openOcrPopup({
-                    receiptImage: (ocr && ocr.tempFileId) ? ocr.tempFileId : b64,
+                    receiptImage: ocr.tempFileId,
                     previewImage: b64,
                     usagePlace: analysisFailed ? '' : (ocr.storeName || ''),
                     usageDetails: (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근') ? '특근매식비' : ''),
@@ -6639,6 +6658,9 @@ const CardApp = (function() {
                 preConfirm: () => {
                     const [store, amtStr, details] = ['swal-store', 'swal-amount', 'swal-details'].map(id => document.getElementById(id).value);
                     if (!store || !amtStr || !details) return Swal.showValidationMessage('모든 항목을 입력하세요');
+                    if (!String(data.receiptImage || '').startsWith('id:')) {
+                        return Swal.showValidationMessage('영수증 이미지가 서버에 저장되지 않았습니다. 이미지를 다시 첨부해 주세요.');
+                    }
                     let amount = amtStr.replace(/[^\d]/g, "");
                     if (isMeal) amount = String(Utils.clampMealAmount(amount, state.currentReturnCard.userInfo.userName.split(',').length));
                     return { usagePlace: store, usageDetails: details, amount, receiptImage: data.receiptImage, date: data.date||'' };
