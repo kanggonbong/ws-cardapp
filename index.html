@@ -4171,6 +4171,84 @@ body {
 }
 </style>
 
+
+<style>
+/* @SECTION: CSS_FINAL_HOTFIX_SWAL_CENTER_STABLE
+   SweetAlert2 팝업 중앙 정렬 안정화.
+   관리자 PIN, 영수증 수정 팝업처럼 필요한 모달만 깨지지 않게 가운데 표시합니다.
+   단순 안내 토스트는 backdrop 없이 표시하거나 비활성화합니다. */
+html.swal2-shown,
+body.swal2-shown {
+  overflow: hidden !important;
+  padding-right: 0 !important;
+}
+.swal2-container {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  z-index: 10080 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+}
+.swal2-container.swal2-backdrop-show {
+  background: rgba(15, 23, 42, 0.22) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.swal2-popup {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: min(92vw, 440px) !important;
+  max-width: 440px !important;
+  max-height: calc(100dvh - 32px) !important;
+  margin: auto !important;
+  border-radius: 28px !important;
+  overflow-y: auto !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.swal2-container.swal2-top,
+.swal2-container.swal2-top-start,
+.swal2-container.swal2-top-end,
+.swal2-container:has(.swal2-toast) {
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding-top: max(14px, env(safe-area-inset-top, 0px)) !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+.swal2-container:has(.swal2-toast) .swal2-popup,
+.swal2-toast {
+  pointer-events: auto !important;
+  width: min(92vw, 360px) !important;
+  max-width: 360px !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16) !important;
+}
+@media (max-width: 767px) {
+  .swal2-container { padding: 12px !important; }
+  .swal2-popup {
+    width: min(92vw, 420px) !important;
+    max-height: calc(100dvh - 24px) !important;
+    border-radius: 22px !important;
+  }
+}
+</style>
+
 </head>
 <body class="variant-lockscreen">
 
@@ -4673,7 +4751,11 @@ const CardApp = (function() {
             const entered=parseInt((amt||'').replace(/[^\d]/g,''),10)||0;
             const cap=(Math.max(1,cnt))*MEAL_CAP_PER_PERSON;
             const clamped=Math.min(entered,cap);
-            if(entered>cap) Swal.fire({toast:true,position:'top',icon:'info',title:`금액 상한 적용`,html:`${cnt}명 상한선인 ${this.nfKR.format(cap)}원으로<br>자동 조정되었습니다.`,showConfirmButton:false,timer:3500});
+            // 특근매식 금액 자동 보정 안내 모달/토스트는 띄우지 않습니다.
+            // 화면 깨짐 방지를 위해 조용히 보정하고, 필요한 경우 개발자 콘솔에만 기록합니다.
+            if(entered>cap) {
+                try { console.info(`특근매식 금액 자동 조정: OCR ${this.nfKR.format(entered)}원 -> ${this.nfKR.format(clamped)}원`); } catch(e) {}
+            }
             return clamped;
         },
         getSmartIcon(place, details){
@@ -4684,6 +4766,25 @@ const CardApp = (function() {
             if(t.match(/마트|편의점|이마트|홈플러스|cu|gs25|세븐일레븐|쇼핑|구매/))return 'fa-cart-shopping';
             if(t.match(/문구|사무|복사|인쇄|용지/))return 'fa-stapler';
             return 'fa-file-invoice-dollar';
+        },
+        sanitizeReceiptCart(cart){
+            // 서버/Drive에 저장된 장바구니를 다시 불러올 때 UI 임시 상태가 살아나지 않도록 정리합니다.
+            // 저장 대상은 실제 업무 데이터와 id: 영수증 파일 참조만입니다.
+            return (Array.isArray(cart) ? cart : [])
+                .filter(Boolean)
+                .map(item => {
+                    const clean = { ...item };
+                    delete clean.processing;
+                    delete clean.previewImage;
+                    delete clean.analysisMeta;
+                    delete clean.imageSaveError;
+                    delete clean.isProcessing;
+                    delete clean.isSaving;
+                    delete clean.status;
+                    const img = String(clean.receiptImage || '');
+                    if (img && !img.startsWith('id:')) delete clean.receiptImage;
+                    return clean;
+                });
         }
     };
     /* =========================================================
@@ -5810,10 +5911,10 @@ const CardApp = (function() {
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SERVER_CALL - 현재 장바구니를 master 파일에 저장 */
                     await Api.call('saveCartToMasterFile', {
                         cardId: state.currentReturnCard.id,
-                        cartData: state.receiptCart.map(({processing, analysisMeta, receiptImage, previewImage, imageSaveError, ...r}) => ({
+                        cartData: Utils.sanitizeReceiptCart(state.receiptCart.map(({processing, analysisMeta, receiptImage, previewImage, imageSaveError, isProcessing, isSaving, status, ...r}) => ({
                             ...r,
                             ...(String(receiptImage || '').startsWith('id:') ? { receiptImage } : {})
-                        }))
+                        })))
                     });
 
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SUCCESS_MARK - saving 상태를 saved로 잠깐 표시 후 정리 */
@@ -5931,7 +6032,8 @@ const CardApp = (function() {
                         text: '카드를 눌러 누락된 내용을 입력해 주세요.',
                         showConfirmButton: false,
                         timer: 2200,
-                        timerProgressBar: true
+                        timerProgressBar: true,
+                        backdrop: false
                     });
                     return;
                 }
@@ -6152,7 +6254,7 @@ const CardApp = (function() {
                     </div>` : ''}
                 </div>`;
             /* @PHASE: JS_RETURN_SCREEN_RECEIPT_CONTROLS - 저장된 장바구니와 버튼/안내 영역 구성 */
-            state.receiptCart = card.savedCart || [];
+            state.receiptCart = Utils.sanitizeReceiptCart(card.savedCart || []);
             const add = document.createElement('button');
             add.id='add-receipt-btn';
             add.className='simple-btn accent';
@@ -6204,6 +6306,16 @@ const CardApp = (function() {
         renderReceiptCart: () => {
             const c = document.getElementById('receipt-cart-container');
             if (!c || !state.currentReturnCard) return;
+            // 예전 저장본 또는 새로고침 직전 저장본에 남은 processing/saving 상태가
+            // 화면에 '영수증 분석 중'으로 되살아나는 것을 방지합니다.
+            if (Array.isArray(state.receiptCart)) {
+                state.receiptCart.forEach(it => {
+                    if (!it) return;
+                    const img = String(it.receiptImage || '');
+                    const staleProcessing = ['queued','optimizing','ocr','postprocessing','saving','saved','deleting'].includes(it.processing);
+                    if (staleProcessing && img.startsWith('id:')) delete it.processing;
+                });
+            }
             const isPrim = state.enteredUsers[0].name === state.currentReturnCard.userInfo.userName.split(',')[0].trim();
             const isMeal = state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
             /* @PHASE: JS_RECEIPT_CART_TOTAL_AND_ITEMS - 총액 계산과 장바구니 아이템 HTML 생성 */
@@ -6782,7 +6894,7 @@ const CardApp = (function() {
                         .map(c => c.id);
                     if (inUseIds.length) {
                         const carts = await Api.call('getSavedCarts', inUseIds);
-                        state.allCardData.forEach(c => c.savedCart = carts[c.id] || []);
+                        state.allCardData.forEach(c => c.savedCart = Utils.sanitizeReceiptCart(carts[c.id] || []));
                         state.lastSyncTs = Date.now();
                     }
                 }
@@ -6844,7 +6956,7 @@ const CardApp = (function() {
                 cardNumber: state.currentReturnCard.id,
                 receiveDate: state.currentReturnCard.userInfo.receiveDate,
                 userName: state.enteredUsers.map(u=>u.name).join(', '),
-                multiEntries: JSON.stringify(state.receiptCart)
+                multiEntries: JSON.stringify(Utils.sanitizeReceiptCart(state.receiptCart))
             };
             try {
                 /* @PHASE: JS_RETURN_SUBMIT_OPTIMISTIC_UPDATE - 화면에는 먼저 반납처리중으로 반영하고 서버 큐에 저장 */
@@ -6930,7 +7042,7 @@ const CardApp = (function() {
                 .map(c => c.id);
             if (inUseIds.length) {
                 Api.call('getSavedCarts', inUseIds)
-                    .then(map => state.allCardData.forEach(c => c.savedCart = map[c.id] || []))
+                    .then(map => state.allCardData.forEach(c => c.savedCart = Utils.sanitizeReceiptCart(map[c.id] || [])))
                     .catch(console.error);
             }
             UIManager.showScreen('login');
