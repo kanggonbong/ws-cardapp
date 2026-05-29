@@ -5078,6 +5078,356 @@ body.swal2-shown {
     margin-top: 6px !important;
   }
 }
+
+
+/* =========================================================
+  @SECTION: PURPOSE_RENT_CONFIRM_STEP_FINAL
+  목적 선택 후 최종 신청 버튼을 한 번 더 누르는 오클릭 방지 패치
+  - 목적 버튼은 선택만 수행
+  - 실제 대여는 하단 최종 신청 버튼에서만 실행
+  - PC/태블릿/모바일 공통으로 큰 터치 영역과 충분한 간격 확보
+========================================================= */
+.purpose-sheet{
+  padding-bottom:18px !important;
+}
+.morph-grid{
+  gap:13px !important;
+  margin-bottom:16px !important;
+}
+.morph-grid .purpose-btn,
+.purpose-btn{
+  min-height:84px !important;
+  border:2px solid rgba(226,232,240,.92) !important;
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .14s ease,
+    filter .18s ease !important;
+}
+.purpose-btn:hover{
+  transform:translateY(-1px) !important;
+  filter:brightness(1.018) !important;
+  box-shadow:0 12px 24px rgba(15,23,42,.075), inset 1px 1px 0 rgba(255,255,255,.82) !important;
+}
+.purpose-btn.selected,
+.purpose-btn[aria-pressed="true"]{
+  background:linear-gradient(180deg,#eff6ff 0%,#dbeafe 100%) !important;
+  border-color:rgba(37,99,235,.55) !important;
+  box-shadow:
+    0 0 0 3px rgba(37,99,235,.10),
+    0 14px 28px rgba(37,99,235,.12),
+    inset 1px 1px 0 rgba(255,255,255,.82) !important;
+  transform:translateY(-1px) !important;
+}
+.purpose-btn.selected .purpose-title,
+.purpose-btn[aria-pressed="true"] .purpose-title{
+  color:#1d4ed8 !important;
+}
+.purpose-btn.selected .purpose-chevron,
+.purpose-btn[aria-pressed="true"] .purpose-chevron{
+  color:#2563eb !important;
+}
+.purpose-btn.selected .purpose-chevron i::before,
+.purpose-btn[aria-pressed="true"] .purpose-chevron i::before{
+  content:"\f00c" !important;
+  font-family:"Font Awesome 6 Free" !important;
+  font-weight:900 !important;
+}
+.final-confirm-btn{
+  width:100% !important;
+  min-height:62px !important;
+  margin:4px 0 10px !important;
+  padding:0 18px !important;
+  border:none !important;
+  border-radius:999px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:10px !important;
+  font-size:1.08rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.035em !important;
+  word-break:keep-all !important;
+  text-align:center !important;
+  background:linear-gradient(180deg,#e2e8f0 0%,#cbd5e1 100%) !important;
+  color:#7c8ba1 !important;
+  cursor:not-allowed !important;
+  box-shadow:inset 3px 3px 7px rgba(100,116,139,.20), inset -3px -3px 7px rgba(255,255,255,.64) !important;
+  transition:all .22s cubic-bezier(.22,1,.36,1) !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.final-confirm-btn.unlocked{
+  background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 58%,#4f46e5 100%) !important;
+  color:#ffffff !important;
+  cursor:pointer !important;
+  box-shadow:0 14px 28px rgba(37,99,235,.28), inset 1px 1px 0 rgba(255,255,255,.30) !important;
+}
+.final-confirm-btn.unlocked::before{
+  content:"\f058";
+  font-family:"Font Awesome 6 Free";
+  font-weight:900;
+  font-size:1.05rem;
+}
+.final-confirm-btn.unlocked:hover{
+  filter:brightness(1.035) !important;
+  transform:translateY(-1px) !important;
+}
+.final-confirm-btn.unlocked:active{
+  filter:none !important;
+  transform:scale(.985) !important;
+  box-shadow:inset 7px 7px 13px rgba(29,78,216,.32), inset -5px -5px 10px rgba(96,165,250,.20) !important;
+}
+.final-confirm-btn.is-submitting{
+  pointer-events:none !important;
+  opacity:.82 !important;
+}
+.final-confirm-btn.is-submitting::before{
+  content:"" !important;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:3px solid rgba(255,255,255,.45);
+  border-top-color:#fff;
+  animation:spin .8s linear infinite;
+}
+.close-morph-btn{
+  margin-top:0 !important;
+}
+@media (max-width:767px){
+  .morph-grid{gap:12px !important;margin-bottom:14px !important;}
+  .morph-grid .purpose-btn,
+  .purpose-btn{min-height:82px !important;}
+  .final-confirm-btn{min-height:60px !important;font-size:1.02rem !important;}
+}
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_CARD_REQUEST_MUTED_BLUE_GRADIENT
+  - 목적: 잠금화면과 4단계 카드신청 화면의 색감을 통일
+  - 방향: 기존 뮤트 톤 유지 + 파란 기운을 한 단계 강화
+  - 운영 기준: 일반 카드/잠금화면 = 뮤트 블루 스틸, 해외결제카드 = 쿨 로즈 블루 톤
+  - 구조 유지: HTML/JS/GAS 함수 흐름 변경 없음, CSS 최종 오버라이드만 추가
+========================================================= */
+
+/* [1단계 잠금화면 카드] 첫인상용 뮤트 블루 스틸 그라데이션 */
+#glass-card{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.07) 22%, transparent 44%),
+    linear-gradient(135deg, #334d82 0%, #4f76b1 100%) !important;
+  border:1px solid rgba(255,255,255,0.20) !important;
+  box-shadow:
+    18px 18px 42px rgba(51,77,130,0.28),
+    -8px -8px 28px rgba(255,255,255,0.10),
+    inset 1px 1px 0 rgba(255,255,255,0.22),
+    inset -1px -1px 0 rgba(0,0,0,0.18) !important;
+}
+
+#glass-card .card-number,
+#glass-card .card-holder{
+  color:rgba(255,255,255,0.94) !important;
+  text-shadow:0 2px 5px rgba(15,23,42,0.32) !important;
+}
+
+/* [4단계 일반 공용 카드] 뮤트 유지, 기존보다 살짝 더 파란 스틸 블루 */
+.card-item-wrapper.hybrid-card-slot.card-status-available{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.17) 0%, rgba(255,255,255,0.06) 20%, transparent 42%),
+    linear-gradient(135deg, #3f5f95 0%, #5b82bf 100%) !important;
+  border:1px solid rgba(255,255,255,0.20) !important;
+  box-shadow:
+    0 10px 20px rgba(63,95,149,0.24),
+    inset 1px 1px 0 rgba(255,255,255,0.22),
+    inset -1px -1px 0 rgba(0,0,0,0.15) !important;
+}
+
+/* 기존 카드의 강한 파란 발광 테두리는 유지하되 쨍하지 않게 블루 톤으로 정리 */
+.card-item-wrapper.hybrid-card-slot.card-status-available::after{
+  border-color:rgba(175,204,245,0.46) !important;
+  filter:drop-shadow(0 0 5px rgba(91,130,191,0.26)) !important;
+  opacity:0.76 !important;
+}
+
+/* [4단계 해외결제카드] 뮤트 로즈에 약한 블루 톤을 섞어 전체 팔레트와 통일 */
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 20%, transparent 42%),
+    linear-gradient(135deg, #9d6474 0%, #b77b8d 100%) !important;
+  border:1px solid rgba(255,255,255,0.21) !important;
+  box-shadow:
+    0 10px 20px rgba(157,100,116,0.22),
+    inset 1px 1px 0 rgba(255,255,255,0.22),
+    inset -1px -1px 0 rgba(0,0,0,0.15) !important;
+}
+
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available::after{
+  border-color:rgba(230,190,202,0.44) !important;
+  filter:drop-shadow(0 0 5px rgba(157,100,116,0.23)) !important;
+}
+
+/* PC/마우스 환경에서만 은은한 호버 효과 적용: 터치 기기 hover 잔상 방지 */
+@media (hover:hover) and (pointer:fine){
+  .card-item-wrapper.hybrid-card-slot.card-status-available:hover{
+    filter:brightness(1.04) !important;
+    box-shadow:
+      0 14px 26px rgba(63,95,149,0.30),
+      inset 1px 1px 0 rgba(255,255,255,0.26) !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:hover{
+    filter:brightness(1.04) !important;
+    box-shadow:
+      0 14px 26px rgba(157,100,116,0.28),
+      inset 1px 1px 0 rgba(255,255,255,0.26) !important;
+  }
+}
+
+/* 카드명 가독성: 흰색 유지, 원색 번짐 최소화 */
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+  color:#ffffff !important;
+  text-shadow:0 2px 5px rgba(15,23,42,0.28) !important;
+  font-weight:850 !important;
+}
+
+/* 사용 가능 상태에서는 불필요한 보조문구 노출 억제 규칙 유지 */
+.card-item-wrapper.hybrid-card-slot.card-status-available .hybrid-card-sub-label,
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-usage-meta{
+  color:rgba(255,255,255,0.76) !important;
+}
+
+/* 터치 시에는 기존 반응성을 유지하되 색감이 과하게 튀지 않게 처리 */
+.card-item-wrapper.hybrid-card-slot.card-status-available:active{
+  filter:none !important;
+  transform:scale(0.965) !important;
+  box-shadow:
+    0 5px 12px rgba(63,95,149,0.24),
+    inset 5px 5px 10px rgba(0,0,0,0.16),
+    inset -3px -3px 8px rgba(255,255,255,0.10) !important;
+}
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:active{
+  box-shadow:
+    0 5px 12px rgba(157,100,116,0.22),
+    inset 5px 5px 10px rgba(0,0,0,0.16),
+    inset -3px -3px 8px rgba(255,255,255,0.10) !important;
+}
+
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_WOOSUNG_ROYAL_BLUE_THEME
+  - 목적: 잠금화면과 4단계 카드신청 화면을 7:3 비율의 선명한 우성 컬러로 보정
+  - 범위: 색상/그림자/호버 피드백만 조정, 기존 함수명/HTML 구조/GAS 흐름 변경 없음
+  - 적용: 기존 카드 랙 최종 CSS 뒤에서 덮어쓰기
+========================================================= */
+
+/* [1단계 잠금화면 실물 카드] 선명 7 : 뮤트 3 우성 로열 블루 */
+#glass-card {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.09) 22%, transparent 45%),
+    linear-gradient(135deg, #173a7a 0%, #2f73d6 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+  box-shadow:
+    18px 18px 40px rgba(23, 58, 122, 0.30),
+    -6px -6px 24px rgba(255, 255, 255, 0.13),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.28),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.16) !important;
+}
+
+#glass-card .card-number,
+#glass-card .card-holder {
+  color: rgba(255, 255, 255, 0.96) !important;
+  text-shadow: 0 2px 6px rgba(15, 23, 42, 0.32) !important;
+}
+
+#glass-card .card-school-icon,
+#glass-card .card-nfc {
+  color: rgba(255, 255, 255, 0.94) !important;
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.24)) !important;
+}
+
+/* [4단계 카드신청 - 일반 대여 가능 카드] 선명 7 : 뮤트 3 로열 블루 */
+.card-item-wrapper.hybrid-card-slot.card-status-available {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.08) 20%, transparent 42%),
+    linear-gradient(135deg, #1f4f9a 0%, #3b7fd8 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow:
+    0 10px 21px rgba(31, 79, 154, 0.26),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.25),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+/* [4단계 카드신청 - 해외결제카드] 선명 7 : 뮤트 3 로열 레드 */
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 20%, transparent 42%),
+    linear-gradient(135deg, #9c3442 0%, #cf5d68 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.23) !important;
+  box-shadow:
+    0 10px 21px rgba(156, 52, 66, 0.26),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.25),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 스마트 랙 가이드링은 강한 발광 대신 각 카드 색상에 맞춘 투명 하이라이트로 정리 */
+.card-item-wrapper.hybrid-card-slot.card-status-available::after {
+  border-color: rgba(145, 188, 245, 0.52) !important;
+  filter: drop-shadow(0 0 6px rgba(59, 127, 216, 0.31)) !important;
+  opacity: 0.82 !important;
+}
+
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available::after {
+  border-color: rgba(247, 176, 185, 0.54) !important;
+  filter: drop-shadow(0 0 6px rgba(207, 93, 104, 0.30)) !important;
+  opacity: 0.82 !important;
+}
+
+/* 카드 텍스트 시인성 유지 */
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-name {
+  color: #ffffff !important;
+  text-shadow: 0 2px 5px rgba(15, 23, 42, 0.27) !important;
+  font-weight: 850 !important;
+}
+
+.card-item-wrapper.hybrid-card-slot.card-status-available .hybrid-card-sub-label,
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-usage-meta {
+  color: rgba(255, 255, 255, 0.76) !important;
+}
+
+/* PC/마우스 환경에서만 호버 효과 적용: 모바일/태블릿 hover 잔상 방지 */
+@media (hover: hover) and (pointer: fine) {
+  .card-item-wrapper.hybrid-card-slot.card-status-available:hover {
+    filter: brightness(1.045) !important;
+    box-shadow:
+      0 14px 27px rgba(31, 79, 154, 0.32),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.28) !important;
+  }
+
+  .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:hover {
+    filter: brightness(1.045) !important;
+    box-shadow:
+      0 14px 27px rgba(156, 52, 66, 0.32),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.28) !important;
+  }
+}
+
+/* 터치 및 클릭 다운 피드백 */
+.card-item-wrapper.hybrid-card-slot.card-status-available:active {
+  filter: none !important;
+  transform: scale(0.965) !important;
+  box-shadow:
+    0 5px 12px rgba(31, 79, 154, 0.24),
+    inset 5px 5px 10px rgba(0, 0, 0, 0.18),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.12) !important;
+}
+
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:active {
+  box-shadow:
+    0 5px 12px rgba(156, 52, 66, 0.24),
+    inset 5px 5px 10px rgba(0, 0, 0, 0.17),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.12) !important;
+}
+
 </style>
 
 </head>
@@ -5094,6 +5444,7 @@ body.swal2-shown {
         <h3 class="morph-header" id="morph-title">사용 목적 선택</h3>
         <p class="morph-subheader" id="morph-subheader">신청할 용도를 선택해 주세요</p>
         <div class="morph-grid" id="morph-actions"></div>
+        <button class="final-confirm-btn" id="btn-final-rent" type="button" disabled>목적을 먼저 선택해 주세요</button>
         <button class="close-morph-btn" id="close-morph-btn">취소</button>
     </div>
 </div>
@@ -5327,6 +5678,7 @@ body.swal2-shown {
 ========================================================= */
 const IS_GAS = typeof google !== 'undefined' && google.script && google.script.run;
 const WORKER_API_URL = 'https://wscard.kang7762ek.workers.dev';
+const API_SHARED_SECRET = ''; // 선택 보안값: GAS Script Properties의 API_SHARED_SECRET을 설정한 경우 Worker가 이 값을 함께 전달해야 합니다.
 const isMobile = window.matchMedia('(max-width: 767px)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 const RECEIPT_IMAGE_OPTIMIZE_CONFIG = {
     maxSide: 1280,
@@ -5351,7 +5703,7 @@ const Api = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ func, args })
+            body: JSON.stringify({ func, args, apiSecret: API_SHARED_SECRET })
         });
 
         const data = await response.json();
@@ -5542,6 +5894,25 @@ const CardApp = (function() {
     @SUBSECTION: JS_STATE_ADMIN_HELPERS
     관리자 모드 state 변경 helper
     ========================================================= */
+    function showAdminModeNotice(on){
+        /* @PATCH: JS_ADMIN_MODE_CENTER_NOTICE
+           기존 상단 toast 대신 SweetAlert 기본 중앙 모달과 같은 형태로 관리자 모드 상태를 표시합니다.
+        */
+        try {
+            Swal.fire({
+                title: on ? '관리자 모드 ON' : '관리자 모드 OFF',
+                text: on ? '행정실 반납 제출 권한이 활성화되었습니다.' : '관리자 모드가 해제되었습니다.',
+                icon: on ? 'success' : 'info',
+                showConfirmButton: false,
+                timer: 1450,
+                timerProgressBar: true,
+                allowOutsideClick: true,
+                allowEscapeKey: true,
+                backdrop: true,
+                heightAuto: false
+            });
+        } catch (e) {}
+    }
     function setAdminMode(on, pin=null){
         state.isAdminMode = !!on;
         if (state.isAdminMode) {
@@ -5550,11 +5921,11 @@ const CardApp = (function() {
             if (pin) {
                 state.adminPinCache = String(pin);
             }
-            Swal.fire({toast:true, position:'top', icon:'success', title:'관리자 모드 ON', showConfirmButton:false, timer:1800});
+            showAdminModeNotice(true);
         } else {
             state.adminSince = null;
             state.adminPinCache = null;
-            Swal.fire({toast:true, position:'top', icon:'info', title:'관리자 모드 OFF', showConfirmButton:false, timer:1800});
+            showAdminModeNotice(false);
         }
     }
     /* =========================================================
@@ -5615,19 +5986,9 @@ const CardApp = (function() {
                     delete clean.status;
                     const img = String(clean.receiptImage || '');
                     if (img && !img.startsWith('id:')) delete clean.receiptImage;
-                    clean.attachments = (Array.isArray(clean.attachments) ? clean.attachments : [])
-                        .filter(Boolean)
-                        .map(att => {
-                            const a = { ...att };
-                            delete a.processing;
-                            delete a.previewImage;
-                            delete a.imageSaveError;
-                            delete a.status;
-                            const ai = String(a.receiptImage || '');
-                            if (ai && !ai.startsWith('id:')) delete a.receiptImage;
-                            return a;
-                        })
-                        .filter(att => String(att.receiptImage || '').startsWith('id:'));
+                    // 운영 결정: 시스템에는 금액 기준 대표 영수증만 저장합니다.
+                    // 품목내역서/간이영수증/추가 증빙은 종이로 별도 제출하므로 부속 첨부는 저장하지 않습니다.
+                    clean.attachments = [];
                     return clean;
                 });
         }
@@ -6601,7 +6962,8 @@ const CardApp = (function() {
             const isAvailable = status === '사용가능';
             const isInUse = status === '사용중';
             const isReturning = status === '반납처리중';
-            const statusLabel = isAvailable ? '신청 가능' : (isInUse ? '사용중' : (isReturning ? '반납 처리중' : (status || '상태 확인')));
+            const isReturnError = status === '반납오류';
+            const statusLabel = isAvailable ? '신청 가능' : (isInUse ? '사용중' : (isReturning ? '반납 처리중' : (isReturnError ? '반납 오류' : (status || '상태 확인'))));
             const rawDate = card.userInfo && card.userInfo.receiveDate ? String(card.userInfo.receiveDate) : '';
             const borrowDate = rawDate ? rawDate.slice(5, 10).replace('-', '/') : '';
             const dateHTML = (isInUse && borrowDate)
@@ -6609,7 +6971,7 @@ const CardApp = (function() {
                 : '';
             const badgeHTML = isInUse
                 ? `<span class="status-badge hybrid-status-badge inuse-only-badge">사용중</span>`
-                : '';
+                : (isReturnError ? `<span class="status-badge hybrid-status-badge inuse-only-badge">반납오류</span>` : '');
 
             return `
             <div class="card-grid-btn hybrid-card-btn" aria-label="${Utils.esc(card.displayName)} ${Utils.esc(statusLabel)}">
@@ -6708,8 +7070,8 @@ const CardApp = (function() {
                 </div>`;
             }
 
-            const attachmentCount = Array.isArray(it.attachments) ? it.attachments.length : 0;
-            const attachmentBadge = attachmentCount ? ` <span class="cart-item-attachment-badge"><i class="fa-solid fa-paperclip"></i> 내역첨부 ${attachmentCount}건</span>` : '';
+            // 운영 결정: 내역첨부 기능은 UI에서 사용하지 않습니다.
+            const attachmentBadge = '';
 
             return `<div class="cart-item with-inline-actions ${cls}" data-index="${i}" ${isProcessing?`data-processing-text="${CardLogic.getReceiptProcessingLabel(it.processing)}"`:''}>
                 <div class="cart-item-icon">
@@ -6750,12 +7112,7 @@ const CardApp = (function() {
                 try {
                     const hasUnpersistedReceiptImage = state.receiptCart.some(it => {
                         const img = String((it && it.receiptImage) || '');
-                        const hasBadMain = img && !img.startsWith('id:');
-                        const hasBadAttachment = Array.isArray(it && it.attachments) && it.attachments.some(att => {
-                            const ai = String((att && att.receiptImage) || '');
-                            return ai && !ai.startsWith('id:');
-                        });
-                        return hasBadMain || hasBadAttachment;
+                        return !!(img && !img.startsWith('id:'));
                     });
                     if (hasUnpersistedReceiptImage) {
                         throw new Error('RECEIPT_IMAGE_NOT_PERSISTED');
@@ -6935,89 +7292,24 @@ const CardApp = (function() {
             input.click();
         },
         triggerAttachmentSelection: async (parentIndex) => {
-            const idx = Number(parentIndex);
-            if (!Number.isInteger(idx) || !state.receiptCart[idx]) return;
-            const hasActiveUpload = Array.isArray(state.receiptCart) && state.receiptCart.some(it =>
-                it && ['queued', 'optimizing', 'ocr', 'postprocessing', 'saving'].includes(it.processing)
-            );
-            if (hasActiveUpload) {
-                try {
-                    Swal.fire({ icon:'warning', title:'잠시만요', text:'이전 영수증 저장이 끝난 뒤 다시 시도해주세요.', confirmButtonText:'확인' });
-                } catch (e) {}
-                return;
-            }
-
+            /* @PATCH: JS_ATTACHMENT_DISABLED
+               운영 결정에 따라 내역첨부 기능은 사용하지 않습니다.
+               시스템에는 금액 기준 대표 영수증만 저장하고, 추가 증빙은 종이로 별도 제출합니다.
+            */
             try {
-                const r = await Swal.fire({
-                    title: '내역첨부 추가',
-                    html: '품목이나 세부내역 확인용 영수증을 추가합니다.<br><b>이 금액은 총액에 더해지지 않습니다.</b>',
+                Swal.fire({
                     icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonText: '이미지 선택',
-                    cancelButtonText: '취소'
+                    title: '내역첨부 미사용',
+                    text: '추가 증빙서류는 종이로 별도 제출해 주세요.',
+                    confirmButtonText: '확인'
                 });
-                if (!r.isConfirmed) return;
             } catch (e) {}
-
-            Utils.haptic(12);
-            state.pendingAttachmentIndex = idx;
-            state.pendingEditIndex = -1;
-            const input = document.getElementById('receipt-file-input');
-            if (!input) return;
-            input.setAttribute('multiple', '');
-            input.value = '';
-            EmbedBridge.notify('UPLOAD_PICKER_OPEN');
-            if (state._uploadPickerTimer) clearTimeout(state._uploadPickerTimer);
-            state._uploadPickerTimer = setTimeout(() => {
-                EmbedBridge.notify('UPLOAD_PICKER_TIMEOUT');
-            }, 12000);
-            input.click();
         },
         handleAttachmentFiles: async (parentIndex, files) => {
-            const idx = Number(parentIndex);
-            if (!Number.isInteger(idx) || !state.receiptCart[idx] || !files || !files.length) return;
-            const addBtn = document.getElementById('add-receipt-btn');
-            const subBtn = document.getElementById('submit-cart-btn');
-            if (addBtn) addBtn.disabled = true;
-            if (subBtn) subBtn.disabled = true;
-
-            const backup = Utils.sanitizeReceiptCart(state.receiptCart);
-            try {
-                UIManager.setLoading(true, '내역첨부 저장 중...', 'receipt');
-                const target = state.receiptCart[idx];
-                target.attachments = Array.isArray(target.attachments) ? target.attachments : [];
-
-                for (const file of files) {
-                    const b64 = await CardLogic.resizeAndOptimizeImage(file);
-                    const saved = await Api.call('saveReceiptImageOnly', b64);
-                    if (!saved || !saved.tempFileId) {
-                        throw new Error('내역첨부 이미지를 서버에 저장하지 못했습니다. 다시 첨부해 주세요.');
-                    }
-                    target.attachments.push({
-                        type: 'detail',
-                        title: '내역첨부',
-                        receiptImage: saved.tempFileId,
-                        createdAt: new Date().toISOString()
-                    });
-                }
-
-                UIManager.setLoading(false);
-                CardLogic.requestRenderReceiptCart();
-                await CardLogic.queueSaveCart(backup);
-                try {
-                    Swal.fire({ icon:'success', title:'내역첨부 저장 완료', text:`${files.length}건이 추가되었습니다.`, confirmButtonText:'확인' });
-                } catch (e) {}
-            } catch (e) {
-                UIManager.setLoading(false);
-                state.receiptCart = backup;
-                CardLogic.requestRenderReceiptCart();
-                UIManager.handleServerError(e);
-            } finally {
-                try { document.getElementById('receipt-file-input').value = ''; } catch (e) {}
-                if (addBtn) addBtn.disabled = false;
-                if (subBtn) subBtn.disabled = false;
-                EmbedBridge.notify('UPLOAD_END');
-            }
+            /* @PATCH: JS_ATTACHMENT_DISABLED_FILE_ROUTE */
+            state.pendingAttachmentIndex = -1;
+            try { document.getElementById('receipt-file-input').value = ''; } catch (e) {}
+            EmbedBridge.notify('UPLOAD_END');
         },
         /* =========================================================
         @SUBSECTION: JS_CARD_LIST_RENDERING        },
@@ -7053,6 +7345,7 @@ const CardApp = (function() {
             if (status === '사용가능') wrap.classList.add('card-status-available');
             else if (status === '사용중') wrap.classList.add('card-status-inuse', 'disabled');
             else if (status === '반납처리중') wrap.classList.add('card-status-returning', 'disabled');
+            else if (status === '반납오류') wrap.classList.add('card-status-unknown', 'disabled');
             else wrap.classList.add('card-status-unknown', 'disabled');
 
             if (String(card.id || '').includes('해외') || String(card.name || '').includes('해외') || String(card.displayName || '').includes('해외')) wrap.classList.add('special-overseas-card');
@@ -7088,12 +7381,57 @@ const CardApp = (function() {
                 { id: '특근매식', icon: 'fa-utensils', label: '특근매식', desc: '특근 · 매식비' }
             ];
             actions.innerHTML = buttons.map(CardLogic.renderPurposeButtonHTML).join('');
+            CardLogic.resetPurposeConfirmation();
             closeBtn.onclick = CardLogic.closeMorphOverlay;
             overlay.classList.add('active');
+        },
+        resetPurposeConfirmation() {
+            const overlay = document.getElementById('morph-overlay');
+            const finalBtn = document.getElementById('btn-final-rent');
+            delete overlay.dataset.selectedPurpose;
+            document.querySelectorAll('#morph-actions .purpose-btn[data-purpose]').forEach(btn => {
+                btn.classList.remove('selected');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            if (finalBtn) {
+                finalBtn.textContent = '목적을 먼저 선택해 주세요';
+                finalBtn.classList.remove('unlocked', 'is-submitting');
+                finalBtn.disabled = true;
+            }
+        },
+        selectPurposeForConfirmation(purpose, buttonEl) {
+            const overlay = document.getElementById('morph-overlay');
+            const finalBtn = document.getElementById('btn-final-rent');
+            if (!overlay || !purpose) return;
+            overlay.dataset.selectedPurpose = purpose;
+            document.querySelectorAll('#morph-actions .purpose-btn[data-purpose]').forEach(btn => {
+                const isSelected = btn === buttonEl;
+                btn.classList.toggle('selected', isSelected);
+                btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+            });
+            if (finalBtn) {
+                finalBtn.textContent = `${purpose} 목적으로 카드 신청 확정`;
+                finalBtn.classList.add('unlocked');
+                finalBtn.disabled = false;
+            }
+        },
+        executeSelectedPurposeRent() {
+            const overlay = document.getElementById('morph-overlay');
+            const finalBtn = document.getElementById('btn-final-rent');
+            const cardId = overlay?.dataset.cardId;
+            const purpose = overlay?.dataset.selectedPurpose;
+            if (!cardId || !purpose || CardLogic._rentInFlight) return;
+            if (finalBtn) {
+                finalBtn.classList.add('is-submitting');
+                finalBtn.textContent = '카드 신청 처리 중...';
+                finalBtn.disabled = true;
+            }
+            CardLogic.submitRentRequest(cardId, purpose);
         },
         closeMorphOverlay() {
             const overlay = document.getElementById('morph-overlay');
             overlay.classList.remove('active');
+            CardLogic.resetPurposeConfirmation();
             delete overlay.dataset.cardId;
         },
         async submitRentRequest(id, purpose) {
@@ -7126,7 +7464,6 @@ const CardApp = (function() {
                     async () => {
                         const r = await Api.call('rentNow', params);
                         if(r?.status==="conflict") throw new Error('ALREADY_IN_USE');
-                        if(r?.status==="defer") await Api.call('queueRentRequest', params);
                         state.pendingPostReturnSync = true;
                         CardLogic.scheduleQuickSync(2, 900);
                     },
@@ -7514,7 +7851,9 @@ const CardApp = (function() {
             const files = Array.from(fileList);
             if (Number.isInteger(Number(attachmentIndex)) && Number(attachmentIndex) > -1) {
                 try { if (state._uploadPickerTimer) clearTimeout(state._uploadPickerTimer); } catch(e) {}
-                await CardLogic.handleAttachmentFiles(Number(attachmentIndex), files);
+                state.pendingAttachmentIndex = -1;
+                try { document.getElementById('receipt-file-input').value = ''; } catch(e) {}
+                EmbedBridge.notify('UPLOAD_END');
                 return;
             }
             /* @PHASE: JS_RECEIPT_UPLOAD_NEW_FILES - 새 영수증 여러 장 추가 처리 */
@@ -8073,8 +8412,16 @@ const CardApp = (function() {
                     if (res.isConfirmed) {
                         const pin = String(res.value || '').trim();
                         const result = await Api.call('validateAdminPin', pin);
-                        if (result && result.ok) setAdminMode(true, pin);
-                        else Swal.fire('실패', 'PIN이 올바르지 않습니다.', 'error');
+                        if (result && result.ok) {
+                            setAdminMode(true, pin);
+                        } else if (result && result.locked) {
+                            Swal.fire('잠시 후 다시 시도', `PIN 입력이 잠겼습니다. 약 ${result.remainingSeconds || 300}초 후 다시 시도해 주세요.`, 'warning');
+                        } else {
+                            const msg = result && result.remainingAttempts != null
+                                ? `PIN이 올바르지 않습니다. 남은 시도: ${result.remainingAttempts}회`
+                                : 'PIN이 올바르지 않습니다.';
+                            Swal.fire('실패', msg, 'error');
+                        }
                     }
                 }
             });
@@ -8135,9 +8482,15 @@ const CardApp = (function() {
                 const overlay = document.getElementById('morph-overlay');
                 const cardId = overlay?.dataset.cardId;
                 if (cardId) {
-                    CardLogic.submitRentRequest(cardId, purposeBtn.dataset.purpose);
+                    CardLogic.selectPurposeForConfirmation(purposeBtn.dataset.purpose, purposeBtn);
                     return;
                 }
+            }
+
+            const finalRentBtn = e.target.closest('#btn-final-rent');
+            if (finalRentBtn) {
+                CardLogic.executeSelectedPurposeRent();
+                return;
             }
 
             const cartAttachBtn = e.target.closest('.cart-item-attach');
