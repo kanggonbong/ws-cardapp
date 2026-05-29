@@ -1351,6 +1351,29 @@ body.swal2-shown.swal2-height-auto {
   display:none !important;
 }
 
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_RECEIPT_SAVE_VISIBILITY
+  목적: 영수증 수정 팝업에서 저장 버튼을 누른 뒤 서버 저장 중/완료/실패 상태를 사용자가 확실히 인지하게 합니다.
+  - 저장 완료 전에는 중앙 모달을 닫지 않고 대기 안내를 표시합니다.
+  - 저장 실패 시 반납 제출 누락 위험을 명확히 안내합니다.
+========================================================= */
+.ops-save-note{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:8px;
+  padding:12px 14px;
+  border-radius:18px;
+  color:#1f4f9a;
+  font-weight:900;
+  background:linear-gradient(180deg,#f8fbff 0%,#e8f0fb 100%);
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:inset 2px 2px 6px rgba(110,138,176,.16),inset -2px -2px 6px rgba(255,255,255,.9);
+}
+.ops-save-note i{color:#2563eb;}
+
 </style>
 
     <!-- =========================================================
@@ -7754,9 +7777,11 @@ const CardApp = (function() {
         @SUBSECTION: JS_RECEIPT_CART_MUTATIONS
         영수증 항목 저장/삭제/실패 복구
         ========================================================= */
-        saveCartItemOptimistic: async (item, idx) => {
+        saveCartItemOptimistic: async (item, idx, options = {}) => {
             /* @PHASE: JS_RECEIPT_SAVE_OPTIMISTIC_INSERT - 팝업 값을 먼저 화면 state에 반영 */
-            Swal.close();
+            if (options.closeSwal !== false) {
+                try { Swal.close(); } catch(e) {}
+            }
             const ghost = { ...item, processing: 'saving' };
             let targetIdx = idx;
             if (idx > -1) {
@@ -7766,9 +7791,10 @@ const CardApp = (function() {
                 targetIdx = state.receiptCart.length - 1;
             }
             CardLogic.requestRenderReceiptCart();
-            CardLogic.continueReviewIfNeeded(idx);
+
             /* @PHASE: JS_RECEIPT_SAVE_AUTOSAVE_AND_FEEDBACK - 서버 저장 후 saved/save_error 상태 표시 */
-            CardLogic.queueSaveCart(null).then(() => {
+            try {
+                await CardLogic.queueSaveCart(null);
                 const it = state.receiptCart[targetIdx];
                 if (it && it.processing === 'saving') {
                     it.processing = 'saved';
@@ -7781,7 +7807,9 @@ const CardApp = (function() {
                         }
                     }, 850);
                 }
-            }).catch((e) => {
+                CardLogic.continueReviewIfNeeded(idx);
+                return true;
+            } catch (e) {
                 const it = state.receiptCart[targetIdx];
                 if (it) it.processing = 'save_error';
                 CardLogic.requestRenderReceiptCart();
@@ -7789,7 +7817,8 @@ const CardApp = (function() {
                     Swal.fire({toast:true, position:'top', icon:'error', title:'저장 실패 · 네트워크 확인 후 다시 시도해주세요', showConfirmButton:false, timer:2500});
                 } catch(_) {}
                 console.error(e);
-            });
+                throw e;
+            }
         },
         deleteCartItem: (idx) => {
             Swal.fire({title:'삭제 확인',text:"삭제하시겠습니까?",icon:'warning',showCancelButton:true,confirmButtonText:'삭제',cancelButtonText:'취소',confirmButtonColor:'#d33'})
@@ -8249,8 +8278,43 @@ const CardApp = (function() {
                     if (isMeal) amount = String(Utils.clampMealAmount(amount, state.currentReturnCard.userInfo.userName.split(',').length));
                     return { usagePlace: store, usageDetails: details, amount, receiptImage: data.receiptImage, date: data.date||'' };
                 }
-            }).then(res => {
-                if (res.isConfirmed && res.value) CardLogic.saveCartItemOptimistic(res.value, editIndex);
+            }).then(async (res) => {
+                if (!(res.isConfirmed && res.value)) return;
+                /* @PHASE: JS_RECEIPT_SAVE_VISIBLE_CONFIRMATION - 저장 버튼 이후 실제 서버 저장 완료까지 중앙 모달로 명확히 표시 */
+                try {
+                    Swal.fire({
+                        title: '영수증 저장 중...',
+                        html: '<div class="ops-save-note"><i class="fa-solid fa-cloud-arrow-up"></i> 저장이 끝날 때까지 잠시만 기다려 주세요.</div>',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        didOpen: () => { try { Swal.showLoading(); } catch(e) {} }
+                    });
+                } catch(e) {}
+                try {
+                    await CardLogic.saveCartItemOptimistic(res.value, editIndex, { closeSwal: false });
+                    await Swal.fire({
+                        icon: 'success',
+                        title: '저장 완료',
+                        text: '영수증 정보가 서버에 저장되었습니다.',
+                        timer: 950,
+                        showConfirmButton: false,
+                        allowOutsideClick: true,
+                        allowEscapeKey: true
+                    });
+                } catch (e) {
+                    await UIManager.showOperationalError({
+                        title: '영수증 저장 실패',
+                        message: '입력한 영수증 정보가 서버에 저장되지 않았습니다. 이 상태에서는 행정실에서 반납 제출할 때 누락될 수 있습니다.',
+                        error: e,
+                        steps: [
+                            '네트워크 연결을 확인한 뒤 실패 표시가 있는 영수증을 다시 눌러 저장합니다.',
+                            '계속 실패하면 해당 영수증을 삭제 후 다시 첨부합니다.',
+                            '반납 제출은 모든 영수증이 정상 저장된 뒤 진행합니다.'
+                        ],
+                        confirmButtonText: '확인'
+                    });
+                }
             });
         },
         /* =========================================================
