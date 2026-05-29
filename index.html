@@ -1,68 +1,72 @@
 <!DOCTYPE html>
 <!--
   =========================================================
-  우성고 카드 시스템 - single-file organized version
+  우성고 카드 시스템 - single-file maintenance build
   =========================================================
-  작업 기준:
-  - 기능 로직은 최대한 그대로 둠
-  - 한 파일 구조 유지
-  - Ctrl+F 검색용 @SECTION 태그 추가
-  - CSS/HTML/JS의 큰 구역만 정리
-  - 2차 정리: JS 내부를 기능 단위로 더 세분화
-  - 3차 정리: state 필드를 용도별로 재배치하고 누락 상태값을 명시
-  - 4차 정리: UIManager를 화면/잠금/로딩/타이머 단위로 세분화
-  - 5차 정리: CardLogic 내부 영수증/OCR/반납 흐름을 PHASE 태그로 세분화
-  - 6차 정리: CSS cascade/patch/override 영역에 지도와 SUBSECTION 태그 추가
-  - 동작 리스크를 낮추기 위해 핵심 호출 흐름/함수명은 유지
+  @SECTION: FILE_MAINTENANCE_MAP
 
-  빠른 검색어:
-  @SECTION: CSS_THEME_BASE
-  @SECTION: CSS_CASCADE_GUIDE
-  @SECTION: CSS_THEME_BLUE_OVERRIDE_MAP
-  @SECTION: CSS_MOBILE_SAFETY_PATCH
-  @SECTION: CSS_MOBILE_PATCH_MAP
-  @SUBSECTION: CSS_PATCH_TOKENS_ZINDEX
-  @SUBSECTION: CSS_PATCH_VIEWPORT_INPUT
-  @SUBSECTION: CSS_PATCH_SCHOOL_MARKS
-  @SUBSECTION: CSS_PATCH_LAYOUT_OVERFLOW
-  @SUBSECTION: CSS_PATCH_SAFE_AREA_ZINDEX
-  @SUBSECTION: CSS_PATCH_SWAL_MODAL_BASE
-  @SUBSECTION: CSS_PATCH_SWAL_MODAL_FINAL
-  @SUBSECTION: CSS_PATCH_RECEIPT_OVERLAY
-  @SUBSECTION: CSS_PATCH_RECEIPT_OVERLAY_ANIMATION
-  @SUBSECTION: CSS_PATCH_SAVING_PURPLE
-  @SECTION: CSS_FINAL_HOTFIX_ANALYSIS_OVERLAY
-  @SECTION: HTML_LOGIN_SCREEN
-  @SECTION: HTML_CARD_SELECTION_SCREEN
-  @SECTION: HTML_RETURN_SCREEN
-  @SECTION: JS_CONFIG
-  @SECTION: JS_STATE
-  @SECTION: JS_STATE_FIELD_MAP
-  @SUBSECTION: JS_STATE_SYNC
-  @SUBSECTION: JS_STATE_LOGIN
-  @SUBSECTION: JS_STATE_RECEIPT
-  @SECTION: JS_UI_MANAGER
-  @SECTION: JS_UI_MANAGER_FLOW_MAP
-  @SUBSECTION: JS_UI_MANAGER_SCREEN_SWITCH_CORE
-  @SUBSECTION: JS_UI_MANAGER_LOCK_RESET
-  @SUBSECTION: JS_UI_MANAGER_INACTIVITY_TIMER
-  @SUBSECTION: JS_UI_MANAGER_LOADER_SEQUENCE
-  @SUBSECTION: JS_UI_MANAGER_CONFIRMATION_SCREEN
-  @SECTION: JS_KEYPAD_LOGIC
-  @SECTION: JS_CARD_LOGIC
-  @SECTION: JS_CARD_LOGIC_MAP
-  @SECTION: JS_CARD_LOGIC_FLOW_MAP
-  @SUBSECTION: JS_KEYPAD_DIGIT_INPUT
-  @SUBSECTION: JS_CARD_LIST_RENDERING
-  @SUBSECTION: JS_RECEIPT_OCR_PIPELINE_BATCH
-  @SUBSECTION: JS_RETURN_SUBMIT_FLOW
-  @PHASE: JS_RECEIPT_BATCH_CREATE_GHOST_ITEMS
-  @PHASE: JS_RECEIPT_REPLACE_IMAGE_ANALYSIS
-  @PHASE: JS_RECEIPT_POPUP_VALIDATE_AND_SAVE
-  @PHASE: JS_RETURN_SUBMIT_OPTIMISTIC_UPDATE
-  @SECTION: JS_EVENT_LISTENERS
-  @SECTION: JS_BOOTSTRAP
--->
+  이 파일은 "파일 분리 없는 단일 HTML" 기준을 유지합니다.
+  HTML / CSS / JS를 별도 파일로 분리하지 않고, @SECTION / @SUBSECTION / @PHASE / FINAL_PATCH
+  주석을 책갈피처럼 사용해 유지보수합니다.
+
+  @PHASE: REFACTOR_STAGE_1_STRUCTURE_MAP
+  @PHASE: REFACTOR_STAGE_2_DEAD_CODE_CLEANUP
+  @PHASE: REFACTOR_STAGE_3_JS_RESPONSIBILITY
+  @PHASE: REFACTOR_STAGE_4_CSS_DESIGN_RESPONSIBILITY
+  @PHASE: REFACTOR_STAGE_5_FINAL_GUIDE_STABILIZATION
+  이번 1~5차 작업의 목적은 기능 변경이 아니라 "수정 동선, JS 책임 경계, CSS/디자인 책임 경계, 최종 수정 가이드 고정"입니다.
+  - 기존 함수명과 실행 흐름 유지
+  - CSS/HTML/JS의 책임 구역을 먼저 지도화
+  - 이후 2차~5차 리팩터링에서 제거/이동/정리를 안전하게 진행할 기준점 마련
+
+  AI_EDIT_GUIDE
+  - 서버 호출/Worker 전환: @SECTION: JS_API_BRIDGE
+  - 전역 상태 추가/삭제: @SECTION: JS_STATE
+  - 공용 포맷/검증/escape: @SECTION: JS_UTILS
+  - 화면 전환/잠금/로딩: @SECTION: JS_UI_MANAGER
+  - 로그인 키패드/사용자 추가: @SECTION: JS_KEYPAD_LOGIC
+  - 카드 목록/대여/반납/영수증: @SECTION: JS_CARD_LOGIC
+  - 영수증 업로드/OCR: @SUBSECTION: JS_RECEIPT_OCR_PIPELINE_BATCH
+  - 영수증 수정 팝업: @SUBSECTION: JS_RECEIPT_EDIT_POPUP
+  - 최종 반납 제출: @SUBSECTION: JS_RETURN_SUBMIT_FLOW
+  - 전역 클릭/키보드 이벤트: @SECTION: JS_EVENT_LISTENERS
+  - 최종 디자인 보정: @SECTION: CSS_FINAL_OVERRIDES_INDEX
+  - 4차 디자인 토큰/화면별 수정 계약: @SECTION: CSS_DESIGN_RESPONSIBILITY_CONTRACT
+  - 5차 최종 수정 체크리스트: @SECTION: FINAL_MAINTENANCE_GUIDE
+
+  SINGLE_FILE_RULES_FOR_AI
+  - HTML/JS/CSS는 이 HTML 한 파일 안에서 유지한다.
+  - GAS는 Code.gs 한 파일 안에서 유지한다.
+  - 파일 분리, 빌드 도구 도입, 대규모 함수명 변경은 하지 않는다.
+  - 새 기능은 가장 가까운 @SECTION 안에서만 수정한다.
+  - CSS 최종 보정은 기존 규칙 삭제보다 아래쪽 override를 우선한다.
+  - 7차 이후 카드 색상은 FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK의 토큰을 우선 수정한다.
+  - API 이름이나 반환 필드를 바꾸면 Code.gs의 WebAppApi handlers도 같이 확인한다.
+
+  FINAL_MAINTENANCE_GUIDE
+  - 새 수정은 항상 아래 순서로 위치를 찾는다.
+    1) 화면/기능 이름으로 @SECTION 검색
+    2) JS 변경이면 JS_RESPONSIBILITY_CONTRACT 확인
+    3) CSS 변경이면 CSS_DESIGN_RESPONSIBILITY_CONTRACT 확인
+    4) 단순 색상 변경이면 FINAL_PATCH_REFACTOR_STAGE_4_DESIGN_SYSTEM의 토큰 우선 수정
+    5) 기존 규칙을 삭제하기보다 FINAL_PATCH에 사유를 남기고 override
+  - 운영에서 사용하지 않는 기능 기준
+    * 부속/내역첨부 UI는 사용하지 않는다.
+    * 기타운영 목적은 신규 카드 신청 UI에서 사용하지 않는다.
+    * 목적은 물품구매 / 식사다과 / 특근매식 기준을 유지한다.
+  - 중요 흐름 보존
+    * 4단계 카드신청: 목적 선택 -> 선택 강조 -> 최종 신청 버튼 -> rentNow 처리
+    * 5단계 카드반납: 영수증 OCR/수정/저장 -> 반납 제출 -> PDF 생성/Drive 저장/시트 기록
+    * PDF 생성 실패/반납 큐 실패는 조용히 성공 처리하지 않는다.
+    * 6차 장애 UX: OCR/저장/반납 제출 실패 시 제출 차단, 중앙 안내, 복구 행동을 명확히 표시한다.
+
+  REFACTOR_ROADMAP
+  1차: 구조 지도 재배치 / 검색 동선 고정
+  2차: 죽은 코드, 중복 주석, 잔여 패치 정리
+  3차: JS 책임 분리 강화 / UIManager, CardLogic, Receipt, Event Router 경계 고정
+  4차: CSS/디자인 책임 정리 / 화면별 디자인 수정 동선 고정
+  5차: 최종 가이드 고정 및 잔여 패치 안정화 / 완료
+========================================================= -->
 <html lang="ko">
 <head>
     <!-- =========================================================
@@ -109,6 +113,68 @@
     </script>
 
 
+
+    <!-- =========================================================
+      @SECTION: CSS_ARCHITECTURE_GUIDE
+      1차 구조 지도 재배치 기준
+
+      CSS_READING_ORDER
+      1) CSS_MAIN_LEGACY
+         - 원본에 가까운 기본 스타일 모음입니다.
+         - 2차 전까지는 규칙 삭제보다 아래쪽 override를 우선합니다.
+      2) CSS_THEME_BLUE_OVERRIDE / UX_ENHANCEMENT / SMART_RACK
+         - 현재 화면 질감과 카드 보관함 디자인을 구성하는 누적 패치입니다.
+      3) CSS_MOBILE_SAFETY_PATCH / CSS_FINAL_* / FINAL_PATCH_*
+         - 모바일 안정화, SweetAlert, 영수증 오버레이, 최종 테마 색상 보정입니다.
+
+      CSS_EDIT_MAP
+      - 색상/그림자 토큰: @SECTION: CSS_THEME_BASE, @SECTION: CSS_THEME_BLUE_OVERRIDE
+      - 잠금화면 카드: @SECTION: CSS_LOCK_SCREEN, @SECTION: FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK
+      - 로딩화면: @SECTION: CSS_WELCOME_LOADER
+      - 내선번호/키패드: @SECTION: CSS_LOGIN_KEYPAD
+      - 카드신청 스마트랙: @SECTION: CSS_CARD_SELECTION, @SECTION: CSS_SMART_RACK_SKEUOMORPHISM_THEME
+      - 카드 목적 선택: @SECTION: CSS_PURPOSE_MORPH_OVERLAY
+      - 카드반납/영수증: @SECTION: CSS_RECEIPT_RETURN, @SECTION: CSS_RECEIPT_CART_ITEMS
+      - SweetAlert 모달: @SECTION: CSS_SWAL_MODAL
+      - 모바일 보정: @SECTION: CSS_RESPONSIVE_BREAKPOINTS, CSS_MOBILE_* 계열
+      - 최종 테마/핫픽스: @SECTION: CSS_FINAL_OVERRIDES_INDEX
+
+      NEXT_STAGE_NOTE
+      - 2차부터는 중복 override와 죽은 주석을 줄입니다.
+      - 4차에서 tokens/layout/components/screens/final-overrides 기준으로 더 강하게 정리합니다.
+    ========================================================= -->
+    <!-- =========================================================
+      @SECTION: CSS_DESIGN_RESPONSIBILITY_CONTRACT
+      4차 CSS/디자인 책임 정리 기준
+
+      DESIGN_EDIT_RULES
+      - 색상만 바꿀 때: @SECTION: FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK 의 :root 토큰을 먼저 수정합니다.
+      - 화면 배치만 바꿀 때: CSS_APP_LAYOUT / CSS_RESPONSIVE_BREAKPOINTS / 해당 화면 SECTION을 수정합니다.
+      - 컴포넌트 모양만 바꿀 때: 버튼, 카드, 장바구니, SweetAlert 등 가장 가까운 COMPONENT SECTION에서 수정합니다.
+      - 최종 테마 보정은 파일 하단 FINAL_PATCH 계열에서만 추가합니다.
+      - 같은 selector를 여러 곳에서 고칠 때는 아래쪽 override가 우선한다는 점을 주석으로 남깁니다.
+
+      CSS_RESPONSIBILITY_BUCKETS
+      1) TOKENS
+         - 색상, 그림자, 카드 그라데이션, 상태색
+         - 대표 위치: CSS_THEME_BASE, CSS_THEME_BLUE_OVERRIDE, FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK
+      2) LAYOUT
+         - 화면 중앙 정렬, 컨테이너 폭, 그리드, 반응형 기준
+         - 대표 위치: CSS_APP_LAYOUT, CSS_RESPONSIVE_BREAKPOINTS
+      3) COMPONENTS
+         - 키패드 버튼, 카드 슬롯, 목적 버튼, 영수증 장바구니, SweetAlert 입력폼
+         - 대표 위치: CSS_LOGIN_KEYPAD, CSS_CARD_SELECTION, CSS_PURPOSE_MORPH_OVERLAY, CSS_RECEIPT_CART_ITEMS, CSS_SWAL_MODAL
+      4) SCREEN_SKINS
+         - 잠금화면, 로딩화면, 내선번호, 카드신청, 카드반납처럼 화면 단위 감성/톤
+         - 대표 위치: CSS_LOCK_SCREEN, CSS_WELCOME_LOADER, CSS_RECEIPT_RETURN, SMART_RACK 계열
+      5) FINAL_OVERRIDES
+         - 누적 패치의 최종 우선순위 정리
+         - 대표 위치: CSS_FINAL_* / FINAL_PATCH_* / FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK
+
+      STAGE_4_NOTE
+      - 이번 4차에서는 대규모 CSS 재배열 대신 "디자인 수정 책임"을 토큰화하고, 최종 카드/잠금 색상은 토큰 기반으로 재고정합니다.
+      - 기존 동작, HTML 구조, JS 함수명, GAS 연동은 변경하지 않습니다.
+    ========================================================= -->
     <!-- =========================================================
       @SECTION: CSS_CASCADE_GUIDE
       CSS 적용 순서 안내
@@ -124,7 +190,7 @@
 
     <!-- =========================================================
       @SECTION: CSS_MAIN_LEGACY
-      기존 전체 CSS. 1차 정리에서는 기능 영향 방지를 위해 규칙 자체는 유지.
+      기존 전체 CSS. 기능 영향 방지를 위해 규칙 자체는 유지.
     ========================================================= -->
     <style>
 /* 기존에 있던 긴 CSS는 문제없이 동작하므로 그대로 유지합니다 (글자수 제한 방지를 위해 생략 없이 전체 포함 권장) */
@@ -1117,6 +1183,172 @@ body.swal2-shown.swal2-height-auto {
     font-size: 0.74rem !important;
     padding: 0 8px !important;
   }
+}
+
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_REFACTOR_STAGE_6_OPERATIONAL_FAILURE_UX
+  - 장애 상황 UX 정리: OCR/저장/반납 실패 안내를 중앙 모달과 장바구니 상태로 명확히 표시
+  - 기능 로직/API명은 유지하고, 실패 시 사용자가 취할 행동만 선명하게 보강
+========================================================= */
+.ops-error-box{
+  margin:10px auto 12px;
+  padding:13px 14px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,247,247,.96),rgba(255,235,238,.96));
+  border:1px solid rgba(239,68,68,.18);
+  color:#9f1239;
+  font-weight:850;
+  line-height:1.55;
+  text-align:center;
+  word-break:keep-all;
+}
+.ops-recovery-list{
+  margin:10px auto 0;
+  padding:12px 18px 12px 32px;
+  max-width:420px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(248,251,255,.96),rgba(237,244,255,.96));
+  border:1px solid rgba(59,130,246,.14);
+  color:#36527f;
+  text-align:left;
+  font-weight:750;
+  line-height:1.6;
+}
+.ops-recovery-list li{margin:3px 0;}
+.cart-item.operational-blocked{
+  border-color:rgba(239,68,68,.26) !important;
+  box-shadow:
+    0 0 0 2px rgba(239,68,68,.06),
+    inset 5px 5px 10px var(--shadow-dark),
+    inset -5px -5px 10px var(--shadow-light) !important;
+}
+#submit-guide.visible{
+  display:block !important;
+  line-height:1.45;
+  word-break:keep-all;
+}
+@media (max-width:767px){
+  .ops-error-box{font-size:.95rem;padding:12px;}
+  .ops-recovery-list{font-size:.9rem;padding-left:28px;}
+}
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK
+  7차 CSS 최종 다이어트 / 최종 테마 잠금
+  - 오래된 뮤트 블루 카드 패치는 제거하고, 현재 운영 색상은 아래 토큰 한 곳에 고정합니다.
+  - 삭제가 위험한 과거 override는 보존하되, 카드 색상/그림자/hover는 이 섹션이 최종 우선순위를 가집니다.
+  - 카드 색을 바꿀 때는 selector를 흩어 고치지 말고 이 :root 토큰부터 수정합니다.
+========================================================= */
+:root{
+  --ws-final-card-blue-start:#1f4f9a;
+  --ws-final-card-blue-end:#3b7fd8;
+  --ws-final-lock-blue-start:#173a7a;
+  --ws-final-lock-blue-end:#2f73d6;
+  --ws-final-card-red-start:#9c3442;
+  --ws-final-card-red-end:#cf5d68;
+  --ws-final-card-blue-shadow:rgba(31,79,154,0.26);
+  --ws-final-card-red-shadow:rgba(156,52,66,0.26);
+  --ws-final-card-ring-blue:rgba(145,188,245,0.52);
+  --ws-final-card-ring-red:rgba(247,176,185,0.54);
+}
+
+/* [1단계 잠금화면] 최종 운영 카드 색상 */
+#glass-card{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.09) 22%, transparent 45%),
+    linear-gradient(135deg, var(--ws-final-lock-blue-start) 0%, var(--ws-final-lock-blue-end) 100%) !important;
+  border:1px solid rgba(255,255,255,0.24) !important;
+  box-shadow:
+    18px 18px 40px rgba(23,58,122,0.30),
+    -6px -6px 24px rgba(255,255,255,0.13),
+    inset 1px 1px 0 rgba(255,255,255,0.28),
+    inset -1px -1px 0 rgba(0,0,0,0.16) !important;
+}
+#glass-card .card-number,
+#glass-card .card-holder{
+  color:rgba(255,255,255,0.96) !important;
+  text-shadow:0 2px 6px rgba(15,23,42,0.32) !important;
+}
+#glass-card .card-school-icon,
+#glass-card .card-nfc{
+  color:rgba(255,255,255,0.94) !important;
+  filter:drop-shadow(0 2px 6px rgba(15,23,42,0.24)) !important;
+}
+
+/* [4단계 카드신청] 일반 카드 / 해외결제카드 최종 색상 */
+.card-item-wrapper.hybrid-card-slot.card-status-available{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.21) 0%, rgba(255,255,255,0.08) 20%, transparent 42%),
+    linear-gradient(135deg, var(--ws-final-card-blue-start) 0%, var(--ws-final-card-blue-end) 100%) !important;
+  border:1px solid rgba(255,255,255,0.22) !important;
+  box-shadow:
+    0 10px 21px var(--ws-final-card-blue-shadow),
+    inset 1px 1px 0 rgba(255,255,255,0.25),
+    inset -1px -1px 0 rgba(0,0,0,0.15) !important;
+}
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 20%, transparent 42%),
+    linear-gradient(135deg, var(--ws-final-card-red-start) 0%, var(--ws-final-card-red-end) 100%) !important;
+  border:1px solid rgba(255,255,255,0.23) !important;
+  box-shadow:
+    0 10px 21px var(--ws-final-card-red-shadow),
+    inset 1px 1px 0 rgba(255,255,255,0.25),
+    inset -1px -1px 0 rgba(0,0,0,0.15) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available::after{
+  border-color:var(--ws-final-card-ring-blue) !important;
+  filter:drop-shadow(0 0 6px rgba(59,127,216,0.31)) !important;
+  opacity:0.82 !important;
+}
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available::after{
+  border-color:var(--ws-final-card-ring-red) !important;
+  filter:drop-shadow(0 0 6px rgba(207,93,104,0.30)) !important;
+  opacity:0.82 !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+  color:#fff !important;
+  text-shadow:0 2px 5px rgba(15,23,42,0.27) !important;
+  font-weight:850 !important;
+}
+
+/* PC에서만 hover를 살리고, 터치 기기 잔상은 방지 */
+@media (hover:hover) and (pointer:fine){
+  .card-item-wrapper.hybrid-card-slot.card-status-available:hover{
+    filter:brightness(1.045) !important;
+    box-shadow:
+      0 14px 27px rgba(31,79,154,0.32),
+      inset 1px 1px 0 rgba(255,255,255,0.28) !important;
+  }
+  .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:hover{
+    filter:brightness(1.045) !important;
+    box-shadow:
+      0 14px 27px rgba(156,52,66,0.32),
+      inset 1px 1px 0 rgba(255,255,255,0.28) !important;
+  }
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available:active{
+  filter:none !important;
+  transform:scale(0.965) !important;
+  box-shadow:
+    0 5px 12px rgba(31,79,154,0.24),
+    inset 5px 5px 10px rgba(0,0,0,0.18),
+    inset -3px -3px 8px rgba(255,255,255,0.12) !important;
+}
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:active{
+  box-shadow:
+    0 5px 12px rgba(156,52,66,0.24),
+    inset 5px 5px 10px rgba(0,0,0,0.17),
+    inset -3px -3px 8px rgba(255,255,255,0.12) !important;
+}
+
+/* 7차 보존 잠금: 운영 제외 UI는 계속 숨김 */
+.cart-item-attach,
+.cart-item-attachment-badge,
+.purpose-btn[data-purpose="기타운영"]{
+  display:none !important;
 }
 
 </style>
@@ -5204,116 +5436,6 @@ body.swal2-shown {
 
 
 /* =========================================================
-  @SECTION: FINAL_PATCH_CARD_REQUEST_MUTED_BLUE_GRADIENT
-  - 목적: 잠금화면과 4단계 카드신청 화면의 색감을 통일
-  - 방향: 기존 뮤트 톤 유지 + 파란 기운을 한 단계 강화
-  - 운영 기준: 일반 카드/잠금화면 = 뮤트 블루 스틸, 해외결제카드 = 쿨 로즈 블루 톤
-  - 구조 유지: HTML/JS/GAS 함수 흐름 변경 없음, CSS 최종 오버라이드만 추가
-========================================================= */
-
-/* [1단계 잠금화면 카드] 첫인상용 뮤트 블루 스틸 그라데이션 */
-#glass-card{
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.07) 22%, transparent 44%),
-    linear-gradient(135deg, #334d82 0%, #4f76b1 100%) !important;
-  border:1px solid rgba(255,255,255,0.20) !important;
-  box-shadow:
-    18px 18px 42px rgba(51,77,130,0.28),
-    -8px -8px 28px rgba(255,255,255,0.10),
-    inset 1px 1px 0 rgba(255,255,255,0.22),
-    inset -1px -1px 0 rgba(0,0,0,0.18) !important;
-}
-
-#glass-card .card-number,
-#glass-card .card-holder{
-  color:rgba(255,255,255,0.94) !important;
-  text-shadow:0 2px 5px rgba(15,23,42,0.32) !important;
-}
-
-/* [4단계 일반 공용 카드] 뮤트 유지, 기존보다 살짝 더 파란 스틸 블루 */
-.card-item-wrapper.hybrid-card-slot.card-status-available{
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.17) 0%, rgba(255,255,255,0.06) 20%, transparent 42%),
-    linear-gradient(135deg, #3f5f95 0%, #5b82bf 100%) !important;
-  border:1px solid rgba(255,255,255,0.20) !important;
-  box-shadow:
-    0 10px 20px rgba(63,95,149,0.24),
-    inset 1px 1px 0 rgba(255,255,255,0.22),
-    inset -1px -1px 0 rgba(0,0,0,0.15) !important;
-}
-
-/* 기존 카드의 강한 파란 발광 테두리는 유지하되 쨍하지 않게 블루 톤으로 정리 */
-.card-item-wrapper.hybrid-card-slot.card-status-available::after{
-  border-color:rgba(175,204,245,0.46) !important;
-  filter:drop-shadow(0 0 5px rgba(91,130,191,0.26)) !important;
-  opacity:0.76 !important;
-}
-
-/* [4단계 해외결제카드] 뮤트 로즈에 약한 블루 톤을 섞어 전체 팔레트와 통일 */
-.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available{
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 20%, transparent 42%),
-    linear-gradient(135deg, #9d6474 0%, #b77b8d 100%) !important;
-  border:1px solid rgba(255,255,255,0.21) !important;
-  box-shadow:
-    0 10px 20px rgba(157,100,116,0.22),
-    inset 1px 1px 0 rgba(255,255,255,0.22),
-    inset -1px -1px 0 rgba(0,0,0,0.15) !important;
-}
-
-.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available::after{
-  border-color:rgba(230,190,202,0.44) !important;
-  filter:drop-shadow(0 0 5px rgba(157,100,116,0.23)) !important;
-}
-
-/* PC/마우스 환경에서만 은은한 호버 효과 적용: 터치 기기 hover 잔상 방지 */
-@media (hover:hover) and (pointer:fine){
-  .card-item-wrapper.hybrid-card-slot.card-status-available:hover{
-    filter:brightness(1.04) !important;
-    box-shadow:
-      0 14px 26px rgba(63,95,149,0.30),
-      inset 1px 1px 0 rgba(255,255,255,0.26) !important;
-  }
-  .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:hover{
-    filter:brightness(1.04) !important;
-    box-shadow:
-      0 14px 26px rgba(157,100,116,0.28),
-      inset 1px 1px 0 rgba(255,255,255,0.26) !important;
-  }
-}
-
-/* 카드명 가독성: 흰색 유지, 원색 번짐 최소화 */
-.card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
-  color:#ffffff !important;
-  text-shadow:0 2px 5px rgba(15,23,42,0.28) !important;
-  font-weight:850 !important;
-}
-
-/* 사용 가능 상태에서는 불필요한 보조문구 노출 억제 규칙 유지 */
-.card-item-wrapper.hybrid-card-slot.card-status-available .hybrid-card-sub-label,
-.card-item-wrapper.hybrid-card-slot.card-status-available .card-usage-meta{
-  color:rgba(255,255,255,0.76) !important;
-}
-
-/* 터치 시에는 기존 반응성을 유지하되 색감이 과하게 튀지 않게 처리 */
-.card-item-wrapper.hybrid-card-slot.card-status-available:active{
-  filter:none !important;
-  transform:scale(0.965) !important;
-  box-shadow:
-    0 5px 12px rgba(63,95,149,0.24),
-    inset 5px 5px 10px rgba(0,0,0,0.16),
-    inset -3px -3px 8px rgba(255,255,255,0.10) !important;
-}
-.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:active{
-  box-shadow:
-    0 5px 12px rgba(157,100,116,0.22),
-    inset 5px 5px 10px rgba(0,0,0,0.16),
-    inset -3px -3px 8px rgba(255,255,255,0.10) !important;
-}
-
-
-
-/* =========================================================
   @SECTION: FINAL_PATCH_WOOSUNG_ROYAL_BLUE_THEME
   - 목적: 잠금화면과 4단계 카드신청 화면을 7:3 비율의 선명한 우성 컬러로 보정
   - 범위: 색상/그림자/호버 피드백만 조정, 기존 함수명/HTML 구조/GAS 흐름 변경 없음
@@ -5428,11 +5550,58 @@ body.swal2-shown {
     inset -3px -3px 8px rgba(255, 255, 255, 0.12) !important;
 }
 
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_REFACTOR_STAGE_2_UNUSED_UI_CLEANUP
+  2차 정리: 운영에서 사용하지 않는 잔여 UI 경로를 최종적으로 숨김 처리합니다.
+  - 내역첨부 버튼/배지는 생성하지 않으며, 과거 캐시/잔여 마크업도 숨김
+  - 기타운영 목적 버튼은 신규 UI에서 생성하지 않으며, 잔여 마크업도 숨김
+========================================================= */
+.cart-item-attach,
+.cart-item-attachment-badge,
+.purpose-btn[data-purpose="기타운영"]{
+  display:none !important;
+}
+
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_REFACTOR_STAGE_5_STABILITY_LOCK
+  5차 최종 안정화 메모
+  - 이 섹션은 기능 CSS를 새로 바꾸기 위한 곳이 아니라, 최종 override 우선순위와 수정 기준을 고정하기 위한 잠금 메모입니다.
+  - 카드 색상 변경은 아래 selector를 직접 흩어 고치지 말고, 7차 FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK 토큰을 우선 수정합니다.
+    1) #glass-card
+    2) .card-item-wrapper.hybrid-card-slot.card-status-available
+    3) .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available
+  - 내역첨부/기타운영 잔여 UI 숨김 규칙은 운영 기준이 바뀌기 전까지 유지합니다.
+========================================================= */
 </style>
 
 </head>
 <body class="variant-lockscreen">
 
+
+<!-- =========================================================
+  @SECTION: HTML_ARCHITECTURE_GUIDE
+  1차 구조 지도 재배치 기준
+
+  HTML_SCREEN_ORDER
+  1) HTML_PURPOSE_MORPH_OVERLAY: 4단계 카드신청 목적 선택 오버레이
+  2) HTML_LOCK_SCREEN: 1단계 잠금화면
+  3) HTML_WELCOME_LOADER: 2단계 로딩화면
+  4) HTML_SECURITY_SCAN_OVERLAY: 신원 확인 전환 오버레이
+  5) HTML_LOADING_OVERLAY: 영수증/OCR/저장 공통 로딩 오버레이
+  6) HTML_APP_SCREENS
+     - HTML_LOGIN_SCREEN: 3단계 내선번호
+     - HTML_CARD_SELECTION_SCREEN: 4단계 카드신청
+     - HTML_RETURN_SCREEN: 5단계 카드반납
+     - HTML_CONFIRMATION_SCREEN: 완료 화면
+  7) HTML_RECEIPT_FILE_INPUT: 영수증 파일 input
+
+  HTML_EDIT_RULE
+  - 화면 요소 id/class를 바꾸면 JS_ELEMENT_CACHE와 이벤트 바인딩을 같이 확인합니다.
+========================================================= -->
 <!-- =========================================================
   @SECTION: HTML_PURPOSE_MORPH_OVERLAY
   카드 대여 시 사용 목적을 선택하는 전체 화면 오버레이
@@ -5620,58 +5789,80 @@ body.swal2-shown {
 <input type="file" id="receipt-file-input" accept="image/*" multiple style="display:none;">
 <!-- =========================================================
   @SECTION: JS_APP_SCRIPT
-  앱 로직 전체. 1차 정리에서는 IIFE 구조를 유지하고 큰 모듈 위치만 표시.
+  앱 로직 전체. IIFE 구조와 기존 함수 호출 관계를 유지합니다.
 ========================================================= -->
 <script>
 /* =========================================================
-  @SECTION: JS_FILE_MAP
-  JS 빠른 이동:
-  - JS_CONFIG: 환경 설정 / API URL
-  - JS_API_BRIDGE: GAS 또는 Worker 호출 래퍼
-  - JS_VISUAL_HELPERS: 키패드 등 작은 보조 함수
-  - JS_APP_ROOT_IIFE: CardApp 전체 스코프
-  - JS_STATE: 앱 상태 저장소
-  - JS_UTILS: 포맷/아이콘/금액 보조 함수
-  - JS_UI_MANAGER: 화면 전환/오버레이/비활성 타이머
-    · JS_UI_MANAGER_FLOW_MAP: 화면 관리 함수 색인
-    · JS_UI_MANAGER_ELEMENT_HELPERS: DOM 표시 초기화/숨김 helper
-    · JS_UI_MANAGER_SCREEN_SWITCH_CORE: 실제 화면 전환 핵심
-    · JS_UI_MANAGER_LOCK_RESET: 잠금화면/로그인 초기화
-    · JS_UI_MANAGER_INACTIVITY_TIMER: 자동 잠금 타이머
-    · JS_UI_MANAGER_LOADER_SEQUENCE: 초기 로더 진행 애니메이션
-    · JS_UI_MANAGER_CONFIRMATION_SCREEN: 완료 화면/자동 복귀
-  - JS_KEYPAD_LOGIC: 로그인 키패드/사용자 입력
-    · JS_KEYPAD_STATE_FLAGS: 로그인 입력 상태
-    · JS_KEYPAD_INIT_DASHBOARD: 키패드 생성/대시보드
-    · JS_KEYPAD_DIGIT_INPUT: 숫자 입력/마스킹/삭제
-    · JS_KEYPAD_USER_CHIPS: 추가 사용자 칩
-    · JS_LOGIN_PROCESS: 로그인 검증
-    · JS_LOGIN_SECURITY_SCAN: 보안 스캔 애니메이션
-  - JS_EMBED_BRIDGE: iframe/embed 연동
-  - JS_CARD_LOGIC: 카드/반납/영수증 처리 전체
-    · JS_CARD_LOGIC_MAP: CardLogic 함수 색인
-    · JS_CARD_VISIBILITY_TEMPLATES: 카드 노출/HTML 조각
-    · JS_RECEIPT_CART_RENDERING: 영수증 아이템 HTML
-    · JS_RECEIPT_CART_AUTOSAVE: 장바구니 자동 저장
-    · JS_RECEIPT_OCR_HELPERS: OCR 상태/검증/toast
-    · JS_CARD_LIST_RENDERING: 카드 목록 생성
-    · JS_PURPOSE_RENT_FLOW: 목적 선택/대여 요청
-    · JS_RETURN_SCREEN_LAYOUT: 반납 화면 구성
-    · JS_RECEIPT_CART_MUTATIONS: 영수증 저장/삭제
-    · JS_RECEIPT_OCR_PIPELINE_BATCH: 여러 영수증 OCR 큐
-    · JS_RECEIPT_EDIT_POPUP: OCR 결과 수정 팝업
-    · JS_SYNC_HELPERS: 서버 재동기화
-    · JS_RETURN_SUBMIT_FLOW: 최종 반납 제출
-  - JS_APP_SEQUENCE: 최초 로딩 시퀀스
-  - JS_LOCK_SCREEN: 잠금 카드 클릭 시작 흐름
-  - JS_EVENT_LISTENERS: 전역 이벤트 위임
-  - JS_CONFIRMATION: 완료 화면 위치 안내 stub
-  - JS_BOOTSTRAP: DOMContentLoaded 시작점
+  @SECTION: JS_APP_ARCHITECTURE_GUIDE
+  @SECTION: JS_MODULE_BOUNDARY
+  1차 구조 지도 재배치 기준
+
+  MODULE_1_CONFIG_API
+  - @SECTION: JS_CONFIG
+  - @SECTION: JS_API_BRIDGE
+  - @SECTION: JS_VISUAL_HELPERS
+  역할: 실행 환경, Worker/GAS 호출, 작고 독립적인 시각 보조 함수.
+  수정 주의: API 함수명/인자/반환값을 바꾸면 Code.gs handlers와 Worker 계약도 확인합니다.
+
+  MODULE_2_STATE_UTILS
+  - @SECTION: JS_STATE
+  - @SECTION: JS_ELEMENT_CACHE
+  - @SECTION: JS_SAFE_UPDATE_HELPER
+  - @SUBSECTION: JS_STATE_ADMIN
+  - @SUBSECTION: JS_STATE_ADMIN_HELPERS
+  - @SECTION: JS_UTILS
+  - @SUBSECTION: JS_STATE_TIMER_HELPERS
+  역할: 전역 상태, DOM 캐시, 공용 포맷/검증/escape, 타이머/관리자 보조.
+  수정 주의: state 필드는 여기에서 추가/삭제하고, 화면별 임시값은 용도를 주석으로 남깁니다.
+
+  MODULE_3_UI_MANAGER
+  - @SECTION: JS_UI_MANAGER
+  - @SECTION: JS_KEYPAD_LOGIC
+  역할: 화면 전환, 잠금, 로딩, 비활성 타이머, 내선번호 키패드 UX.
+  수정 주의: 카드 대여/반납/OCR 같은 업무 로직을 여기로 끌어오지 않습니다.
+
+  MODULE_4_CARD_LOGIC
+  - @SECTION: JS_EMBED_BRIDGE
+  - @SECTION: JS_CARD_LOGIC
+  - @SUBSECTION: JS_CARD_LIST_RENDERING
+  - @SUBSECTION: JS_RECEIPT_OCR_HELPERS
+  - @SUBSECTION: JS_RECEIPT_OCR_PIPELINE_BATCH
+  - @SUBSECTION: JS_RECEIPT_EDIT_POPUP
+  - @SUBSECTION: JS_RETURN_SUBMIT_FLOW
+  역할: 카드 목록, 목적 선택, 대여 확정, 영수증 OCR/수정/저장, 반납 제출.
+  수정 주의: 4단계 목적 선택 → 최종 신청 버튼 → rentNow 흐름은 유지합니다.
+
+  MODULE_5_BOOTSTRAP_EVENTS
+  - @SECTION: JS_APP_SEQUENCE
+  - @SECTION: JS_LOCK_SCREEN
+  - @SECTION: JS_EVENT_LISTENERS
+  - @SECTION: JS_CONFIRMATION
+  - @SECTION: JS_BOOTSTRAP
+  역할: 앱 시작, 잠금 해제, 전역 이벤트, 완료 화면, 초기화.
+  수정 주의: 이벤트 중복 바인딩과 타이머 초기화 누락을 조심합니다.
+
+  REFACTOR_STAGE_3_SCOPE
+  - UIManager: 화면 전환, 잠금/복귀, 로딩, 비활성 타이머, 완료 화면만 담당합니다.
+  - KeypadLogic: 내선번호 입력, 추가 사용자, 로그인 보안 스캔만 담당합니다.
+  - CardLogic: 카드 목록, 목적 선택, 대여 확정, 영수증/OCR, 반납 제출을 담당합니다.
+  - Receipt 책임은 CardLogic 안에 두되 OCR/파일/팝업/장바구니/반납 제출 SUBSECTION으로 분리해 읽습니다.
+  - setupEventListeners는 직접 업무 처리하지 않고 각 모듈로 위임하는 이벤트 라우터로만 유지합니다.
+  - 함수명, API 호출명, 목적 선택 -> 최종 신청 -> rentNow 흐름은 변경하지 않았습니다.
+
+
+  REFACTOR_STAGE_2_SCOPE
+  - 내역첨부 UI 잔여 JS 경로 제거: 운영 기준상 추가 증빙은 종이 제출입니다.
+  - 영수증 장바구니 렌더링의 빈 attachmentBadge 경유 제거.
+  - 클릭 이벤트에서 더 이상 생성되지 않는 .cart-item-attach 처리 분기 제거.
+  - 기타운영은 신규 목적에서 사용하지 않으므로 반납 화면 아이콘/배지는 기본 처리로 단순화.
+  - 실제 대여/반납/OCR/API 함수명과 실행 흐름은 유지.
+
+  REFACTOR_STAGE_1_SCOPE
+  - 기능 변경 없음
+  - 함수명 변경 없음
+  - 파일 분리 없음
+  - 다음 단계에서 실제 중복/죽은 코드 정리를 하기 위한 기준선
 ========================================================= */
-/* ===== STAGE 4 SCRIPT NOTES ===== */
-/* Goal: keep the single-file structure, but make UI screen flow edits easier. */
-/* Rule for this stage: keep existing function names/call sites; organize UIManager around screen flow. */
-/* Vibe-coding tip: use Ctrl+F with UI_MANAGER subsection tags before asking for screen/loader edits. */
 /* =========================================================
   @SECTION: JS_CONFIG
   실행 환경, API endpoint, 이미지 최적화 설정
@@ -5736,6 +5927,19 @@ function triggerKeypadVisualPress(key){
         }, 120);
     } catch(e) {}
 }
+
+/* =========================================================
+  @SECTION: JS_RESPONSIBILITY_CONTRACT
+  3차 JS 책임 분리 기준. 실제 파일 분리는 하지 않고, 단일 HTML 안에서
+  각 모듈이 맡는 일을 명확히 고정합니다.
+
+  - Api: GAS/Worker 호출만 담당. UI 상태나 DOM을 직접 변경하지 않습니다.
+  - Utils: 순수 포맷/검증/escape/helper만 담당. state를 직접 바꾸지 않습니다.
+  - UIManager: 화면 전환, 잠금화면 복귀, 로딩/완료 화면, 타이머 UX 담당.
+  - KeypadLogic: 내선번호 입력과 사용자 검증 진입 담당. 카드 대여/반납 처리 금지.
+  - CardLogic: 카드신청/영수증/반납 업무 흐름 담당. 화면 표시가 필요하면 UIManager를 호출합니다.
+  - setupEventListeners: DOM 이벤트를 해석해서 위 모듈로 위임하는 라우터 역할만 담당합니다.
+========================================================= */
 /* =========================================================
   @SECTION: JS_APP_ROOT_IIFE
   CardApp 내부 스코프. state/elements/modules를 한 파일 안에서 보호
@@ -5743,6 +5947,10 @@ function triggerKeypadVisualPress(key){
 /* Main app shell. Subsections below are intentionally grouped by responsibility. */
 const CardApp = (function() {
     const MEAL_CAP_PER_PERSON = 9000;
+    /* =========================================================
+    @SECTION: JS_MODULE_2_STATE_UTILS
+    앱 공통 상태, 요소 캐시, 포맷 helper, 낙관적 업데이트 helper
+    ========================================================= */
     /* =========================================================
     @SUBSECTION: JS_KIOSK_IDLE_POLICY
     행정실 키오스크 운영 규칙.
@@ -5761,12 +5969,8 @@ const CardApp = (function() {
     const CARD_APPEAR_DELAY_MS = 50;
     /* =========================================================
     @SECTION: JS_STATE
-    앱 전체 상태 저장소.
-
-    Stage 3 note:
-    - 실제 필드명은 그대로 유지합니다. 기존 코드의 state.xxx 참조가 깨지지 않게 하기 위해서입니다.
-    - 대신 필드를 용도별로 재배치하고, 나중에 찾기 쉬운 @SUBSECTION 주석을 추가했습니다.
-    - 기존 코드에서 나중에 동적으로 생기던 cartSavePending/reviewQueue/_uploadPickerTimer도 여기서 명시했습니다.
+    앱 전체 상태 저장소. 새 상태는 가장 가까운 @SUBSECTION에 추가합니다.
+    3차 기준: state는 데이터와 플래그만 보관하고 DOM 조작은 UIManager/CardLogic에서 처리합니다.
     ========================================================= */
     let state = {
         /* =========================================================
@@ -5779,6 +5983,8 @@ const CardApp = (function() {
         lastSyncTs: null,
         pendingPostReturnSync: false,
         forceSyncOnNextUnlock: false,
+        lastOperationalError: null,
+        lastReturnSubmitError: null,
 
         /* =========================================================
         @SUBSECTION: JS_STATE_DATA_CACHE
@@ -5807,7 +6013,6 @@ const CardApp = (function() {
         currentReturnCard: null,
         receiptCart: [],
         pendingEditIndex: -1,
-        pendingAttachmentIndex: -1,
         reviewQueue: [],
         _uploadPickerTimer: null,
 
@@ -5844,29 +6049,6 @@ const CardApp = (function() {
     };
 
     /* =========================================================
-    @SECTION: JS_STATE_FIELD_MAP
-    state 필드 빠른 색인. 실행 로직에는 영향을 주지 않는 안내용 맵입니다.
-
-    수정할 때 찾는 법:
-    - 로그인 숫자 입력/사용자 추가: JS_STATE_LOGIN
-    - 카드/사용자 최신 데이터: JS_STATE_DATA_CACHE
-    - 반납 영수증/OCR/장바구니: JS_STATE_RECEIPT
-    - 장바구니 자동저장: JS_STATE_RECEIPT_AUTOSAVE
-    - 잠금/화면전환/타이머: JS_STATE_UI_SESSION
-    - 서버 재동기화: JS_STATE_SYNC
-    - 관리자 모드: JS_STATE_ADMIN
-    ========================================================= */
-    const STATE_FIELD_GROUPS = Object.freeze({
-        sync: ['syncReqId', 'syncPromise', 'syncInFlight', 'lastSyncTs', 'pendingPostReturnSync', 'forceSyncOnNextUnlock'],
-        dataCache: ['allCardData', 'allUsersData'],
-        login: ['keypadValues', 'inputTimers', 'activeDigitIndex', 'enteredUsers', 'loginTyping'],
-        receipt: ['currentReturnCard', 'receiptCart', 'pendingEditIndex', 'reviewQueue', '_uploadPickerTimer', 'receiptBatchProgress'],
-        receiptAutosave: ['cartSaveTimer', 'cartSaveToken', 'cartSavePending', '_renderReceiptScheduled'],
-        uiSession: ['currentScreen', 'isAppActive', '__keypadInited', 'cardTiltActive', 'countdownInterval', 'inactivityTimer', 'confirmLeaveTimeout1', 'confirmLeaveTimeout2'],
-        admin: ['isAdminMode', 'adminSince', 'adminPinCache']
-    });
-
-    /* =========================================================
     @SECTION: JS_ELEMENT_CACHE
     자주 쓰는 DOM 요소 캐시. init 단계에서 채워집니다.
     ========================================================= */
@@ -5895,9 +6077,6 @@ const CardApp = (function() {
     관리자 모드 state 변경 helper
     ========================================================= */
     function showAdminModeNotice(on){
-        /* @PATCH: JS_ADMIN_MODE_CENTER_NOTICE
-           기존 상단 toast 대신 SweetAlert 기본 중앙 모달과 같은 형태로 관리자 모드 상태를 표시합니다.
-        */
         try {
             Swal.fire({
                 title: on ? '관리자 모드 ON' : '관리자 모드 OFF',
@@ -5931,6 +6110,7 @@ const CardApp = (function() {
     /* =========================================================
     @SECTION: JS_UTILS
     표시용 포맷, escape, 금액 제한, 아이콘 추론 등 순수 helper
+    3차 기준: Utils는 가능한 한 순수 함수만 두고, Api 호출/DOM 변경/state 변경을 넣지 않습니다.
     ========================================================= */
     /* Pure formatting / helper logic should stay here when possible. */
     const Utils = {
@@ -5945,6 +6125,15 @@ const CardApp = (function() {
             }
         },
         esc(s=''){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); },
+        getErrorMessage(err, fallback='알 수 없는 오류가 발생했습니다.'){
+            const raw = err && err.message ? err.message : err;
+            const msg = String(raw || fallback).trim();
+            if (!msg) return fallback;
+            return msg.length > 180 ? `${msg.slice(0, 180)}...` : msg;
+        },
+        buildRecoveryList(items=[]){
+            return `<ol class="ops-recovery-list">${items.map(x => `<li>${Utils.esc(x)}</li>`).join('')}</ol>`;
+        },
         createDetailRow(label, content){
             return `<div class="detail-row"><span class="detail-row-label">${this.esc(label)}</span><span class="detail-row-content">${this.esc(content)}</span></div>`;
         },
@@ -6006,25 +6195,14 @@ const CardApp = (function() {
         state.confirmLeaveTimeout2 = null;
     };
     /* =========================================================
+    @SECTION: JS_MODULE_3_UI_MANAGER
+    화면 전환, 로그인 키패드, 로더, 잠금화면 UX를 담당
+    ========================================================= */
+    /* =========================================================
     @SECTION: JS_UI_MANAGER
     화면 전환, 잠금 화면, 로딩 오버레이, 비활성 타이머 담당
     ========================================================= */
     /* Screen switching, loading overlays, inactivity handling, and shared screen shell behavior. */
-
-    /* =========================================================
-    @SECTION: JS_UI_MANAGER_FLOW_MAP
-    UIManager 함수 색인. 실행에는 영향 없는 유지보수용 안내 맵.
-    ========================================================= */
-    const UI_MANAGER_FLOW_MAP = Object.freeze({
-        elementHelpers: ['getScreenElement', 'resetLoginUi', 'hideAllScreens'],
-        scrollAndLayout: ['syncScrollContext'],
-        screenSwitching: ['showScreenBase', 'showScreen', 'showScreenImmediate'],
-        loadingAndErrors: ['setLoading', 'handleServerError'],
-        lockAndReset: ['showLockScreen', 'resetToLogin'],
-        inactivityTimer: ['resetInactivityTimer', 'startInactivityDetection', 'stopInactivityDetection'],
-        loaderSequence: ['runRandomLoader'],
-        confirmation: ['showConfirmationScreen']
-    });
 
     const UIManager = {
         /* =========================================================
@@ -6118,9 +6296,36 @@ const CardApp = (function() {
             }
             document.getElementById("loadingMessage").textContent = msg;
         },
-        handleServerError: (err) => {
+        /* =========================================================
+        @SUBSECTION: JS_OPERATIONAL_FAILURE_UX
+        OCR/저장/반납/PDF 계열 장애 안내를 중앙 모달로 통일합니다.
+        - 실패를 조용히 넘기지 않는다.
+        - 사용자가 바로 할 수 있는 행동을 함께 보여준다.
+        ========================================================= */
+        showOperationalError: ({ title='처리 실패', message='', error=null, steps=[], icon='error', confirmButtonText='확인' } = {}) => {
             UIManager.setLoading(false);
-            Swal.fire({title:"서버 오류",text:err.message||'알 수 없는 오류',icon:"error"});
+            const detail = message || Utils.getErrorMessage(error, '작업을 완료하지 못했습니다.');
+            state.lastOperationalError = { title, detail, at: new Date().toISOString() };
+            const stepHtml = steps.length ? Utils.buildRecoveryList(steps) : '';
+            return Swal.fire({
+                title,
+                icon,
+                html: `<div class="ops-error-box">${Utils.esc(detail)}</div>${stepHtml}`,
+                confirmButtonText,
+                allowOutsideClick: false,
+                heightAuto: false
+            });
+        },
+        handleServerError: (err) => {
+            return UIManager.showOperationalError({
+                title: '서버 처리 오류',
+                error: err,
+                steps: [
+                    '네트워크 연결을 확인합니다.',
+                    '같은 화면에서 다시 시도합니다.',
+                    '계속 실패하면 행정실에서 관리자 모드로 카드 상태와 반납 큐를 확인합니다.'
+                ]
+            });
         },
         /* =========================================================
         @SUBSECTION: JS_UI_MANAGER_PUBLIC_NAVIGATION
@@ -6406,6 +6611,7 @@ const CardApp = (function() {
     /* =========================================================
     @SECTION: JS_KEYPAD_LOGIC
     로그인 키패드, 내선번호 입력, 추가 사용자, 보안 스캔 처리
+    3차 기준: KeypadLogic은 사용자 식별까지만 담당하고, 카드신청/반납 업무 흐름은 CardLogic으로 넘깁니다.
     ========================================================= */
     const KeypadLogic = {
         /* =========================================================
@@ -6826,124 +7032,14 @@ const CardApp = (function() {
             } catch (e) {}
         }
     };
-    /* ===== CARD / RECEIPT LOGIC ===== */
-    /* Card selection, return flow, receipt OCR, cart rendering, and submit flow. */
+    /* =========================================================
+    @SECTION: JS_MODULE_4_CARD_LOGIC
+    카드 목록, 대여/반납, 영수증 OCR, 장바구니, 제출 흐름을 담당
+    ========================================================= */
     /* =========================================================
     @SECTION: JS_CARD_LOGIC
     카드 목록, 대여/반납, 영수증 OCR, 장바구니 저장 흐름
-
-    Stage 2 note:
-    - 함수 이름/호출 순서는 유지합니다.
-    - 기능별 @SUBSECTION 주석만 추가해 Ctrl+F 탐색성을 높입니다.
-    - 다음 리팩토링 때는 아래 묶음 단위로 분리하면 안전합니다.
-
-    Stage 5 note:
-    - CardLogic 내부 큰 함수는 아직 이동하지 않습니다.
-    - 대신 @PHASE 태그를 추가해 OCR/저장/반납 흐름의 수정 지점을 빠르게 찾습니다.
     ========================================================= */
-    /* =========================================================
-    @SECTION: JS_CARD_LOGIC_MAP
-    CardLogic 함수 색인
-
-    [카드 표시/템플릿]
-    - isCardVisibleToCurrentUsers(card)
-    - renderCardButtonHTML(card)
-    - renderPurposeButtonHTML(btn)
-    - renderReceiptCartItemHTML(it, i, isMeal)
-
-    [장바구니 저장/검토]
-    - requestRenderReceiptCart()
-    - queueSaveCart(backupCart)
-    - startReviewMode(startIdx, count)
-    - continueReviewIfNeeded(savedIdx)
-
-    [영수증 분석 보조]
-    - isReceiptAnalysisFailed(ocr)
-    - getReceiptProcessingLabel(processing)
-    - showMealAutoAdjustToast(originalAmount, adjustedAmount)
-    - showReceiptAnalysisFallback(isReplacement)
-    - triggerImageSelection(editIndex)
-
-    [카드 목록/대여]
-    - displayCardList()
-    - createCardButton(card, idx)
-    - openMorphOverlay(card)
-    - closeMorphOverlay()
-    - submitRentRequest(id, purpose)
-
-    [반납/영수증]
-    - setupAndShowReturnScreen(card)
-    - renderReceiptCart()
-    - saveCartItemOptimistic(item, idx)
-    - deleteCartItem(idx)
-    - handleReceiptFilesQueued(files)
-    - handleReceiptFiles(fileList)
-    - resizeAndOptimizeImage(file)
-    - openOcrPopup(data, editIndex)
-
-    [동기화/제출]
-    - scheduleQuickSync(attempts, intervalMs)
-    - handlePendingPostReturnSync()
-    - submitCart()
-
-    [5차 PHASE 태그]
-    - @PHASE: JS_RECEIPT_BATCH_CREATE_GHOST_ITEMS
-    - @PHASE: JS_RECEIPT_BATCH_OPTIMIZE_IMAGE
-    - @PHASE: JS_RECEIPT_BATCH_CALL_OCR
-    - @PHASE: JS_RECEIPT_BATCH_POSTPROCESS_RESULT
-    - @PHASE: JS_RECEIPT_BATCH_SAVE_CART
-    - @PHASE: JS_RECEIPT_REPLACE_IMAGE_ANALYSIS
-    - @PHASE: JS_RECEIPT_POPUP_VALIDATE_AND_SAVE
-    - @PHASE: JS_RETURN_SUBMIT_OPTIMISTIC_UPDATE
-    ========================================================= */
-    /* =========================================================
-    @SECTION: JS_CARD_LOGIC_FLOW_MAP
-    CardLogic 내부 처리 흐름 지도
-
-    목적:
-    - 한 파일 구조를 유지하면서도 수정 지점을 빠르게 찾기 위한 문서형 상수입니다.
-    - 실행 로직에는 의존하지 않습니다.
-    - OCR/반납 버그를 볼 때는 아래 searchTags/phases를 Ctrl+F로 찾으세요.
-    ========================================================= */
-    const CARD_LOGIC_FLOW_MAP = Object.freeze({
-        cardSelection: {
-            searchTags: ['@SUBSECTION: JS_CARD_LIST_RENDERING', '@SUBSECTION: JS_PURPOSE_RENT_FLOW'],
-            flow: ['displayCardList', 'createCardButton', 'openMorphOverlay', 'submitRentRequest']
-        },
-        returnScreen: {
-            searchTags: ['@SUBSECTION: JS_RETURN_SCREEN_LAYOUT', '@SUBSECTION: JS_RECEIPT_CART_RENDER_STATE'],
-            phases: ['@PHASE: JS_RETURN_SCREEN_TITLE_BADGE', '@PHASE: JS_RETURN_SCREEN_RECEIPT_CONTROLS', '@PHASE: JS_RETURN_SCREEN_PERMISSION_LOCK']
-        },
-        receiptUploadNew: {
-            searchTags: ['@SUBSECTION: JS_RECEIPT_UPLOAD_ENTRY', '@SUBSECTION: JS_RECEIPT_FILE_HANDLER', '@SUBSECTION: JS_RECEIPT_OCR_PIPELINE_BATCH'],
-            phases: [
-                '@PHASE: JS_RECEIPT_BATCH_CREATE_GHOST_ITEMS',
-                '@PHASE: JS_RECEIPT_BATCH_PROCESS_ONE_START',
-                '@PHASE: JS_RECEIPT_BATCH_OPTIMIZE_IMAGE',
-                '@PHASE: JS_RECEIPT_BATCH_CALL_OCR',
-                '@PHASE: JS_RECEIPT_BATCH_POSTPROCESS_RESULT',
-                '@PHASE: JS_RECEIPT_BATCH_SAVE_CART',
-                '@PHASE: JS_RECEIPT_BATCH_WORKER_POOL',
-                '@PHASE: JS_RECEIPT_BATCH_MANUAL_REVIEW'
-            ]
-        },
-        receiptUploadReplace: {
-            searchTags: ['@SUBSECTION: JS_RECEIPT_FILE_HANDLER', '@SUBSECTION: JS_RECEIPT_EDIT_POPUP'],
-            phases: ['@PHASE: JS_RECEIPT_UPLOAD_ROUTE_NEW_OR_REPLACE', '@PHASE: JS_RECEIPT_REPLACE_IMAGE_ANALYSIS', '@PHASE: JS_RECEIPT_REPLACE_OPEN_REVIEW_POPUP']
-        },
-        receiptPopup: {
-            searchTags: ['@SUBSECTION: JS_RECEIPT_EDIT_POPUP'],
-            phases: ['@PHASE: JS_RECEIPT_POPUP_BUILD_HTML', '@PHASE: JS_RECEIPT_POPUP_DID_OPEN', '@PHASE: JS_RECEIPT_POPUP_INPUT_HANDLERS', '@PHASE: JS_RECEIPT_POPUP_MOBILE_KEYBOARD', '@PHASE: JS_RECEIPT_POPUP_CLEANUP', '@PHASE: JS_RECEIPT_POPUP_VALIDATE_AND_SAVE']
-        },
-        autosave: {
-            searchTags: ['@SUBSECTION: JS_RECEIPT_CART_AUTOSAVE', '@SUBSECTION: JS_RECEIPT_CART_MUTATIONS'],
-            phases: ['@PHASE: JS_RECEIPT_AUTOSAVE_COLLECT_PENDING', '@PHASE: JS_RECEIPT_AUTOSAVE_SERVER_CALL', '@PHASE: JS_RECEIPT_AUTOSAVE_SUCCESS_MARK', '@PHASE: JS_RECEIPT_AUTOSAVE_ROLLBACK']
-        },
-        returnSubmit: {
-            searchTags: ['@SUBSECTION: JS_RETURN_SUBMIT_FLOW'],
-            phases: ['@PHASE: JS_RETURN_SUBMIT_ADMIN_GUARD', '@PHASE: JS_RETURN_SUBMIT_MISSING_DETAILS_CONFIRM', '@PHASE: JS_RETURN_SUBMIT_EMPTY_CART_CONFIRM', '@PHASE: JS_RETURN_SUBMIT_PARAMS', '@PHASE: JS_RETURN_SUBMIT_OPTIMISTIC_UPDATE']
-        }
-    });
     const CardLogic = {
         /* =========================================================
         @SUBSECTION: JS_CARD_VISIBILITY_TEMPLATES
@@ -6987,6 +7083,11 @@ const CardApp = (function() {
             ${badgeHTML}
         `;
         },
+        /* =========================================================
+        @SUBSECTION: JS_CARD_REQUEST_DOMAIN
+        4단계 카드신청 도메인. 카드 목록 렌더링, 목적 선택, 최종 신청 버튼, rentNow 호출 흐름을 담당합니다.
+        주의: 목적 버튼 클릭만으로 대여하지 않고, 최종 신청 버튼에서만 실제 대여 처리합니다.
+        ========================================================= */
         renderPurposeButtonHTML: (btn) => `
             <button class="purpose-btn" type="button" data-purpose="${Utils.esc(btn.id)}" aria-label="${Utils.esc(btn.label)} ${Utils.esc(btn.desc || '')}">
                 <span class="purpose-icon-wrap"><i class="fa-solid ${btn.icon}"></i></span>
@@ -6998,6 +7099,8 @@ const CardApp = (function() {
             </button>
         `,
         /* =========================================================
+        @SUBSECTION: JS_RECEIPT_DOMAIN_CART
+        영수증 장바구니 도메인 시작. 아래 OCR/파일/팝업/자동저장/삭제 흐름은 모두 대표 영수증 기준입니다.
         @SUBSECTION: JS_RECEIPT_CART_RENDERING
         영수증 장바구니 아이템 HTML과 상태 오버레이 렌더링
         ========================================================= */
@@ -7027,11 +7130,11 @@ const CardApp = (function() {
             const displayAmount = (it.amount === '' || it.amount == null) ? '' : `${Utils.nfKR.format(Number(it.amount || 0))}원`;
 
             if (it.processing === 'error') {
-                return `<div class="cart-item needs-details needs-review" data-index="${i}">
+                return `<div class="cart-item needs-details needs-review operational-blocked" data-index="${i}">
                      <div class="cart-item-icon" style="color:var(--danger-color);"><i class="fa-solid fa-triangle-exclamation"></i></div>
                      <div class="cart-item-info">
-                        <span class="cart-item-place" style="color:var(--danger-color);">분석 실패</span>
-                        <span class="cart-item-details">클릭하여 직접 입력해주세요 <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span></span>
+                        <span class="cart-item-place" style="color:var(--danger-color);">영수증 분석 실패</span>
+                        <span class="cart-item-details">터치해서 직접 입력하거나 삭제 후 다시 첨부하세요 <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span></span>
                      </div>
                      <div class="cart-item-amount-box"></div>
                      <button class="cart-item-delete-wide" type="button">삭제</button>
@@ -7070,16 +7173,13 @@ const CardApp = (function() {
                 </div>`;
             }
 
-            // 운영 결정: 내역첨부 기능은 UI에서 사용하지 않습니다.
-            const attachmentBadge = '';
-
             return `<div class="cart-item with-inline-actions ${cls}" data-index="${i}" ${isProcessing?`data-processing-text="${CardLogic.getReceiptProcessingLabel(it.processing)}"`:''}>
                 <div class="cart-item-icon">
                     ${needWarn ? `<i class="fa-solid fa-triangle-exclamation"></i>` : `<i class="fa-solid ${Utils.getSmartIcon(it.usagePlace, it.usageDetails)}"></i>`}
                 </div>
                 <div class="cart-item-info">
                     <span class="cart-item-place">${displayPlace}</span>
-                    <span class="cart-item-details">${displayDetails}${attachmentBadge}${needWarn ? ` <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span>` : ''}</span>
+                    <span class="cart-item-details">${displayDetails}${needWarn ? ` <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span>` : ''}</span>
                 </div>
                 <div class="cart-item-amount-box"><span class="cart-item-amount">${displayAmount}</span></div>
                 ${!isProcessing?`<button class="cart-item-delete-wide" type="button" aria-label="영수증 삭제">삭제</button>`:''}
@@ -7291,28 +7391,6 @@ const CardApp = (function() {
             }, 12000);
             input.click();
         },
-        triggerAttachmentSelection: async (parentIndex) => {
-            /* @PATCH: JS_ATTACHMENT_DISABLED
-               운영 결정에 따라 내역첨부 기능은 사용하지 않습니다.
-               시스템에는 금액 기준 대표 영수증만 저장하고, 추가 증빙은 종이로 별도 제출합니다.
-            */
-            try {
-                Swal.fire({
-                    icon: 'info',
-                    title: '내역첨부 미사용',
-                    text: '추가 증빙서류는 종이로 별도 제출해 주세요.',
-                    confirmButtonText: '확인'
-                });
-            } catch (e) {}
-        },
-        handleAttachmentFiles: async (parentIndex, files) => {
-            /* @PATCH: JS_ATTACHMENT_DISABLED_FILE_ROUTE */
-            state.pendingAttachmentIndex = -1;
-            try { document.getElementById('receipt-file-input').value = ''; } catch (e) {}
-            EmbedBridge.notify('UPLOAD_END');
-        },
-        /* =========================================================
-        @SUBSECTION: JS_CARD_LIST_RENDERING        },
         /* =========================================================
         @SUBSECTION: JS_CARD_LIST_RENDERING
         카드 목록 정렬/필터링/버튼 생성
@@ -7482,8 +7560,6 @@ const CardApp = (function() {
             }
         },
         /* =========================================================
-        @SUBSECTION: JS_RETURN_SCREEN_LAYOUT        },
-        /* =========================================================
         @SUBSECTION: JS_RETURN_SCREEN_LAYOUT
         반납 화면 제목/버튼/권한 안내 구성
         ========================================================= */
@@ -7505,13 +7581,11 @@ const CardApp = (function() {
             if(isMeal) purposeIcon = 'fa-utensils';
             else if(card.userInfo.purpose === '물품구매') purposeIcon = 'fa-box';
             else if(card.userInfo.purpose === '식사다과') purposeIcon = 'fa-mug-hot';
-            else if(card.userInfo.purpose === '기타운영') purposeIcon = 'fa-ellipsis';
             const purpose = (card.userInfo?.purpose || '').trim();
             const showBadge = purpose && purpose !== '일반카드사용';
             const purposeBadgeClass = isMeal ? 'badge-purpose-meal' :
                 (purpose === '물품구매' ? 'badge-purpose-purchase' :
-                (purpose === '식사다과' ? 'badge-purpose-dining' :
-                (purpose === '기타운영' ? 'badge-purpose-ops' : 'badge-purpose-default')));
+                (purpose === '식사다과' ? 'badge-purpose-dining' : 'badge-purpose-default'));
             document.getElementById('return-screen-title').innerHTML =
                 `<div class="return-title-stack">
                     <div class="text-gradient return-card-title">
@@ -7600,9 +7674,15 @@ const CardApp = (function() {
             c.classList.toggle('empty-cart', state.receiptCart.length===0);
             /* @PHASE: JS_RECEIPT_CART_GUIDE_AND_SUBMIT_STATE - 누락 안내와 제출 버튼 활성화 상태 갱신 */
             const guideEl = document.getElementById('submit-guide');
+            const blockingIssues = CardLogic.getBlockingReceiptIssues();
+            const hasBlockingIssue = blockingIssues.length > 0;
             if (guideEl) {
                 const hasEmpty = state.receiptCart.some(r => ((!isMeal) && !(String(r.usageDetails || '').trim()) && (!r.processing || r.processing==='save_error')) || (r.processing==='save_error'));
-                if (hasEmpty && state.receiptCart.length > 0) {
+                if (hasBlockingIssue) {
+                    guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 처리 실패/저장 실패 영수증이 있어 제출할 수 없습니다. 해당 영수증을 눌러 직접 입력하거나 삭제 후 다시 첨부해 주세요.';
+                    guideEl.classList.add('visible');
+                } else if (hasEmpty && state.receiptCart.length > 0) {
+                    guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 사용내역이 비어 있는 영수증이 있습니다. 제출 전 내용을 확인해 주세요.';
                     guideEl.classList.add('visible');
                 } else {
                     guideEl.classList.remove('visible');
@@ -7610,7 +7690,7 @@ const CardApp = (function() {
             }
             CardLogic.updateReceiptBatchProgressUI();
             const submitBtn = document.getElementById('submit-cart-btn');
-            if (submitBtn) submitBtn.disabled = !(state.receiptCart.length > 0 && isPrim);
+            if (submitBtn) submitBtn.disabled = !(state.receiptCart.length > 0 && isPrim) || hasBlockingIssue;
         },
         updateReceiptBatchProgressUI: () => {
             const box = document.getElementById('receipt-batch-progress');
@@ -7628,6 +7708,47 @@ const CardApp = (function() {
             count.textContent = `${done} / ${total}`;
             fill.style.width = `${Math.round((done / total) * 100)}%`;
             box.classList.remove('hidden');
+        },
+        /* =========================================================
+        @SUBSECTION: JS_OPERATIONAL_BLOCKING_GUARDS
+        장애/진행중 영수증이 있을 때 반납 제출을 막고 복구 행동을 안내합니다.
+        ========================================================= */
+        getBlockingReceiptIssues: () => {
+            if (!Array.isArray(state.receiptCart)) return [];
+            return state.receiptCart
+                .map((it, idx) => ({ it, idx }))
+                .filter(({ it }) => it && ['queued','optimizing','ocr','postprocessing','saving','deleting','save_error','error'].includes(it.processing))
+                .map(({ it, idx }) => {
+                    const label = CardLogic.getReceiptProcessingLabel(it.processing);
+                    const place = String(it.usagePlace || `영수증 ${idx + 1}`);
+                    return { idx, processing: it.processing, label, place };
+                });
+        },
+        showBlockingReceiptIssues: async (issues = CardLogic.getBlockingReceiptIssues()) => {
+            const failedCount = issues.filter(x => ['save_error','error'].includes(x.processing)).length;
+            const activeCount = issues.length - failedCount;
+            const msg = failedCount
+                ? `저장 실패 또는 분석 실패 영수증 ${failedCount}건이 남아 있습니다.`
+                : `아직 분석/저장 중인 영수증 ${activeCount}건이 있습니다.`;
+            await UIManager.showOperationalError({
+                title: '반납 제출 전 확인 필요',
+                message: msg,
+                icon: failedCount ? 'error' : 'warning',
+                steps: failedCount
+                    ? ['실패 표시가 있는 영수증을 눌러 직접 입력합니다.', '또는 해당 영수증을 삭제하고 다시 첨부합니다.', '모든 영수증이 정상 저장된 뒤 반납 제출을 다시 누릅니다.']
+                    : ['분석/저장이 끝날 때까지 기다립니다.', '계속 멈춰 있으면 화면을 잠금으로 돌린 뒤 다시 로그인해 확인합니다.']
+            });
+            const first = issues[0];
+            if (first) {
+                setTimeout(() => {
+                    const el = document.querySelector(`.cart-item[data-index="${first.idx}"]`);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('highlight');
+                        setTimeout(() => el.classList.remove('highlight'), 1600);
+                    }
+                }, 80);
+            }
         },
         /* =========================================================
         @SUBSECTION: JS_RECEIPT_CART_MUTATIONS
@@ -7821,6 +7942,17 @@ const CardApp = (function() {
             if (manualReviewCount > 0) {
                 CardLogic.showReceiptAnalysisFallback(false);
             }
+            const hardFailCount = state.receiptCart
+                .slice(startIdx, startIdx + files.length)
+                .filter(item => item && item.processing === 'error').length;
+            if (hardFailCount > 0) {
+                await UIManager.showOperationalError({
+                    title: '영수증 처리 실패',
+                    message: `${hardFailCount}건의 영수증을 자동 처리하지 못했습니다.`,
+                    icon: 'warning',
+                    steps: ['실패한 영수증을 눌러 직접 입력합니다.', '이미지 저장 실패라면 삭제 후 다시 첨부합니다.', '반납 제출은 실패 항목을 정리한 뒤 가능합니다.']
+                });
+            }
 
             if (state.receiptBatchProgress) {
                 state.receiptBatchProgress.done = state.receiptBatchProgress.total;
@@ -7843,19 +7975,9 @@ const CardApp = (function() {
         async handleReceiptFiles(fileList) {
             if (!fileList || !fileList.length || !state.currentReturnCard) return;
             EmbedBridge.notify('UPLOAD_START');
-            /* @PHASE: JS_RECEIPT_UPLOAD_ROUTE_NEW_OR_REPLACE - 새 영수증 추가인지 기존 항목 이미지 교체인지 판단 */
-            const attachmentIndex = state.pendingAttachmentIndex;
-            state.pendingAttachmentIndex = -1;
             const editIndex = state.pendingEditIndex;
             state.pendingEditIndex = -1;
             const files = Array.from(fileList);
-            if (Number.isInteger(Number(attachmentIndex)) && Number(attachmentIndex) > -1) {
-                try { if (state._uploadPickerTimer) clearTimeout(state._uploadPickerTimer); } catch(e) {}
-                state.pendingAttachmentIndex = -1;
-                try { document.getElementById('receipt-file-input').value = ''; } catch(e) {}
-                EmbedBridge.notify('UPLOAD_END');
-                return;
-            }
             /* @PHASE: JS_RECEIPT_UPLOAD_NEW_FILES - 새 영수증 여러 장 추가 처리 */
             if (editIndex < 0) {
                 const addBtn = document.getElementById('add-receipt-btn');
@@ -8009,19 +8131,8 @@ const CardApp = (function() {
 
             const dataUrl = await blobToDataUrl(bestBlob);
 
-            try {
-                console.log('receipt image optimized', {
-                    originalKB: Math.round(file.size / 1024),
-                    optimizedKB: Math.round(bestBlob.size / 1024),
-                    width,
-                    height
-                });
-            } catch (e) {}
-
             return dataUrl;
         },
-        /* =========================================================
-        @SUBSECTION: JS_RECEIPT_EDIT_POPUP        },
         /* =========================================================
         @SUBSECTION: JS_RECEIPT_EDIT_POPUP
         OCR 결과 확인/직접입력 SweetAlert 팝업
@@ -8192,6 +8303,11 @@ const CardApp = (function() {
                 return;
             }
             if (CardLogic._submitInFlight) return;
+            const blockingIssues = CardLogic.getBlockingReceiptIssues();
+            if (blockingIssues.length) {
+                await CardLogic.showBlockingReceiptIssues(blockingIssues);
+                return;
+            }
 
             /* @PHASE: JS_RETURN_SUBMIT_MISSING_DETAILS_CONFIRM - 일반 영수증의 사용내역 누락 확인 */
             const isMeal = state.currentReturnCard && state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
@@ -8261,25 +8377,44 @@ const CardApp = (function() {
                     },
                     (e) => {
                         CardLogic._submitInFlight = false;
+                        state.lastReturnSubmitError = { cardNumber: params.cardNumber, message: Utils.getErrorMessage(e), at: new Date().toISOString() };
                         clearInterval(state.countdownInterval);
                         if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); }
-                        Swal.fire('실패', '다시 시도해주세요.', 'error').then(UIManager.showLockScreen);
+                        UIManager.showOperationalError({
+                            title: '반납 제출 실패',
+                            error: e,
+                            steps: [
+                                '카드 상태가 반납처리중으로 확정되지 않았습니다.',
+                                '같은 화면에서 다시 반납 제출을 눌러 주세요.',
+                                '반복 실패하면 행정실에서 관리자 모드로 카드 상태와 반납 큐를 확인해 주세요.'
+                            ]
+                        }).then(UIManager.showLockScreen);
                     },
                     params.cardNumber
                 );
             } catch (e) {
                 CardLogic._submitInFlight = false;
+                state.lastReturnSubmitError = { cardNumber: params.cardNumber, message: Utils.getErrorMessage(e), at: new Date().toISOString() };
                 if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); }
-                throw e;
+                await UIManager.showOperationalError({
+                    title: '반납 제출 오류',
+                    error: e,
+                    steps: ['네트워크를 확인합니다.', '잠시 후 다시 제출합니다.', '계속 실패하면 행정실에서 반납 큐와 카드 상태를 확인합니다.']
+                });
             }
         }
     };
+
     /* =========================================================
-    @SECTION: JS_APP_SEQUENCE        }
-    };
+    @SECTION: REFACTOR_STAGE_6_COMPLETION_NOTE
+    6차 장애 상황 UX 정리 완료.
+    - OCR/영수증 저장/반납 제출 실패 시 중앙 모달과 복구 행동을 제공합니다.
+    - 실패/진행중 영수증이 있으면 반납 제출 버튼을 비활성화합니다.
+    - 기존 API명, GAS 흐름, PDF 큐 처리 구조는 변경하지 않았습니다.
+    ========================================================= */
     /* =========================================================
     @SECTION: JS_APP_SEQUENCE
-    잠금 해제 후 데이터 동기화와 로딩 진행률 처리
+    앱 시작/잠금 해제 뒤 데이터 동기화와 로딩 진행률 처리
     ========================================================= */
     async function initializeAppSequence() {
         const reqId = ++state.syncReqId;
@@ -8360,11 +8495,17 @@ const CardApp = (function() {
     }
     /* =========================================================
     @SECTION: JS_EVENT_LISTENERS
-    이벤트 위임/키보드 입력/파일 input/카드 tilt 등록
+    화면 공통 클릭/키보드/파일 input/카드 tilt 등록
+    3차 기준: 이 구역은 이벤트 라우터입니다. 여기서 직접 업무 처리를 늘리지 말고 UIManager/KeypadLogic/CardLogic으로 위임합니다.
     ========================================================= */
     /* =========================================================
     @SUBSECTION: JS_EVENT_LISTENER_MAP
     전역 클릭/키보드/파일 input/뒤로가기 이벤트 바인딩
+    라우팅 기준:
+    - 잠금화면/뒤로가기/화면 이동: UIManager 또는 initializeAppSequence
+    - 내선번호/키보드 입력: KeypadLogic
+    - 카드 클릭/목적 선택/최종 신청/영수증/반납 제출: CardLogic
+    - 파일 input change: CardLogic.handleReceiptFiles
     ========================================================= */
     function setupEventListeners() {
         elements.screens = {
@@ -8493,19 +8634,6 @@ const CardApp = (function() {
                 return;
             }
 
-            const cartAttachBtn = e.target.closest('.cart-item-attach');
-            if (cartAttachBtn) {
-                const cartItem = cartAttachBtn.closest('.cart-item[data-index]');
-                const cartContainer = document.getElementById('receipt-cart-container');
-                if (cartItem && cartContainer && cartContainer.contains(cartItem)) {
-                    const prim = state.currentReturnCard?.userInfo?.userName?.split(',')[0]?.trim();
-                    if (!prim || state.enteredUsers[0]?.name !== prim) return;
-                    e.stopPropagation();
-                    CardLogic.triggerAttachmentSelection(Number(cartItem.dataset.index));
-                    return;
-                }
-            }
-
             const cartDeleteBtn = e.target.closest('.cart-item-delete, .cart-item-delete-wide');
             if (cartDeleteBtn) {
                 const cartItem = cartDeleteBtn.closest('.cart-item[data-index]');
@@ -8586,8 +8714,8 @@ const CardApp = (function() {
     }
     /* =========================================================
     @SECTION: JS_CONFIRMATION
-    완료 화면 로직은 UIManager.showConfirmationScreen 내부로 정리됨.
-    빠른 이동: @SUBSECTION: JS_UI_MANAGER_CONFIRMATION_SCREEN
+    완료 화면 렌더링 수정 위치:
+    @SUBSECTION: JS_UI_MANAGER_CONFIRMATION_SCREEN
     ========================================================= */
     return {
         init: () => {
@@ -8598,13 +8726,21 @@ const CardApp = (function() {
 })();
 /* =========================================================
   @SECTION: JS_BOOTSTRAP
-  DOM 준비 후 앱 시작. 새 초기화 로직은 이 아래가 아니라 CardApp.init 안에 추가.
+  DOM 준비 후 앱 시작. 새 초기화 로직은 CardApp.init 안에 추가합니다.
 ========================================================= */
-/* Keep startup wiring at the very bottom so the file reads top-to-bottom. */
 document.addEventListener('DOMContentLoaded', () => {
     try { CardApp.init(); }
     catch (e) { Swal.fire('Error', 'Init Fail: ' + e.message, 'error'); }
 });
+
+/* =========================================================
+  @SECTION: REFACTOR_STAGE_3_COMPLETION_NOTE
+  3차 JS 책임 분리 강화 완료 기록
+  - 실제 파일 분리 없이 단일 HTML 구조 유지
+  - UIManager / KeypadLogic / CardLogic / Receipt / Event Router 책임 경계 강화
+  - 기존 함수명, API 호출명, rentNow/returnCard/submitReturn 흐름 유지
+  - 4차에서는 CSS/디자인 책임 정리와 override 역할 정리를 진행합니다.
+========================================================= */
 </script>
 
 
@@ -8661,11 +8797,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script id="woosung-fast-touch-keypad-final">
 /* =========================================================
   @SECTION: WOOSUNG_FAST_TOUCH_KEYPAD_FINAL
-  모바일/태블릿 키패드 빠른 터치 반응 패치
-  - 터치 기기에서만 pointerdown/touchstart 즉시 입력
-  - PC 마우스 click 방식은 기존 유지
-  - pointerdown 후 발생하는 지연 click은 중복 방지
-  - 기존 KeypadLogic / CardApp 내부 로직은 직접 수정하지 않음
+  모바일/태블릿 키패드 빠른 터치 반응 보정
 ========================================================= */
 (function() {
   const isFastTouchDevice = () => {
@@ -8855,6 +8987,44 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 </script>
+
+
+<!-- =========================================================
+  @SECTION: REFACTOR_STAGE_1_COMPLETION_NOTE
+  1차 완료 기준
+  - CSS/HTML/JS 구조 지도 추가
+  - 기존 실행 흐름, 함수명, API 계약, 화면 id/class 유지
+  - 2차 작업은 죽은 코드/중복 주석/잔여 패치 제거부터 진행
+========================================================= -->
+
+
+<!-- =========================================================
+  @SECTION: REFACTOR_STAGE_2_COMPLETION_NOTE
+  2차 죽은 코드/중복 잔여 정리 완료.
+  - 기능 흐름은 유지하고, 운영에서 사용하지 않는 내역첨부 JS 경로를 제거했습니다.
+  - 기타운영 신규 목적은 계속 비활성 기준입니다.
+  - 다음 단계는 3차 JS 책임 분리 강화입니다.
+========================================================= -->
+
+
+
+<!-- =========================================================
+  @SECTION: REFACTOR_STAGE_5_COMPLETION_NOTE
+  5차 최종 가이드 고정 및 잔여 패치 안정화 완료.
+  - 1~5차 단일 파일 내부 리팩터링 기준을 상단 FINAL_MAINTENANCE_GUIDE에 고정했습니다.
+  - 기능 흐름, 함수명, API 호출명, HTML id/class, GAS 연동은 변경하지 않았습니다.
+  - 다음 수정자는 CSS/JS 변경 전 각각 CSS_DESIGN_RESPONSIBILITY_CONTRACT / JS_RESPONSIBILITY_CONTRACT를 먼저 확인합니다.
+  - 최종 ZIP은 index.html + Code.gs 구성만 유지합니다.
+========================================================= -->
+
+
+<!-- =========================================================
+  @SECTION: REFACTOR_STAGE_7_COMPLETION_NOTE
+  7차 CSS 최종 다이어트 완료.
+  - 오래된 뮤트 블루 카드 패치 블록을 제거하고, 최종 카드 색상은 stage7 토큰으로 고정했습니다.
+  - 삭제가 위험한 레거시/모바일 override는 유지하되, 잠금화면/카드신청/해외결제카드 색상 우선순위는 FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK으로 통합했습니다.
+  - 기능 흐름, 함수명, API 호출명, HTML id/class, GAS 연동은 변경하지 않았습니다.
+========================================================= -->
 
 </body>
 </html>
