@@ -98,17 +98,29 @@
       /* @SECTION: JS_SWAL_TOAST_BACKDROP_PATCH
          토스트 알림은 배경 레이어를 띄우지 않게 해서
          영수증 분석/저장 오버레이와 SweetAlert 배경이 겹쳐 화면이 반만 흐려지는 현상을 방지합니다.
+
+         FINAL_PATCH_MOBILE_STABILITY_SCRIPT_SAFE
+         - CDN 지연/실패/캐시 상태에서 Swal이 아직 준비되지 않은 경우에도 DOMContentLoaded/load 시점에 재시도합니다.
+         - 이미 패치된 경우에는 중복 래핑하지 않습니다.
+         - SweetAlert 자체가 로드되지 못한 경우에는 조용히 통과하여 앱 초기화를 막지 않습니다.
       */
-      (function patchSwalToastBackdrop() {
-        if (!window.Swal || window.Swal.__wsToastBackdropPatched) return;
-        const originalFire = window.Swal.fire.bind(window.Swal);
-        window.Swal.fire = function patchedSwalFire(...args) {
-          if (args.length === 1 && args[0] && typeof args[0] === 'object' && args[0].toast === true) {
-            args[0] = Object.assign({ backdrop: false, heightAuto: false }, args[0]);
-          }
-          return originalFire(...args);
-        };
-        window.Swal.__wsToastBackdropPatched = true;
+      (function installSwalToastBackdropPatch() {
+        function patch() {
+          if (!window.Swal || window.Swal.__wsToastBackdropPatched) return false;
+          const originalFire = window.Swal.fire.bind(window.Swal);
+          window.Swal.fire = function patchedSwalFire(...args) {
+            if (args.length === 1 && args[0] && typeof args[0] === 'object' && args[0].toast === true) {
+              args[0] = Object.assign({ backdrop: false, heightAuto: false }, args[0]);
+            }
+            return originalFire(...args);
+          };
+          window.Swal.__wsToastBackdropPatched = true;
+          return true;
+        }
+
+        if (patch()) return;
+        window.addEventListener('DOMContentLoaded', patch, { once: true });
+        window.addEventListener('load', patch, { once: true });
       })();
     </script>
 
@@ -5600,6 +5612,93 @@ body.swal2-shown {
   - 내역첨부/기타운영 잔여 UI 숨김 규칙은 운영 기준이 바뀌기 전까지 유지합니다.
 ========================================================= */
 </style>
+
+
+
+<!-- =========================================================
+  @SECTION: FINAL_PATCH_MOBILE_SCREEN_VISIBILITY_GUARD
+  - 목적: 모바일 로그인 CSS의 #screen-login display:flex !important 규칙이 .hidden을 이기는 문제 방지
+  - 증상: 내선번호 로그인 후 카드신청 화면이 로그인 화면 아래에 붙어 보임
+  - 원칙: 화면 전환은 UIManager의 .hidden 상태를 최우선으로 따른다
+========================================================= -->
+<style>
+#screen-login.screen.hidden,
+#screen-main.screen.hidden,
+#screen-return-details.screen.hidden,
+#screen-confirmation.screen.hidden,
+body #screen-login.screen.hidden,
+body #screen-main.screen.hidden,
+body #screen-return-details.screen.hidden,
+body #screen-confirmation.screen.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#screen-login.screen:not(.hidden),
+#screen-main.screen:not(.hidden),
+#screen-return-details.screen:not(.hidden),
+#screen-confirmation.screen:not(.hidden) {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
+
+<!-- =========================================================
+  @SECTION: FINAL_PATCH_MOBILE_STABILITY_MOTION_GUARD
+  - 목적: 모바일/저성능 기기에서 무한 반복 애니메이션으로 인한 터치 지연과 렌더링 부담 완화
+  - 원칙: 업무 흐름/화면 구조/카드신청·반납 로직은 건드리지 않고 시각 효과만 낮춘다
+  - prefers-reduced-motion 사용자는 모든 주요 애니메이션을 최소화한다
+========================================================= -->
+<style>
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* 모바일 키패드/상단 장식의 반복 애니메이션을 줄여 입력 반응성을 우선합니다. */
+  #keypadDisplay .digit-box.masked,
+  .stat-item:last-child .stat-label::before,
+  .school-mark--title::after,
+  .loader-card-icon,
+  .circle-icon {
+    animation: none !important;
+  }
+
+  /* 모바일에서는 카드 슬롯 발광 링의 반복 확대/축소를 정지하고 은은한 고정 링만 유지합니다. */
+  .card-item-wrapper.hybrid-card-slot.card-status-available::after,
+  .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available::after {
+    animation: none !important;
+    opacity: 0.72 !important;
+    transform: none !important;
+  }
+
+  /* 모바일 터치 환경에서 hover 잔상이 생기지 않도록 필터 기반 hover 효과를 제거합니다. */
+  .card-item-wrapper.hybrid-card-slot.card-status-available:hover,
+  .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available:hover,
+  .keypad-btn:hover,
+  .simple-btn:hover,
+  #add-receipt-btn:hover {
+    filter: none !important;
+  }
+}
+</style>
+
+<!-- =========================================================
+  @SECTION: REFACTOR_STAGE_7_MOBILE_STABILITY_COMPLETION_NOTE
+  - 기준본: 7차 CSS 최종 다이어트 + 영수증 저장확인 + 모바일 화면전환 긴급수정본
+  - 반영: SweetAlert 패치 재시도, screen.hidden 우선순위 유지, reduced-motion/mobile animation guard
+  - 미반영: !important 대량 제거, @media 전체 병합, viewport 정책 변경, GAS/업무 로직 변경
+========================================================= -->
 
 </head>
 <body class="variant-lockscreen">
