@@ -1385,6 +1385,22 @@ body.swal2-shown.swal2-height-auto {
   box-shadow:inset 2px 2px 6px rgba(110,138,176,.16),inset -2px -2px 6px rgba(255,255,255,.9);
 }
 .ops-save-note i{color:#2563eb;}
+.ops-save-note--compact{
+  max-width:260px;
+  margin:6px auto 0;
+  padding:10px 14px;
+  font-size:0.98rem;
+  letter-spacing:-0.02em;
+}
+.ops-save-note--compact span{line-height:1.25;}
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_RECEIPT_SAVE_AND_ANALYSIS_GUIDE_TUNING
+  목적: 분석 진행 중에는 실패 안내를 띄우지 않고, 저장 모달은 짧고 안정적인 문구로 표시합니다.
+========================================================= */
+.swal2-popup .ops-save-note--compact{
+  background:linear-gradient(180deg,#f8fbff 0%,#e8f0fb 100%) !important;
+}
 
 </style>
 
@@ -7799,14 +7815,16 @@ const CardApp = (function() {
             const blockingIssues = CardLogic.getBlockingReceiptIssues();
             const hasBlockingIssue = blockingIssues.length > 0;
             if (guideEl) {
+                const failedIssues = blockingIssues.filter(x => ['save_error','error'].includes(x.processing));
                 const hasEmpty = state.receiptCart.some(r => ((!isMeal) && !(String(r.usageDetails || '').trim()) && (!r.processing || r.processing==='save_error')) || (r.processing==='save_error'));
-                if (hasBlockingIssue) {
-                    guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 처리 실패/저장 실패 영수증이 있어 제출할 수 없습니다. 해당 영수증을 눌러 직접 입력하거나 삭제 후 다시 첨부해 주세요.';
+                if (failedIssues.length > 0) {
+                    guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 저장 실패/분석 실패 영수증이 있습니다. 해당 영수증을 눌러 직접 입력하거나 삭제 후 다시 첨부해 주세요.';
                     guideEl.classList.add('visible');
                 } else if (hasEmpty && state.receiptCart.length > 0) {
                     guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 사용내역이 비어 있는 영수증이 있습니다. 제출 전 내용을 확인해 주세요.';
                     guideEl.classList.add('visible');
                 } else {
+                    // 분석/저장 진행 중에는 빨간 실패 안내를 띄우지 않습니다. 진행 상태는 카드 아이템과 배치 진행바로만 표시합니다.
                     guideEl.classList.remove('visible');
                 }
             }
@@ -8382,8 +8400,8 @@ const CardApp = (function() {
                 /* @PHASE: JS_RECEIPT_SAVE_VISIBLE_CONFIRMATION - 저장 버튼 이후 실제 서버 저장 완료까지 중앙 모달로 명확히 표시 */
                 try {
                     Swal.fire({
-                        title: '영수증 저장 중...',
-                        html: '<div class="ops-save-note"><i class="fa-solid fa-cloud-arrow-up"></i> 저장이 끝날 때까지 잠시만 기다려 주세요.</div>',
+                        title: '저장 중',
+                        html: '<div class="ops-save-note ops-save-note--compact"><i class="fa-solid fa-cloud-arrow-up"></i><span>잠시만 기다려 주세요</span></div>',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                         showConfirmButton: false,
@@ -9188,6 +9206,17 @@ document.addEventListener('DOMContentLoaded', () => {
   - 삭제가 위험한 레거시/모바일 override는 유지하되, 잠금화면/카드신청/해외결제카드 색상 우선순위는 FINAL_PATCH_REFACTOR_STAGE_7_CSS_DIET_AND_THEME_LOCK으로 통합했습니다.
   - 기능 흐름, 함수명, API 호출명, HTML id/class, GAS 연동은 변경하지 않았습니다.
 ========================================================= -->
+
+
+<script>
+/* =========================================================
+  @SECTION: RECEIPT_SAVE_AND_ANALYSIS_GUIDE_TUNING_NOTE
+  - 분석/저장 진행 중에는 빨간 제출 차단 안내를 즉시 띄우지 않습니다.
+  - 실제 실패 상태(save_error/error)가 확정된 뒤에만 제출 차단 안내를 보여줍니다.
+  - 저장 버튼 이후 중앙 모달 문구는 '저장 중 / 잠시만 기다려 주세요'로 간결화했습니다.
+  - 업무 로직, API 호출명, GAS 연동은 변경하지 않았습니다.
+========================================================= */
+</script>
 
 </body>
 </html>
