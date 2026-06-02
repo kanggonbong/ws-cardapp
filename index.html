@@ -1402,79 +1402,6 @@ body.swal2-shown.swal2-height-auto {
   background:linear-gradient(180deg,#f8fbff 0%,#e8f0fb 100%) !important;
 }
 
-
-
-/* =========================================================
-  @SECTION: FINAL_PATCH_RETURN_MODAL_COMPACT
-  목적: 반납 제출 관련 SweetAlert 모달을 제목 중심의 간결한 팝업으로 정리합니다.
-  - 본문 설명을 줄이고 제목만으로 상태를 전달합니다.
-  - 기존 테마는 유지하되 여백/그림자/버튼 질감만 정돈합니다.
-========================================================= */
-.swal2-popup.ws-return-modal{
-  width:min(86vw, 360px) !important;
-  padding:26px 24px 22px !important;
-  border-radius:28px !important;
-  background:linear-gradient(180deg,#f8fbff 0%,#e7edf6 100%) !important;
-  border:1px solid rgba(255,255,255,0.82) !important;
-  box-shadow:18px 18px 38px rgba(110,138,176,0.28),-14px -14px 30px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.78) !important;
-}
-.swal2-popup.ws-return-modal .swal2-title{
-  padding:0 !important;
-  margin:4px 0 0 !important;
-  font-size:1.34rem !important;
-  line-height:1.28 !important;
-  font-weight:900 !important;
-  letter-spacing:-0.04em !important;
-  color:#263f67 !important;
-}
-.swal2-popup.ws-return-modal .swal2-html-container{
-  margin:0 !important;
-  padding:0 !important;
-  min-height:0 !important;
-}
-.swal2-popup.ws-return-modal .swal2-icon{
-  width:54px !important;
-  height:54px !important;
-  margin:0 auto 12px !important;
-  border-width:3px !important;
-  box-shadow:inset 2px 2px 5px rgba(110,138,176,0.13),inset -2px -2px 5px rgba(255,255,255,0.8);
-}
-.swal2-popup.ws-return-modal .swal2-actions{
-  margin-top:20px !important;
-  gap:10px !important;
-}
-.swal2-popup.ws-return-modal .swal2-styled{
-  border-radius:16px !important;
-  padding:11px 20px !important;
-  font-size:0.98rem !important;
-  font-weight:850 !important;
-  box-shadow:6px 6px 13px rgba(110,138,176,0.20),-5px -5px 11px rgba(255,255,255,0.92),inset 1px 1px 0 rgba(255,255,255,0.45) !important;
-}
-.swal2-popup.ws-return-modal .swal2-confirm{
-  background:linear-gradient(135deg,#2563eb 0%,#3b82f6 100%) !important;
-}
-.swal2-popup.ws-return-modal .swal2-cancel{
-  background:linear-gradient(180deg,#eef3f9 0%,#dfe7f2 100%) !important;
-  color:#52657f !important;
-}
-.swal2-popup.ws-return-modal.ws-return-loading .swal2-loader{
-  width:46px !important;
-  height:46px !important;
-  margin:0 auto 14px !important;
-  border-width:4px !important;
-  border-color:#3b82f6 transparent #3b82f6 transparent !important;
-}
-.swal2-popup.ws-return-modal.ws-return-loading .swal2-actions{
-  display:none !important;
-}
-@media (max-width:480px){
-  .swal2-popup.ws-return-modal{
-    width:calc(100vw - 52px) !important;
-    padding:24px 20px 20px !important;
-  }
-  .swal2-popup.ws-return-modal .swal2-title{font-size:1.25rem !important;}
-}
-
 </style>
 
     <!-- =========================================================
@@ -7548,10 +7475,16 @@ const CardApp = (function() {
                     }
 
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SERVER_CALL - 현재 장바구니를 master 파일에 저장 */
-                    await Api.call('saveCartToMasterFile', {
+                    const saveRes = await Api.call('saveCartToMasterFile', {
                         cardId: state.currentReturnCard.id,
                         cartData: Utils.sanitizeReceiptCart(state.receiptCart)
                     });
+                    /* @PHASE: FINAL_PATCH_RECEIPT_SAVE_CONFIRM
+                       서버 응답이 진짜 성공인지 확인해 화면의 저장완료 오인을 막습니다. */
+                    if (!saveRes || saveRes.status !== 'success') {
+                        const msg = saveRes && (saveRes.message || saveRes.error) ? (saveRes.message || saveRes.error) : 'RECEIPT_CART_SAVE_NOT_CONFIRMED';
+                        throw new Error(msg);
+                    }
 
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SUCCESS_MARK - saving 상태를 saved로 잠깐 표시 후 정리 */
                     state.receiptCart.forEach((it, idx) => {
@@ -8864,7 +8797,7 @@ const CardApp = (function() {
             }
             /* @PHASE: JS_RETURN_SUBMIT_EMPTY_CART_CONFIRM - 영수증 없이 반납하려는 경우 확인 */
             if (!state.receiptCart.length) {
-                const ok = await Swal.fire({title:'영수증 없이 반납할까요?',icon:'warning',showCancelButton:true,confirmButtonText:'단순 반납 진행',cancelButtonText:'취소',customClass:{popup:'ws-return-modal'}});
+                const ok = await Swal.fire({title:'영수증 없음',text:'등록된 영수증이 없습니다. 영수증 없이 누락 반납(단순 반납)을 진행하시겠습니까?',icon:'warning',showCancelButton:true,confirmButtonText:'단순 반납 진행',cancelButtonText:'취소'});
                 if (!ok.isConfirmed) return;
             }
 
@@ -8881,15 +8814,15 @@ const CardApp = (function() {
             let delayedReturnLoadingTimer = null;
             let delayedReturnLoadingShown = false;
             const originalSubmitText = btn ? btn.textContent : '';
-            if (btn) btn.textContent = '반납 처리중...';
+            if (btn) btn.textContent = '반납 요청 접수 중...';
             try {
                 /* @PHASE: JS_RETURN_DELAYED_LOADING - 0.8초 이내 접수는 중앙 로딩을 띄우지 않고 버튼 상태만 표시 */
                 delayedReturnLoadingTimer = setTimeout(() => {
                     delayedReturnLoadingShown = true;
                     try {
                         Swal.fire({
-                            title: '반납 처리중',
-                            customClass: { popup: 'ws-return-modal ws-return-loading' },
+                            title: '반납 요청 등록 중',
+                            html: '<div class="ops-save-note ops-save-note--compact"><i class="fa-solid fa-cloud-arrow-up"></i><span>서버 접수까지만 확인합니다</span></div>',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             showConfirmButton: false,
@@ -8904,7 +8837,10 @@ const CardApp = (function() {
 
                 const t = state.allCardData.find(c => c.id === params.cardNumber);
                 if (t) t.status = '반납처리중';
-                UIManager.showConfirmationScreen('반납 처리 완료', '');
+                UIManager.showConfirmationScreen('반납 요청 접수 완료',
+                    Utils.createDetailRow('카드번호', params.cardNumber) +
+                    Utils.createDetailRow('처리 상태', `${state.receiptCart.length}건 서버 접수`)
+                );
                 state.forceSyncOnNextUnlock = true;
                 state.pendingPostReturnSync = true;
                 CardLogic.scheduleQuickSync(3, 1200);
@@ -8915,7 +8851,7 @@ const CardApp = (function() {
                 clearInterval(state.countdownInterval);
                 if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); btn.textContent = originalSubmitText || '반납 제출'; }
                 await UIManager.showOperationalError({
-                    title: '반납 처리 실패',
+                    title: '반납 제출 실패',
                     error: e,
                     steps: [
                         '반납 요청이 서버에 접수되지 않았습니다.',
