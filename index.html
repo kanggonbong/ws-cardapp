@@ -7486,6 +7486,20 @@ const CardApp = (function() {
                         throw new Error(msg);
                     }
 
+                    /* @PHASE: FINAL_PATCH_RECEIPT_SAVE_LOCAL_CACHE_SYNC
+                     * 서버 저장 성공이 확인되면 현재 카드 객체에도 savedCart를 즉시 반영합니다.
+                     * 이전 버전은 서버에는 저장됐어도 화면에서 첫 화면으로 나갔다가 다시 들어오면
+                     * card.savedCart가 예전 값이라 영수증이 없는 것처럼 보일 수 있었습니다.
+                     */
+                    const confirmedCart = Utils.sanitizeReceiptCart(state.receiptCart);
+                    if (state.currentReturnCard) {
+                        state.currentReturnCard.savedCart = confirmedCart;
+                    }
+                    if (Array.isArray(state.allCardData) && state.currentReturnCard) {
+                        const targetCard = state.allCardData.find(c => c && c.id === state.currentReturnCard.id);
+                        if (targetCard) targetCard.savedCart = confirmedCart;
+                    }
+
                     /* @PHASE: JS_RECEIPT_AUTOSAVE_SUCCESS_MARK - saving 상태를 saved로 잠깐 표시 후 정리 */
                     state.receiptCart.forEach((it, idx) => {
                         if (it && it.processing === 'saving') {
@@ -7495,6 +7509,12 @@ const CardApp = (function() {
                                 if (cur && cur.processing === 'saved') {
                                     delete cur.processing;
                                     delete cur._uiTransient;
+                                    const refreshedCart = Utils.sanitizeReceiptCart(state.receiptCart);
+                                    if (state.currentReturnCard) state.currentReturnCard.savedCart = refreshedCart;
+                                    if (Array.isArray(state.allCardData) && state.currentReturnCard) {
+                                        const targetCard = state.allCardData.find(c => c && c.id === state.currentReturnCard.id);
+                                        if (targetCard) targetCard.savedCart = refreshedCart;
+                                    }
                                     CardLogic.requestRenderReceiptCart();
                                 }
                             }, 850);
@@ -7943,6 +7963,13 @@ const CardApp = (function() {
                 </div>`;
             /* @PHASE: JS_RETURN_SCREEN_RECEIPT_CONTROLS - 저장된 장바구니와 버튼/안내 영역 구성 */
             state.receiptCart = Utils.sanitizeReceiptCart(card.savedCart || []);
+            /* @PHASE: FINAL_PATCH_RECEIPT_RELOAD_CART_ON_RETURN_SCREEN
+             * 첫 화면/로그인 화면을 거쳐 다시 반납 화면에 들어올 때,
+             * 비동기 getSavedCarts 로딩이 아직 끝나지 않았거나 card.savedCart가 오래된 값이면
+             * 서버에 저장된 장바구니를 카드 단위로 한 번 더 확인해 화면에 복원합니다.
+             */
+            const receiptReloadToken = Utils.createClientRequestId('receipt_reload');
+            state.receiptReloadToken = receiptReloadToken;
             const add = document.createElement('button');
             add.id='add-receipt-btn';
             add.className='simple-btn accent';
@@ -7986,6 +8013,38 @@ const CardApp = (function() {
             }
             CardLogic.requestRenderReceiptCart();
             UIManager.showScreen('returnDetails');
+
+            /* @PHASE: FINAL_PATCH_RECEIPT_RELOAD_CART_AFTER_ENTER
+             * 화면 표시 직후 저장본을 서버에서 재확인합니다.
+             * 사용자가 이미 새 영수증을 추가/수정 중이면 덮어쓰지 않습니다.
+             */
+            setTimeout(() => {
+                const expectedCardId = card && card.id;
+                const expectedToken = state.receiptReloadToken;
+                if (!expectedCardId) return;
+                Api.call('getSavedCarts', [expectedCardId])
+                    .then(map => {
+                        if (state.receiptReloadToken !== expectedToken) return;
+                        if (!state.currentReturnCard || state.currentReturnCard.id !== expectedCardId) return;
+                        const loaded = Utils.sanitizeReceiptCart((map && map[expectedCardId]) || []);
+                        const hasActiveLocalWork = Array.isArray(state.receiptCart) && state.receiptCart.some(it =>
+                            it && ['queued','optimizing','ocr','postprocessing','saving','deleting'].includes(it.processing)
+                        );
+                        if (hasActiveLocalWork) return;
+                        const localJson = JSON.stringify(Utils.sanitizeReceiptCart(state.receiptCart || []));
+                        const remoteJson = JSON.stringify(loaded);
+                        if (remoteJson && remoteJson !== localJson) {
+                            state.receiptCart = loaded;
+                            card.savedCart = loaded;
+                            if (Array.isArray(state.allCardData)) {
+                                const targetCard = state.allCardData.find(c => c && c.id === expectedCardId);
+                                if (targetCard) targetCard.savedCart = loaded;
+                            }
+                            CardLogic.requestRenderReceiptCart();
+                        }
+                    })
+                    .catch(err => console.warn('Saved receipt cart reload skipped:', err));
+            }, 120);
         },
         /* =========================================================
         @SUBSECTION: JS_RECEIPT_CART_RENDER_STATE
