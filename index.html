@@ -6350,6 +6350,7 @@ const CardApp = (function() {
                     const clean = { ...item };
                     delete clean.processing;
                     delete clean.previewImage;
+                    delete clean.receiptImagePreview;
                     delete clean.analysisMeta;
                     delete clean.imageSaveError;
                     delete clean.isProcessing;
@@ -7683,7 +7684,7 @@ const CardApp = (function() {
             if (!cardId || !purpose || CardLogic._rentInFlight) return;
             if (finalBtn) {
                 finalBtn.classList.add('is-submitting');
-                finalBtn.textContent = '카드 신청 처리 중...';
+                finalBtn.textContent = '신청 접수 중...';
                 finalBtn.disabled = true;
             }
             CardLogic.submitRentRequest(cardId, purpose);
@@ -7939,7 +7940,14 @@ const CardApp = (function() {
             if (options.closeSwal !== false) {
                 try { Swal.close(); } catch(e) {}
             }
-            const ghost = { ...item, processing: 'saving' };
+            /* @PHASE: JS_RECEIPT_PREVIEW_CACHE_PRESERVE - 저장 후 id:DriveFileId로 바뀌어도 화면용 base64 미리보기는 로컬에 유지 */
+            const previous = idx > -1 ? (state.receiptCart[idx] || {}) : {};
+            const cachedPreview = item.previewImage || item.receiptImagePreview || previous.previewImage || previous.receiptImagePreview || (!String(item.receiptImage || '').startsWith('id:') ? item.receiptImage : '');
+            const ghost = { ...previous, ...item, processing: 'saving' };
+            if (cachedPreview) {
+                ghost.previewImage = cachedPreview;
+                ghost.receiptImagePreview = cachedPreview;
+            }
             let targetIdx = idx;
             if (idx > -1) {
                 state.receiptCart[idx] = ghost;
@@ -8056,6 +8064,7 @@ const CardApp = (function() {
                     state.receiptCart[actualIdx] = {
                         receiptImage: ocr.tempFileId,
                         previewImage: b64,
+                        receiptImagePreview: b64,
                         usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || '상호명 없음'),
                         usageDetails: isMeal ? '특근매식비' : '',
                         amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
@@ -8081,6 +8090,7 @@ const CardApp = (function() {
                     state.receiptCart[actualIdx] = {
                         receiptImage: '',
                         previewImage: b64,
+                        receiptImagePreview: b64,
                         usagePlace: '이미지 저장 실패',
                         usageDetails: '',
                         amount: '',
@@ -8212,6 +8222,7 @@ const CardApp = (function() {
                 await CardLogic.openOcrPopup({
                     receiptImage: ocr.tempFileId,
                     previewImage: b64,
+                    receiptImagePreview: b64,
                     usagePlace: analysisFailed ? '' : (ocr.storeName || ''),
                     usageDetails: (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근') ? '특근매식비' : ''),
                     amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
@@ -8395,6 +8406,7 @@ const CardApp = (function() {
                                     }
                                     if (imageInstructionEl) imageInstructionEl.textContent = '(이미지 교체)';
                                     data.previewImage = preview.dataUrl;
+                                    data.receiptImagePreview = preview.dataUrl;
                                     if (editIndex > -1 && state.receiptCart && state.receiptCart[editIndex]) {
                                         state.receiptCart[editIndex].previewImage = preview.dataUrl;
                                         state.receiptCart[editIndex].receiptImagePreview = preview.dataUrl;
@@ -8470,7 +8482,16 @@ const CardApp = (function() {
                     }
                     let amount = amtStr.replace(/[^\d]/g, "");
                     if (isMeal) amount = String(Utils.clampMealAmount(amount, state.currentReturnCard.userInfo.userName.split(',').length));
-                    return { usagePlace: store, usageDetails: details, amount, receiptImage: data.receiptImage, date: data.date||'' };
+                    const cachedPreview = data.previewImage || data.receiptImagePreview || '';
+                    return {
+                        usagePlace: store,
+                        usageDetails: details,
+                        amount,
+                        receiptImage: data.receiptImage,
+                        receiptImagePreview: cachedPreview,
+                        previewImage: cachedPreview,
+                        date: data.date||''
+                    };
                 }
             }).then(async (res) => {
                 if (!(res.isConfirmed && res.value)) return;
@@ -8612,20 +8633,29 @@ const CardApp = (function() {
                 userName: state.enteredUsers.map(u=>u.name).join(', '),
                 multiEntries: JSON.stringify(Utils.sanitizeReceiptCart(state.receiptCart))
             };
+            let delayedReturnLoadingTimer = null;
+            let delayedReturnLoadingShown = false;
+            const originalSubmitText = btn ? btn.textContent : '';
+            if (btn) btn.textContent = '반납 요청 접수 중...';
             try {
-                try {
-                    Swal.fire({
-                        title: '반납 요청 등록 중',
-                        html: '<div class="ops-save-note ops-save-note--compact"><i class="fa-solid fa-cloud-arrow-up"></i><span>서버 접수까지만 확인합니다</span></div>',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        showConfirmButton: false,
-                        didOpen: () => { try { Swal.showLoading(); } catch(e) {} }
-                    });
-                } catch(e) {}
+                /* @PHASE: JS_RETURN_DELAYED_LOADING - 0.8초 이내 접수는 중앙 로딩을 띄우지 않고 버튼 상태만 표시 */
+                delayedReturnLoadingTimer = setTimeout(() => {
+                    delayedReturnLoadingShown = true;
+                    try {
+                        Swal.fire({
+                            title: '반납 요청 등록 중',
+                            html: '<div class="ops-save-note ops-save-note--compact"><i class="fa-solid fa-cloud-arrow-up"></i><span>서버 접수까지만 확인합니다</span></div>',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false,
+                            didOpen: () => { try { Swal.showLoading(); } catch(e) {} }
+                        });
+                    } catch(e) {}
+                }, 800);
 
                 await Api.call('queueReturnRequest', params);
-                try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(e) {}
+                if (delayedReturnLoadingTimer) clearTimeout(delayedReturnLoadingTimer);
+                if (delayedReturnLoadingShown) { try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(e) {} }
 
                 const t = state.allCardData.find(c => c.id === params.cardNumber);
                 if (t) t.status = '반납처리중';
@@ -8637,10 +8667,11 @@ const CardApp = (function() {
                 state.pendingPostReturnSync = true;
                 CardLogic.scheduleQuickSync(3, 1200);
             } catch (e) {
-                try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(_) {}
+                if (delayedReturnLoadingTimer) clearTimeout(delayedReturnLoadingTimer);
+                if (delayedReturnLoadingShown) { try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(_) {} }
                 state.lastReturnSubmitError = { cardNumber: params.cardNumber, message: Utils.getErrorMessage(e), at: new Date().toISOString() };
                 clearInterval(state.countdownInterval);
-                if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); }
+                if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); btn.textContent = originalSubmitText || '반납 제출'; }
                 await UIManager.showOperationalError({
                     title: '반납 제출 실패',
                     error: e,
@@ -9323,6 +9354,20 @@ document.addEventListener('DOMContentLoaded', () => {
   @SECTION: FINAL_PATCH_RECEIPT_POPUP_ASYNC_PREVIEW_NOTE
   - 목적: 저장 후 id: 영수증을 다시 열 때 Drive 미리보기 로드를 기다리지 않고 팝업을 즉시 표시합니다.
   - 동작: 입력폼은 즉시 사용 가능하고, 이미지는 didOpen 이후 getReceiptImagePreview로 비동기 교체됩니다.
+========================================================= */
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_RECEIPT_PREVIEW_CACHE_AND_DELAYED_LOADING
+  @SUBSECTION: RECEIPT_PREVIEW_CACHE_PRESERVE
+  @PHASE: FINAL_PATCH_RECEIPT_PREVIEW_CACHE
+  - receiptImage는 id:DriveFileId 원본 참조로 유지하고, previewImage/receiptImagePreview는 화면용 base64 캐시로 보존합니다.
+  - 저장 팝업 preConfirm과 saveCartItemOptimistic에서 기존 미리보기 캐시를 병합해 저장 후 즉시 다시 열 때 Drive 조회보다 먼저 표시합니다.
+  - sanitizeReceiptCart는 서버 저장 전 previewImage/receiptImagePreview를 제거해 시트/Drive 저장 데이터가 커지지 않게 유지합니다.
+  @SUBSECTION: RETURN_DELAYED_LOADING
+  @PHASE: FINAL_PATCH_RETURN_DELAYED_LOADING
+  - 반납 제출은 queueReturnRequest 접수까지만 기다리는 기존 흐름을 유지합니다.
+  - 0.8초 이내 접수되면 중앙 SweetAlert 로딩을 띄우지 않고 버튼 텍스트만 표시합니다.
+  - 0.8초를 넘길 때만 기존 중앙 로딩을 표시해 체감 대기 시간을 줄입니다.
 ========================================================= */
 </script>
 
