@@ -538,7 +538,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   overflow:visible;
 }
 #cardGrid::before{
-  content:'SMART CARD RACK';
+  content:'';
   position:absolute;
   top:-11px;
   left:22px;
@@ -676,6 +676,20 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     1px 5px 10px rgba(15,23,42,.24),
     inset 5px 5px 10px rgba(0,0,0,.28),
     inset -3px -3px 8px rgba(255,255,255,.10) !important;
+}
+/* @PHASE: FINAL_PATCH_CARD_SELECT_FEEDBACK - 카드 클릭 시 선택 피드백 애니메이션 */
+.card-item-wrapper.hybrid-card-slot.card-status-available.rent-clicked{
+  animation:cardSelectPop .28s cubic-bezier(.22,1,.36,1) both !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available.rent-clicked::after{
+  opacity:1 !important;
+  border-color:rgba(96,165,250,.96) !important;
+  filter:drop-shadow(0 0 12px rgba(96,165,250,.62)) !important;
+}
+@keyframes cardSelectPop{
+  0%{transform:translateY(0) scale(1);}
+  45%{transform:translateY(-6px) scale(1.045);}
+  100%{transform:translateY(-3px) scale(1.02);}
 }
 .card-item-wrapper.hybrid-card-slot.card-status-inuse:hover,
 .card-item-wrapper.hybrid-card-slot.card-status-returning:hover,
@@ -1402,6 +1416,209 @@ body.swal2-shown.swal2-height-auto {
   background:linear-gradient(180deg,#f8fbff 0%,#e8f0fb 100%) !important;
 }
 
+
+
+/* =========================================================
+@SECTION: CSS_FINAL_PATCH
+@SUBSECTION: CSS_RECEIPT_OCR_POPUP_LAYOUT_21 - 영수증 정보 팝업 1단계 레이아웃 개선
+@PHASE: FINAL_PATCH - 저장/OCR 로직 변경 없이 이미지와 입력폼 배치만 정리
+========================================================= */
+.receipt-ocr-swal {
+  width: min(92vw, 840px) !important;
+  max-width: 840px !important;
+  padding: 1.55rem !important;
+}
+.receipt-ocr-swal .swal2-title {
+  margin-bottom: 1rem !important;
+}
+.receipt-ocr-swal .swal2-html-container {
+  margin: 0 !important;
+  overflow: visible !important;
+}
+.receipt-ocr-swal .swal-custom-container.receipt-ocr-layout {
+  width: 100% !important;
+  max-width: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(260px, 0.92fr) minmax(280px, 1.08fr);
+  gap: 18px !important;
+  align-items: stretch !important;
+  padding-top: 0 !important;
+}
+.receipt-ocr-image-panel,
+.receipt-ocr-form-panel {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.72);
+  background: linear-gradient(180deg,#f8fbff 0%,#edf4fc 100%);
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.72), 0 10px 22px rgba(110,138,176,0.10);
+  padding: 14px;
+}
+.receipt-ocr-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 10px;
+  color: #4f6f9f;
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.receipt-ocr-panel-title i {
+  color: #3b82f6;
+}
+.receipt-ocr-swal #swal-image-container {
+  width: 100%;
+  min-height: 280px;
+  max-height: 48vh;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px dashed rgba(91,117,153,0.34);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.receipt-ocr-swal #swal-image {
+  max-width: 100% !important;
+  max-height: 40vh !important;
+  object-fit: contain;
+  border-radius: 14px !important;
+  margin: 0 0 8px !important;
+  box-shadow: 0 8px 18px rgba(40,60,90,0.12) !important;
+}
+.receipt-ocr-swal #swal-image-instruction {
+  color: #6b83a9 !important;
+  font-size: 0.84rem !important;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.receipt-ocr-form-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.receipt-ocr-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.receipt-ocr-swal .swal-input-wrapper-new {
+  width: 100%;
+}
+.receipt-ocr-swal .swal-input-group-new {
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(126,150,184,0.22) !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.86), 0 5px 12px rgba(110,138,176,0.08) !important;
+}
+.receipt-ocr-swal .swal-input-group-new:focus-within {
+  border-color: rgba(59,130,246,0.55) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.11), 0 8px 16px rgba(59,130,246,0.08) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-auto {
+  border-color: rgba(16,185,129,0.36) !important;
+  background: linear-gradient(180deg,#ffffff 0%,#f3fbf7 100%) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-review {
+  border-color: rgba(245,158,11,0.48) !important;
+  background: linear-gradient(180deg,#ffffff 0%,#fff8ed 100%) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-manual {
+  border-color: rgba(126,150,184,0.26) !important;
+  background: #ffffff !important;
+}
+.receipt-ocr-swal .receipt-field-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  pointer-events: none;
+}
+.receipt-ocr-swal .receipt-field-badge.badge-auto {
+  color: #047857;
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.22);
+}
+.receipt-ocr-swal .receipt-field-badge.badge-review {
+  color: #b45309;
+  background: rgba(245,158,11,0.14);
+  border: 1px solid rgba(245,158,11,0.26);
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-manual .receipt-field-badge {
+  display: none;
+}
+.receipt-ocr-swal .swal2-input-new {
+  height: 58px !important;
+  padding: 22px 14px 6px 14px !important;
+  text-align: left !important;
+  color: #243b63 !important;
+  font-size: 1rem !important;
+}
+.receipt-ocr-swal .swal-input-label-new {
+  left: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  justify-content: flex-start !important;
+  color: #6b83a9 !important;
+  font-size: 0.92rem !important;
+}
+.receipt-ocr-swal .swal2-input-new:focus + .swal-input-label-new,
+.receipt-ocr-swal .swal2-input-new:not(:placeholder-shown) + .swal-input-label-new {
+  top: 8px !important;
+  left: 14px !important;
+  transform: none !important;
+  color: #2563eb !important;
+  font-size: 0.74rem !important;
+  font-weight: 800 !important;
+}
+.receipt-ocr-swal .swal2-actions {
+  margin-top: 1.05rem !important;
+}
+.receipt-ocr-swal .swal2-confirm {
+  border-radius: 14px !important;
+  padding: 0.72rem 1.65rem !important;
+}
+.receipt-ocr-swal .swal2-cancel {
+  border-radius: 14px !important;
+  padding: 0.72rem 1.45rem !important;
+}
+@media (max-width: 760px) {
+  .receipt-ocr-swal {
+    width: min(92vw, 430px) !important;
+    padding: 1.1rem 0.95rem !important;
+  }
+  .receipt-ocr-swal .swal-custom-container.receipt-ocr-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .receipt-ocr-image-panel,
+  .receipt-ocr-form-panel {
+    padding: 12px;
+    border-radius: 18px;
+  }
+  .receipt-ocr-swal #swal-image-container {
+    min-height: 190px;
+    max-height: 32vh;
+  }
+  .receipt-ocr-swal #swal-image {
+    max-height: 25vh !important;
+  }
+}
 </style>
 
     <!-- =========================================================
@@ -5837,7 +6054,7 @@ body #screen-confirmation.screen.hidden {
                 <div class="loader-step-icon"><i class="fa-solid fa-server"></i></div>
                 <div class="loader-step-texts">
                     <div class="loader-step-title">학교 시스템 연결 중...</div>
-                    <div class="loader-step-desc">학교 서버와 안전하게 연결하고 있습니다.</div>
+                    <div class="loader-step-desc">안전하게 연결하고 있습니다.</div>
                 </div>
                 <div class="loader-step-badge">1</div>
             </div>
@@ -6126,7 +6343,7 @@ const Api = {
             data = rawText ? JSON.parse(rawText) : {};
         } catch (e) {
             const snippet = String(rawText || '').replace(/\s+/g, ' ').slice(0, 160);
-            throw new Error(`서버 응답을 해석하지 못했습니다. ${snippet ? '응답 일부: ' + snippet : ''}`);
+            throw new Error(`응답을 해석하지 못했습니다. ${snippet ? '응답 일부: ' + snippet : ''}`);
         }
         if (!response.ok || !data.ok) {
             throw new Error(data && data.error ? data.error : `HTTP_${response.status}`);
@@ -6555,7 +6772,7 @@ const CardApp = (function() {
         },
         handleServerError: (err) => {
             return UIManager.showOperationalError({
-                title: '서버 처리 오류',
+                title: '처리 오류',
                 error: err,
                 steps: [
                     '네트워크 연결을 확인합니다.',
@@ -7556,8 +7773,8 @@ const CardApp = (function() {
                     try{
                         if (window.Swal) {
                             Swal.fire({
-                                title: '다음 영수증 불러오는 중...',
-                                text: '잠시만 기다려 주세요',
+                                title: '다음 영수증 준비중',
+                                text: '',
                                 showConfirmButton: false,
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
@@ -7618,8 +7835,8 @@ const CardApp = (function() {
                         toast: true,
                         position: 'top',
                         icon: 'warning',
-                        title: '일부 영수증은 직접 확인이 필요해요',
-                        text: '카드를 눌러 누락된 내용을 입력해 주세요.',
+                        title: '확인 필요',
+                        text: '영수증을 눌러 내용을 확인해 주세요.',
                         showConfirmButton: false,
                         timer: 2200,
                         timerProgressBar: true,
@@ -7629,10 +7846,10 @@ const CardApp = (function() {
                 }
                 Swal.fire({
                     icon: 'warning',
-                    title: '영수증 인식 실패',
+                    title: '인식 실패',
                     text: isReplacement
-                        ? '영수증 자동 분석에 실패했어요. 직접 입력창에 내용을 적어 주세요.'
-                        : '영수증 자동 분석에 실패했어요. 직접 입력으로 계속 진행해 주세요.',
+                        ? '자동 분석에 실패했습니다. 직접 입력해 주세요.'
+                        : '자동 분석에 실패했습니다. 직접 입력해 주세요.',
                     confirmButtonColor: '#007aff'
                 });
             } catch (e) {}
@@ -7652,7 +7869,7 @@ const CardApp = (function() {
                         toast: true,
                         position: 'top',
                         icon: 'warning',
-                        title: '이전 영수증 분석이 진행 중입니다',
+                        title: '영수증 처리중',
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -7890,7 +8107,7 @@ const CardApp = (function() {
                             state.pendingPostReturnSync = true;
                             CardLogic.scheduleQuickSync(1, 600);
                             if (!opts.silent) {
-                                Swal.fire('신청 확인 필요', '이미 다른 사용자가 사용 중인 카드로 확인되었습니다. 카드 목록을 다시 확인해 주세요.', 'warning');
+                                Swal.fire('신청 확인 필요', '이미 사용 중인 카드입니다. 카드 목록을 다시 확인해 주세요.', 'warning');
                             }
                             return false;
                         }
@@ -7908,8 +8125,8 @@ const CardApp = (function() {
                 if (!opts.silent) {
                     Swal.fire({
                         icon: 'warning',
-                        title: '신청 처리 지연',
-                        text: '카드 상태는 신청중으로 유지됩니다. 앱을 다시 열면 자동 재시도되고, 관리자가 시트에서 사용중으로 직접 정리할 수 있습니다.',
+                        title: '신청 처리중',
+                        text: '카드는 신청중으로 표시됩니다.',
                         confirmButtonText: '확인'
                     });
                 }
@@ -8120,15 +8337,15 @@ const CardApp = (function() {
             const failedCount = issues.filter(x => ['save_error','error'].includes(x.processing)).length;
             const activeCount = issues.length - failedCount;
             const msg = failedCount
-                ? `저장 실패 또는 분석 실패 영수증 ${failedCount}건이 남아 있습니다.`
-                : `아직 분석/저장 중인 영수증 ${activeCount}건이 있습니다.`;
+                ? `확인이 필요한 영수증 ${failedCount}건이 있습니다.`
+                : `처리 중인 영수증 ${activeCount}건이 있습니다.`;
             await UIManager.showOperationalError({
-                title: '반납 제출 전 확인 필요',
+                title: '반납 전 확인 필요',
                 message: msg,
                 icon: failedCount ? 'error' : 'warning',
                 steps: failedCount
-                    ? ['실패 표시가 있는 영수증을 눌러 직접 입력합니다.', '또는 해당 영수증을 삭제하고 다시 첨부합니다.', '모든 영수증이 정상 저장된 뒤 반납 제출을 다시 누릅니다.']
-                    : ['분석/저장이 끝날 때까지 기다립니다.', '계속 멈춰 있으면 화면을 잠금으로 돌린 뒤 다시 로그인해 확인합니다.']
+                    ? ['해당 영수증을 눌러 확인해 주세요.', '필요하면 삭제 후 다시 첨부해 주세요.']
+                    : ['영수증 처리가 끝난 뒤 다시 제출해 주세요.']
             });
             const first = issues[0];
             if (first) {
@@ -8271,7 +8488,7 @@ const CardApp = (function() {
                     }
 
                     if (!ocr || !ocr.tempFileId) {
-                        throw new Error('영수증 이미지를 서버에 저장하지 못했습니다. 다시 첨부해 주세요.');
+                        throw new Error('영수증 이미지를 저장하지 못했습니다. 다시 첨부해 주세요.');
                     }
 
                     state.receiptCart[actualIdx] = {
@@ -8363,7 +8580,7 @@ const CardApp = (function() {
                 });
                 CardLogic.requestRenderReceiptCart();
                 try {
-                    Swal.fire({toast:true, position:'top', icon:'error', title:'장바구니 저장 실패 · 네트워크를 확인해주세요', showConfirmButton:false, timer:2500});
+                    Swal.fire({toast:true, position:'top', icon:'error', title:'저장 실패 · 네트워크를 확인해주세요', showConfirmButton:false, timer:2500});
                 } catch (_) {}
             }
 
@@ -8380,7 +8597,7 @@ const CardApp = (function() {
                 .filter(item => item && item.processing === 'error').length;
             if (hardFailCount > 0) {
                 await UIManager.showOperationalError({
-                    title: '영수증 처리 실패',
+                    title: '처리 실패',
                     message: `${hardFailCount}건의 영수증을 자동 처리하지 못했습니다.`,
                     icon: 'warning',
                     steps: ['실패한 영수증을 눌러 직접 입력합니다.', '이미지 저장 실패라면 삭제 후 다시 첨부합니다.', '반납 제출은 실패 항목을 정리한 뒤 가능합니다.']
@@ -8442,7 +8659,7 @@ const CardApp = (function() {
                 const b64 = await CardLogic.resizeAndOptimizeImage(file);
                 const ocr = await Api.call('processReceiptImage', b64);
                 if (!ocr || !ocr.tempFileId) {
-                    throw new Error('영수증 이미지를 서버에 저장하지 못했습니다. 다시 첨부해 주세요.');
+                    throw new Error('영수증 이미지를 저장하지 못했습니다. 다시 첨부해 주세요.');
                 }
                 const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
                 const recognizedAmount = (ocr.amount || '').toString();
@@ -8582,27 +8799,50 @@ const CardApp = (function() {
                 /* @PHASE: JS_RECEIPT_POPUP_ASYNC_PREVIEW - 저장 후 팝업은 즉시 띄우고 Drive 이미지는 didOpen에서 비동기로 채움 */
                 receiptInstruction = '이미지 불러오는 중...';
             }
+            /* @PHASE: FINAL_PATCH_RECEIPT_OCR_FIELD_BADGES_22 - OCR 입력값 상태를 자동입력/확인필요 배지로 표시 */
+            const getOcrFieldStatus = (hasValue) => hasValue ? 'auto' : 'review';
+            const getOcrFieldClass = (status) => status === 'review' ? 'ocr-review' : 'ocr-auto';
+            const getOcrBadgeClass = (status) => status === 'review' ? 'badge-review' : 'badge-auto';
+            const getOcrBadgeText = (status) => status === 'review' ? '확인필요' : '자동입력';
+            const storeValue = String(data.usagePlace || '').trim();
+            const amountValue = String(data.amount || '').replace(/[^\d]/g, '');
+            const detailsValue = String(data.usageDetails || (isMeal ? '특근매식비' : '')).trim();
+            const storeStatus = getOcrFieldStatus(!!storeValue);
+            const amountStatus = getOcrFieldStatus(!!amountValue);
+            const detailsStatus = getOcrFieldStatus(!!detailsValue);
             const html = `
-                <div class="swal-custom-container">
-                    <div id="swal-image-container">
-                        <img id="swal-image" src="${Utils.esc(receiptPreviewSrc || '')}" style="${receiptPreviewSrc ? '' : 'display:none;'}" alt="영수증">
-                        <div id="swal-image-instruction">${Utils.esc(receiptInstruction)}</div>
+                <div class="swal-custom-container receipt-ocr-layout">
+                    <div class="receipt-ocr-image-panel">
+                        <div class="receipt-ocr-panel-title"><i class="fa-solid fa-receipt"></i> 영수증 이미지</div>
+                        <div id="swal-image-container">
+                            <img id="swal-image" src="${Utils.esc(receiptPreviewSrc || '')}" style="${receiptPreviewSrc ? '' : 'display:none;'}" alt="영수증">
+                            <div id="swal-image-instruction">${Utils.esc(receiptInstruction)}</div>
+                        </div>
                     </div>
-                    <div class="swal-input-wrapper-new"><div class="swal-input-group-new">
-                        <input id="swal-store" class="swal2-input-new" placeholder=" " value="${Utils.esc(data.usagePlace)}" enterkeyhint="next" autocomplete="off">
-                        <label class="swal-input-label-new"><i class="fa-solid fa-store"></i> 상호명</label>
-                    </div></div>
-                    <div class="swal-input-wrapper-new"><div class="swal-input-group-new">
-                        <input id="swal-amount" data-field="amount" class="swal2-input-new" inputmode="decimal" placeholder=" " value="${data.amount?Utils.nfKR.format(Number(data.amount)):''}" enterkeyhint="next" autocomplete="off">
-                        <label class="swal-input-label-new"><i class="fa-solid fa-won-sign"></i> 금액</label>
-                    </div></div>
-                    <div class="swal-input-wrapper-new"><div class="swal-input-group-new">
-                        <input id="swal-details" data-field="details" class="swal2-input-new highlight-placeholder" placeholder=" " value="${Utils.esc(data.usageDetails||(isMeal?'특근매식비':''))}" ${isMeal?'readonly':''} enterkeyhint="done" autocomplete="off">
-                        <label class="swal-input-label-new"><i class="fa-solid fa-pencil"></i> 내용</label>
-                    </div></div>
+                    <div class="receipt-ocr-form-panel">
+                        <div class="receipt-ocr-panel-title"><i class="fa-solid fa-pen-to-square"></i> 입력 정보</div>
+                        <div class="receipt-ocr-form-fields">
+                            <div class="swal-input-wrapper-new"><div class="swal-input-group-new store-name ${getOcrFieldClass(storeStatus)}" data-ocr-status="${storeStatus}">
+                                <input id="swal-store" data-field="storeName" class="swal2-input-new" placeholder=" " value="${Utils.esc(data.usagePlace)}" enterkeyhint="next" autocomplete="off">
+                                <label class="swal-input-label-new"><i class="fa-solid fa-store"></i> 상호명</label>
+                                <span class="receipt-field-badge ${getOcrBadgeClass(storeStatus)}">${getOcrBadgeText(storeStatus)}</span>
+                            </div></div>
+                            <div class="swal-input-wrapper-new"><div class="swal-input-group-new amount-field ${getOcrFieldClass(amountStatus)}" data-ocr-status="${amountStatus}">
+                                <input id="swal-amount" data-field="amount" class="swal2-input-new" inputmode="decimal" placeholder=" " value="${data.amount?Utils.nfKR.format(Number(data.amount)):''}" enterkeyhint="next" autocomplete="off">
+                                <label class="swal-input-label-new"><i class="fa-solid fa-won-sign"></i> 금액</label>
+                                <span class="receipt-field-badge ${getOcrBadgeClass(amountStatus)}">${getOcrBadgeText(amountStatus)}</span>
+                            </div></div>
+                            <div class="swal-input-wrapper-new"><div class="swal-input-group-new details-field ${getOcrFieldClass(detailsStatus)}" data-ocr-status="${detailsStatus}">
+                                <input id="swal-details" data-field="details" class="swal2-input-new highlight-placeholder" placeholder=" " value="${Utils.esc(data.usageDetails||(isMeal?'특근매식비':''))}" ${isMeal?'readonly':''} enterkeyhint="done" autocomplete="off">
+                                <label class="swal-input-label-new"><i class="fa-solid fa-pencil"></i> 내용</label>
+                                <span class="receipt-field-badge ${getOcrBadgeClass(detailsStatus)}">${getOcrBadgeText(detailsStatus)}</span>
+                            </div></div>
+                        </div>
+                    </div>
                 </div>`;
             await Swal.fire({
                 title: '영수증 정보', html, showCancelButton: true,
+                customClass: { popup: 'receipt-ocr-swal' },
                 confirmButtonText: editIndex > -1 ? '저장' : '추가', cancelButtonText: '취소',
                 focusConfirm: false, focusCancel: false, allowOutsideClick: false, returnFocus: false,
                 /* @PHASE: JS_RECEIPT_POPUP_DID_OPEN - 모달이 열린 뒤 스크롤/키보드/입력 이벤트 연결 */
@@ -8658,7 +8898,18 @@ const CardApp = (function() {
                             }
                         })();
                     }
+                    const markFieldManual = (inputEl) => {
+                        if (!inputEl) return;
+                        const group = inputEl.closest('.swal-input-group-new');
+                        if (!group || group.classList.contains('ocr-manual')) return;
+                        group.classList.remove('ocr-auto', 'ocr-review');
+                        group.classList.add('ocr-manual');
+                        group.dataset.ocrStatus = 'manual';
+                    };
+                    store.addEventListener('input', () => markFieldManual(store));
+                    details.addEventListener('input', () => markFieldManual(details));
                     amount.oninput = (e) => {
+                        markFieldManual(e.target);
                         const v = e.target.value.replace(/[^\d]/g, '');
                         e.target.value = v ? Utils.nfKR.format(parseInt(v)) : '';
                     };
@@ -8715,7 +8966,7 @@ const CardApp = (function() {
                     const [store, amtStr, details] = ['swal-store', 'swal-amount', 'swal-details'].map(id => document.getElementById(id).value);
                     if (!store || !amtStr || !details) return Swal.showValidationMessage('모든 항목을 입력하세요');
                     if (!String(data.receiptImage || '').startsWith('id:')) {
-                        return Swal.showValidationMessage('영수증 이미지가 서버에 저장되지 않았습니다. 이미지를 다시 첨부해 주세요.');
+                        return Swal.showValidationMessage('영수증 이미지가 저장되지 않았습니다. 이미지를 다시 첨부해 주세요.');
                     }
                     let amount = amtStr.replace(/[^\d]/g, "");
                     if (isMeal) amount = String(Utils.clampMealAmount(amount, state.currentReturnCard.userInfo.userName.split(',').length));
@@ -8732,37 +8983,32 @@ const CardApp = (function() {
                 }
             }).then(async (res) => {
                 if (!(res.isConfirmed && res.value)) return;
-                /* @PHASE: JS_RECEIPT_SAVE_VISIBLE_CONFIRMATION - 저장 버튼 이후 실제 서버 저장 완료까지 중앙 모달로 명확히 표시 */
-                try {
-                    Swal.fire({
-                        title: '저장 중',
-                        html: '<div class="ops-save-note ops-save-note--compact"><i class="fa-solid fa-cloud-arrow-up"></i><span>잠시만 기다려 주세요</span></div>',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        showConfirmButton: false,
-                        didOpen: () => { try { Swal.showLoading(); } catch(e) {} }
-                    });
-                } catch(e) {}
+                /* =========================================================
+                @SECTION: FINAL_PATCH_RECEIPT_POPUP_SAVE_UX_23
+                @SUBSECTION: JS_RECEIPT_POPUP_SAVE_CARD_STATUS - 중앙 저장 모달 축소
+                @PHASE: FINAL_PATCH - 저장 버튼 이후 영수증 카드의 저장중/저장완료 상태를 중심으로 피드백합니다.
+                ========================================================= */
                 try {
                     await CardLogic.saveCartItemOptimistic(res.value, editIndex, { closeSwal: false });
-                    await Swal.fire({
-                        icon: 'success',
-                        title: '저장 완료',
-                        text: '영수증 정보가 서버에 저장되었습니다.',
-                        timer: 950,
-                        showConfirmButton: false,
-                        allowOutsideClick: true,
-                        allowEscapeKey: true
-                    });
+                    try {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top',
+                            icon: 'success',
+                            title: '저장 완료',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: false
+                        });
+                    } catch(e) {}
                 } catch (e) {
                     await UIManager.showOperationalError({
-                        title: '영수증 저장 실패',
-                        message: '입력한 영수증 정보가 서버에 저장되지 않았습니다. 이 상태에서는 행정실에서 반납 제출할 때 누락될 수 있습니다.',
+                        title: '저장 실패',
+                        message: '영수증 정보가 저장되지 않았습니다.',
                         error: e,
                         steps: [
-                            '네트워크 연결을 확인한 뒤 실패 표시가 있는 영수증을 다시 눌러 저장합니다.',
-                            '계속 실패하면 해당 영수증을 삭제 후 다시 첨부합니다.',
-                            '반납 제출은 모든 영수증이 정상 저장된 뒤 진행합니다.'
+                            '실패 표시가 있는 영수증을 다시 눌러 저장해 주세요.',
+                            '계속 실패하면 삭제 후 다시 첨부해 주세요.'
                         ],
                         confirmButtonText: '확인'
                     });
@@ -8815,7 +9061,7 @@ const CardApp = (function() {
         async submitCart() {
             /* @PHASE: JS_RETURN_SUBMIT_ADMIN_GUARD - 행정실 관리자 모드에서만 최종 제출 허용 */
             if (!state.isAdminMode) {
-                await Swal.fire('제출 불가', '행정실의 태블릿(관리자 모드)에서만 제출할 수 있습니다.', 'warning');
+                await Swal.fire('제출 불가', '관리자 모드에서만 반납 제출할 수 있습니다.', 'warning');
                 return;
             }
             if (CardLogic._submitInFlight) return;
@@ -8834,7 +9080,7 @@ const CardApp = (function() {
                 if (missing.length) {
                     const ok = await Swal.fire({
                         title: '입력 확인',
-                        html: `<b>${missing.length}건</b>의 영수증에 <b>사용내역(내용)</b>이 비어 있습니다.<br>그래도 제출할까요?`,
+                        html: `<b>${missing.length}건</b>의 사용내역이 비어 있습니다.<br>그래도 제출할까요?`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: '그대로 제출',
@@ -8856,7 +9102,7 @@ const CardApp = (function() {
             }
             /* @PHASE: JS_RETURN_SUBMIT_EMPTY_CART_CONFIRM - 영수증 없이 반납하려는 경우 확인 */
             if (!state.receiptCart.length) {
-                const ok = await Swal.fire({title:'영수증 없음',text:'등록된 영수증이 없습니다. 영수증 없이 누락 반납(단순 반납)을 진행하시겠습니까?',icon:'warning',showCancelButton:true,confirmButtonText:'단순 반납 진행',cancelButtonText:'취소'});
+                const ok = await Swal.fire({title:'영수증 없음',text:'영수증 없이 반납하시겠습니까?',icon:'warning',showCancelButton:true,confirmButtonText:'영수증 없이 반납',cancelButtonText:'취소'});
                 if (!ok.isConfirmed) return;
             }
 
@@ -8873,15 +9119,14 @@ const CardApp = (function() {
             let delayedReturnLoadingTimer = null;
             let delayedReturnLoadingShown = false;
             const originalSubmitText = btn ? btn.textContent : '';
-            if (btn) btn.textContent = '반납 요청 접수 중...';
+            if (btn) btn.textContent = '반납 처리중...';
             try {
                 /* @PHASE: JS_RETURN_DELAYED_LOADING - 0.8초 이내 접수는 중앙 로딩을 띄우지 않고 버튼 상태만 표시 */
                 delayedReturnLoadingTimer = setTimeout(() => {
                     delayedReturnLoadingShown = true;
                     try {
                         Swal.fire({
-                            title: '반납 요청 등록 중',
-                            html: '<div class="ops-save-note ops-save-note--compact"><i class="fa-solid fa-cloud-arrow-up"></i><span>서버 접수까지만 확인합니다</span></div>',
+                            title: '반납 처리중',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             showConfirmButton: false,
@@ -8896,9 +9141,11 @@ const CardApp = (function() {
 
                 const t = state.allCardData.find(c => c.id === params.cardNumber);
                 if (t) t.status = '반납처리중';
-                UIManager.showConfirmationScreen('반납 요청 접수 완료',
+                const returnTotalAmount = (state.receiptCart || []).reduce((sum, it) => sum + (Number(it?.amount || 0) || 0), 0);
+                UIManager.showConfirmationScreen('반납 처리 완료',
                     Utils.createDetailRow('카드번호', params.cardNumber) +
-                    Utils.createDetailRow('처리 상태', `${state.receiptCart.length}건 서버 접수`)
+                    Utils.createDetailRow('영수증', `${state.receiptCart.length}건 접수`) +
+                    Utils.createDetailRow('금액', `${Utils.nfKR.format(returnTotalAmount)}원`)
                 );
                 state.forceSyncOnNextUnlock = true;
                 state.pendingPostReturnSync = true;
@@ -8910,12 +9157,11 @@ const CardApp = (function() {
                 clearInterval(state.countdownInterval);
                 if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); btn.textContent = originalSubmitText || '반납 제출'; }
                 await UIManager.showOperationalError({
-                    title: '반납 제출 실패',
+                    title: '반납 처리 실패',
                     error: e,
                     steps: [
-                        '반납 요청이 서버에 접수되지 않았습니다.',
-                        '같은 화면에서 다시 반납 제출을 눌러 주세요.',
-                        '반복 실패하면 행정실에서 관리자 모드로 카드 상태와 반납 큐를 확인해 주세요.'
+                        '다시 반납 제출을 눌러 주세요.',
+                        '반복 실패하면 카드 상태를 확인해 주세요.'
                     ]
                 });
             } finally {
@@ -9149,7 +9395,13 @@ const CardApp = (function() {
             if (cardEl && elements.cardGrid.contains(cardEl)) {
                 const card = state.allCardData?.find(c => c.id === cardEl.dataset.cardId);
                 if (card && ['사용가능','대여가능','사용 가능','대여 가능'].includes(String(card.status || '').trim())) {
-                    CardLogic.openMorphOverlay(card);
+                    /* @PHASE: FINAL_PATCH_CARD_SELECT_FEEDBACK - 목적 선택 전 카드 자체 선택 애니메이션 */
+                    cardEl.classList.add('rent-clicked');
+                    setTimeout(() => {
+                        try { CardLogic.openMorphOverlay(card); } finally {
+                            setTimeout(() => cardEl.classList.remove('rent-clicked'), 260);
+                        }
+                    }, 150);
                     return;
                 }
             }
