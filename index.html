@@ -1420,16 +1420,21 @@ body.swal2-shown.swal2-height-auto {
 
 /* =========================================================
 @SECTION: CSS_FINAL_PATCH
-@SUBSECTION: CSS_RECEIPT_OCR_POPUP_LAYOUT_21 - 영수증 정보 팝업 1단계 레이아웃 개선
-@PHASE: FINAL_PATCH - 저장/OCR 로직 변경 없이 이미지와 입력폼 배치만 정리
+@SUBSECTION: CSS_RECEIPT_OCR_POPUP_LAYOUT_24 - 영수증 정보 팝업 세로형 고정
+@PHASE: FINAL_PATCH - 모든 기기에서 이미지 위/입력폼 아래 구조로 안정화
 ========================================================= */
 .receipt-ocr-swal {
-  width: min(92vw, 840px) !important;
-  max-width: 840px !important;
-  padding: 1.55rem !important;
+  width: min(92vw, 460px) !important;
+  max-width: 460px !important;
+  padding: 1.2rem 1rem !important;
+  overflow: hidden !important;
 }
 .receipt-ocr-swal .swal2-title {
-  margin-bottom: 1rem !important;
+  margin: 0 0 0.95rem !important;
+  padding: 0 !important;
+  text-align: left !important;
+  font-size: 1.38rem !important;
+  line-height: 1.22 !important;
 }
 .receipt-ocr-swal .swal2-html-container {
   margin: 0 !important;
@@ -1437,27 +1442,31 @@ body.swal2-shown.swal2-height-auto {
 }
 .receipt-ocr-swal .swal-custom-container.receipt-ocr-layout {
   width: 100% !important;
-  max-width: none !important;
-  display: grid !important;
-  grid-template-columns: minmax(260px, 0.92fr) minmax(280px, 1.08fr);
-  gap: 18px !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
   align-items: stretch !important;
   padding-top: 0 !important;
+  box-sizing: border-box !important;
 }
 .receipt-ocr-image-panel,
 .receipt-ocr-form-panel {
-  width: 100%;
-  border-radius: 20px;
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  border-radius: 18px;
   border: 1px solid rgba(255,255,255,0.72);
   background: linear-gradient(180deg,#f8fbff 0%,#edf4fc 100%);
-  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.72), 0 10px 22px rgba(110,138,176,0.10);
-  padding: 14px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.72), 0 8px 18px rgba(110,138,176,0.10);
+  padding: 12px;
 }
 .receipt-ocr-panel-title {
   display: flex;
   align-items: center;
   gap: 7px;
-  margin: 0 0 10px;
+  margin: 0 0 9px;
   color: #4f6f9f;
   font-size: 0.86rem;
   font-weight: 800;
@@ -1468,9 +1477,9 @@ body.swal2-shown.swal2-height-auto {
 }
 .receipt-ocr-swal #swal-image-container {
   width: 100%;
-  min-height: 280px;
-  max-height: 48vh;
-  border-radius: 18px;
+  min-height: 210px;
+  max-height: 34vh;
+  border-radius: 16px;
   background: #ffffff;
   border: 1px dashed rgba(91,117,153,0.34);
   display: flex;
@@ -1480,10 +1489,11 @@ body.swal2-shown.swal2-height-auto {
   padding: 12px;
   overflow: hidden;
   cursor: pointer;
+  box-sizing: border-box;
 }
 .receipt-ocr-swal #swal-image {
   max-width: 100% !important;
-  max-height: 40vh !important;
+  max-height: 27vh !important;
   object-fit: contain;
   border-radius: 14px !important;
   margin: 0 0 8px !important;
@@ -1596,27 +1606,20 @@ body.swal2-shown.swal2-height-auto {
   border-radius: 14px !important;
   padding: 0.72rem 1.45rem !important;
 }
-@media (max-width: 760px) {
+@media (max-width: 520px) {
   .receipt-ocr-swal {
-    width: min(92vw, 430px) !important;
-    padding: 1.1rem 0.95rem !important;
-  }
-  .receipt-ocr-swal .swal-custom-container.receipt-ocr-layout {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
-  }
-  .receipt-ocr-image-panel,
-  .receipt-ocr-form-panel {
-    padding: 12px;
-    border-radius: 18px;
+    width: calc(100vw - 22px) !important;
+    padding: 1.05rem 0.9rem !important;
   }
   .receipt-ocr-swal #swal-image-container {
-    min-height: 190px;
-    max-height: 32vh;
+    min-height: 180px;
+    max-height: 30vh;
   }
   .receipt-ocr-swal #swal-image {
-    max-height: 25vh !important;
+    max-height: 23vh !important;
+  }
+  .receipt-ocr-swal .swal2-title {
+    font-size: 1.28rem !important;
   }
 }
 </style>
