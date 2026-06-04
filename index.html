@@ -1622,6 +1622,152 @@ body.swal2-shown.swal2-height-auto {
     font-size: 1.28rem !important;
   }
 }
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_27_RETURN_TYPOGRAPHY_PRECISION
+  목적: 26차 안정본의 반납 화면 재질과 구조는 유지하고, 영수증 카드/총액 영역의
+        타이포그래피 정렬만 정밀하게 다듬어 전표 느낌을 약하게 부여합니다.
+  범위: CSS만 수정. 저장/복원/OCR/반납 제출 로직 변경 없음.
+========================================================= */
+#screen-return-details #receipt-dashboard{
+  letter-spacing:-0.01em !important;
+}
+#screen-return-details #receipt-dashboard .dashboard-label{
+  font-weight:850 !important;
+  letter-spacing:0.02em !important;
+}
+#screen-return-details #receipt-dashboard .dashboard-amount{
+  font-variant-numeric:tabular-nums !important;
+  letter-spacing:-0.045em !important;
+  font-weight:950 !important;
+}
+#screen-return-details .cart-item{
+  letter-spacing:-0.01em !important;
+}
+#screen-return-details .cart-item.with-inline-actions{
+  grid-template-columns:38px minmax(0,1fr) minmax(84px,auto) auto !important;
+  column-gap:10px !important;
+  row-gap:2px !important;
+  align-items:center !important;
+}
+#screen-return-details .cart-item.with-inline-actions .cart-item-info{
+  gap:3px !important;
+  min-width:0 !important;
+}
+#screen-return-details .cart-item-place{
+  font-size:.96rem !important;
+  line-height:1.16 !important;
+  font-weight:900 !important;
+  color:#1f4175 !important;
+  letter-spacing:-0.025em !important;
+}
+#screen-return-details .cart-item-details{
+  font-size:.78rem !important;
+  line-height:1.22 !important;
+  font-weight:650 !important;
+  color:#6f86aa !important;
+  letter-spacing:-0.015em !important;
+}
+#screen-return-details .cart-item-amount-box{
+  min-width:84px !important;
+  text-align:right !important;
+  justify-self:end !important;
+  padding-left:8px !important;
+}
+#screen-return-details .cart-item-amount{
+  display:inline-block !important;
+  font-size:1.08rem !important;
+  line-height:1 !important;
+  font-weight:950 !important;
+  color:#174ea6 !important;
+  font-variant-numeric:tabular-nums !important;
+  letter-spacing:-0.045em !important;
+  white-space:nowrap !important;
+}
+#screen-return-details .cart-item-delete-wide{
+  justify-self:end !important;
+}
+#screen-return-details .cart-item.needs-review:not(.overlay-phase) .cart-item-place,
+#screen-return-details .cart-item.needs-details:not(.overlay-phase) .cart-item-place{
+  color:#e7485f !important;
+}
+#screen-return-details .cart-item.needs-review:not(.overlay-phase) .cart-item-details,
+#screen-return-details .cart-item.needs-details:not(.overlay-phase) .cart-item-details{
+  color:#9b5b69 !important;
+  font-weight:750 !important;
+}
+@media (max-width:390px){
+  #screen-return-details .cart-item.with-inline-actions{
+    grid-template-columns:36px minmax(0,1fr) minmax(78px,auto) !important;
+    column-gap:8px !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-amount-box{
+    min-width:78px !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide{
+    grid-column:2 / 4 !important;
+    justify-self:stretch !important;
+    margin-top:5px !important;
+  }
+}
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_28_RETURN_INSET_TRAY
+  목적: 27차의 반납 화면 톤과 타이포그래피를 유지하면서, 금액/영수증 목록 영역만
+        아주 약한 오목한 뉴모피즘 트레이로 묶어 정산 영역의 구조감을 보강합니다.
+  범위: CSS/DOM 래핑만 수정. OCR/저장/복원/반납 제출 로직 변경 없음.
+========================================================= */
+#screen-return-details .return-neu-tray{
+  width:100%;
+  margin:8px 0 16px;
+  padding:18px 16px 16px;
+  border-radius:28px;
+  background:rgba(224,229,236,0.72);
+  box-shadow:
+    inset 7px 7px 16px rgba(163,177,198,0.44),
+    inset -7px -7px 16px rgba(255,255,255,0.76),
+    1px 1px 0 rgba(255,255,255,0.48);
+  border:1px solid rgba(255,255,255,0.42);
+}
+#screen-return-details .return-neu-tray #receipt-dashboard{
+  margin:0 0 16px !important;
+  background:rgba(224,229,236,0.58) !important;
+  box-shadow:
+    inset 4px 4px 10px rgba(163,177,198,0.34),
+    inset -4px -4px 10px rgba(255,255,255,0.72) !important;
+  border:1px solid rgba(255,255,255,0.38) !important;
+}
+#screen-return-details .return-neu-tray .cart-wrapper{
+  width:100%;
+  margin:0 !important;
+}
+#screen-return-details .return-neu-tray #receipt-cart-container.empty-cart{
+  margin:0 !important;
+  background:rgba(224,229,236,0.52) !important;
+  box-shadow:
+    inset 4px 4px 9px rgba(163,177,198,0.32),
+    inset -4px -4px 9px rgba(255,255,255,0.68) !important;
+  border:1px solid rgba(255,255,255,0.34) !important;
+}
+#screen-return-details .return-neu-tray #receipt-cart-container:not(.empty-cart){
+  padding:1px !important;
+}
+#screen-return-details .return-neu-tray .cart-item:last-child{
+  margin-bottom:0 !important;
+}
+@media (max-width:767px){
+  #screen-return-details .return-neu-tray{
+    padding:15px 12px 13px;
+    border-radius:24px;
+    margin-top:6px;
+  }
+  #screen-return-details .return-neu-tray #receipt-dashboard{
+    margin-bottom:12px !important;
+  }
+}
+
 </style>
 
     <!-- =========================================================
@@ -5978,6 +6124,121 @@ body #screen-confirmation.screen.hidden {
 }
     </style>
 
+
+
+<!-- =========================================================
+  @SECTION: CSS_FINAL_PATCH_26_KEYPAD_LAYER_PANEL
+  내선번호 화면 우선 개선
+  - 키패드/입력점/로그인 버튼을 하나의 오목한 베이스로 묶어 계층감 강화
+  - 로그인 버튼만 볼록한 핵심 액션 컴포넌트로 유지
+  - 카드신청/반납/영수증 로직은 변경하지 않음
+========================================================= -->
+<style>
+#screen-login .keypad-panel{
+  width:100%;
+  margin-top:4px;
+  padding:18px 16px 16px;
+  border-radius:30px;
+  background:linear-gradient(145deg,#d8e3f1 0%,#edf4fb 48%,#f8fbff 100%);
+  border:1px solid rgba(255,255,255,0.72);
+  box-shadow:
+    inset 8px 8px 18px rgba(110,138,176,0.25),
+    inset -8px -8px 18px rgba(255,255,255,0.92),
+    0 10px 22px rgba(110,138,176,0.08);
+  overflow:visible;
+}
+#screen-login .keypad-panel .display-area{
+  margin:0 0 18px !important;
+  height:52px !important;
+}
+#screen-login .keypad-panel .keypad-grid{
+  margin:0 0 12px !important;
+  padding:0 !important;
+  gap:13px !important;
+}
+#screen-login .keypad-panel .keypad-btn{
+  background:linear-gradient(180deg,#f9fcff 0%,#e9f0f8 100%) !important;
+  border:1px solid rgba(255,255,255,0.86) !important;
+  box-shadow:
+    6px 6px 12px rgba(110,138,176,0.19),
+    -5px -5px 11px rgba(255,255,255,0.92),
+    inset 1px 1px 0 rgba(255,255,255,0.70) !important;
+}
+#screen-login .keypad-panel .keypad-btn:active:not(:disabled),
+#screen-login .keypad-panel .keypad-btn.pressed{
+  box-shadow:
+    inset 5px 5px 10px rgba(110,138,176,0.24),
+    inset -5px -5px 10px rgba(255,255,255,0.86) !important;
+}
+#screen-login .keypad-panel #keypad-submit-btn{
+  margin-top:10px !important;
+  background:linear-gradient(135deg,#6bb4ff 0%,#2563eb 52%,#1e40af 100%) !important;
+  border:1px solid rgba(255,255,255,0.55) !important;
+  color:#fff !important;
+  box-shadow:
+    0 14px 25px rgba(37,99,235,0.26),
+    inset 1px 1px 0 rgba(255,255,255,0.38) !important;
+}
+#screen-login .keypad-panel #keypad-submit-btn:disabled{
+  background:linear-gradient(180deg,#d8e2ee 0%,#cbd7e6 100%) !important;
+  color:#7f93b0 !important;
+  box-shadow:inset 4px 4px 9px rgba(126,156,198,0.18),inset -4px -4px 9px rgba(255,255,255,0.88) !important;
+}
+@media (max-width:767px){
+  #screen-login .keypad-panel{
+    padding:14px 12px 12px;
+    border-radius:26px;
+  }
+  #screen-login .keypad-panel .display-area{
+    height:50px !important;
+    margin-bottom:14px !important;
+  }
+  #screen-login .keypad-panel .keypad-grid{
+    gap:11px !important;
+    margin-bottom:9px !important;
+  }
+  #screen-login .keypad-panel #keypad-submit-btn{
+    margin-top:8px !important;
+    padding:14px 0 !important;
+  }
+}
+@media (min-width:768px) and (max-height:840px) and (pointer:fine){
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel{
+    padding:15px 14px 13px !important;
+    border-radius:28px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel .display-area{
+    height:50px !important;
+    margin-bottom:14px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel .keypad-grid{
+    gap:11px !important;
+    margin-bottom:8px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel #keypad-submit-btn{
+    margin-top:8px !important;
+    padding:15px 0 !important;
+  }
+}
+@media (min-width:768px) and (max-height:740px) and (pointer:fine){
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel{
+    padding:12px 12px 11px !important;
+    border-radius:26px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel .display-area{
+    height:46px !important;
+    margin-bottom:11px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel .keypad-grid{
+    gap:9px !important;
+    margin-bottom:7px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #screen-login .keypad-panel #keypad-submit-btn{
+    margin-top:7px !important;
+    padding:13px 0 !important;
+  }
+}
+</style>
 </head>
 <body class="variant-lockscreen">
 
@@ -6146,16 +6407,18 @@ body #screen-confirmation.screen.hidden {
                     </div>
                 </div>
                 <div class="login-preview hidden" id="login-user-preview" aria-live="polite"></div>
-                <div class="display-area" id="keypadDisplay">
-                    <div class="digit-wrapper"><div class="digit-box" data-index="0"></div></div>
-                    <div class="digit-wrapper"><div class="digit-box" data-index="1"></div></div>
-                    <div class="digit-wrapper"><div class="digit-box" data-index="2"></div></div>
-                    <div class="digit-wrapper"><div class="digit-box" data-index="3"></div></div>
+                <div class="keypad-panel" aria-label="내선번호 입력 패널">
+                    <div class="display-area" id="keypadDisplay">
+                        <div class="digit-wrapper"><div class="digit-box" data-index="0"></div></div>
+                        <div class="digit-wrapper"><div class="digit-box" data-index="1"></div></div>
+                        <div class="digit-wrapper"><div class="digit-box" data-index="2"></div></div>
+                        <div class="digit-wrapper"><div class="digit-box" data-index="3"></div></div>
+                    </div>
+                    <div class="keypad-grid" id="keypadContainer"></div>
+                    <button id="keypad-submit-btn" class="submit-btn" type="button">
+                        <i class="fa-solid fa-right-to-bracket"></i> 로그인
+                    </button>
                 </div>
-                <div class="keypad-grid" id="keypadContainer"></div>
-                <button id="keypad-submit-btn" class="submit-btn" type="button">
-                    <i class="fa-solid fa-right-to-bracket"></i> 로그인
-                </button>
             </div>
         </div>
         <!-- @SECTION: HTML_CARD_SELECTION_SCREEN -->
@@ -8156,7 +8419,10 @@ const CardApp = (function() {
             const form = document.getElementById('return-form-container');
             const dash = document.getElementById('receipt-dashboard');
             form.innerHTML = '';
-            if(dash) { dash.classList.remove('hidden'); form.appendChild(dash); }
+            const returnTray = document.createElement('div');
+            returnTray.className = 'return-neu-tray';
+            if(dash) { dash.classList.remove('hidden'); returnTray.appendChild(dash); }
+            /* @PHASE: FINAL_PATCH_28_RETURN_INSET_TRAY - 금액/영수증 목록만 약한 오목한 트레이로 묶음 */
             /* @PHASE: FINAL_PATCH_RECEIPT_CARD_STATUS_ONLY - 상단 배치 진행바 제거, 각 영수증 카드 상태만 표시 */
             /* @PHASE: JS_RETURN_SCREEN_TITLE_BADGE - 카드명/사용자/목적 배지 구성 */
             let purposeIcon = 'fa-credit-card';
@@ -8221,7 +8487,9 @@ const CardApp = (function() {
                 msg.innerHTML = `행정실에 방문하여<br><span class="text-gradient">행정실 태블릿</span>에서 <b>[반납 및 제출]</b> 버튼을 눌러주세요`;
                 subEl = msg;
             }
-            form.append(add, cw, guide, subEl);
+            returnTray.appendChild(cw);
+            form.append(returnTray, add, guide, subEl);
+            /* @PHASE: FINAL_PATCH_28_RETURN_INSET_TRAY - 버튼 위치/기능은 유지하고 정산 데이터 영역만 트레이화 */
             /* @PHASE: JS_RETURN_SCREEN_PERMISSION_LOCK - 최초 사용자만 영수증 추가/제출 가능 */
             const prim = card.userInfo.userName.split(',')[0].trim();
             if (state.enteredUsers[0].name !== prim) {
