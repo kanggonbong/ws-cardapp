@@ -1817,6 +1817,135 @@ body.card-is-focused #cardGrid .card-item-wrapper:hover:not(.disabled){
   transform: scale(1) !important;
 }
 
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_42_PURPOSE_FLIGHT_COLORS
+  42차: 카드 비행 플립 목적 선택 패널 색상/상태 피드백 보강
+========================================================= */
+.flight-purpose-title[data-flight-title="1"]{
+  transition: color .22s ease, transform .22s ease;
+}
+.purpose-flying-card .flight-purpose-btn{
+  transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .16s ease, color .2s ease;
+}
+.purpose-flying-card .flight-purpose-icon{
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .16s ease;
+}
+.purpose-flying-card .flight-purpose-btn.tone-purchase{
+  border-color:rgba(245,158,11,.28);
+  background:linear-gradient(180deg,#fffaf0 0%,#fff1d6 100%);
+}
+.purpose-flying-card .flight-purpose-btn.tone-purchase .flight-purpose-icon{
+  color:#f59e0b;
+  background:linear-gradient(135deg,#fff7d6 0%,#fde68a 100%);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.7),0 5px 12px rgba(245,158,11,.18);
+}
+.purpose-flying-card .flight-purpose-btn.tone-dining{
+  border-color:rgba(6,182,212,.28);
+  background:linear-gradient(180deg,#f0fdff 0%,#dff7fb 100%);
+}
+.purpose-flying-card .flight-purpose-btn.tone-dining .flight-purpose-icon{
+  color:#0891b2;
+  background:linear-gradient(135deg,#cffafe 0%,#a5f3fc 100%);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.7),0 5px 12px rgba(6,182,212,.18);
+}
+.purpose-flying-card .flight-purpose-btn.tone-meal{
+  border-color:rgba(16,185,129,.28);
+  background:linear-gradient(180deg,#f2fffb 0%,#dcfce7 100%);
+}
+.purpose-flying-card .flight-purpose-btn.tone-meal .flight-purpose-icon{
+  color:#059669;
+  background:linear-gradient(135deg,#d1fae5 0%,#86efac 100%);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.72),0 5px 12px rgba(16,185,129,.2);
+}
+.purpose-flying-card .flight-purpose-btn.selected{
+  transform:translateY(-1px) scale(1.01);
+  color:#1f4175;
+}
+.purpose-flying-card .flight-purpose-btn.tone-purchase.selected{
+  border-color:#f59e0b;
+  box-shadow:0 0 0 2px rgba(245,158,11,.16),8px 8px 15px rgba(245,158,11,.18),-6px -6px 12px rgba(255,255,255,.95);
+}
+.purpose-flying-card .flight-purpose-btn.tone-dining.selected{
+  border-color:#06b6d4;
+  box-shadow:0 0 0 2px rgba(6,182,212,.16),8px 8px 15px rgba(6,182,212,.18),-6px -6px 12px rgba(255,255,255,.95);
+}
+.purpose-flying-card .flight-purpose-btn.tone-meal.selected{
+  border-color:#10b981;
+  box-shadow:0 0 0 2px rgba(16,185,129,.18),8px 8px 15px rgba(16,185,129,.18),-6px -6px 12px rgba(255,255,255,.95);
+}
+.purpose-flying-card .flight-purpose-btn.selected .flight-purpose-icon{
+  transform:scale(1.06);
+}
+.flight-final-btn{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#eef3f8 0%,#d8e2ee 100%);
+  color:#718096;
+  box-shadow:inset 5px 5px 10px rgba(163,177,198,.38),inset -5px -5px 10px rgba(255,255,255,.86);
+  opacity:1;
+  transition:color .22s ease, box-shadow .22s ease, transform .16s ease;
+}
+.flight-final-btn span{
+  position:relative;
+  z-index:1;
+}
+.flight-final-btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  width:0;
+  background:linear-gradient(135deg,#60a5fa 0%,#2563eb 58%,#1e40af 100%);
+  transition:width .28s cubic-bezier(.25,1,.5,1);
+}
+.flight-final-btn.unlocked{
+  color:#fff;
+  box-shadow:0 14px 26px rgba(37,99,216,.26),inset 1px 1px 0 rgba(255,255,255,.28);
+}
+.flight-final-btn.unlocked::before{
+  width:100%;
+}
+.purpose-flying-card:has(.flight-final-btn.unlocked) .flight-purpose-title[data-flight-title="1"]{
+  color:#1d4ed8;
+}
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_43_PURPOSE_FINAL_BUTTON_CONTRAST
+  43차: 목적 선택 전/후 확정 버튼 색상 분리
+========================================================= */
+.purpose-flying-card .flight-final-btn{
+  background:linear-gradient(180deg,#f1f5f9 0%,#d7e0ea 100%) !important;
+  color:#64748b !important;
+  box-shadow:inset 5px 5px 10px rgba(148,163,184,.34),inset -5px -5px 10px rgba(255,255,255,.88) !important;
+  opacity:1 !important;
+}
+.purpose-flying-card .flight-final-btn::before{
+  display:none !important;
+}
+.purpose-flying-card .flight-final-btn.unlocked{
+  color:#fff !important;
+  box-shadow:0 14px 26px rgba(31,65,117,.20),inset 1px 1px 0 rgba(255,255,255,.26) !important;
+}
+.purpose-flying-card .flight-final-btn.unlocked.final-purchase{
+  background:linear-gradient(135deg,#fbbf24 0%,#f59e0b 58%,#d97706 100%) !important;
+}
+.purpose-flying-card .flight-final-btn.unlocked.final-dining{
+  background:linear-gradient(135deg,#22d3ee 0%,#06b6d4 58%,#0891b2 100%) !important;
+}
+.purpose-flying-card .flight-final-btn.unlocked.final-meal{
+  background:linear-gradient(135deg,#34d399 0%,#10b981 58%,#059669 100%) !important;
+}
+.purpose-flying-card .flight-final-btn.unlocked.final-default{
+  background:linear-gradient(135deg,#60a5fa 0%,#2563eb 58%,#1e40af 100%) !important;
+}
+.purpose-flying-card .flight-final-btn.unlocked.final-purchase:active,
+.purpose-flying-card .flight-final-btn.unlocked.final-dining:active,
+.purpose-flying-card .flight-final-btn.unlocked.final-meal:active{
+  transform:scale(.985);
+}
+
 </style>
 
     <!-- =========================================================
@@ -6287,6 +6416,236 @@ body #screen-confirmation.screen.hidden {
     padding:13px 0 !important;
   }
 }
+
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_CARD_PURPOSE_FLIGHT
+  41차: 시뮬레이터 기반 카드 비행/뒤집힘 목적 선택 레이어
+========================================================= */
+#purpose-flight-overlay{
+  position:fixed;
+  inset:0;
+  z-index:2100;
+  display:none;
+  opacity:0;
+  background:rgba(18,32,52,0.38);
+  transition:opacity .36s ease;
+  pointer-events:none;
+}
+#purpose-flight-overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+#purpose-flight-layer{
+  position:fixed;
+  inset:0;
+  z-index:2110;
+  pointer-events:none;
+  perspective:1400px;
+}
+.purpose-flying-card{
+  position:absolute;
+  pointer-events:auto;
+  transform-style:preserve-3d;
+  will-change:top,left,width,height,transform,border-radius,box-shadow;
+  transition:
+    top .54s cubic-bezier(.25,1,.5,1),
+    left .54s cubic-bezier(.25,1,.5,1),
+    width .54s cubic-bezier(.25,1,.5,1),
+    height .54s cubic-bezier(.25,1,.5,1),
+    transform .54s cubic-bezier(.34,1.16,.64,1),
+    border-radius .54s ease,
+    box-shadow .54s ease;
+  transform:rotateY(0deg) translateZ(0);
+}
+.purpose-flying-card.flipped{
+  transform:rotateY(180deg) translateZ(0);
+}
+.purpose-flying-face{
+  position:absolute;
+  inset:0;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  overflow:hidden;
+  border-radius:inherit;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.purpose-flight-front{
+  padding:18px 16px;
+  background:linear-gradient(135deg,var(--ws-final-card-blue-start,#1f4f9a) 0%,var(--ws-final-card-blue-end,#3b7fd8) 100%);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.38);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.24);
+}
+.purpose-flight-front.is-overseas{
+  background:linear-gradient(135deg,var(--ws-final-card-red-start,#9c3442) 0%,var(--ws-final-card-red-end,#cf5d68) 100%);
+}
+.purpose-flight-front .flight-chip{
+  width:34px;
+  height:24px;
+  border-radius:6px;
+  background:linear-gradient(135deg,#f4d77d 0%,#d6a934 100%);
+  box-shadow:inset 1px 1px 2px rgba(0,0,0,.18);
+}
+.purpose-flight-front .flight-card-name{
+  font-size:1.15rem;
+  font-weight:850;
+  letter-spacing:-.03em;
+  text-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.purpose-flight-front .flight-card-meta{
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  opacity:.82;
+}
+.purpose-flight-back{
+  transform:rotateY(180deg);
+  padding:20px 18px 18px;
+  background:linear-gradient(180deg,#f8fbff 0%,#e5eef9 100%);
+  border:1px solid rgba(255,255,255,.82);
+  box-shadow:18px 18px 34px rgba(76,105,145,.28),-10px -10px 22px rgba(255,255,255,.94),inset 1px 1px 0 rgba(255,255,255,.72);
+  color:var(--text-primary);
+}
+.flight-content-fade{
+  opacity:0;
+  transform:translateY(10px) translateZ(0);
+  transition:opacity .28s ease .14s,transform .28s ease .14s;
+}
+.purpose-flying-card.flipped .flight-content-fade{
+  opacity:1;
+  transform:translateY(0) translateZ(0);
+}
+.flight-purpose-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(104,130,168,.22);
+}
+.flight-purpose-title{
+  margin:0;
+  font-size:1.12rem;
+  font-weight:850;
+  letter-spacing:-.035em;
+  color:var(--text-primary);
+}
+.flight-purpose-sub{
+  margin:4px 0 0;
+  font-size:.78rem;
+  font-weight:700;
+  color:var(--text-secondary);
+}
+.flight-cancel-btn{
+  flex:0 0 auto;
+  border:none;
+  background:transparent;
+  color:var(--text-secondary);
+  font-weight:850;
+  font-size:.86rem;
+  cursor:pointer;
+  padding:4px 2px;
+}
+.flight-purpose-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  margin:14px 0 12px;
+}
+.flight-purpose-btn{
+  width:100%;
+  min-height:52px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.82);
+  background:linear-gradient(180deg,#ffffff 0%,#edf4fc 100%);
+  box-shadow:6px 6px 12px rgba(110,138,176,.22),-5px -5px 10px rgba(255,255,255,.92),inset 1px 1px 0 rgba(255,255,255,.62);
+  color:var(--text-primary);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 12px;
+  text-align:left;
+  cursor:pointer;
+  font-family:var(--font-main);
+}
+.flight-purpose-btn:active,
+.flight-purpose-btn.selected{
+  box-shadow:inset 6px 6px 12px rgba(110,138,176,.20),inset -6px -6px 12px rgba(255,255,255,.9);
+  transform:scale(.985);
+}
+.flight-purpose-btn.selected{
+  border-color:rgba(37,99,201,.42);
+}
+.flight-purpose-icon{
+  width:32px;
+  height:32px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#dbeafe;
+  color:var(--primary-color);
+  flex:0 0 auto;
+}
+.flight-purpose-copy{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+}
+.flight-purpose-copy strong{
+  font-size:.96rem;
+  line-height:1.1;
+  font-weight:850;
+}
+.flight-purpose-copy span{
+  font-size:.72rem;
+  color:var(--text-secondary);
+  font-weight:700;
+  line-height:1.25;
+}
+.flight-final-btn{
+  width:100%;
+  min-height:50px;
+  border:none;
+  border-radius:16px;
+  background:linear-gradient(135deg,#7cb8ff 0%,#1d4fb8 100%);
+  color:#fff;
+  font-weight:850;
+  font-size:.98rem;
+  cursor:pointer;
+  box-shadow:0 12px 22px rgba(37,99,216,.24),inset 1px 1px 0 rgba(255,255,255,.24);
+  opacity:.52;
+}
+.flight-final-btn.unlocked{
+  opacity:1;
+}
+.flight-final-btn:disabled{
+  cursor:not-allowed;
+}
+.flight-final-btn.unlocked:active{
+  transform:scale(.985);
+}
+body.purpose-flight-open .card-item-wrapper.flight-source-hidden{
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+@media (max-width:767px){
+  #purpose-flight-overlay.active{background:rgba(18,32,52,.42);}
+  .purpose-flight-back{padding:18px 15px 15px;}
+  .flight-purpose-title{font-size:1rem;}
+  .flight-purpose-btn{min-height:49px;}
+  .flight-purpose-copy span{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  .purpose-flying-card{transition:none !important;}
+  #purpose-flight-overlay{transition:none !important;}
+  .flight-content-fade{transition:none !important;}
+}
+
 </style>
 </head>
 <body class="variant-lockscreen">
@@ -6327,6 +6686,14 @@ body #screen-confirmation.screen.hidden {
         <button class="close-morph-btn" id="close-morph-btn">취소</button>
     </div>
 </div>
+
+
+<!-- =========================================================
+  @SECTION: HTML_PURPOSE_FLIGHT_LAYER
+  41차: 카드 클릭 위치에서 중앙으로 날아와 뒤집히는 목적 선택 레이어
+========================================================= -->
+<div id="purpose-flight-overlay" aria-hidden="true"></div>
+<div id="purpose-flight-layer" aria-hidden="true"></div>
 
 <!-- =========================================================
   @SECTION: HTML_LOCK_SCREEN
@@ -8252,6 +8619,207 @@ const CardApp = (function() {
         @SUBSECTION: JS_PURPOSE_RENT_FLOW
         카드 사용 목적 선택 오버레이와 대여 요청
         ========================================================= */
+
+        /* =========================================================
+        @SUBSECTION: FINAL_PATCH_PURPOSE_FLIGHT_LAYER
+        시뮬레이터 기반 카드 비행/뒤집힘 목적 선택 레이어
+        ========================================================= */
+        getPurposeOptions() {
+            return [
+                { id: '물품구매', icon: 'fa-box-open', label: '물품구매', desc: '비품 · 소모품 · 행사 준비물', tone: 'purchase' },
+                { id: '식사다과', icon: 'fa-mug-hot', label: '식사다과', desc: '식사 · 간식 · 다과', tone: 'dining' },
+                { id: '특근매식', icon: 'fa-utensils', label: '특근매식', desc: '특근 · 매식비', tone: 'meal' }
+            ];
+        },
+        openPurposeFlight(card, sourceEl) {
+            try {
+                if (CardLogic._flightCard || !card || !sourceEl) return;
+                const overlay = document.getElementById('purpose-flight-overlay');
+                const layer = document.getElementById('purpose-flight-layer');
+                if (!overlay || !layer) {
+                    CardLogic.openMorphOverlay(card);
+                    return;
+                }
+
+                const firstRect = sourceEl.getBoundingClientRect();
+                const computed = window.getComputedStyle(sourceEl);
+                const radius = computed.borderRadius || '24px';
+                const isOverseas = String(card.id || '').includes('해외') || String(card.name || '').includes('해외') || String(card.displayName || '').includes('해외');
+                const options = CardLogic.getPurposeOptions();
+
+                const flyer = document.createElement('div');
+                flyer.className = 'purpose-flying-card';
+                flyer.dataset.cardId = card.id;
+                flyer.style.top = `${firstRect.top}px`;
+                flyer.style.left = `${firstRect.left}px`;
+                flyer.style.width = `${firstRect.width}px`;
+                flyer.style.height = `${firstRect.height}px`;
+                flyer.style.borderRadius = radius;
+                flyer.innerHTML = `
+                    <div class="purpose-flying-face purpose-flight-front ${isOverseas ? 'is-overseas' : ''}" style="border-radius:inherit;">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                            <span class="flight-chip" aria-hidden="true"></span>
+                            <span style="font-size:.72rem;font-weight:850;letter-spacing:.1em;opacity:.86;">AVAILABLE</span>
+                        </div>
+                        <div>
+                            <div class="flight-card-name">${Utils.esc(card.displayName || card.id || '')}</div>
+                            <div class="flight-card-meta">WOOSUNG CARD</div>
+                        </div>
+                    </div>
+                    <div class="purpose-flying-face purpose-flight-back" style="border-radius:inherit;">
+                        <div class="flight-purpose-top flight-content-fade">
+                            <div>
+                                <h3 class="flight-purpose-title" data-flight-title="1">목적을 먼저 선택해 주세요</h3>
+                                <p class="flight-purpose-sub" data-flight-sub="1">카드 신청 목적을 선택하면 신청 확정 버튼이 활성화됩니다.</p>
+                            </div>
+                            <button class="flight-cancel-btn" type="button" data-flight-close="1">취소</button>
+                        </div>
+                        <div class="flight-purpose-list flight-content-fade">
+                            ${options.map(btn => `
+                                <button class="flight-purpose-btn tone-${Utils.esc(btn.tone || 'default')}" type="button" data-flight-purpose="${Utils.esc(btn.id)}" data-flight-tone="${Utils.esc(btn.tone || 'default')}" aria-label="${Utils.esc(btn.label)} ${Utils.esc(btn.desc || '')}">
+                                    <span class="flight-purpose-icon"><i class="fa-solid ${btn.icon}"></i></span>
+                                    <span class="flight-purpose-copy"><strong>${Utils.esc(btn.label)}</strong><span>${Utils.esc(btn.desc || '')}</span></span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <button class="flight-final-btn flight-content-fade" type="button" data-flight-final="1" disabled><span>목적 선택 후 신청 확정</span></button>
+                    </div>
+                `;
+
+                layer.appendChild(flyer);
+                CardLogic._flightCard = flyer;
+                CardLogic._flightSource = sourceEl;
+                CardLogic._flightSourceCard = card;
+                delete flyer.dataset.selectedPurpose;
+                sourceEl.classList.add('flight-source-hidden');
+                document.body.classList.add('purpose-flight-open');
+
+                overlay.style.display = 'block';
+                overlay.setAttribute('aria-hidden', 'false');
+                layer.setAttribute('aria-hidden', 'false');
+                overlay.offsetHeight;
+                overlay.classList.add('active');
+
+                flyer.querySelectorAll('[data-flight-purpose]').forEach(btn => {
+                    btn.addEventListener('click', (ev) => {
+                        ev.stopPropagation();
+                        CardLogic.selectPurposeInFlight(btn.dataset.flightPurpose, btn);
+                    });
+                });
+                const closeBtn = flyer.querySelector('[data-flight-close]');
+                if (closeBtn) closeBtn.addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    CardLogic.closePurposeFlight();
+                });
+                const finalBtn = flyer.querySelector('[data-flight-final]');
+                if (finalBtn) finalBtn.addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    CardLogic.executePurposeFlightRent();
+                });
+                overlay.onclick = () => CardLogic.closePurposeFlight();
+
+                requestAnimationFrame(() => {
+                    const isMobile = window.innerWidth < 768;
+                    const targetW = Math.min(isMobile ? window.innerWidth - 32 : 410, window.innerWidth - 28);
+                    const targetH = isMobile ? Math.min(360, window.innerHeight - 72) : 340;
+                    const targetLeft = (window.innerWidth - targetW) / 2;
+                    const targetTop = Math.max(18, (window.innerHeight - targetH) / 2);
+                    flyer.style.top = `${targetTop}px`;
+                    flyer.style.left = `${targetLeft}px`;
+                    flyer.style.width = `${targetW}px`;
+                    flyer.style.height = `${targetH}px`;
+                    flyer.style.borderRadius = isMobile ? '22px' : '24px';
+                    flyer.style.boxShadow = '0 26px 52px rgba(31,65,117,.30)';
+                    flyer.classList.add('flipped');
+                });
+            } catch (err) {
+                console.error('purpose flight failed', err);
+                CardLogic.cleanupPurposeFlight();
+                CardLogic.openMorphOverlay(card);
+            }
+        },
+        selectPurposeInFlight(purpose, buttonEl) {
+            const flyer = CardLogic._flightCard;
+            if (!flyer || !purpose) return;
+            flyer.dataset.selectedPurpose = purpose;
+            flyer.querySelectorAll('[data-flight-purpose]').forEach(btn => {
+                const selected = btn === buttonEl;
+                btn.classList.toggle('selected', selected);
+                btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+            });
+            const title = flyer.querySelector('[data-flight-title]');
+            const sub = flyer.querySelector('[data-flight-sub]');
+            if (title) title.textContent = '신청 목적 확인';
+            if (sub) sub.textContent = `${purpose} 목적으로 신청을 확정할 수 있습니다.`;
+            const finalBtn = flyer.querySelector('[data-flight-final]');
+            if (finalBtn) {
+                const tone = buttonEl?.dataset?.flightTone || 'default';
+                finalBtn.innerHTML = `<span>${purpose} 목적으로 신청 확정</span>`;
+                finalBtn.disabled = false;
+                finalBtn.classList.remove('final-purchase', 'final-dining', 'final-meal', 'final-default');
+                finalBtn.classList.add('unlocked', `final-${tone}`);
+            }
+        },
+        executePurposeFlightRent() {
+            const flyer = CardLogic._flightCard;
+            const card = CardLogic._flightSourceCard;
+            const purpose = flyer?.dataset?.selectedPurpose;
+            if (!flyer || !card || !purpose || CardLogic._rentInFlight) return;
+            const finalBtn = flyer.querySelector('[data-flight-final]');
+            if (finalBtn) {
+                finalBtn.disabled = true;
+                finalBtn.innerHTML = '<span>신청 접수 중...</span>';
+                finalBtn.classList.add('is-submitting');
+            }
+            const cardId = card.id;
+            CardLogic.cleanupPurposeFlight();
+            CardLogic.submitRentRequest(cardId, purpose);
+        },
+        closePurposeFlight() {
+            const flyer = CardLogic._flightCard;
+            const source = CardLogic._flightSource;
+            const overlay = document.getElementById('purpose-flight-overlay');
+            if (!flyer || !source) {
+                CardLogic.cleanupPurposeFlight();
+                return;
+            }
+            try {
+                if (overlay) overlay.classList.remove('active');
+                const originRect = source.getBoundingClientRect();
+                const radius = window.getComputedStyle(source).borderRadius || '24px';
+                flyer.classList.remove('flipped');
+                flyer.style.top = `${originRect.top}px`;
+                flyer.style.left = `${originRect.left}px`;
+                flyer.style.width = `${originRect.width}px`;
+                flyer.style.height = `${originRect.height}px`;
+                flyer.style.borderRadius = radius;
+                flyer.style.boxShadow = 'none';
+                setTimeout(() => CardLogic.cleanupPurposeFlight(), 560);
+            } catch (err) {
+                CardLogic.cleanupPurposeFlight();
+            }
+        },
+        cleanupPurposeFlight() {
+            const overlay = document.getElementById('purpose-flight-overlay');
+            const layer = document.getElementById('purpose-flight-layer');
+            if (CardLogic._flightCard) {
+                try { CardLogic._flightCard.remove(); } catch(e) {}
+            }
+            if (CardLogic._flightSource) {
+                CardLogic._flightSource.classList.remove('flight-source-hidden');
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+                overlay.style.display = 'none';
+                overlay.setAttribute('aria-hidden', 'true');
+                overlay.onclick = null;
+            }
+            if (layer) layer.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('purpose-flight-open');
+            CardLogic._flightCard = null;
+            CardLogic._flightSource = null;
+            CardLogic._flightSourceCard = null;
+        },
         openMorphOverlay(card) {
             const cardEl = document.querySelector(`.card-item-wrapper[data-card-id="${card.id}"]`);
             const overlay = document.getElementById('morph-overlay');
@@ -8319,7 +8887,7 @@ const CardApp = (function() {
             if (!cardId || !purpose || CardLogic._rentInFlight) return;
             if (finalBtn) {
                 finalBtn.classList.add('is-submitting');
-                finalBtn.textContent = '신청 접수 중...';
+                finalBtn.innerHTML = '<span>신청 접수 중...</span>';
                 finalBtn.disabled = true;
             }
             CardLogic.submitRentRequest(cardId, purpose);
@@ -9715,13 +10283,8 @@ const CardApp = (function() {
             if (cardEl && elements.cardGrid.contains(cardEl)) {
                 const card = state.allCardData?.find(c => c.id === cardEl.dataset.cardId);
                 if (card && ['사용가능','대여가능','사용 가능','대여 가능'].includes(String(card.status || '').trim())) {
-                    /* @PHASE: FINAL_PATCH_CARD_SELECT_FEEDBACK - 목적 선택 전 카드 자체 선택 애니메이션 */
-                    cardEl.classList.add('rent-clicked');
-                    setTimeout(() => {
-                        try { CardLogic.openMorphOverlay(card); } finally {
-                            setTimeout(() => cardEl.classList.remove('rent-clicked'), 260);
-                        }
-                    }, 150);
+                    /* @PHASE: FINAL_PATCH_CARD_PURPOSE_FLIGHT - 카드 위치에서 중앙으로 날아와 뒤집히는 목적 선택 */
+                    CardLogic.openPurposeFlight(card, cardEl);
                     return;
                 }
             }
