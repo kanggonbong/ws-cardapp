@@ -1768,6 +1768,55 @@ body.swal2-shown.swal2-height-auto {
   }
 }
 
+
+
+/* @SECTION: FINAL_PATCH_CARD_SELECTION_STABLE_NO_FLIP
+   @SUBSECTION: 카드 선택 안정형 복구
+   @PHASE: 40차
+   - 35~39차 플립 실험은 사용하지 않음
+   - 카드 hover는 이동 없이 테두리/광택/그림자만 표시
+   - 클릭은 짧은 눌림 피드백만 유지
+   - 목적 선택은 기존 morph-overlay 안정형 패널 사용
+   - transform 충돌 방지를 위해 wrapper 이동 효과 제거
+*/
+.card-item-wrapper:hover:not(.disabled),
+#cardGrid .card-item-wrapper:hover:not(.disabled),
+body.card-is-focused #cardGrid .card-item-wrapper:hover:not(.disabled){
+  transform: none !important;
+  filter: brightness(1.018) !important;
+  border-color: rgba(37, 99, 235, 0.22) !important;
+  box-shadow:
+    14px 14px 24px rgba(120,150,190,0.32),
+    -10px -10px 20px rgba(255,255,255,0.98),
+    inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+}
+.card-item-wrapper:active:not(.disabled),
+#cardGrid .card-item-wrapper:active:not(.disabled){
+  transform: scale(0.985) !important;
+  filter: brightness(0.995) !important;
+  box-shadow:
+    inset 8px 8px 14px rgba(120,150,190,0.24),
+    inset -8px -8px 14px rgba(255,255,255,0.95) !important;
+}
+.card-item-wrapper.is-focused,
+.card-item-wrapper.is-flipped,
+.card-item-wrapper.ws-flip-source,
+.card-item-wrapper.ws-card-flying,
+.ws-card-flip-clone,
+.ws-card-flight-layer,
+.ws-card-back-panel{
+  display: none !important;
+}
+.morph-overlay{
+  transform: scale(0.96) !important;
+  transition:
+    opacity 0.22s ease,
+    transform 0.24s cubic-bezier(.22,1,.36,1) !important;
+}
+.morph-overlay.active{
+  transform: scale(1) !important;
+}
+
 </style>
 
     <!-- =========================================================
