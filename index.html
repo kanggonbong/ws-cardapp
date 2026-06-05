@@ -6682,6 +6682,31 @@ body.purpose-flight-open .card-item-wrapper.flight-source-hidden{
 }
 
 </style>
+
+<!-- @PHASE: 46차_내선번호키패드반응속도개선 -->
+<style id="woosung-keypad-speed-patch-46">
+  #screen-login .keypad-btn,
+  #screen-login #keypad-submit-btn,
+  #screen-login #keypad-add-btn,
+  #screen-login #keypad-back-btn {
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transition: transform 0.055s ease, box-shadow 0.055s ease, color 0.055s ease, filter 0.055s ease !important;
+    will-change: auto !important;
+  }
+  #screen-login .keypad-btn.pressed {
+    transform: scale(0.965) !important;
+  }
+  #screen-login #keypad-submit-btn.pressed {
+    transform: scale(0.985) !important;
+  }
+  #screen-login #keypadDisplay .digit-box {
+    transition: width 0.16s ease, height 0.16s ease, border-radius 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.12s ease, opacity 0.12s ease !important;
+  }
+  #screen-login #keypadDisplay .digit-box.masked {
+    animation: none !important;
+  }
+</style>
 </head>
 <body class="variant-lockscreen">
 
@@ -7082,13 +7107,13 @@ function triggerKeypadVisualPress(key){
         if (!selector) return;
         const btn = document.querySelector(selector);
         if (!btn) return;
-        btn.classList.remove('pressed');
-        void btn.offsetWidth;
+        // @PHASE: 46차_내선번호키패드반응속도개선
+        // forced reflow(offsetWidth)를 제거해서 빠른 연속 입력 시 끊김을 줄입니다.
         btn.classList.add('pressed');
         clearTimeout(btn._pressedTimer);
         btn._pressedTimer = setTimeout(() => {
             btn.classList.remove('pressed');
-        }, 120);
+        }, 75);
     } catch(e) {}
 }
 
@@ -7503,12 +7528,14 @@ const CardApp = (function() {
         외부 모듈에서 호출하는 화면 이동 API
         ========================================================= */
         showScreen: (sid) => {
+            if (sid === 'login') { try { CardLogic.cleanupPurposeFlight && CardLogic.cleanupPurposeFlight(); } catch(e) {} }
             const next = UIManager.showScreenBase(sid, { immediate: false });
             if (!next) return;
             if (sid === 'main') CardLogic.displayCardList();
             if (sid === 'login') KeypadLogic.updateDashboard();
         },
         showScreenImmediate: (sid) => {
+            if (sid === 'login') { try { CardLogic.cleanupPurposeFlight && CardLogic.cleanupPurposeFlight(); } catch(e) {} }
             const next = UIManager.showScreenBase(sid, { immediate: true });
             if (!next) return;
             if (sid === 'main') CardLogic.displayCardList();
@@ -7520,6 +7547,7 @@ const CardApp = (function() {
         ========================================================= */
         showLockScreen: () => {
             clearTransitionTimers();
+            try { CardLogic.cleanupPurposeFlight && CardLogic.cleanupPurposeFlight(); } catch(e) {}
             document.body.style.overflow = 'hidden';
             document.body.style.pointerEvents = 'auto';
             state.enteredUsers = [];
@@ -7558,6 +7586,7 @@ const CardApp = (function() {
         },
         resetToLogin: () => {
             clearTransitionTimers();
+            try { CardLogic.cleanupPurposeFlight && CardLogic.cleanupPurposeFlight(); } catch(e) {}
             document.body.style.pointerEvents = 'auto';
             state.enteredUsers=[];
             state.keypadValues = [null, null, null, null];
@@ -10690,23 +10719,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initFastTouch() {
     applyFastTouchCss();
-
-    // capture 단계에서 먼저 처리해야 기존 click보다 즉시 반응함
-    document.addEventListener('pointerdown', handlePointerDown, {
-      capture: true,
-      passive: false
-    });
-
-    // 일부 구형 iOS WebView 대응
-    document.addEventListener('touchstart', handleTouchStart, {
-      capture: true,
-      passive: false
-    });
-
-    document.addEventListener('click', suppressDelayedClick, {
-      capture: true,
-      passive: false
-    });
+    // @PHASE: 46차_내선번호키패드반응속도개선
+    // pointerdown/touchstart에서 btn.click()을 강제 실행하던 빠른 터치 보정은
+    // 기존 click 핸들러와 시각 효과를 중복 실행시킬 수 있어 비활성화합니다.
+    // touch-action CSS만 유지해 브라우저 기본 click 지연을 최소화합니다.
   }
 
   if (document.readyState === 'loading') {
