@@ -7377,6 +7377,47 @@ const CardApp = (function() {
     ========================================================= */
     let elements = {};
     /* =========================================================
+    @SUBSECTION: JS_STATE_ADMIN_PERSISTENCE
+    행정실 태블릿 운영용 관리자 모드 영구 유지.
+    PIN으로 직접 OFF 하기 전까지 자동 잠금/처음화면/재로그인/새로고침 후에도 관리자 모드를 복원합니다.
+    ========================================================= */
+    const ADMIN_MODE_STORAGE_KEY = 'woosung_admin_mode_persistent_v1';
+    function readPersistedAdminMode(){
+        try {
+            const raw = window.localStorage && localStorage.getItem(ADMIN_MODE_STORAGE_KEY);
+            if (!raw) return null;
+            const data = JSON.parse(raw);
+            if (!data || !data.enabled || !data.pin) return null;
+            return {
+                enabled: true,
+                pin: String(data.pin || ''),
+                since: data.since || new Date().toISOString()
+            };
+        } catch(e) { return null; }
+    }
+    function persistAdminMode(){
+        try {
+            if (!window.localStorage || !state.isAdminMode || !state.adminPinCache) return;
+            localStorage.setItem(ADMIN_MODE_STORAGE_KEY, JSON.stringify({
+                enabled: true,
+                pin: String(state.adminPinCache),
+                since: state.adminSince || new Date().toISOString()
+            }));
+        } catch(e) {}
+    }
+    function clearPersistedAdminMode(){
+        try {
+            if (window.localStorage) localStorage.removeItem(ADMIN_MODE_STORAGE_KEY);
+        } catch(e) {}
+    }
+    function restoreAdminModeFromStorage(){
+        const saved = readPersistedAdminMode();
+        if (!saved) return;
+        state.isAdminMode = true;
+        state.adminSince = saved.since;
+        state.adminPinCache = saved.pin;
+    }
+    /* =========================================================
     @SECTION: JS_SAFE_UPDATE_HELPER
     낙관적 UI 업데이트 후 서버 실패 시 원상복구하는 공통 helper
     ========================================================= */
@@ -7418,15 +7459,17 @@ const CardApp = (function() {
     function setAdminMode(on, pin=null){
         state.isAdminMode = !!on;
         if (state.isAdminMode) {
-            const ts = new Date().toISOString();
+            const ts = state.adminSince || new Date().toISOString();
             state.adminSince = ts;
             if (pin) {
                 state.adminPinCache = String(pin);
             }
+            persistAdminMode();
             showAdminModeNotice(true);
         } else {
             state.adminSince = null;
             state.adminPinCache = null;
+            clearPersistedAdminMode();
             showAdminModeNotice(false);
         }
     }
@@ -10615,6 +10658,7 @@ const CardApp = (function() {
     ========================================================= */
     return {
         init: () => {
+            restoreAdminModeFromStorage();
             setupEventListeners();
             KeypadLogic.initializeKeypad();
         }
