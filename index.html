@@ -6646,6 +6646,41 @@ body.purpose-flight-open .card-item-wrapper.flight-source-hidden{
   .flight-content-fade{transition:none !important;}
 }
 
+
+/* =========================================================
+  @SECTION: FINAL_PATCH_45_PURPOSE_FLIGHT_GPU_TRANSFORM
+  45차: 카드 비행 플립 transform-only GPU 가속 실험
+  - top/left/width/height transition 제거
+  - 크기는 최종 모달 크기로 고정 후 transform으로만 이동/확대/회전
+========================================================= */
+#purpose-flight-layer{
+  perspective:1500px !important;
+}
+.purpose-flying-card{
+  position:fixed !important;
+  transform-style:preserve-3d !important;
+  transform-origin:center center !important;
+  will-change:transform !important;
+  transition:transform .52s cubic-bezier(.25,1,.5,1), border-radius .52s ease, box-shadow .52s ease !important;
+  contain:layout paint style;
+}
+.purpose-flying-card.flipped{
+  /* 실제 회전값은 JS inline transform에서 translate3d/scale과 함께 제어 */
+}
+.purpose-flying-face{
+  -webkit-backface-visibility:hidden !important;
+  backface-visibility:hidden !important;
+}
+.purpose-flight-front{
+  transform:translateZ(0);
+}
+.purpose-flight-back{
+  transform:rotateY(180deg) translateZ(0) !important;
+}
+.flight-content-fade{
+  transition:opacity .25s ease .18s, transform .25s ease .18s !important;
+}
+
 </style>
 </head>
 <body class="variant-lockscreen">
@@ -8646,15 +8681,30 @@ const CardApp = (function() {
                 const radius = computed.borderRadius || '24px';
                 const isOverseas = String(card.id || '').includes('해외') || String(card.name || '').includes('해외') || String(card.displayName || '').includes('해외');
                 const options = CardLogic.getPurposeOptions();
+                const isMobile = window.innerWidth < 768;
+                const targetW = Math.min(isMobile ? window.innerWidth - 32 : 410, window.innerWidth - 28);
+                const targetH = isMobile ? Math.min(360, window.innerHeight - 72) : 340;
+                const targetLeft = (window.innerWidth - targetW) / 2;
+                const targetTop = Math.max(18, (window.innerHeight - targetH) / 2);
+                const targetCenterX = targetLeft + targetW / 2;
+                const targetCenterY = targetTop + targetH / 2;
+                const firstCenterX = firstRect.left + firstRect.width / 2;
+                const firstCenterY = firstRect.top + firstRect.height / 2;
+                const deltaX = firstCenterX - targetCenterX;
+                const deltaY = firstCenterY - targetCenterY;
+                const scaleX = firstRect.width / targetW;
+                const scaleY = firstRect.height / targetH;
 
                 const flyer = document.createElement('div');
                 flyer.className = 'purpose-flying-card';
                 flyer.dataset.cardId = card.id;
-                flyer.style.top = `${firstRect.top}px`;
-                flyer.style.left = `${firstRect.left}px`;
-                flyer.style.width = `${firstRect.width}px`;
-                flyer.style.height = `${firstRect.height}px`;
+                flyer.style.top = `${targetTop}px`;
+                flyer.style.left = `${targetLeft}px`;
+                flyer.style.width = `${targetW}px`;
+                flyer.style.height = `${targetH}px`;
                 flyer.style.borderRadius = radius;
+                flyer.style.boxShadow = '0 12px 24px rgba(31,65,117,.16)';
+                flyer.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scaleX}, ${scaleY}) rotateY(0deg)`;
                 flyer.innerHTML = `
                     <div class="purpose-flying-face purpose-flight-front ${isOverseas ? 'is-overseas' : ''}" style="border-radius:inherit;">
                         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
@@ -8690,6 +8740,7 @@ const CardApp = (function() {
                 CardLogic._flightCard = flyer;
                 CardLogic._flightSource = sourceEl;
                 CardLogic._flightSourceCard = card;
+                CardLogic._flightTarget = { left: targetLeft, top: targetTop, width: targetW, height: targetH };
                 delete flyer.dataset.selectedPurpose;
                 sourceEl.classList.add('flight-source-hidden');
                 document.body.classList.add('purpose-flight-open');
@@ -8718,18 +8769,11 @@ const CardApp = (function() {
                 });
                 overlay.onclick = () => CardLogic.closePurposeFlight();
 
+                flyer.offsetHeight;
                 requestAnimationFrame(() => {
-                    const isMobile = window.innerWidth < 768;
-                    const targetW = Math.min(isMobile ? window.innerWidth - 32 : 410, window.innerWidth - 28);
-                    const targetH = isMobile ? Math.min(360, window.innerHeight - 72) : 340;
-                    const targetLeft = (window.innerWidth - targetW) / 2;
-                    const targetTop = Math.max(18, (window.innerHeight - targetH) / 2);
-                    flyer.style.top = `${targetTop}px`;
-                    flyer.style.left = `${targetLeft}px`;
-                    flyer.style.width = `${targetW}px`;
-                    flyer.style.height = `${targetH}px`;
                     flyer.style.borderRadius = isMobile ? '22px' : '24px';
                     flyer.style.boxShadow = '0 26px 52px rgba(31,65,117,.30)';
+                    flyer.style.transform = 'translate3d(0, 0, 0) scale(1, 1) rotateY(180deg)';
                     flyer.classList.add('flipped');
                 });
             } catch (err) {
@@ -8787,14 +8831,26 @@ const CardApp = (function() {
                 if (overlay) overlay.classList.remove('active');
                 const originRect = source.getBoundingClientRect();
                 const radius = window.getComputedStyle(source).borderRadius || '24px';
+                const target = CardLogic._flightTarget || {
+                    left: parseFloat(flyer.style.left) || 0,
+                    top: parseFloat(flyer.style.top) || 0,
+                    width: parseFloat(flyer.style.width) || flyer.offsetWidth,
+                    height: parseFloat(flyer.style.height) || flyer.offsetHeight
+                };
+                const targetCenterX = target.left + target.width / 2;
+                const targetCenterY = target.top + target.height / 2;
+                const originCenterX = originRect.left + originRect.width / 2;
+                const originCenterY = originRect.top + originRect.height / 2;
+                const deltaX = originCenterX - targetCenterX;
+                const deltaY = originCenterY - targetCenterY;
+                const scaleX = originRect.width / target.width;
+                const scaleY = originRect.height / target.height;
                 flyer.classList.remove('flipped');
-                flyer.style.top = `${originRect.top}px`;
-                flyer.style.left = `${originRect.left}px`;
-                flyer.style.width = `${originRect.width}px`;
-                flyer.style.height = `${originRect.height}px`;
+                flyer.classList.remove('flying-card-active');
                 flyer.style.borderRadius = radius;
-                flyer.style.boxShadow = 'none';
-                setTimeout(() => CardLogic.cleanupPurposeFlight(), 560);
+                flyer.style.boxShadow = '0 10px 20px rgba(31,65,117,.10)';
+                flyer.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scaleX}, ${scaleY}) rotateY(0deg)`;
+                setTimeout(() => CardLogic.cleanupPurposeFlight(), 540);
             } catch (err) {
                 CardLogic.cleanupPurposeFlight();
             }
@@ -8819,6 +8875,7 @@ const CardApp = (function() {
             CardLogic._flightCard = null;
             CardLogic._flightSource = null;
             CardLogic._flightSourceCard = null;
+            CardLogic._flightTarget = null;
         },
         openMorphOverlay(card) {
             const cardEl = document.querySelector(`.card-item-wrapper[data-card-id="${card.id}"]`);
