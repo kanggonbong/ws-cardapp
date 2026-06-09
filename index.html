@@ -1446,7 +1446,7 @@ body.swal2-shown.swal2-height-auto {
   min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 12px !important;
+  gap: 7px !important;
   align-items: stretch !important;
   padding-top: 0 !important;
   box-sizing: border-box !important;
@@ -1460,13 +1460,13 @@ body.swal2-shown.swal2-height-auto {
   border: 1px solid rgba(255,255,255,0.72);
   background: linear-gradient(180deg,#f8fbff 0%,#edf4fc 100%);
   box-shadow: inset 1px 1px 0 rgba(255,255,255,0.72), 0 8px 18px rgba(110,138,176,0.10);
-  padding: 12px;
+  padding: 8px;
 }
 .receipt-ocr-panel-title {
   display: flex;
   align-items: center;
   gap: 7px;
-  margin: 0 0 9px;
+  margin: 0 0 5px;
   color: #4f6f9f;
   font-size: 0.86rem;
   font-weight: 800;
@@ -1477,8 +1477,8 @@ body.swal2-shown.swal2-height-auto {
 }
 .receipt-ocr-swal #swal-image-container {
   width: 100%;
-  min-height: 210px;
-  max-height: 34vh;
+  min-height: 135px;
+  max-height: 22vh;
   border-radius: 16px;
   background: #ffffff;
   border: 1px dashed rgba(91,117,153,0.34);
@@ -1486,17 +1486,17 @@ body.swal2-shown.swal2-height-auto {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 8px;
   overflow: hidden;
   cursor: pointer;
   box-sizing: border-box;
 }
 .receipt-ocr-swal #swal-image {
   max-width: 100% !important;
-  max-height: 27vh !important;
+  max-height: 18vh !important;
   object-fit: contain;
   border-radius: 14px !important;
-  margin: 0 0 8px !important;
+  margin: 0 0 4px !important;
   box-shadow: 0 8px 18px rgba(40,60,90,0.12) !important;
 }
 .receipt-ocr-swal #swal-image-instruction {
@@ -1508,12 +1508,12 @@ body.swal2-shown.swal2-height-auto {
 .receipt-ocr-form-panel {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 7px;
 }
 .receipt-ocr-form-fields {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 .receipt-ocr-swal .swal-input-wrapper-new {
   width: 100%;
@@ -1612,11 +1612,11 @@ body.swal2-shown.swal2-height-auto {
     padding: 1.05rem 0.9rem !important;
   }
   .receipt-ocr-swal #swal-image-container {
-    min-height: 180px;
-    max-height: 30vh;
+    min-height: 118px;
+    max-height: 20vh;
   }
   .receipt-ocr-swal #swal-image {
-    max-height: 23vh !important;
+    max-height: 16vh !important;
   }
   .receipt-ocr-swal .swal2-title {
     font-size: 1.28rem !important;
@@ -1944,6 +1944,49 @@ body.card-is-focused #cardGrid .card-item-wrapper:hover:not(.disabled){
 .purpose-flying-card .flight-final-btn.unlocked.final-dining:active,
 .purpose-flying-card .flight-final-btn.unlocked.final-meal:active{
   transform:scale(.985);
+}
+
+
+/* FINAL_PATCH_RECEIPT_POPUP_IMAGE_BALANCE_20260609
+   제목 아래 과한 여백을 줄이고, 확보한 공간만큼 이미지 칸과 실제 영수증 미리보기를 키웁니다. */
+.receipt-ocr-swal .swal2-title{
+  margin:0 0 4px !important;
+  padding:0 !important;
+  line-height:1.18 !important;
+}
+.receipt-ocr-swal .swal2-html-container{
+  margin:0 !important;
+  padding:0 !important;
+}
+.receipt-ocr-swal .swal-custom-container.receipt-ocr-layout{
+  gap:7px !important;
+  padding-top:0 !important;
+}
+.receipt-ocr-swal .receipt-ocr-image-panel{
+  padding:8px !important;
+}
+.receipt-ocr-swal .receipt-ocr-panel-title{
+  margin:0 0 4px !important;
+}
+.receipt-ocr-swal #swal-image-container{
+  min-height:164px !important;
+  max-height:27vh !important;
+  padding:8px !important;
+}
+.receipt-ocr-swal #swal-image{
+  max-height:22vh !important;
+  max-width:96% !important;
+  margin-bottom:5px !important;
+}
+.receipt-ocr-swal #swal-image-instruction{
+  font-size:.86rem !important;
+  line-height:1.2 !important;
+}
+@media (max-width:520px){
+  .receipt-ocr-swal{padding-top:.9rem !important;}
+  .receipt-ocr-swal .swal2-title{margin-bottom:3px !important;}
+  .receipt-ocr-swal #swal-image-container{min-height:150px !important;max-height:25vh !important;}
+  .receipt-ocr-swal #swal-image{max-height:20vh !important;}
 }
 
 </style>
@@ -6841,6 +6884,171 @@ body.confirmation-result-mode .confirm-timer-caption{
 }
 </style>
 
+
+<!-- =========================================================
+  @SECTION: CSS_RECEIPT_ICON_BADGE_RESTYLE_V1
+  반납 영수증 리스트 왼쪽 아이콘을 소프트 라운드 배지형으로 정리
+  - 일반/식사/카페/교통/구매/사무 톤 분리
+  - 경고/처리중/저장완료 상태는 별도 배지 톤 적용
+========================================================= -->
+<style>
+.cart-item-icon{
+  position:relative !important;
+  width:46px !important;
+  height:46px !important;
+  margin-right:0 !important;
+  border-radius:16px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-shrink:0 !important;
+  background:linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(236,242,251,0.96) 100%) !important;
+  border:1px solid rgba(255,255,255,0.82) !important;
+  box-shadow:6px 6px 12px rgba(110,138,176,0.16), -5px -5px 12px rgba(255,255,255,0.9), inset 1px 1px 0 rgba(255,255,255,0.72) !important;
+  filter:none !important;
+  overflow:hidden !important;
+}
+.cart-item-icon i{
+  font-size:1.18rem !important;
+  line-height:1 !important;
+}
+.cart-item-icon.icon-tone-general{
+  color:#4169e1 !important;
+  background:linear-gradient(180deg,#f7faff 0%,#e7eefc 100%) !important;
+}
+.cart-item-icon.icon-tone-meal{
+  color:#0f9f78 !important;
+  background:linear-gradient(180deg,#f1fffb 0%,#daf7ee 100%) !important;
+}
+.cart-item-icon.icon-tone-cafe{
+  color:#8b5cf6 !important;
+  background:linear-gradient(180deg,#faf7ff 0%,#ede4ff 100%) !important;
+}
+.cart-item-icon.icon-tone-mobility{
+  color:#0f766e !important;
+  background:linear-gradient(180deg,#f1fffe 0%,#daf5f4 100%) !important;
+}
+.cart-item-icon.icon-tone-shopping{
+  color:#d97706 !important;
+  background:linear-gradient(180deg,#fffaf2 0%,#ffeed3 100%) !important;
+}
+.cart-item-icon.icon-tone-office{
+  color:#475569 !important;
+  background:linear-gradient(180deg,#f8fafc 0%,#e9eef5 100%) !important;
+}
+.cart-item-icon.icon-tone-warning{
+  color:#dc2626 !important;
+  background:linear-gradient(180deg,#fff5f5 0%,#ffe2e2 100%) !important;
+  box-shadow:6px 6px 12px rgba(239,68,68,0.10), -5px -5px 12px rgba(255,255,255,0.88), inset 1px 1px 0 rgba(255,255,255,0.7) !important;
+}
+.cart-item-icon.icon-tone-processing{
+  color:#0284c7 !important;
+  background:linear-gradient(180deg,#f0fbff 0%,#d9f3ff 100%) !important;
+}
+.cart-item-icon.icon-tone-saving{
+  color:#7c3aed !important;
+  background:linear-gradient(180deg,#f7f2ff 0%,#e9dcff 100%) !important;
+}
+.cart-item-icon.icon-tone-saved{
+  color:#16a34a !important;
+  background:linear-gradient(180deg,#f2fff7 0%,#daf5e6 100%) !important;
+}
+.cart-item.needs-details .cart-item-icon,
+.cart-item.needs-review .cart-item-icon{
+  color:inherit !important;
+}
+#screen-return-details .cart-item-icon{
+  width:42px !important;
+  height:42px !important;
+  border-radius:15px !important;
+}
+#screen-return-details .cart-item-icon i{
+  font-size:1.06rem !important;
+}
+#screen-return-details .cart-item.with-inline-actions{
+  grid-template-columns:42px minmax(0,1fr) auto 74px !important;
+}
+@media (max-width: 430px){
+  .cart-item-icon{width:42px !important;height:42px !important;border-radius:15px !important;}
+  .cart-item-icon i{font-size:1.06rem !important;}
+  .cart-item.with-inline-actions{grid-template-columns:42px minmax(0,1fr) auto 66px !important;}
+}
+@media (max-width: 360px){
+  .cart-item-icon{width:38px !important;height:38px !important;border-radius:14px !important;}
+  .cart-item-icon i{font-size:0.98rem !important;}
+  .cart-item.with-inline-actions{grid-template-columns:38px minmax(0,1fr) auto !important;}
+}
+</style>
+
+
+<!-- =========================================================
+  @SECTION: CSS_PURPOSE_MULTI_SELECT_PATCH
+  신청 목적 다중 선택 보정: 여러 용도로 대여할 수 있도록 selected 상태를 체크형으로 표시
+========================================================= -->
+<style>
+.purpose-btn.selected,
+.purpose-btn[aria-pressed="true"],
+.flight-purpose-btn.selected,
+.flight-purpose-btn[aria-pressed="true"]{
+  position:relative !important;
+}
+.purpose-btn.selected::after,
+.purpose-btn[aria-pressed="true"]::after,
+.flight-purpose-btn.selected::after,
+.flight-purpose-btn[aria-pressed="true"]::after{
+  content:'00c';
+  font-family:'Font Awesome 6 Free';
+  font-weight:900;
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:22px;
+  height:22px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.72rem;
+  color:#fff;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  box-shadow:0 8px 16px rgba(22,163,74,.22), inset 1px 1px 0 rgba(255,255,255,.30);
+  pointer-events:none;
+}
+.flight-purpose-btn.selected::after,
+.flight-purpose-btn[aria-pressed="true"]::after{
+  right:10px;
+  top:10px;
+}
+
+
+/* FINAL_PATCH_MEAL_EXPENSE_PER_RECEIPT
+   영수증 클릭 팝업에서 일반/특근매식 선택, 내선번호 등록 인원수 기준 금액 보정 UI */
+.receipt-use-type-box{width:100%;padding:9px;border-radius:16px;background:rgba(255,255,255,.22);box-shadow:inset 3px 3px 8px rgba(110,138,176,.15),inset -3px -3px 8px rgba(255,255,255,.65);display:flex;flex-direction:column;gap:7px;}
+.receipt-use-type-title{display:flex;align-items:center;gap:8px;font-weight:900;color:#1f4175;font-size:.95rem;}
+.receipt-use-type-segment{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;}
+.use-type-btn{border:none;border-radius:14px;padding:10px 8px;font-weight:900;color:#6882a8;background:linear-gradient(180deg,#fbfdff 0%,#e8eff8 100%);box-shadow:6px 6px 12px rgba(110,138,176,.18),-5px -5px 10px rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;gap:7px;}
+.use-type-btn.active[data-use-type="general"]{color:#fff;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);box-shadow:0 10px 18px rgba(37,99,235,.20);}
+.use-type-btn.active[data-use-type="meal"]{color:#fff;background:linear-gradient(135deg,#10b981 0%,#059669 100%);box-shadow:0 10px 18px rgba(16,185,129,.22);}
+.meal-panel{display:flex;flex-direction:column;gap:8px;font-weight:800;color:#1f4175;}
+.meal-summary{padding:10px 12px;border-radius:14px;background:rgba(16,185,129,.10);color:#047857;font-size:.9rem;line-height:1.35;}
+.meal-help{font-size:.82rem;color:#6882a8;line-height:1.35;}
+.receipt-meal-badge{display:inline-flex;align-items:center;gap:5px;margin-right:6px;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:.78rem;font-weight:900;}
+.meal-adjust-note{font-size:.78rem;color:#059669;font-weight:800;}
+.cart-item.meal-expense-item{border-color:rgba(16,185,129,.25) !important;}
+
+/* FINAL_PATCH_RECEIPT_POPUP_COMPACT_20260609
+   영수증 수정 팝업의 이미지/정보 간격을 줄이고 모바일 스크롤을 최소화합니다. */
+.receipt-ocr-swal .swal-custom-container.receipt-ocr-layout{gap:7px !important;}
+.receipt-ocr-swal .receipt-ocr-image-panel,.receipt-ocr-swal .receipt-ocr-form-panel{padding:8px !important;}
+.receipt-ocr-swal .receipt-ocr-panel-title{margin-bottom:5px !important;}
+.receipt-ocr-swal #swal-image-container{min-height:130px !important;max-height:22vh !important;padding:8px !important;}
+.receipt-ocr-swal #swal-image{max-height:17vh !important;margin-bottom:4px !important;}
+.receipt-ocr-swal .receipt-ocr-form-panel,.receipt-ocr-swal .receipt-ocr-form-fields{gap:7px !important;}
+.receipt-ocr-swal .receipt-use-type-box{padding:9px !important;gap:7px !important;}
+.receipt-ocr-swal .use-type-btn{padding:10px 8px !important;border-radius:14px !important;}
+@media (max-width:520px){.receipt-ocr-swal #swal-image-container{min-height:112px !important;max-height:19vh !important;}.receipt-ocr-swal #swal-image{max-height:15vh !important;}}
+</style>
+
 </head>
 <body class="variant-lockscreen">
 
@@ -7279,16 +7487,10 @@ const CardApp = (function() {
     행정실 키오스크 운영 규칙.
     - 화면 깨움/방치 복귀: 세션 청소 후 잠금화면만 표시
     - 실제 카드/사용자 데이터 갱신: 잠금화면 카드를 누른 뒤 로딩 단계에서만 실행
-    - 기기별 방치 제한: PC 2분 / 태블릿 30초 / 모바일 1분
+    - 입력 없음 자동 잠금: 기기 구분 없이 5분으로 통일
+    - 태블릿 탭/앱 복귀 잠금: visibilitychange + isKioskTabletDevice() 조건에서만 실행
     ========================================================= */
-    const getInactivityLimitMs = () => {
-        const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-        const isTabletKiosk = isTouch && window.innerWidth >= 768;
-        const isMobileDevice = isTouch && window.innerWidth < 768;
-        if (isTabletKiosk) return 30 * 1000;
-        if (isMobileDevice) return 1 * 60 * 1000;
-        return 2 * 60 * 1000;
-    };
+    const getInactivityLimitMs = () => 5 * 60 * 1000;
     const CARD_APPEAR_DELAY_MS = 50;
     /* =========================================================
     @SECTION: JS_STATE
@@ -7516,6 +7718,23 @@ const CardApp = (function() {
             }
             return clamped;
         },
+        isMealExpenseItem(item={}){
+            return !!(item && (item.isMealExpense === true || String(item.purpose || '').includes('특근매식비') || String(item.usageDetails || '').includes('특근매식비')));
+        },
+        normalizeMealHeadcount(value, fallback=1){
+            const n = parseInt(String(value || '').replace(/[^\d]/g, ''), 10);
+            return Math.max(1, Number.isFinite(n) ? n : fallback);
+        },
+        getMealAdjustedAmount(rawAmount, headcount){
+            const original = parseInt(String(rawAmount || '').replace(/[^\d]/g, ''), 10) || 0;
+            const cnt = Utils.normalizeMealHeadcount(headcount, 1);
+            return {
+                originalAmount: original,
+                mealHeadcount: cnt,
+                mealLimitAmount: cnt * MEAL_CAP_PER_PERSON,
+                amount: Utils.clampMealAmount(String(original), cnt)
+            };
+        },
         getSmartIcon(place, details){
             const t=(place+' '+details).toLowerCase();
             if(t.match(/식당|밥|국밥|찌개|냉면|버거|피자|치킨|맥도날드|롯데리아|김밥|한식|중식|일식|양식|분식/))return 'fa-utensils';
@@ -7523,7 +7742,23 @@ const CardApp = (function() {
             if(t.match(/택시|주유|주차|버스|기차|교통|하이패스/))return 'fa-car-side';
             if(t.match(/마트|편의점|이마트|홈플러스|cu|gs25|세븐일레븐|쇼핑|구매/))return 'fa-cart-shopping';
             if(t.match(/문구|사무|복사|인쇄|용지/))return 'fa-stapler';
-            return 'fa-file-invoice-dollar';
+            return 'fa-receipt';
+        },
+        getReceiptIconToneClass(iconName='fa-receipt'){
+            switch(String(iconName || '')){
+                case 'fa-utensils':
+                    return 'icon-tone-meal';
+                case 'fa-mug-hot':
+                    return 'icon-tone-cafe';
+                case 'fa-car-side':
+                    return 'icon-tone-mobility';
+                case 'fa-cart-shopping':
+                    return 'icon-tone-shopping';
+                case 'fa-stapler':
+                    return 'icon-tone-office';
+                default:
+                    return 'icon-tone-general';
+            }
         },
         createClientRequestId(prefix='req'){
             const rand = Math.random().toString(36).slice(2, 10);
@@ -8446,6 +8681,14 @@ const CardApp = (function() {
             const currentNames = state.enteredUsers.map(u => u.name);
             return allowedUsers.some(name => currentNames.includes(name));
         },
+        getCurrentReturnMealHeadcount() {
+            const fromCard = String(state.currentReturnCard?.userInfo?.userName || '')
+                .split(',')
+                .map(x => x.trim())
+                .filter(Boolean).length;
+            const fromEntered = Array.isArray(state.enteredUsers) ? state.enteredUsers.length : 0;
+            return Math.max(1, fromCard || fromEntered || 1);
+        },
         renderCardButtonHTML: (card) => {
             const rawStatus = String(card.status || '').trim();
             const compactStatus = rawStatus.replace(/\s+/g, '');
@@ -8485,8 +8728,37 @@ const CardApp = (function() {
         4단계 카드신청 도메인. 카드 목록 렌더링, 목적 선택, 최종 신청 버튼, rentNow 호출 흐름을 담당합니다.
         주의: 목적 버튼 클릭만으로 대여하지 않고, 최종 신청 버튼에서만 실제 대여 처리합니다.
         ========================================================= */
+        getSelectedPurposeList(rootEl) {
+            if (!rootEl) return [];
+            const raw = String(rootEl.dataset.selectedPurposes || rootEl.dataset.selectedPurpose || '').trim();
+            if (!raw) return [];
+            const order = CardLogic.getPurposeOptions().map(x => x.id);
+            const list = raw.split('|').map(x => x.trim()).filter(Boolean);
+            return Array.from(new Set(list)).sort((a, b) => {
+                const ai = order.indexOf(a);
+                const bi = order.indexOf(b);
+                return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+            });
+        },
+        setSelectedPurposeList(rootEl, list) {
+            if (!rootEl) return [];
+            const order = CardLogic.getPurposeOptions().map(x => x.id);
+            const clean = Array.from(new Set((Array.isArray(list) ? list : []).map(x => String(x || '').trim()).filter(Boolean)))
+                .sort((a, b) => {
+                    const ai = order.indexOf(a);
+                    const bi = order.indexOf(b);
+                    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+                });
+            rootEl.dataset.selectedPurposes = clean.join('|');
+            if (clean.length) rootEl.dataset.selectedPurpose = clean.join(' / ');
+            else delete rootEl.dataset.selectedPurpose;
+            return clean;
+        },
+        getPurposeLabelFromList(list) {
+            return (Array.isArray(list) ? list : []).filter(Boolean).join(' / ');
+        },
         renderPurposeButtonHTML: (btn) => `
-            <button class="purpose-btn" type="button" data-purpose="${Utils.esc(btn.id)}" aria-label="${Utils.esc(btn.label)} ${Utils.esc(btn.desc || '')}">
+            <button class="purpose-btn" type="button" data-purpose="${Utils.esc(btn.id)}" aria-pressed="false" aria-label="${Utils.esc(btn.label)} ${Utils.esc(btn.desc || '')}">
                 <span class="purpose-icon-wrap"><i class="fa-solid ${btn.icon}"></i></span>
                 <span class="purpose-text-wrap">
                     <span class="purpose-title">${Utils.esc(btn.label)}</span>
@@ -8502,10 +8774,11 @@ const CardApp = (function() {
         영수증 장바구니 아이템 HTML과 상태 오버레이 렌더링
         ========================================================= */
         // 변경 부분: 오버레이 로직 전면 개편 (분석중, 저장중, 저장완료를 부드럽게 연결)
-        renderReceiptCartItemHTML: (it, i, isMeal) => {
+        renderReceiptCartItemHTML: (it, i, isMealContext=false) => {
             /* @PHASE: FINAL_PATCH_RECEIPT_ITEM_STAGE_UI - 상단 진행바 대신 카드 내부 단계 표시 */
             const processing = String(it.processing || '');
-            const needDetails = (!isMeal) && !(String(it.usageDetails || '').trim());
+            const itemIsMeal = Utils.isMealExpenseItem(it);
+            const needDetails = (!itemIsMeal) && !(String(it.usageDetails || '').trim());
             const isAnalysisPhase = ['queued', 'optimizing', 'ocr', 'postprocessing'].includes(processing);
             const isSaving = processing === 'saving';
             const isSaved = processing === 'saved';
@@ -8527,10 +8800,12 @@ const CardApp = (function() {
             if (isSaved) overlayTitle = '저장완료';
 
             const displayAmount = (it.amount === '' || it.amount == null) ? '' : `${Utils.nfKR.format(Number(it.amount || 0))}원`;
+            const smartIcon = Utils.getSmartIcon(it.usagePlace, it.usageDetails);
+            const baseToneClass = Utils.getReceiptIconToneClass(smartIcon);
 
             if (processing === 'error') {
                 return `<div class="cart-item needs-details needs-review operational-blocked" data-index="${i}">
-                     <div class="cart-item-icon" style="color:var(--danger-color);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                     <div class="cart-item-icon icon-tone-warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
                      <div class="cart-item-info">
                         <span class="cart-item-place" style="color:var(--danger-color);">분석실패</span>
                         <span class="cart-item-details">터치해서 직접 입력하거나 삭제 후 다시 첨부하세요 <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span></span>
@@ -8549,8 +8824,8 @@ const CardApp = (function() {
                 const bgAmount = (isSaving || isSaved) ? displayAmount : '';
 
                 return `<div class="cart-item ${cls}" data-index="${i}" data-processing-text="${Utils.esc(CardLogic.getReceiptProcessingLabel(processing))}">
-                    <div class="cart-item-icon">
-                        ${isAnalysisPhase ? `<div class="mini-scanner"><div class="mini-paper"></div><div class="mini-beam"></div></div>` : `<i class="fa-solid ${Utils.getSmartIcon(it.usagePlace, it.usageDetails)}"></i>`}
+                    <div class="cart-item-icon ${isAnalysisPhase ? 'icon-tone-processing' : (isSaved ? 'icon-tone-saved' : (isSaving ? 'icon-tone-saving' : baseToneClass))}">
+                        ${isAnalysisPhase ? `<div class="mini-scanner"><div class="mini-paper"></div><div class="mini-beam"></div></div>` : `<i class="fa-solid ${smartIcon}"></i>`}
                     </div>
                     <div class="cart-item-info">
                         <span class="cart-item-place">${bgPlace}</span>
@@ -8572,14 +8847,20 @@ const CardApp = (function() {
                 : (isReview
                     ? '사용처/금액/내용을 확인한 뒤 저장해 주세요'
                     : (Utils.esc(it.usageDetails) || '내역 없음'));
+            const mealBadge = itemIsMeal
+                ? `<span class="receipt-meal-badge"><i class="fa-solid fa-utensils"></i> 특근매식비 ${Utils.nfKR.format(Utils.normalizeMealHeadcount(it.mealHeadcount, 1))}명</span>`
+                : '';
+            const adjustedNote = itemIsMeal && Number(it.originalAmount || 0) > Number(it.amount || 0)
+                ? ` <span class="meal-adjust-note">원금액 ${Utils.nfKR.format(Number(it.originalAmount || 0))}원</span>`
+                : '';
 
-            return `<div class="cart-item with-inline-actions ${cls}" data-index="${i}" ${processing?`data-processing-text="${Utils.esc(CardLogic.getReceiptProcessingLabel(processing))}"`:''}>
-                <div class="cart-item-icon">
-                    ${needWarn ? `<i class="fa-solid fa-triangle-exclamation"></i>` : `<i class="fa-solid ${Utils.getSmartIcon(it.usagePlace, it.usageDetails)}"></i>`}
+            return `<div class="cart-item with-inline-actions ${cls} ${itemIsMeal ? 'meal-expense-item' : ''}" data-index="${i}" ${processing?`data-processing-text="${Utils.esc(CardLogic.getReceiptProcessingLabel(processing))}"`:''}>
+                <div class="cart-item-icon ${needWarn ? 'icon-tone-warning' : baseToneClass}">
+                    ${needWarn ? `<i class="fa-solid fa-triangle-exclamation"></i>` : `<i class="fa-solid ${smartIcon}"></i>`}
                 </div>
                 <div class="cart-item-info">
                     <span class="cart-item-place">${placeText}</span>
-                    <span class="cart-item-details">${detailText}${needWarn ? ` <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span>` : ''}</span>
+                    <span class="cart-item-details">${mealBadge}${detailText}${adjustedNote}${needWarn ? ` <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span>` : ''}</span>
                 </div>
                 <div class="cart-item-amount-box"><span class="cart-item-amount">${displayAmount}</span></div>
                 ${!isProcessing?`<button class="cart-item-delete-wide" type="button" aria-label="영수증 삭제">삭제</button>`:''}
@@ -8930,13 +9211,13 @@ const CardApp = (function() {
                         <div class="flight-purpose-top flight-content-fade">
                             <div>
                                 <h3 class="flight-purpose-title" data-flight-title="1">목적을 먼저 선택해 주세요</h3>
-                                <p class="flight-purpose-sub" data-flight-sub="1">카드 신청 목적을 선택하면 신청 확정 버튼이 활성화됩니다.</p>
+                                <p class="flight-purpose-sub" data-flight-sub="1">카드 신청 목적을 하나 이상 선택하면 신청 확정 버튼이 활성화됩니다.</p>
                             </div>
                             <button class="flight-cancel-btn" type="button" data-flight-close="1">취소</button>
                         </div>
                         <div class="flight-purpose-list flight-content-fade">
                             ${options.map(btn => `
-                                <button class="flight-purpose-btn tone-${Utils.esc(btn.tone || 'default')}" type="button" data-flight-purpose="${Utils.esc(btn.id)}" data-flight-tone="${Utils.esc(btn.tone || 'default')}" aria-label="${Utils.esc(btn.label)} ${Utils.esc(btn.desc || '')}">
+                                <button class="flight-purpose-btn tone-${Utils.esc(btn.tone || 'default')}" type="button" data-flight-purpose="${Utils.esc(btn.id)}" aria-pressed="false" data-flight-tone="${Utils.esc(btn.tone || 'default')}" aria-label="${Utils.esc(btn.label)} ${Utils.esc(btn.desc || '')}">
                                     <span class="flight-purpose-icon"><i class="fa-solid ${btn.icon}"></i></span>
                                     <span class="flight-purpose-copy"><strong>${Utils.esc(btn.label)}</strong><span>${Utils.esc(btn.desc || '')}</span></span>
                                 </button>
@@ -8952,6 +9233,7 @@ const CardApp = (function() {
                 CardLogic._flightSourceCard = card;
                 CardLogic._flightTarget = { left: targetLeft, top: targetTop, width: targetW, height: targetH };
                 delete flyer.dataset.selectedPurpose;
+                delete flyer.dataset.selectedPurposes;
                 sourceEl.classList.add('flight-source-hidden');
                 document.body.classList.add('purpose-flight-open');
 
@@ -8995,29 +9277,37 @@ const CardApp = (function() {
         selectPurposeInFlight(purpose, buttonEl) {
             const flyer = CardLogic._flightCard;
             if (!flyer || !purpose) return;
-            flyer.dataset.selectedPurpose = purpose;
+            const current = CardLogic.getSelectedPurposeList(flyer);
+            const exists = current.includes(purpose);
+            const next = exists ? current.filter(x => x !== purpose) : current.concat(purpose);
+            const selected = CardLogic.setSelectedPurposeList(flyer, next);
             flyer.querySelectorAll('[data-flight-purpose]').forEach(btn => {
-                const selected = btn === buttonEl;
-                btn.classList.toggle('selected', selected);
-                btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+                const isSelected = selected.includes(btn.dataset.flightPurpose);
+                btn.classList.toggle('selected', isSelected);
+                btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
             });
+            const label = CardLogic.getPurposeLabelFromList(selected);
             const title = flyer.querySelector('[data-flight-title]');
             const sub = flyer.querySelector('[data-flight-sub]');
-            if (title) title.textContent = '신청 목적 확인';
-            if (sub) sub.textContent = `${purpose} 목적으로 신청을 확정할 수 있습니다.`;
+            if (title) title.textContent = selected.length ? '신청 목적 확인' : '목적을 먼저 선택해 주세요';
+            if (sub) sub.textContent = selected.length
+                ? `${label} 용도로 신청을 확정할 수 있습니다.`
+                : '카드 신청 목적을 하나 이상 선택하면 신청 확정 버튼이 활성화됩니다.';
             const finalBtn = flyer.querySelector('[data-flight-final]');
             if (finalBtn) {
-                const tone = buttonEl?.dataset?.flightTone || 'default';
-                finalBtn.innerHTML = `<span>${purpose} 목적으로 신청 확정</span>`;
-                finalBtn.disabled = false;
-                finalBtn.classList.remove('final-purchase', 'final-dining', 'final-meal', 'final-default');
-                finalBtn.classList.add('unlocked', `final-${tone}`);
+                finalBtn.innerHTML = selected.length ? `<span>${label} 용도로 신청 확정</span>` : '<span>목적 선택 후 신청 확정</span>';
+                finalBtn.disabled = !selected.length;
+                finalBtn.classList.remove('final-purchase', 'final-dining', 'final-meal', 'final-default', 'unlocked');
+                if (selected.length) {
+                    const tone = selected.length === 1 ? (buttonEl?.dataset?.flightTone || 'default') : 'default';
+                    finalBtn.classList.add('unlocked', `final-${tone}`);
+                }
             }
         },
         executePurposeFlightRent() {
             const flyer = CardLogic._flightCard;
             const card = CardLogic._flightSourceCard;
-            const purpose = flyer?.dataset?.selectedPurpose;
+            const purpose = CardLogic.getPurposeLabelFromList(CardLogic.getSelectedPurposeList(flyer));
             if (!flyer || !card || !purpose || CardLogic._rentInFlight) return;
             const finalBtn = flyer.querySelector('[data-flight-final]');
             if (finalBtn) {
@@ -9105,7 +9395,7 @@ const CardApp = (function() {
             const subheader = document.getElementById('morph-subheader');
             if (chip) chip.textContent = `${card.displayName} 신청`;
             title.textContent = '사용 목적 선택';
-            if (subheader) subheader.textContent = '신청할 용도를 선택해 주세요';
+            if (subheader) subheader.textContent = '여러 용도로 사용할 수 있으면 중복 선택해 주세요';
             const buttons = [
                 { id: '물품구매', icon: 'fa-box', label: '물품구매', desc: '비품 · 소모품 · 행사 준비물' },
                 { id: '식사다과', icon: 'fa-mug-hot', label: '식사다과', desc: '식사 · 간식 · 다과' },
@@ -9120,6 +9410,7 @@ const CardApp = (function() {
             const overlay = document.getElementById('morph-overlay');
             const finalBtn = document.getElementById('btn-final-rent');
             delete overlay.dataset.selectedPurpose;
+            delete overlay.dataset.selectedPurposes;
             document.querySelectorAll('#morph-actions .purpose-btn[data-purpose]').forEach(btn => {
                 btn.classList.remove('selected');
                 btn.setAttribute('aria-pressed', 'false');
@@ -9134,23 +9425,26 @@ const CardApp = (function() {
             const overlay = document.getElementById('morph-overlay');
             const finalBtn = document.getElementById('btn-final-rent');
             if (!overlay || !purpose) return;
-            overlay.dataset.selectedPurpose = purpose;
+            const current = CardLogic.getSelectedPurposeList(overlay);
+            const exists = current.includes(purpose);
+            const selected = CardLogic.setSelectedPurposeList(overlay, exists ? current.filter(x => x !== purpose) : current.concat(purpose));
             document.querySelectorAll('#morph-actions .purpose-btn[data-purpose]').forEach(btn => {
-                const isSelected = btn === buttonEl;
+                const isSelected = selected.includes(btn.dataset.purpose);
                 btn.classList.toggle('selected', isSelected);
                 btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
             });
+            const label = CardLogic.getPurposeLabelFromList(selected);
             if (finalBtn) {
-                finalBtn.textContent = `${purpose} 목적으로 카드 신청 확정`;
-                finalBtn.classList.add('unlocked');
-                finalBtn.disabled = false;
+                finalBtn.textContent = selected.length ? `${label} 용도로 카드 신청 확정` : '목적을 먼저 선택해 주세요';
+                finalBtn.classList.toggle('unlocked', !!selected.length);
+                finalBtn.disabled = !selected.length;
             }
         },
         executeSelectedPurposeRent() {
             const overlay = document.getElementById('morph-overlay');
             const finalBtn = document.getElementById('btn-final-rent');
             const cardId = overlay?.dataset.cardId;
-            const purpose = overlay?.dataset.selectedPurpose;
+            const purpose = CardLogic.getPurposeLabelFromList(CardLogic.getSelectedPurposeList(overlay));
             if (!cardId || !purpose || CardLogic._rentInFlight) return;
             if (finalBtn) {
                 finalBtn.classList.add('is-submitting');
@@ -9452,7 +9746,7 @@ const CardApp = (function() {
             const hasBlockingIssue = blockingIssues.length > 0;
             if (guideEl) {
                 const failedIssues = blockingIssues.filter(x => ['save_error','error'].includes(x.processing));
-                const hasEmpty = state.receiptCart.some(r => ((!isMeal) && !(String(r.usageDetails || '').trim()) && (!r.processing || r.processing==='save_error')) || (r.processing==='save_error'));
+                const hasEmpty = state.receiptCart.some(r => ((!Utils.isMealExpenseItem(r)) && !(String(r.usageDetails || '').trim()) && (!r.processing || r.processing==='save_error')) || (r.processing==='save_error'));
                 if (failedIssues.length > 0) {
                     guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 저장 실패/분석 실패 영수증이 있습니다. 해당 영수증을 눌러 직접 입력하거나 삭제 후 다시 첨부해 주세요.';
                     guideEl.classList.add('visible');
@@ -9637,11 +9931,6 @@ const CardApp = (function() {
                     state.receiptCart[actualIdx].usagePlace = analysisFailed ? '직접 입력 필요' : '분석 완료';
                     CardLogic.requestRenderReceiptCart();
 
-                    if (!analysisFailed && isMeal) {
-                        amt = String(Utils.clampMealAmount(amt, state.currentReturnCard.userInfo.userName.split(',').length));
-                        CardLogic.showMealAutoAdjustToast(recognizedAmount, amt);
-                    }
-
                     if (!ocr || !ocr.tempFileId) {
                         throw new Error('영수증 이미지를 저장하지 못했습니다. 다시 첨부해 주세요.');
                     }
@@ -9651,8 +9940,11 @@ const CardApp = (function() {
                         previewImage: b64,
                         receiptImagePreview: b64,
                         usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || '상호명 없음'),
-                        usageDetails: isMeal ? '특근매식비' : '',
+                        usageDetails: '',
                         amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
+                        originalAmount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
+                        isMealExpense: false,
+                        mealHeadcount: CardLogic.getCurrentReturnMealHeadcount(),
                         date: analysisFailed ? '' : (ocr.date || ''),
                         processing: 'saving',
                         _uiTransient: true,
@@ -9819,10 +10111,6 @@ const CardApp = (function() {
                 const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
                 const recognizedAmount = (ocr.amount || '').toString();
                 let amt = recognizedAmount;
-                if (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근')) {
-                    amt = String(Utils.clampMealAmount(amt, state.currentReturnCard.userInfo.userName.split(',').length));
-                    CardLogic.showMealAutoAdjustToast(recognizedAmount, amt);
-                }
                 UIManager.setLoading(false);
                 if (analysisFailed) {
                     CardLogic.showReceiptAnalysisFallback(true);
@@ -9833,8 +10121,11 @@ const CardApp = (function() {
                     previewImage: b64,
                     receiptImagePreview: b64,
                     usagePlace: analysisFailed ? '' : (ocr.storeName || ''),
-                    usageDetails: (state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근') ? '특근매식비' : ''),
+                    usageDetails: '',
                     amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
+                    originalAmount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
+                    isMealExpense: false,
+                    mealHeadcount: CardLogic.getCurrentReturnMealHeadcount(),
                     date: analysisFailed ? '' : (ocr.date || '')
                 }, editIndex);
             } catch (e) {
@@ -9945,11 +10236,13 @@ const CardApp = (function() {
         ========================================================= */
         async openOcrPopup(data = {}, editIndex = -1) {
             /* @PHASE: JS_RECEIPT_POPUP_BUILD_HTML - OCR 결과 확인/직접 입력용 SweetAlert HTML 구성 */
-            const isMeal = state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
+            const isMeal = Utils.isMealExpenseItem(data);
+            const mealHeadcountValue = CardLogic.getCurrentReturnMealHeadcount();
+            const originalAmountValue = String(data.originalAmount || data.amount || '').replace(/[^\d]/g, '');
             const receiptRef = String(data.receiptImage || '');
             const isStoredReceiptRef = receiptRef.startsWith('id:');
             let receiptPreviewSrc = data.previewImage || data.receiptImagePreview || (!isStoredReceiptRef ? receiptRef : '');
-            let receiptInstruction = !receiptRef ? '이미지 추가 필요' : '(이미지 교체)';
+            let receiptInstruction = !receiptRef ? '이미지 추가 필요' : '클릭하여 이미지 교체';
             if (!receiptPreviewSrc && isStoredReceiptRef) {
                 /* @PHASE: JS_RECEIPT_POPUP_ASYNC_PREVIEW - 저장 후 팝업은 즉시 띄우고 Drive 이미지는 didOpen에서 비동기로 채움 */
                 receiptInstruction = '이미지 불러오는 중...';
@@ -9992,6 +10285,18 @@ const CardApp = (function() {
                                 <label class="swal-input-label-new"><i class="fa-solid fa-pencil"></i> 내용</label>
                                 <span class="receipt-field-badge ${getOcrBadgeClass(detailsStatus)}">${getOcrBadgeText(detailsStatus)}</span>
                             </div></div>
+                            <div class="receipt-use-type-box">
+                                <div class="receipt-use-type-title"><i class="fa-solid fa-tags"></i> 사용 구분</div>
+                                <div class="receipt-use-type-segment" role="group" aria-label="영수증 사용 구분">
+                                    <button id="swal-use-general" type="button" data-use-type="general" class="use-type-btn ${isMeal ? '' : 'active'}" aria-pressed="${isMeal ? 'false' : 'true'}">
+                                        <i class="fa-solid fa-receipt"></i> 일반카드
+                                    </button>
+                                    <button id="swal-use-meal" type="button" data-use-type="meal" class="use-type-btn ${isMeal ? 'active' : ''}" aria-pressed="${isMeal ? 'true' : 'false'}">
+                                        <i class="fa-solid fa-utensils"></i> 특근매식
+                                    </button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>`;
@@ -10036,7 +10341,7 @@ const CardApp = (function() {
                                         imageEl.src = preview.dataUrl;
                                         imageEl.style.display = 'inline-block';
                                     }
-                                    if (imageInstructionEl) imageInstructionEl.textContent = '(이미지 교체)';
+                                    if (imageInstructionEl) imageInstructionEl.textContent = '클릭하여 이미지 교체';
                                     data.previewImage = preview.dataUrl;
                                     data.receiptImagePreview = preview.dataUrl;
                                     if (editIndex > -1 && state.receiptCart && state.receiptCart[editIndex]) {
@@ -10061,13 +10366,64 @@ const CardApp = (function() {
                         group.classList.add('ocr-manual');
                         group.dataset.ocrStatus = 'manual';
                     };
+                    const useGeneral = document.getElementById('swal-use-general');
+                    const useMeal = document.getElementById('swal-use-meal');
+                    const mealPanel = document.getElementById('swal-meal-panel');
+                    const mealSummary = document.getElementById('swal-meal-summary');
+                    const mealCountValue = CardLogic.getCurrentReturnMealHeadcount();
+                    let mealBaseAmount = String(originalAmountValue || (amount ? amount.value : '') || '').replace(/[^\d]/g, '');
+                    const getMealBaseAmount = () => String(mealBaseAmount || originalAmountValue || (amount ? amount.value : '') || '').replace(/[^\d]/g, '');
+                    const isMealMode = () => !!(useMeal && useMeal.getAttribute('aria-pressed') === 'true');
+                    const recalcMealAmount = () => {
+                        if (!isMealMode()) return;
+                        const raw = getMealBaseAmount();
+                        const info = Utils.getMealAdjustedAmount(raw, mealCountValue);
+                        if (amount) amount.value = info.amount ? Utils.nfKR.format(info.amount) : '';
+                    };
+                    const restoreGeneralAmount = () => {
+                        const raw = getMealBaseAmount();
+                        if (amount) amount.value = raw ? Utils.nfKR.format(Number(raw)) : '';
+                    };
+                    const setMealMode = (on) => {
+                        if (useGeneral) {
+                            useGeneral.classList.toggle('active', !on);
+                            useGeneral.setAttribute('aria-pressed', on ? 'false' : 'true');
+                        }
+                        if (useMeal) {
+                            useMeal.classList.toggle('active', !!on);
+                            useMeal.setAttribute('aria-pressed', on ? 'true' : 'false');
+                        }
+                        if (mealPanel) mealPanel.style.display = 'none';
+                        if (details) {
+                            if (on) {
+                                mealBaseAmount = getMealBaseAmount();
+                                details.value = '특근매식비';
+                                details.readOnly = true;
+                                recalcMealAmount();
+                            } else {
+                                details.readOnly = false;
+                                if (details.value === '특근매식비') details.value = '';
+                                restoreGeneralAmount();
+                            }
+                        } else if (on) {
+                            mealBaseAmount = getMealBaseAmount();
+                            recalcMealAmount();
+                        } else {
+                            restoreGeneralAmount();
+                        }
+                    };
                     store.addEventListener('input', () => markFieldManual(store));
                     details.addEventListener('input', () => markFieldManual(details));
                     amount.oninput = (e) => {
                         markFieldManual(e.target);
                         const v = e.target.value.replace(/[^\d]/g, '');
+                        mealBaseAmount = v;
                         e.target.value = v ? Utils.nfKR.format(parseInt(v)) : '';
+                        recalcMealAmount();
                     };
+                    if (useGeneral) useGeneral.onclick = () => setMealMode(false);
+                    if (useMeal) useMeal.onclick = () => setMealMode(true);
+                    setMealMode(isMeal);
                     const handleEnter = (e, nextElem) => {
                         if (e.key === 'Enter') {
                             e.preventDefault(); e.stopPropagation();
@@ -10078,8 +10434,9 @@ const CardApp = (function() {
                     store.onkeydown = e => handleEnter(e, amount);
                     amount.onkeydown = e => handleEnter(e, details);
                     details.onkeydown = e => handleEnter(e, null);
-                    /* @PHASE: JS_RECEIPT_POPUP_MOBILE_KEYBOARD - 모바일 키보드 노출 시 입력칸이 가려지지 않게 보정 */
-                    if (isMobile) {
+                    /* @PHASE: JS_RECEIPT_POPUP_MOBILE_KEYBOARD - 모바일/태블릿은 팝업 열림만으로 키보드를 띄우지 않고, 사용자가 입력칸을 직접 눌렀을 때만 키보드를 표시 */
+                    const isTouchReceiptDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+                    if (isMobile || isTouchReceiptDevice) {
                         const focusHandler = (e) => {
                             setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
                         };
@@ -10089,7 +10446,7 @@ const CardApp = (function() {
                     } else {
                         setTimeout(() => store.focus(), 100);
                     }
-                    if (!isMeal) {
+                    if (!isMeal && !isTouchReceiptDevice) {
                         setTimeout(() => {
                             const detailsInput = document.getElementById('swal-details');
                             if (detailsInput) {
@@ -10118,18 +10475,38 @@ const CardApp = (function() {
                 },
                 /* @PHASE: JS_RECEIPT_POPUP_VALIDATE_AND_SAVE - 입력값 검증 후 저장 payload 생성 */
                 preConfirm: () => {
-                    const [store, amtStr, details] = ['swal-store', 'swal-amount', 'swal-details'].map(id => document.getElementById(id).value);
+                    const [store, amtStr, detailsInput] = ['swal-store', 'swal-amount', 'swal-details'].map(id => document.getElementById(id).value);
+                    const useMeal = document.getElementById('swal-use-meal');
+                    const isMealExpense = !!(useMeal && useMeal.getAttribute('aria-pressed') === 'true');
+                    const mealHeadcount = CardLogic.getCurrentReturnMealHeadcount();
+                    let details = isMealExpense ? '특근매식비' : detailsInput;
                     if (!store || !amtStr || !details) return Swal.showValidationMessage('모든 항목을 입력하세요');
                     if (!String(data.receiptImage || '').startsWith('id:')) {
                         return Swal.showValidationMessage('영수증 이미지가 저장되지 않았습니다. 이미지를 다시 첨부해 주세요.');
                     }
-                    let amount = amtStr.replace(/[^\d]/g, "");
-                    if (isMeal) amount = String(Utils.clampMealAmount(amount, state.currentReturnCard.userInfo.userName.split(',').length));
+                    const rawAmount = amtStr.replace(/[^\d]/g, "");
+                    const originalAmount = String(data.originalAmount || rawAmount).replace(/[^\d]/g, "") || rawAmount;
+                    const calcBaseAmount = isMealExpense ? originalAmount : rawAmount;
+                    let amount = rawAmount;
+                    let mealLimitAmount = '';
+                    let mealOverAmount = '';
+                    if (isMealExpense) {
+                        const info = Utils.getMealAdjustedAmount(calcBaseAmount, mealHeadcount);
+                        amount = String(info.amount);
+                        mealLimitAmount = String(info.mealLimitAmount);
+                        mealOverAmount = String(Math.max(0, info.originalAmount - info.amount));
+                    }
                     const cachedPreview = data.previewImage || data.receiptImagePreview || '';
                     return {
                         usagePlace: store,
                         usageDetails: details,
                         amount,
+                        originalAmount,
+                        isMealExpense,
+                        purpose: isMealExpense ? '특근매식비' : '',
+                        mealHeadcount: isMealExpense ? mealHeadcount : '',
+                        mealLimitAmount,
+                        mealOverAmount,
                         receiptImage: data.receiptImage,
                         receiptImagePreview: cachedPreview,
                         previewImage: cachedPreview,
@@ -10227,11 +10604,11 @@ const CardApp = (function() {
             }
 
             /* @PHASE: JS_RETURN_SUBMIT_MISSING_DETAILS_CONFIRM - 일반 영수증의 사용내역 누락 확인 */
-            const isMeal = state.currentReturnCard && state.currentReturnCard.userInfo.purpose && state.currentReturnCard.userInfo.purpose.includes('특근');
-            if (!isMeal && state.receiptCart && state.receiptCart.length) {
+            const isMeal = false;
+            if (state.receiptCart && state.receiptCart.length) {
                 const missing = state.receiptCart
                     .map((it, idx) => ({ it, idx }))
-                    .filter(x => !(String(x.it.usageDetails || '').trim()));
+                    .filter(x => !Utils.isMealExpenseItem(x.it) && !(String(x.it.usageDetails || '').trim()));
                 if (missing.length) {
                     const ok = await Swal.fire({
                         title: '입력 확인',
