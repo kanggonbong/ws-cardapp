@@ -7032,9 +7032,47 @@ body.confirmation-result-mode .confirm-timer-caption{
 .meal-panel{display:flex;flex-direction:column;gap:8px;font-weight:800;color:#1f4175;}
 .meal-summary{padding:10px 12px;border-radius:14px;background:rgba(16,185,129,.10);color:#047857;font-size:.9rem;line-height:1.35;}
 .meal-help{font-size:.82rem;color:#6882a8;line-height:1.35;}
-.receipt-meal-badge{display:inline-flex;align-items:center;gap:5px;margin-right:6px;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:.78rem;font-weight:900;}
+.receipt-meal-badge{display:none !important;}
 .meal-adjust-note{font-size:.78rem;color:#059669;font-weight:800;}
 .cart-item.meal-expense-item{border-color:rgba(16,185,129,.25) !important;}
+
+/* FINAL_PATCH_RECEIPT_DETAIL_HASHTAG_SEMANTIC_V1
+   장바구니 내역을 배지 박스 대신 가벼운 해시태그 텍스트로 표시합니다.
+   - 물품구매: 노랑/오렌지 톤
+   - 식사다과: 하늘/민트 톤
+   - 특근매식: 초록 톤 */
+.receipt-detail-hashtag{
+  display:inline-flex;
+  align-items:center;
+  max-width:100%;
+  font-size:.84rem;
+  font-weight:900;
+  line-height:1.25;
+  letter-spacing:-0.01em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  opacity:.92;
+}
+.receipt-detail-hashtag.tag-purchase{color:#d97706;}
+.receipt-detail-hashtag.tag-dining{color:#0ea5c6;}
+.receipt-detail-hashtag.tag-meal{color:#059669;}
+.receipt-detail-hashtag.tag-neutral{color:#7b8faa;}
+.cart-item-details{
+  display:flex !important;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+}
+.cart-item-details .review-pointer{display:inline-flex; align-items:center;}
+@media (max-width:767px){
+  .receipt-detail-hashtag{font-size:.80rem;max-width:100%;}
+}
+
+
 
 /* FINAL_PATCH_RECEIPT_POPUP_COMPACT_20260609
    영수증 수정 팝업의 이미지/정보 간격을 줄이고 모바일 스크롤을 최소화합니다. */
@@ -7047,6 +7085,765 @@ body.confirmation-result-mode .confirm-timer-caption{
 .receipt-ocr-swal .receipt-use-type-box{padding:9px !important;gap:7px !important;}
 .receipt-ocr-swal .use-type-btn{padding:10px 8px !important;border-radius:14px !important;}
 @media (max-width:520px){.receipt-ocr-swal #swal-image-container{min-height:112px !important;max-height:19vh !important;}.receipt-ocr-swal #swal-image{max-height:15vh !important;}}
+</style>
+
+
+<!-- FINAL_PATCH_RECEIPT_LIST_ICON_POLISH_V2 -->
+<style>
+#screen-return-details .cart-item.meal-expense-item .cart-item-icon,
+.cart-item.meal-expense-item .cart-item-icon{
+  color:#047857 !important;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255,255,255,.92) 0%, rgba(255,255,255,.36) 32%, transparent 58%),
+    linear-gradient(135deg,#ecfdf5 0%,#bbf7d0 48%,#86efac 100%) !important;
+  border:1px solid rgba(16,185,129,.28) !important;
+  box-shadow:6px 6px 12px rgba(16,185,129,.14), -5px -5px 12px rgba(255,255,255,.9), inset 1px 1px 0 rgba(255,255,255,.75) !important;
+}
+#screen-return-details .cart-item.meal-expense-item .cart-item-icon i,
+.cart-item.meal-expense-item .cart-item-icon i{
+  color:#047857 !important;
+}
+#screen-return-details .cart-item:not(.meal-expense-item) .cart-item-icon.icon-tone-general,
+.cart-item:not(.meal-expense-item) .cart-item-icon.icon-tone-general{
+  color:#2563eb !important;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255,255,255,.92) 0%, rgba(255,255,255,.34) 32%, transparent 58%),
+    linear-gradient(135deg,#eff6ff 0%,#dbeafe 48%,#bfdbfe 100%) !important;
+}
+</style>
+
+
+
+<!-- FINAL_PATCH_RECEIPT_LIST_PURPOSE_ICON_RESPONSIVE_V2 -->
+<style>
+/* PC/태블릿에서는 카드 신청 목적 아이콘을 보여주고, 모바일에서는 공간 확보를 위해 숨깁니다. */
+#screen-return-details .cart-item.with-inline-actions,
+.cart-item.with-inline-actions {
+  display:grid !important;
+  grid-template-columns:42px minmax(0,1fr) minmax(78px,auto) 70px !important;
+  column-gap:10px !important;
+  row-gap:2px !important;
+  align-items:center !important;
+}
+#screen-return-details .cart-item.with-inline-actions > .cart-item-icon,
+.cart-item.with-inline-actions > .cart-item-icon {
+  display:flex !important;
+  grid-column:1 !important;
+  grid-row:1 / span 2 !important;
+}
+#screen-return-details .cart-item.with-inline-actions .cart-item-info,
+.cart-item.with-inline-actions .cart-item-info {
+  min-width:0 !important;
+  margin-left:0 !important;
+  grid-column:2 !important;
+}
+#screen-return-details .cart-item.with-inline-actions .cart-item-amount-box,
+.cart-item.with-inline-actions .cart-item-amount-box {
+  min-width:78px !important;
+  justify-self:end !important;
+  text-align:right !important;
+  padding-left:4px !important;
+  grid-column:3 !important;
+}
+#screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide,
+.cart-item.with-inline-actions .cart-item-delete-wide {
+  grid-column:4 !important;
+}
+#screen-return-details .cart-item.overlay-phase,
+.cart-item.overlay-phase {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(78px,auto) !important;
+  column-gap:10px !important;
+  align-items:center !important;
+}
+#screen-return-details .cart-item.overlay-phase > .cart-item-icon,
+.cart-item.overlay-phase > .cart-item-icon {
+  display:none !important;
+}
+@media (max-width:767px){
+  #screen-return-details .cart-item-icon,
+  .cart-item.with-inline-actions > .cart-item-icon,
+  .cart-item.overlay-phase > .cart-item-icon {
+    display:none !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions,
+  .cart-item.with-inline-actions{
+    grid-template-columns:minmax(0,1fr) minmax(62px,auto) 62px !important;
+    column-gap:7px !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-info,
+  .cart-item.with-inline-actions .cart-item-info{
+    grid-column:1 !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-amount-box,
+  .cart-item.with-inline-actions .cart-item-amount-box{
+    grid-column:2 !important;
+    min-width:62px !important;
+    padding-left:2px !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide,
+  .cart-item.with-inline-actions .cart-item-delete-wide{
+    grid-column:3 !important;
+  }
+}
+@media (max-width:360px){
+  #screen-return-details .cart-item.with-inline-actions,
+  .cart-item.with-inline-actions{
+    grid-template-columns:minmax(0,1fr) minmax(58px,auto) !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide,
+  .cart-item.with-inline-actions .cart-item-delete-wide{
+    grid-column:2 / -1 !important;
+    justify-self:end !important;
+    margin-top:6px !important;
+  }
+}
+</style>
+
+
+<!-- FINAL_PATCH_RECEIPT_STORE_NAME_EMPHASIS_V1 -->
+<style>
+/* 상호명은 제목처럼 보이도록 살짝 키우고, 효과는 과하지 않게 최소화합니다. */
+#screen-return-details .cart-item.with-inline-actions .cart-item-info,
+.cart-item.with-inline-actions .cart-item-info{
+  gap:6px !important;
+}
+#screen-return-details .cart-item-place,
+.cart-item.with-inline-actions .cart-item-place{
+  font-size:1.06rem !important;
+  line-height:1.14 !important;
+  font-weight:900 !important;
+  color:#1f4175 !important;
+  letter-spacing:-0.035em !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.65) !important;
+}
+#screen-return-details .receipt-detail-hashtag,
+.cart-item.with-inline-actions .receipt-detail-hashtag{
+  font-size:.84rem !important;
+  line-height:1.2 !important;
+}
+@media (max-width:767px){
+  #screen-return-details .cart-item-place,
+  .cart-item.with-inline-actions .cart-item-place{
+    font-size:1.02rem !important;
+    line-height:1.14 !important;
+  }
+  #screen-return-details .receipt-detail-hashtag,
+  .cart-item.with-inline-actions .receipt-detail-hashtag{
+    font-size:.80rem !important;
+  }
+}
+@media (max-width:360px){
+  #screen-return-details .cart-item-place,
+  .cart-item.with-inline-actions .cart-item-place{
+    font-size:1rem !important;
+  }
+}
+</style>
+
+
+<!-- FINAL_PATCH_RECEIPT_PDFJS_SUPPORT_V1 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- FINAL_PATCH_RECEIPT_PDF_DRAG_DROP_ZONE_V1 -->
+<style>
+#screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+#add-receipt-btn.receipt-dropzone-btn{
+  min-height:92px !important;
+  width:100% !important;
+  padding:14px 16px !important;
+  border-radius:22px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:5px !important;
+  border:1px dashed rgba(91,33,182,.34) !important;
+  cursor:pointer !important;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-icon{
+  display:none !important;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-main{
+  font-size:1.08rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1.15;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-sub{
+  font-size:.84rem;
+  font-weight:850;
+  opacity:.72;
+  line-height:1.15;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over{
+  border-color:rgba(16,185,129,.72) !important;
+  color:#047857 !important;
+  background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 52%,#a7f3d0 100%) !important;
+  box-shadow:0 14px 26px rgba(16,185,129,.18), inset 1px 1px 0 rgba(255,255,255,.74) !important;
+}
+@media (max-width:767px){
+  #screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+  #add-receipt-btn.receipt-dropzone-btn{
+    min-height:74px !important;
+    padding:11px 12px !important;
+    border-radius:20px !important;
+    gap:4px !important;
+  }
+  #add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-icon{display:none;}
+  #add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-main{font-size:.98rem;}
+  #add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-sub{font-size:.76rem;}
+}
+</style>
+
+
+<!-- FINAL_PATCH_RECEIPT_DROPZONE_DASHED_CARD_V2 -->
+<style>
+#screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+#add-receipt-btn.receipt-dropzone-btn{
+  min-height:98px !important;
+  width:100% !important;
+  padding:18px 16px !important;
+  border-radius:24px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:7px !important;
+  border:2px dashed rgba(37,99,235,.34) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.72) 0%, rgba(239,246,255,.72) 100%),
+    linear-gradient(135deg,#eff6ff 0%,#eef2ff 54%,#f5f3ff 100%) !important;
+  color:#1d4ed8 !important;
+  box-shadow:
+    inset 4px 4px 10px rgba(110,138,176,.10),
+    inset -4px -4px 10px rgba(255,255,255,.88),
+    8px 8px 18px rgba(110,138,176,.13),
+    -7px -7px 16px rgba(255,255,255,.92) !important;
+  cursor:pointer !important;
+  position:relative !important;
+  overflow:hidden !important;
+}
+#add-receipt-btn.receipt-dropzone-btn::before{
+  content:'';
+  position:absolute;
+  inset:8px;
+  border:1px dashed rgba(37,99,235,.18);
+  border-radius:18px;
+  pointer-events:none;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-main{
+  position:relative;
+  z-index:1;
+  font-size:1.13rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.035em !important;
+  line-height:1.12 !important;
+  color:#1d4ed8 !important;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-sub{
+  position:relative;
+  z-index:1;
+  font-size:.84rem !important;
+  font-weight:900 !important;
+  line-height:1.1 !important;
+  color:#6478a5 !important;
+  opacity:1 !important;
+}
+#add-receipt-btn.receipt-dropzone-btn:hover{
+  transform:none !important;
+  filter:brightness(1.015) !important;
+  border-color:rgba(37,99,235,.52) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over{
+  border-color:rgba(16,185,129,.72) !important;
+  color:#047857 !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.70) 0%, rgba(236,253,245,.72) 100%),
+    linear-gradient(135deg,#ecfdf5 0%,#d1fae5 52%,#bbf7d0 100%) !important;
+  box-shadow:
+    inset 4px 4px 10px rgba(16,185,129,.08),
+    inset -4px -4px 10px rgba(255,255,255,.88),
+    0 14px 26px rgba(16,185,129,.16) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over::before{
+  border-color:rgba(16,185,129,.36) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over .receipt-dropzone-main,
+#add-receipt-btn.receipt-dropzone-btn.drag-over .receipt-dropzone-sub{
+  color:#047857 !important;
+}
+@media (max-width:767px){
+  #screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+  #add-receipt-btn.receipt-dropzone-btn{
+    min-height:82px !important;
+    padding:13px 12px !important;
+    border-radius:22px !important;
+    gap:5px !important;
+  }
+  #add-receipt-btn.receipt-dropzone-btn::before{
+    inset:7px;
+    border-radius:16px;
+  }
+  #add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-main{font-size:1.02rem !important;}
+  #add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-sub{font-size:.76rem !important;}
+}
+</style>
+
+
+
+<!-- FINAL_PATCH_BLUE_NEUMORPH_INSET_THEME_V1 -->
+<style>
+:root{
+  --ws-inset-bg: linear-gradient(180deg, #eef6ff 0%, #e5f0ff 52%, #dceaff 100%);
+  --ws-inset-bg-soft: linear-gradient(180deg, rgba(239,247,255,.95) 0%, rgba(226,239,255,.98) 100%);
+  --ws-inset-shadow-dark: rgba(107, 149, 201, 0.22);
+  --ws-inset-shadow-light: rgba(255,255,255,0.96);
+  --ws-inset-border: rgba(255,255,255,0.52);
+  --ws-inset-text: #2b4f86;
+  --ws-inset-subtext: #6482ad;
+  --ws-inset-accent: #2563eb;
+}
+
+/*
+  배경색과 어울리는 밝은 파란 뉴모피즘 인셋 톤으로 통일합니다.
+  - 어둡게 꺼진 회색 인셋을 줄이고
+  - 현재 안내문/버튼 계열과 어울리는 파란빛을 부여합니다.
+*/
+#main-title-container .inset-box,
+.header-dashboard,
+.login-user-panel,
+.digit-box,
+.tube-gauge-wrapper,
+.loading-progress-bar,
+.receipt-use-type-box,
+.swal-input-group-new,
+.swal2-input-new,
+input[type="text"],
+input[type="number"],
+input[inputmode="numeric"],
+input[inputmode="decimal"],
+select,
+textarea{
+  background: var(--ws-inset-bg-soft) !important;
+  box-shadow:
+    inset 5px 5px 11px var(--ws-inset-shadow-dark),
+    inset -5px -5px 11px var(--ws-inset-shadow-light) !important;
+  border-color: var(--ws-inset-border) !important;
+}
+
+#main-title-container .inset-box,
+.header-dashboard,
+.login-user-panel,
+.receipt-use-type-box,
+.swal-input-group-new{
+  background: var(--ws-inset-bg) !important;
+}
+
+#main-title-container .inset-box h2,
+.header-dashboard .stat-label,
+.header-dashboard .stat-value,
+.login-user-panel .floating-label,
+.swal2-input-new,
+input[type="text"],
+input[type="number"],
+input[inputmode="numeric"],
+input[inputmode="decimal"],
+select,
+textarea{
+  color: var(--ws-inset-text) !important;
+}
+
+/* 영수증 첨부 영역은 점선 카드형 대신 밝은 파란 인셋 드롭존으로 정리 */
+#screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+#add-receipt-btn.receipt-dropzone-btn{
+  min-height: 98px !important;
+  width:100% !important;
+  padding:18px 16px !important;
+  border-radius:24px !important;
+  border:1px solid rgba(255,255,255,.52) !important;
+  background: var(--ws-inset-bg) !important;
+  color: var(--ws-inset-accent) !important;
+  box-shadow:
+    inset 6px 6px 12px rgba(103,144,194,.20),
+    inset -6px -6px 12px rgba(255,255,255,.96),
+    0 1px 0 rgba(255,255,255,.72) !important;
+  overflow:hidden !important;
+}
+#add-receipt-btn.receipt-dropzone-btn::before{
+  inset:10px !important;
+  border:1px dashed rgba(37,99,235,.20) !important;
+  border-radius:18px !important;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-main{
+  color: var(--ws-inset-accent) !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.70) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-sub{
+  color: var(--ws-inset-subtext) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn:hover{
+  filter:brightness(1.01) !important;
+  border-color: rgba(37,99,235,.28) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over{
+  border-color: rgba(37,99,235,.46) !important;
+  background: linear-gradient(180deg, #f2f8ff 0%, #e3efff 52%, #d8e8ff 100%) !important;
+  box-shadow:
+    inset 6px 6px 12px rgba(37,99,235,.16),
+    inset -6px -6px 12px rgba(255,255,255,.96),
+    0 0 0 3px rgba(37,99,235,.10) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over::before{
+  border-color: rgba(37,99,235,.34) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over .receipt-dropzone-main,
+#add-receipt-btn.receipt-dropzone-btn.drag-over .receipt-dropzone-sub{
+  color: var(--ws-inset-accent) !important;
+}
+
+/* 안내문 버튼명 강조 색도 실제 버튼 느낌에 맞춰 파란색 통일 */
+.return-instruction-highlight,
+.notice-btn-label,
+.notice-keyword-blue{
+  color:#2563eb !important;
+  font-weight:900 !important;
+}
+
+@media (max-width:767px){
+  #screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+  #add-receipt-btn.receipt-dropzone-btn{
+    min-height:82px !important;
+    padding:13px 12px !important;
+    border-radius:22px !important;
+  }
+  #add-receipt-btn.receipt-dropzone-btn::before{
+    inset:8px !important;
+    border-radius:16px !important;
+  }
+}
+</style>
+
+
+
+<!-- FINAL_PATCH_RETURN_INSET_TONE_UNIFY_V1 -->
+<style>
+:root{
+  --ws-return-inset-base: linear-gradient(180deg, #ecf4ff 0%, #e4eefb 55%, #dce8f8 100%);
+  --ws-return-inset-surface: linear-gradient(180deg, rgba(244,249,255,.96) 0%, rgba(228,238,251,.98) 100%);
+  --ws-return-inset-shadow-dark: rgba(108, 142, 186, 0.18);
+  --ws-return-inset-shadow-light: rgba(255,255,255,0.96);
+  --ws-return-inset-border: rgba(255,255,255,.58);
+  --ws-return-dash: rgba(37,99,235,.18);
+}
+
+/*
+  총 사용 금액 박스의 차분한 밝은 파란 톤을 기준으로,
+  영수증 첨부 영역과 정산 트레이 계열을 같은 색가족으로 통일합니다.
+  → 회색끼를 줄이고 배경과 자연스럽게 이어지게 정리
+*/
+#screen-return-details .return-neu-tray{
+  background: var(--ws-return-inset-base) !important;
+  box-shadow:
+    inset 8px 8px 18px var(--ws-return-inset-shadow-dark),
+    inset -8px -8px 18px var(--ws-return-inset-shadow-light),
+    0 1px 0 rgba(255,255,255,.72) !important;
+  border:1px solid var(--ws-return-inset-border) !important;
+}
+#screen-return-details .return-neu-tray #receipt-dashboard,
+#screen-return-details .return-neu-tray #receipt-cart-container.empty-cart{
+  background: var(--ws-return-inset-surface) !important;
+  box-shadow:
+    inset 5px 5px 11px rgba(112,145,188,.16),
+    inset -5px -5px 11px rgba(255,255,255,.97) !important;
+  border:1px solid rgba(255,255,255,.64) !important;
+}
+#screen-return-details #receipt-dashboard{
+  background: var(--ws-return-inset-surface) !important;
+}
+#screen-return-details #receipt-dashboard .dashboard-label{
+  color:#6a84ac !important;
+}
+#screen-return-details #receipt-dashboard .dashboard-amount{
+  color:#2563eb !important;
+}
+
+/* 첨부 영역도 같은 계열로 맞추되, 액션 영역임을 위해 채도만 아주 약하게 더 줍니다. */
+#screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+#add-receipt-btn.receipt-dropzone-btn{
+  background: linear-gradient(180deg, #eef6ff 0%, #e6f0ff 52%, #deebff 100%) !important;
+  border:1px solid rgba(255,255,255,.60) !important;
+  box-shadow:
+    inset 6px 6px 12px rgba(107,144,194,.18),
+    inset -6px -6px 12px rgba(255,255,255,.97),
+    0 1px 0 rgba(255,255,255,.72) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn::before{
+  border:1px dashed var(--ws-return-dash) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-main{
+  color:#2d61dd !important;
+}
+#add-receipt-btn.receipt-dropzone-btn .receipt-dropzone-sub{
+  color:#6d84aa !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over{
+  background: linear-gradient(180deg, #f3f8ff 0%, #e8f2ff 52%, #deebff 100%) !important;
+  border-color: rgba(37,99,235,.34) !important;
+  box-shadow:
+    inset 6px 6px 12px rgba(37,99,235,.14),
+    inset -6px -6px 12px rgba(255,255,255,.97),
+    0 0 0 3px rgba(37,99,235,.08) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over::before{
+  border-color: rgba(37,99,235,.28) !important;
+}
+#add-receipt-btn.receipt-dropzone-btn.drag-over .receipt-dropzone-main,
+#add-receipt-btn.receipt-dropzone-btn.drag-over .receipt-dropzone-sub{
+  color:#2563eb !important;
+}
+</style>
+
+
+
+<!-- FINAL_PATCH_RECEIPT_MODAL_PURPOSE_TONE_V1 -->
+<style>
+/* 반납 화면 인셋 테마가 영수증 수정 모달 입력칸까지 먹지 않도록 모달은 별도 톤으로 복구 */
+.receipt-ocr-swal.receipt-tone-purchase{
+  --receipt-tone-main:#f59e0b;
+  --receipt-tone-strong:#d97706;
+  --receipt-tone-soft:rgba(245,158,11,.13);
+  --receipt-tone-bg:linear-gradient(180deg,#ffffff 0%,#fff8ec 100%);
+  --receipt-tone-border:rgba(245,158,11,.36);
+}
+.receipt-ocr-swal.receipt-tone-dining{
+  --receipt-tone-main:#06b6d4;
+  --receipt-tone-strong:#0284c7;
+  --receipt-tone-soft:rgba(6,182,212,.13);
+  --receipt-tone-bg:linear-gradient(180deg,#ffffff 0%,#eefcff 100%);
+  --receipt-tone-border:rgba(6,182,212,.36);
+}
+.receipt-ocr-swal.receipt-tone-meal{
+  --receipt-tone-main:#10b981;
+  --receipt-tone-strong:#047857;
+  --receipt-tone-soft:rgba(16,185,129,.13);
+  --receipt-tone-bg:linear-gradient(180deg,#ffffff 0%,#f0fdf4 100%);
+  --receipt-tone-border:rgba(16,185,129,.38);
+}
+.receipt-ocr-swal .swal-input-group-new,
+.receipt-ocr-swal .swal2-input-new,
+.receipt-ocr-swal input[type="text"],
+.receipt-ocr-swal input[type="number"],
+.receipt-ocr-swal input[inputmode="numeric"],
+.receipt-ocr-swal input[inputmode="decimal"],
+.receipt-ocr-swal select,
+.receipt-ocr-swal textarea{
+  background:#ffffff !important;
+  color:#243b63 !important;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.88),0 5px 12px rgba(110,138,176,.08) !important;
+}
+.receipt-ocr-swal .swal-input-group-new{
+  border:1px solid rgba(126,150,184,.22) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-auto{
+  background:var(--receipt-tone-bg) !important;
+  border-color:var(--receipt-tone-border) !important;
+  box-shadow:0 6px 13px rgba(110,138,176,.07), inset 1px 1px 0 rgba(255,255,255,.9) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-review{
+  background:linear-gradient(180deg,#ffffff 0%,#fff8ed 100%) !important;
+  border-color:rgba(245,158,11,.48) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-manual{
+  background:#ffffff !important;
+  border-color:rgba(126,150,184,.26) !important;
+}
+.receipt-ocr-swal .swal-input-group-new:focus-within{
+  border-color:var(--receipt-tone-main) !important;
+  box-shadow:0 0 0 3px var(--receipt-tone-soft),0 8px 16px rgba(110,138,176,.08) !important;
+}
+.receipt-ocr-swal .receipt-field-badge.badge-auto{
+  color:var(--receipt-tone-strong) !important;
+  background:var(--receipt-tone-soft) !important;
+  border:1px solid var(--receipt-tone-border) !important;
+}
+.receipt-ocr-swal .receipt-field-badge.badge-review{
+  color:#b45309 !important;
+  background:rgba(245,158,11,.14) !important;
+  border:1px solid rgba(245,158,11,.26) !important;
+}
+.receipt-ocr-swal .swal-input-label-new{
+  color:#6882a8 !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-auto .swal-input-label-new{
+  color:var(--receipt-tone-strong) !important;
+}
+.receipt-ocr-swal .receipt-use-type-box{
+  background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%) !important;
+  border:1px solid rgba(126,150,184,.18) !important;
+  box-shadow:0 8px 18px rgba(110,138,176,.08), inset 1px 1px 0 rgba(255,255,255,.86) !important;
+}
+.receipt-ocr-swal.receipt-tone-purchase .receipt-use-type-title{
+  color:#d97706 !important;
+}
+.receipt-ocr-swal.receipt-tone-dining .receipt-use-type-title{
+  color:#0284c7 !important;
+}
+.receipt-ocr-swal.receipt-tone-meal .receipt-use-type-title{
+  color:#047857 !important;
+}
+</style>
+
+
+
+<!-- PATCH_MODAL_ROUNDED_FIELDS_V1 -->
+<style>
+/* 영수증 수정 모달 입력칸을 예전처럼 둥글고 부드러운 카드형으로 복구 */
+.receipt-ocr-swal .swal-input-group-new{
+  border-radius:20px !important;
+  overflow:hidden !important;
+  padding:0 !important;
+  border-width:1.5px !important;
+  box-shadow:0 7px 16px rgba(110,138,176,.08), inset 1px 1px 0 rgba(255,255,255,.92) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-auto{
+  box-shadow:0 8px 18px rgba(110,138,176,.08), inset 1px 1px 0 rgba(255,255,255,.95) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-review{
+  box-shadow:0 8px 18px rgba(184,129,39,.08), inset 1px 1px 0 rgba(255,255,255,.95) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-manual{
+  box-shadow:0 7px 16px rgba(110,138,176,.08), inset 1px 1px 0 rgba(255,255,255,.95) !important;
+}
+.receipt-ocr-swal .swal2-input-new,
+.receipt-ocr-swal input[type="text"],
+.receipt-ocr-swal input[type="number"],
+.receipt-ocr-swal input[inputmode="numeric"],
+.receipt-ocr-swal input[inputmode="decimal"]{
+  min-height:58px !important;
+  height:58px !important;
+  padding:26px 88px 10px 16px !important;
+  text-align:left !important;
+  font-size:1.02rem !important;
+  font-weight:800 !important;
+  border-radius:20px !important;
+}
+.receipt-ocr-swal .swal-input-label-new,
+.receipt-ocr-swal .swal2-input-new:focus + .swal-input-label-new,
+.receipt-ocr-swal .swal2-input-new:not(:placeholder-shown) + .swal-input-label-new{
+  top:10px !important;
+  left:16px !important;
+  transform:none !important;
+  font-size:.76rem !important;
+  font-weight:800 !important;
+  gap:6px !important;
+}
+.receipt-ocr-swal .swal-input-label-new .input-label-icon{font-size:.86rem !important;}
+.receipt-ocr-swal .receipt-field-badge{
+  top:10px !important;
+  right:10px !important;
+  border-radius:999px !important;
+  padding:4px 10px !important;
+  font-size:.74rem !important;
+  font-weight:800 !important;
+}
+.receipt-ocr-swal .receipt-use-type-box{
+  border-radius:20px !important;
+}
+@media (max-width:767px){
+  .receipt-ocr-swal .swal-input-group-new,
+  .receipt-ocr-swal .receipt-use-type-box,
+  .receipt-ocr-swal .swal2-input-new{border-radius:18px !important;}
+  .receipt-ocr-swal .swal2-input-new,
+  .receipt-ocr-swal input[type="text"],
+  .receipt-ocr-swal input[type="number"],
+  .receipt-ocr-swal input[inputmode="numeric"],
+  .receipt-ocr-swal input[inputmode="decimal"]{
+    min-height:56px !important;
+    height:56px !important;
+    padding:25px 84px 10px 15px !important;
+  }
+}
+</style>
+
+
+<!-- PATCH_RECEIPT_MODAL_LABEL_REQUIRED_VISIBILITY_V2 -->
+<style>
+/* 영수증 수정 모달에서 필드 라벨이 입력값 뒤에 가려지지 않도록 항상 위에 보이게 고정 */
+.receipt-ocr-swal .swal-input-group-new{
+  position:relative !important;
+}
+.receipt-ocr-swal .swal-input-label-new{
+  z-index:3 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  right:92px !important;
+  padding:0 2px !important;
+  white-space:nowrap !important;
+  pointer-events:none !important;
+}
+.receipt-ocr-swal .swal-input-label-new i{
+  font-size:.84rem !important;
+}
+/* 사용자가 직접 입력해야 하는 칸은 은은한 빨간 톤으로 강조 */
+.receipt-ocr-swal .swal-input-group-new.ocr-required{
+  border-color:rgba(239,68,68,.48) !important;
+  background:linear-gradient(180deg,#ffffff 0%,#fff5f5 100%) !important;
+  box-shadow:0 8px 18px rgba(239,68,68,.10), inset 1px 1px 0 rgba(255,255,255,.96) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-required:focus-within{
+  border-color:rgba(239,68,68,.72) !important;
+  box-shadow:0 0 0 3px rgba(239,68,68,.12),0 8px 16px rgba(239,68,68,.10) !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-required .swal-input-label-new{
+  color:#dc2626 !important;
+}
+.receipt-ocr-swal .swal-input-group-new.ocr-required .swal-input-label-new::after{
+  content:'*';
+  margin-left:2px;
+  color:#dc2626;
+  font-weight:900;
+}
+.receipt-ocr-swal .receipt-field-badge.badge-required{
+  color:#b91c1c !important;
+  background:rgba(239,68,68,.12) !important;
+  border:1px solid rgba(239,68,68,.24) !important;
+}
+</style>
+
+
+<!-- PATCH_MODAL_DYNAMIC_USE_TYPE_TONE_V1 -->
+<style>
+/* 일반/특근매식 토글에 따라 모달의 테두리, 자동입력 배지, 사용 구분 색상을 즉시 동기화 */
+.receipt-ocr-swal.receipt-tone-purchase .use-type-btn.active[data-use-type="general"]{
+  color:#fff !important;
+  background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%) !important;
+  box-shadow:0 10px 18px rgba(245,158,11,.24) !important;
+}
+.receipt-ocr-swal.receipt-tone-dining .use-type-btn.active[data-use-type="general"]{
+  color:#fff !important;
+  background:linear-gradient(135deg,#06b6d4 0%,#0284c7 100%) !important;
+  box-shadow:0 10px 18px rgba(6,182,212,.22) !important;
+}
+.receipt-ocr-swal.receipt-tone-meal .use-type-btn.active[data-use-type="meal"]{
+  color:#fff !important;
+  background:linear-gradient(135deg,#10b981 0%,#047857 100%) !important;
+  box-shadow:0 10px 18px rgba(16,185,129,.24) !important;
+}
+.receipt-ocr-swal.receipt-tone-meal .swal-input-group-new.ocr-manual,
+.receipt-ocr-swal.receipt-tone-meal .swal-input-group-new.ocr-auto{
+  border-color:var(--receipt-tone-border) !important;
+}
+.receipt-ocr-swal .receipt-use-type-box{
+  transition:border-color .18s ease, box-shadow .18s ease, background .18s ease !important;
+}
+.receipt-ocr-swal.receipt-tone-purchase .receipt-use-type-box,
+.receipt-ocr-swal.receipt-tone-dining .receipt-use-type-box,
+.receipt-ocr-swal.receipt-tone-meal .receipt-use-type-box{
+  border-color:var(--receipt-tone-border) !important;
+  box-shadow:0 8px 18px rgba(110,138,176,.08), inset 1px 1px 0 rgba(255,255,255,.90), 0 0 0 3px var(--receipt-tone-soft) !important;
+}
 </style>
 
 </head>
@@ -7265,9 +8062,9 @@ body.confirmation-result-mode .confirm-timer-caption{
 
 <!-- =========================================================
   @SECTION: HTML_RECEIPT_FILE_INPUT
-  영수증 이미지 업로드 input. 버튼에서 programmatic click으로 사용.
+  영수증 이미지/PDF 업로드 input. 버튼에서 programmatic click으로 사용.
 ========================================================= -->
-<input type="file" id="receipt-file-input" accept="image/*" multiple style="display:none;">
+<input type="file" id="receipt-file-input" accept="image/*,application/pdf" multiple style="display:none;">
 <!-- =========================================================
   @SECTION: JS_APP_SCRIPT
   앱 로직 전체. IIFE 구조와 기존 함수 호출 관계를 유지합니다.
@@ -7737,7 +8534,7 @@ const CardApp = (function() {
         },
         getSmartIcon(place, details){
             const t=(place+' '+details).toLowerCase();
-            if(t.match(/식당|밥|국밥|찌개|냉면|버거|피자|치킨|맥도날드|롯데리아|김밥|한식|중식|일식|양식|분식/))return 'fa-utensils';
+            if(t.match(/식당|밥|국밥|설렁탕|해장국|곰탕|찌개|냉면|버거|피자|치킨|맥도날드|롯데리아|김밥|한식|중식|일식|양식|분식/))return 'fa-utensils';
             if(t.match(/카페|커피|스타벅스|이디야|투썸|음료|차|베이커리|빵/))return 'fa-mug-hot';
             if(t.match(/택시|주유|주차|버스|기차|교통|하이패스/))return 'fa-car-side';
             if(t.match(/마트|편의점|이마트|홈플러스|cu|gs25|세븐일레븐|쇼핑|구매/))return 'fa-cart-shopping';
@@ -8768,6 +9565,55 @@ const CardApp = (function() {
             </button>
         `,
         /* =========================================================
+        @SUBSECTION: FINAL_PATCH_RECEIPT_MODAL_PURPOSE_SCOPE
+        반납 영수증 모달은 신청 단계에서 선택한 목적 범위 안에서만 사용 구분/톤을 바꿉니다.
+        - 특근매식 목적 없음: 일반카드 고정
+        - 특근매식 단독: 특근매식 고정
+        - 특근매식 + 일반 목적: 일반카드/특근매식 선택 가능
+        ========================================================= */
+        getCurrentReturnPurposeList() {
+            const raw = String(state.currentReturnCard?.userInfo?.purpose || '').trim();
+            if (!raw) return [];
+            const selected = [];
+            if (/물품/.test(raw)) selected.push('물품구매');
+            if (/식사|다과/.test(raw)) selected.push('식사다과');
+            if (/특근|매식/.test(raw)) selected.push('특근매식');
+            const order = CardLogic.getPurposeOptions().map(x => x.id);
+            return Array.from(new Set(selected)).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+        },
+        getReceiptPurposeConfig(purposeList = CardLogic.getCurrentReturnPurposeList()) {
+            const list = Array.isArray(purposeList) ? purposeList : [];
+            const hasMeal = list.includes('특근매식');
+            const generalPurposes = list.filter(x => x !== '특근매식');
+            return {
+                purposeList: list,
+                hasMeal,
+                mealOnly: hasMeal && generalPurposes.length === 0,
+                allowMealToggle: hasMeal && generalPurposes.length > 0,
+                generalPurposes
+            };
+        },
+        getDefaultGeneralReceiptToneFromPurposes(purposeList = CardLogic.getCurrentReturnPurposeList()) {
+            const list = Array.isArray(purposeList) ? purposeList : [];
+            if (list.includes('물품구매')) return 'purchase';
+            if (list.includes('식사다과')) return 'dining';
+            return 'purchase';
+        },
+        getReceiptPopupToneFromPurposeText(storeText = '', detailsText = '', purposeList = CardLogic.getCurrentReturnPurposeList()) {
+            const list = Array.isArray(purposeList) ? purposeList : [];
+            const allowPurchase = list.length === 0 || list.includes('물품구매');
+            const allowDining = list.includes('식사다과');
+            const detailsOnly = String(detailsText || '').toLowerCase();
+            const diningPattern = /식사|식대|다과|간식|간담회|회식|음료|커피|카페|차|빵|베이커리|김밥|도시락|한식|중식|일식|양식|분식|설렁탕|해장국|국밥|곰탕|찌개|냉면|버거|피자|치킨|식당/;
+            const purchasePattern = /물품|비품|소모품|구매|행사|준비물|사무|문구|인쇄|복사|재료|용품/;
+
+            if (allowDining && !allowPurchase) return 'dining';
+            if (allowPurchase && !allowDining) return 'purchase';
+            if (allowDining && diningPattern.test(detailsOnly)) return 'dining';
+            if (allowPurchase && purchasePattern.test(detailsOnly)) return 'purchase';
+            return CardLogic.getDefaultGeneralReceiptToneFromPurposes(list);
+        },
+        /* =========================================================
         @SUBSECTION: JS_RECEIPT_DOMAIN_CART
         영수증 장바구니 도메인 시작. 아래 OCR/파일/팝업/자동저장/삭제 흐름은 모두 대표 영수증 기준입니다.
         @SUBSECTION: JS_RECEIPT_CART_RENDERING
@@ -8800,12 +9646,30 @@ const CardApp = (function() {
             if (isSaved) overlayTitle = '저장완료';
 
             const displayAmount = (it.amount === '' || it.amount == null) ? '' : `${Utils.nfKR.format(Number(it.amount || 0))}원`;
-            const smartIcon = Utils.getSmartIcon(it.usagePlace, it.usageDetails);
-            const baseToneClass = Utils.getReceiptIconToneClass(smartIcon);
+            /* FINAL_PATCH_RECEIPT_SEMANTIC_ICON_AND_BADGE_V2
+             * 영수증 목록의 아이콘과 내역 배지를 내역(usageDetails) 중심으로 3가지 톤으로 분류합니다.
+             * 1) 특근매식으로 직접 선택된 항목은 무조건 특근매식 톤
+             * 2) 사용자가 입력한 내역에 식사/다과/식대 계열 키워드가 있으면 식사다과 톤
+             * 3) 그 외 상호명/내역에 구매/행사/비품 계열이 있으면 물품구매 톤
+             * 실제 저장/금액 계산 기준은 여전히 영수증 팝업의 일반카드/특근매식 선택값입니다.
+             */
+            const getSemanticReceiptMeta = (item, isMealItem) => {
+                if (isMealItem) {
+                    return { icon: 'fa-utensils', tone: 'icon-tone-meal', badgeClass: 'tag-meal', semanticType: 'meal' };
+                }
+                const purposeList = CardLogic.getCurrentReturnPurposeList();
+                const semanticType = CardLogic.getReceiptPopupToneFromPurposeText('', item?.usageDetails || '', purposeList);
+                if (semanticType === 'dining') {
+                    return { icon: 'fa-mug-hot', tone: 'icon-tone-cafe', badgeClass: 'tag-dining', semanticType: 'dining' };
+                }
+                if (semanticType === 'purchase') {
+                    return { icon: 'fa-box-open', tone: 'icon-tone-shopping', badgeClass: String(item?.usageDetails || '').trim() ? 'tag-purchase' : 'tag-neutral', semanticType: 'purchase' };
+                }
+                return { icon: 'fa-box-open', tone: 'icon-tone-shopping', badgeClass: 'tag-neutral', semanticType: 'neutral' };
+            };
 
             if (processing === 'error') {
                 return `<div class="cart-item needs-details needs-review operational-blocked" data-index="${i}">
-                     <div class="cart-item-icon icon-tone-warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
                      <div class="cart-item-info">
                         <span class="cart-item-place" style="color:var(--danger-color);">분석실패</span>
                         <span class="cart-item-details">터치해서 직접 입력하거나 삭제 후 다시 첨부하세요 <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span></span>
@@ -8824,9 +9688,6 @@ const CardApp = (function() {
                 const bgAmount = (isSaving || isSaved) ? displayAmount : '';
 
                 return `<div class="cart-item ${cls}" data-index="${i}" data-processing-text="${Utils.esc(CardLogic.getReceiptProcessingLabel(processing))}">
-                    <div class="cart-item-icon ${isAnalysisPhase ? 'icon-tone-processing' : (isSaved ? 'icon-tone-saved' : (isSaving ? 'icon-tone-saving' : baseToneClass))}">
-                        ${isAnalysisPhase ? `<div class="mini-scanner"><div class="mini-paper"></div><div class="mini-beam"></div></div>` : `<i class="fa-solid ${smartIcon}"></i>`}
-                    </div>
                     <div class="cart-item-info">
                         <span class="cart-item-place">${bgPlace}</span>
                         <span class="cart-item-details">${bgDetails}</span>
@@ -8842,25 +9703,28 @@ const CardApp = (function() {
             const placeText = processing === 'save_error'
                 ? '저장실패'
                 : (isReview ? '확인필요' : (Utils.esc(it.usagePlace) || '상호명 없음'));
-            const detailText = processing === 'save_error'
+            const detailTextRaw = processing === 'save_error'
                 ? '터치하여 다시 저장하거나 삭제 후 다시 첨부하세요'
                 : (isReview
                     ? '사용처/금액/내용을 확인한 뒤 저장해 주세요'
-                    : (Utils.esc(it.usageDetails) || '내역 없음'));
-            const mealBadge = itemIsMeal
-                ? `<span class="receipt-meal-badge"><i class="fa-solid fa-utensils"></i> 특근매식비 ${Utils.nfKR.format(Utils.normalizeMealHeadcount(it.mealHeadcount, 1))}명</span>`
-                : '';
-            const adjustedNote = itemIsMeal && Number(it.originalAmount || 0) > Number(it.amount || 0)
-                ? ` <span class="meal-adjust-note">원금액 ${Utils.nfKR.format(Number(it.originalAmount || 0))}원</span>`
-                : '';
+                    : String(it.usageDetails || '').trim());
+            /* FINAL_PATCH_RECEIPT_LIST_MEAL_DISPLAY_CLEANUP
+             * 장바구니 목록에서는 특근매식비의 원금액 안내를 숨깁니다.
+             * 원금액/보정금액은 영수증 수정 팝업에서만 확인하도록 하여 목록을 간결하게 유지합니다.
+             */
+            const adjustedNote = '';
+            const semanticMeta = getSemanticReceiptMeta(it, itemIsMeal);
+            const displayIcon = semanticMeta.icon;
+            const displayToneClass = semanticMeta.tone;
+            const detailBadgeClass = semanticMeta.badgeClass;
+            const detailBadgeText = detailTextRaw ? `#${String(detailTextRaw).replace(/^#+/, '')}` : '#내역없음';
+            const detailBadgeHTML = `<span class="receipt-detail-hashtag ${detailTextRaw ? detailBadgeClass : 'tag-neutral'}">${Utils.esc(detailBadgeText)}</span>`;
 
             return `<div class="cart-item with-inline-actions ${cls} ${itemIsMeal ? 'meal-expense-item' : ''}" data-index="${i}" ${processing?`data-processing-text="${Utils.esc(CardLogic.getReceiptProcessingLabel(processing))}"`:''}>
-                <div class="cart-item-icon ${needWarn ? 'icon-tone-warning' : baseToneClass}">
-                    ${needWarn ? `<i class="fa-solid fa-triangle-exclamation"></i>` : `<i class="fa-solid ${smartIcon}"></i>`}
-                </div>
+                <div class="cart-item-icon ${displayToneClass}" aria-hidden="true"><i class="fa-solid ${displayIcon}"></i></div>
                 <div class="cart-item-info">
                     <span class="cart-item-place">${placeText}</span>
-                    <span class="cart-item-details">${mealBadge}${detailText}${adjustedNote}${needWarn ? ` <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span>` : ''}</span>
+                    <span class="cart-item-details">${detailBadgeHTML}${adjustedNote}${needWarn ? ` <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span>` : ''}</span>
                 </div>
                 <div class="cart-item-amount-box"><span class="cart-item-amount">${displayAmount}</span></div>
                 ${!isProcessing?`<button class="cart-item-delete-wide" type="button" aria-label="영수증 삭제">삭제</button>`:''}
@@ -9636,9 +10500,39 @@ const CardApp = (function() {
             state.receiptReloadToken = receiptReloadToken;
             const add = document.createElement('button');
             add.id='add-receipt-btn';
-            add.className='simple-btn accent';
-            add.innerHTML='<i class="fa-solid fa-plus"></i> 영수증 추가';
+            add.className='simple-btn accent receipt-dropzone-btn';
+            add.innerHTML='<span class="receipt-dropzone-main">+ 영수증 첨부</span><span class="receipt-dropzone-sub">#클릭 또는 드래그</span>';
             add.onclick=()=>CardLogic.triggerImageSelection(-1);
+            ['dragenter','dragover'].forEach(evtName => {
+                add.addEventListener(evtName, (ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    if (!add.disabled) {
+                        add.classList.add('drag-over');
+                        const sub = add.querySelector('.receipt-dropzone-sub');
+                        if (sub) sub.textContent = '여기에 놓으면 영수증이 추가됩니다';
+                    }
+                });
+            });
+            ['dragleave','dragend'].forEach(evtName => {
+                add.addEventListener(evtName, (ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    add.classList.remove('drag-over');
+                    const sub = add.querySelector('.receipt-dropzone-sub');
+                    if (sub) sub.textContent = '#클릭 또는 드래그';
+                });
+            });
+            add.addEventListener('drop', (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                add.classList.remove('drag-over');
+                const sub = add.querySelector('.receipt-dropzone-sub');
+                if (sub) sub.textContent = '#클릭 또는 드래그';
+                if (add.disabled) return;
+                const droppedFiles = ev.dataTransfer && ev.dataTransfer.files ? ev.dataTransfer.files : null;
+                if (droppedFiles && droppedFiles.length) CardLogic.handleReceiptFiles(droppedFiles);
+            });
             const cw = document.createElement('div');
             cw.className='cart-wrapper';
             cw.appendChild(Object.assign(document.createElement('div'),{id:'receipt-cart-container'}));
@@ -9662,7 +10556,7 @@ const CardApp = (function() {
                     box-shadow: inset 3px 3px 7px rgba(163,177,198, 0.7), inset -3px -3px 7px rgba(255,255,255, 0.8);
                     color: var(--text-secondary); font-weight:800; text-align:center; line-height:1.5;
                 `;
-                msg.innerHTML = `행정실에 방문하여<br><span class="text-gradient">행정실 태블릿</span>에서 <b>[반납 및 제출]</b> 버튼을 눌러주세요`;
+                msg.innerHTML = `※ 행정실 카드 반납 시 태블릿의 <b style="color:#2563eb;font-weight:950;">[반납 및 제출]</b> 버튼을 꼭 눌러주세요.`;
                 subEl = msg;
             }
             returnTray.appendChild(cw);
@@ -9889,10 +10783,11 @@ const CardApp = (function() {
         handleReceiptFilesQueued: async (files) => {
             /* @PHASE: JS_RECEIPT_BATCH_CREATE_GHOST_ITEMS - 파일 수만큼 대기 항목을 먼저 만들어 즉시 표시 */
             const startIdx = state.receiptCart.length;
-            const isMeal = !!(state.currentReturnCard && state.currentReturnCard.userInfo && String(state.currentReturnCard.userInfo.purpose || '').includes('특근'));
-            const newItems = files.map(() => ({
+            const receiptPurposeConfig = CardLogic.getReceiptPurposeConfig();
+            const forceMealOnly = receiptPurposeConfig.mealOnly;
+            const newItems = files.map((file) => ({
                 receiptImage: '',
-                usagePlace: '영수증 분석 대기 중...',
+                usagePlace: CardLogic.isReceiptPdfFile(file) ? 'PDF 분석 대기 중...' : '영수증 분석 대기 중...',
                 usageDetails: '',
                 amount: '',
                 date: '',
@@ -9911,10 +10806,10 @@ const CardApp = (function() {
                 try {
                     /* @PHASE: JS_RECEIPT_BATCH_OPTIMIZE_IMAGE - 브라우저에서 이미지 압축 후 base64 저장 */
                     state.receiptCart[actualIdx].processing = 'optimizing';
-                    state.receiptCart[actualIdx].usagePlace = '영수증 압축 중...';
+                    state.receiptCart[actualIdx].usagePlace = CardLogic.isReceiptPdfFile(file) ? 'PDF 첫 페이지 변환 중...' : '영수증 압축 중...';
                     CardLogic.requestRenderReceiptCart();
 
-                    b64 = await CardLogic.resizeAndOptimizeImage(file);
+                    b64 = await CardLogic.prepareReceiptUploadImage(file);
                     state.receiptCart[actualIdx].receiptImage = b64;
                     state.receiptCart[actualIdx].processing = 'ocr';
                     state.receiptCart[actualIdx].usagePlace = '영수증 분석 중...';
@@ -9935,16 +10830,22 @@ const CardApp = (function() {
                         throw new Error('영수증 이미지를 저장하지 못했습니다. 다시 첨부해 주세요.');
                     }
 
+                    const rawRecognizedAmount = analysisFailed ? '' : amt.replace(/[^\d]/g, '');
+                    const mealCountForReceipt = CardLogic.getCurrentReturnMealHeadcount();
+                    const mealAmountInfo = forceMealOnly && rawRecognizedAmount ? Utils.getMealAdjustedAmount(rawRecognizedAmount, mealCountForReceipt) : null;
                     state.receiptCart[actualIdx] = {
                         receiptImage: ocr.tempFileId,
                         previewImage: b64,
                         receiptImagePreview: b64,
                         usagePlace: analysisFailed ? '직접 입력 필요' : (ocr.storeName || '상호명 없음'),
-                        usageDetails: '',
-                        amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
-                        originalAmount: analysisFailed ? '' : amt.replace(/[^\d]/g, ''),
-                        isMealExpense: false,
-                        mealHeadcount: CardLogic.getCurrentReturnMealHeadcount(),
+                        usageDetails: forceMealOnly ? '특근매식비' : '',
+                        amount: mealAmountInfo ? String(mealAmountInfo.amount) : rawRecognizedAmount,
+                        originalAmount: rawRecognizedAmount,
+                        isMealExpense: !!forceMealOnly,
+                        purpose: forceMealOnly ? '특근매식비' : '',
+                        mealHeadcount: mealCountForReceipt,
+                        mealLimitAmount: mealAmountInfo ? String(mealAmountInfo.mealLimitAmount) : '',
+                        mealOverAmount: mealAmountInfo ? String(Math.max(0, mealAmountInfo.originalAmount - mealAmountInfo.amount)) : '',
                         date: analysisFailed ? '' : (ocr.date || ''),
                         processing: 'saving',
                         _uiTransient: true,
@@ -10074,7 +10975,18 @@ const CardApp = (function() {
             EmbedBridge.notify('UPLOAD_START');
             const editIndex = state.pendingEditIndex;
             state.pendingEditIndex = -1;
-            const files = Array.from(fileList);
+            const rawFiles = Array.from(fileList);
+            const files = rawFiles.filter(file => CardLogic.isReceiptSupportedFile(file));
+            if (rawFiles.length !== files.length) {
+                try {
+                    Swal.fire({toast:true, position:'top', icon:'warning', title:'이미지 또는 PDF 파일만 첨부할 수 있습니다', showConfirmButton:false, timer:2200});
+                } catch (_) {}
+            }
+            if (!files.length) {
+                try { document.getElementById('receipt-file-input').value = ''; } catch (e) {}
+                EmbedBridge.notify('UPLOAD_END');
+                return;
+            }
             /* @PHASE: JS_RECEIPT_UPLOAD_NEW_FILES - 새 영수증 여러 장 추가 처리 */
             if (editIndex < 0) {
                 const addBtn = document.getElementById('add-receipt-btn');
@@ -10103,7 +11015,7 @@ const CardApp = (function() {
             try {
                 UIManager.setLoading(true, '영수증 교체 분석 중...', 'receipt');
                 const file = files[0];
-                const b64 = await CardLogic.resizeAndOptimizeImage(file);
+                const b64 = await CardLogic.prepareReceiptUploadImage(file);
                 const ocr = await Api.call('processReceiptImage', b64);
                 if (!ocr || !ocr.tempFileId) {
                     throw new Error('영수증 이미지를 저장하지 못했습니다. 다시 첨부해 주세요.');
@@ -10139,12 +11051,86 @@ const CardApp = (function() {
             EmbedBridge.notify('UPLOAD_END');
         },
         /* =========================================================
+        @SUBSECTION: JS_RECEIPT_PDF_AND_IMAGE_PREP
+        이미지/PDF 첨부를 OCR용 이미지 dataURL로 변환
+        ========================================================= */
+        isReceiptPdfFile: (file) => !!(file && (String(file.type || '').toLowerCase() === 'application/pdf' || /\.pdf$/i.test(String(file.name || '')))),
+        isReceiptSupportedFile: (file) => !!(file && (String(file.type || '').startsWith('image/') || CardLogic.isReceiptPdfFile(file))),
+        ensurePdfRendererLoaded: async () => {
+            if (window.pdfjsLib && window.pdfjsLib.getDocument) {
+                try {
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                } catch (e) {}
+                return window.pdfjsLib;
+            }
+            await new Promise((resolve, reject) => {
+                const existing = document.querySelector('script[data-receipt-pdfjs]');
+                if (existing) {
+                    existing.addEventListener('load', resolve, { once:true });
+                    existing.addEventListener('error', reject, { once:true });
+                    return;
+                }
+                const s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                s.async = true;
+                s.dataset.receiptPdfjs = '1';
+                s.onload = resolve;
+                s.onerror = () => reject(new Error('PDF 변환 모듈을 불러오지 못했습니다. 네트워크를 확인해 주세요.'));
+                document.head.appendChild(s);
+            });
+            if (!window.pdfjsLib || !window.pdfjsLib.getDocument) throw new Error('PDF 변환 모듈을 사용할 수 없습니다.');
+            try {
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            } catch (e) {}
+            return window.pdfjsLib;
+        },
+        renderPdfFirstPageToImage: async (file) => {
+            const pdfjs = await CardLogic.ensurePdfRendererLoaded();
+            const arrayBuffer = await file.arrayBuffer();
+            let pdfDoc = null;
+            try {
+                pdfDoc = await pdfjs.getDocument({ data: arrayBuffer }).promise;
+                if (!pdfDoc || !pdfDoc.numPages) throw new Error('PDF 페이지를 찾을 수 없습니다.');
+                const page = await pdfDoc.getPage(1);
+                const baseViewport = page.getViewport({ scale: 1 });
+                const maxSide = Math.max(1200, Number(RECEIPT_IMAGE_OPTIMIZE_CONFIG && RECEIPT_IMAGE_OPTIMIZE_CONFIG.maxSide || 1800));
+                const scale = Math.min(2.4, Math.max(1.2, maxSide / Math.max(baseViewport.width, baseViewport.height)));
+                const viewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.max(1, Math.round(viewport.width));
+                canvas.height = Math.max(1, Math.round(viewport.height));
+                const ctx = canvas.getContext('2d', { alpha:false });
+                if (!ctx) throw new Error('PDF 변환 캔버스를 만들 수 없습니다.');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                await page.render({ canvasContext: ctx, viewport }).promise;
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.88));
+                if (!blob) throw new Error('PDF 첫 페이지 이미지 변환 실패');
+                return await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(String(reader.result || ''));
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+            } catch (e) {
+                throw new Error('PDF 첫 페이지를 이미지로 변환하지 못했습니다. PDF를 이미지로 저장한 뒤 다시 첨부해 주세요.');
+            } finally {
+                try { if (pdfDoc && typeof pdfDoc.destroy === 'function') pdfDoc.destroy(); } catch (e) {}
+            }
+        },
+        prepareReceiptUploadImage: async (file) => {
+            if (CardLogic.isReceiptPdfFile(file)) {
+                return await CardLogic.renderPdfFirstPageToImage(file);
+            }
+            return await CardLogic.resizeAndOptimizeImage(file);
+        },
+        /* =========================================================
         @SUBSECTION: JS_RECEIPT_IMAGE_OPTIMIZATION
         브라우저 canvas로 영수증 이미지를 압축/리사이즈
         ========================================================= */
         resizeAndOptimizeImage: async (file) => {
             if (!file || !String(file.type || '').startsWith('image/')) {
-                throw new Error('이미지 파일만 업로드할 수 있습니다.');
+                throw new Error('이미지 또는 PDF 파일만 업로드할 수 있습니다.');
             }
 
             const cfg = RECEIPT_IMAGE_OPTIMIZE_CONFIG;
@@ -10236,7 +11222,10 @@ const CardApp = (function() {
         ========================================================= */
         async openOcrPopup(data = {}, editIndex = -1) {
             /* @PHASE: JS_RECEIPT_POPUP_BUILD_HTML - OCR 결과 확인/직접 입력용 SweetAlert HTML 구성 */
-            const isMeal = Utils.isMealExpenseItem(data);
+            const rawIsMeal = Utils.isMealExpenseItem(data);
+            const receiptPurposeList = CardLogic.getCurrentReturnPurposeList();
+            const receiptPurposeConfig = CardLogic.getReceiptPurposeConfig(receiptPurposeList);
+            const isMeal = receiptPurposeConfig.mealOnly ? true : (receiptPurposeConfig.allowMealToggle ? rawIsMeal : false);
             const mealHeadcountValue = CardLogic.getCurrentReturnMealHeadcount();
             const originalAmountValue = String(data.originalAmount || data.amount || '').replace(/[^\d]/g, '');
             const receiptRef = String(data.receiptImage || '');
@@ -10258,6 +11247,36 @@ const CardApp = (function() {
             const storeStatus = getOcrFieldStatus(!!storeValue);
             const amountStatus = getOcrFieldStatus(!!amountValue);
             const detailsStatus = getOcrFieldStatus(!!detailsValue);
+            /* FINAL_PATCH_RECEIPT_MODAL_PURPOSE_TONE_V1
+             * 영수증 수정 모달의 자동입력 배지/테두리는 영수증 의미 톤에 맞춥니다.
+             * - 특근매식: 초록
+             * - 식사/다과 계열: 하늘/청록
+             * - 물품/구매 계열: 주황
+             */
+            const getReceiptPopupToneFromText = (storeText = '', detailsText = '') =>
+                CardLogic.getReceiptPopupToneFromPurposeText(storeText, detailsText, receiptPurposeList);
+            const getReceiptPopupTone = () => isMeal ? 'meal' : getReceiptPopupToneFromText(storeValue, detailsValue);
+            const receiptPopupTone = getReceiptPopupTone();
+            const receiptUseTypeHtml = receiptPurposeConfig.mealOnly ? `
+                            <div class="receipt-use-type-box">
+                                <div class="receipt-use-type-title"><i class="fa-solid fa-tags"></i> 사용 구분</div>
+                                <div class="receipt-use-type-segment" role="group" aria-label="영수증 사용 구분">
+                                    <button id="swal-use-meal" type="button" data-use-type="meal" class="use-type-btn active" aria-pressed="true">
+                                        <i class="fa-solid fa-utensils"></i> 특근매식
+                                    </button>
+                                </div>
+                            </div>` : (receiptPurposeConfig.allowMealToggle ? `
+                            <div class="receipt-use-type-box">
+                                <div class="receipt-use-type-title"><i class="fa-solid fa-tags"></i> 사용 구분</div>
+                                <div class="receipt-use-type-segment" role="group" aria-label="영수증 사용 구분">
+                                    <button id="swal-use-general" type="button" data-use-type="general" class="use-type-btn ${isMeal ? '' : 'active'}" aria-pressed="${isMeal ? 'false' : 'true'}">
+                                        <i class="fa-solid fa-receipt"></i> 일반카드
+                                    </button>
+                                    <button id="swal-use-meal" type="button" data-use-type="meal" class="use-type-btn ${isMeal ? 'active' : ''}" aria-pressed="${isMeal ? 'true' : 'false'}">
+                                        <i class="fa-solid fa-utensils"></i> 특근매식
+                                    </button>
+                                </div>
+                            </div>` : '');
             const html = `
                 <div class="swal-custom-container receipt-ocr-layout">
                     <div class="receipt-ocr-image-panel">
@@ -10285,24 +11304,13 @@ const CardApp = (function() {
                                 <label class="swal-input-label-new"><i class="fa-solid fa-pencil"></i> 내용</label>
                                 <span class="receipt-field-badge ${getOcrBadgeClass(detailsStatus)}">${getOcrBadgeText(detailsStatus)}</span>
                             </div></div>
-                            <div class="receipt-use-type-box">
-                                <div class="receipt-use-type-title"><i class="fa-solid fa-tags"></i> 사용 구분</div>
-                                <div class="receipt-use-type-segment" role="group" aria-label="영수증 사용 구분">
-                                    <button id="swal-use-general" type="button" data-use-type="general" class="use-type-btn ${isMeal ? '' : 'active'}" aria-pressed="${isMeal ? 'false' : 'true'}">
-                                        <i class="fa-solid fa-receipt"></i> 일반카드
-                                    </button>
-                                    <button id="swal-use-meal" type="button" data-use-type="meal" class="use-type-btn ${isMeal ? 'active' : ''}" aria-pressed="${isMeal ? 'true' : 'false'}">
-                                        <i class="fa-solid fa-utensils"></i> 특근매식
-                                    </button>
-                                </div>
-
-                            </div>
+${receiptUseTypeHtml}
                         </div>
                     </div>
                 </div>`;
             await Swal.fire({
                 title: '영수증 정보', html, showCancelButton: true,
-                customClass: { popup: 'receipt-ocr-swal' },
+                customClass: { popup: `receipt-ocr-swal receipt-tone-${receiptPopupTone}` },
                 confirmButtonText: editIndex > -1 ? '저장' : '추가', cancelButtonText: '취소',
                 focusConfirm: false, focusCancel: false, allowOutsideClick: false, returnFocus: false,
                 /* @PHASE: JS_RECEIPT_POPUP_DID_OPEN - 모달이 열린 뒤 스크롤/키보드/입력 이벤트 연결 */
@@ -10311,9 +11319,10 @@ const CardApp = (function() {
                     document.body.dataset.prevOverflow = _prevOverflow || '';
                     document.body.style.overflow = 'auto';
                     const popup = Swal.getPopup();
+                    const isReceiptTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || window.innerWidth <= 1024;
                     const vv = window.visualViewport;
                     let vvHandler = null;
-                    if (isMobile && popup && vv) {
+                    if ((isMobile || isReceiptTouchDevice) && popup && vv) {
                         vvHandler = () => {
                             const kb = Math.max(0, (window.innerHeight - vv.height - vv.offsetTop));
                             popup.style.paddingBottom = (kb + 16) + 'px';
@@ -10358,13 +11367,55 @@ const CardApp = (function() {
                             }
                         })();
                     }
+                    const updateReceiptFieldVisual = (inputEl) => {
+                        if (!inputEl) return;
+                        const group = inputEl.closest('.swal-input-group-new');
+                        if (!group) return;
+                        const badge = group.querySelector('.receipt-field-badge');
+                        const hasValue = !!String(inputEl.value || '').trim();
+                        const status = String(group.dataset.ocrStatus || '').trim();
+                        group.classList.remove('ocr-auto', 'ocr-review', 'ocr-manual', 'ocr-required');
+                        if (badge) badge.classList.remove('badge-auto', 'badge-review', 'badge-required');
+
+                        if (!hasValue) {
+                            group.classList.add('ocr-required');
+                            if (badge) {
+                                badge.classList.add('badge-required');
+                                badge.textContent = '입력필요';
+                                badge.style.display = 'inline-flex';
+                            }
+                            return;
+                        }
+
+                        if (status === 'auto') {
+                            group.classList.add('ocr-auto');
+                            if (badge) {
+                                badge.classList.add('badge-auto');
+                                badge.textContent = '자동입력';
+                                badge.style.display = 'inline-flex';
+                            }
+                            return;
+                        }
+
+                        if (status === 'review') {
+                            group.classList.add('ocr-review');
+                            if (badge) {
+                                badge.classList.add('badge-review');
+                                badge.textContent = '확인필요';
+                                badge.style.display = 'inline-flex';
+                            }
+                            return;
+                        }
+
+                        group.classList.add('ocr-manual');
+                        if (badge) badge.style.display = 'none';
+                    };
                     const markFieldManual = (inputEl) => {
                         if (!inputEl) return;
                         const group = inputEl.closest('.swal-input-group-new');
-                        if (!group || group.classList.contains('ocr-manual')) return;
-                        group.classList.remove('ocr-auto', 'ocr-review');
-                        group.classList.add('ocr-manual');
+                        if (!group) return;
                         group.dataset.ocrStatus = 'manual';
+                        updateReceiptFieldVisual(inputEl);
                     };
                     const useGeneral = document.getElementById('swal-use-general');
                     const useMeal = document.getElementById('swal-use-meal');
@@ -10374,6 +11425,17 @@ const CardApp = (function() {
                     let mealBaseAmount = String(originalAmountValue || (amount ? amount.value : '') || '').replace(/[^\d]/g, '');
                     const getMealBaseAmount = () => String(mealBaseAmount || originalAmountValue || (amount ? amount.value : '') || '').replace(/[^\d]/g, '');
                     const isMealMode = () => !!(useMeal && useMeal.getAttribute('aria-pressed') === 'true');
+                    const getCurrentGeneralTone = () => getReceiptPopupToneFromText(
+                        store ? store.value : storeValue,
+                        details ? details.value : detailsValue
+                    );
+                    const applyReceiptPopupTone = (tone) => {
+                        const pop = Swal.getPopup();
+                        if (!pop) return;
+                        pop.classList.remove('receipt-tone-purchase', 'receipt-tone-dining', 'receipt-tone-meal');
+                        pop.classList.add(`receipt-tone-${tone || 'purchase'}`);
+                    };
+                    const syncReceiptPopupTone = () => applyReceiptPopupTone(isMealMode() ? 'meal' : getCurrentGeneralTone());
                     const recalcMealAmount = () => {
                         if (!isMealMode()) return;
                         const raw = getMealBaseAmount();
@@ -10385,17 +11447,18 @@ const CardApp = (function() {
                         if (amount) amount.value = raw ? Utils.nfKR.format(Number(raw)) : '';
                     };
                     const setMealMode = (on) => {
+                        const nextOn = receiptPurposeConfig.mealOnly ? true : (receiptPurposeConfig.allowMealToggle ? !!on : false);
                         if (useGeneral) {
-                            useGeneral.classList.toggle('active', !on);
-                            useGeneral.setAttribute('aria-pressed', on ? 'false' : 'true');
+                            useGeneral.classList.toggle('active', !nextOn);
+                            useGeneral.setAttribute('aria-pressed', nextOn ? 'false' : 'true');
                         }
                         if (useMeal) {
-                            useMeal.classList.toggle('active', !!on);
-                            useMeal.setAttribute('aria-pressed', on ? 'true' : 'false');
+                            useMeal.classList.toggle('active', !!nextOn);
+                            useMeal.setAttribute('aria-pressed', nextOn ? 'true' : 'false');
                         }
                         if (mealPanel) mealPanel.style.display = 'none';
                         if (details) {
-                            if (on) {
+                            if (nextOn) {
                                 mealBaseAmount = getMealBaseAmount();
                                 details.value = '특근매식비';
                                 details.readOnly = true;
@@ -10405,24 +11468,28 @@ const CardApp = (function() {
                                 if (details.value === '특근매식비') details.value = '';
                                 restoreGeneralAmount();
                             }
-                        } else if (on) {
+                        } else if (nextOn) {
                             mealBaseAmount = getMealBaseAmount();
                             recalcMealAmount();
                         } else {
                             restoreGeneralAmount();
                         }
+                        syncReceiptPopupTone();
+                        [store, amount, details].forEach(updateReceiptFieldVisual);
                     };
-                    store.addEventListener('input', () => markFieldManual(store));
-                    details.addEventListener('input', () => markFieldManual(details));
+                    [store, amount, details].forEach(updateReceiptFieldVisual);
+                    store.addEventListener('input', () => { markFieldManual(store); if (!isMealMode()) syncReceiptPopupTone(); });
+                    details.addEventListener('input', () => { markFieldManual(details); if (!isMealMode()) syncReceiptPopupTone(); });
                     amount.oninput = (e) => {
                         markFieldManual(e.target);
                         const v = e.target.value.replace(/[^\d]/g, '');
                         mealBaseAmount = v;
                         e.target.value = v ? Utils.nfKR.format(parseInt(v)) : '';
                         recalcMealAmount();
+                        updateReceiptFieldVisual(e.target);
                     };
-                    if (useGeneral) useGeneral.onclick = () => setMealMode(false);
-                    if (useMeal) useMeal.onclick = () => setMealMode(true);
+                    if (useGeneral && receiptPurposeConfig.allowMealToggle) useGeneral.onclick = () => setMealMode(false);
+                    if (useMeal && receiptPurposeConfig.allowMealToggle) useMeal.onclick = () => setMealMode(true);
                     setMealMode(isMeal);
                     const handleEnter = (e, nextElem) => {
                         if (e.key === 'Enter') {
@@ -10434,19 +11501,48 @@ const CardApp = (function() {
                     store.onkeydown = e => handleEnter(e, amount);
                     amount.onkeydown = e => handleEnter(e, details);
                     details.onkeydown = e => handleEnter(e, null);
-                    /* @PHASE: JS_RECEIPT_POPUP_MOBILE_KEYBOARD - 모바일/태블릿은 팝업 열림만으로 키보드를 띄우지 않고, 사용자가 입력칸을 직접 눌렀을 때만 키보드를 표시 */
-                    const isTouchReceiptDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
-                    if (isMobile || isTouchReceiptDevice) {
-                        const focusHandler = (e) => {
-                            setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
+                    /* @PHASE: JS_RECEIPT_POPUP_MOBILE_TABLET_KEYBOARD_SAFE
+                     * 모바일/태블릿에서는 팝업이 열릴 때 입력칸 자동 포커스를 완전히 막습니다.
+                     * 사용자가 상호명/금액/내용 칸을 직접 누른 뒤에만 키패드가 올라오도록 readonly 잠금을 한 번 걸었다가 터치 시 해제합니다.
+                     */
+                    if (isMobile || isReceiptTouchDevice) {
+                        const receiptInputs = [store, amount, details].filter(Boolean);
+                        const blurReceiptInput = () => {
+                            const active = document.activeElement;
+                            if (active && receiptInputs.includes(active)) active.blur();
                         };
-                        store.addEventListener('focus', focusHandler);
-                        amount.addEventListener('focus', focusHandler);
-                        details.addEventListener('focus', focusHandler);
+                        requestAnimationFrame(blurReceiptInput);
+                        setTimeout(blurReceiptInput, 80);
+                        setTimeout(blurReceiptInput, 260);
+
+                        const focusHandler = (e) => {
+                            setTimeout(() => {
+                                try { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_) {}
+                            }, 300);
+                        };
+
+                        const unlockForUserEdit = (e) => {
+                            const input = e.currentTarget;
+                            if (!input) return;
+                            if (input.id === 'swal-details' && isMealMode()) return;
+                            input.readOnly = false;
+                            setTimeout(() => {
+                                try { input.focus({ preventScroll: true }); } catch (_) { input.focus(); }
+                                focusHandler({ target: input });
+                            }, 0);
+                        };
+
+                        receiptInputs.forEach((input) => {
+                            input.dataset.wsOriginalReadonly = input.readOnly ? '1' : '0';
+                            if (input.dataset.wsOriginalReadonly !== '1') input.readOnly = true;
+                            input.addEventListener('focus', focusHandler);
+                            input.addEventListener('touchstart', unlockForUserEdit, { passive: true });
+                            input.addEventListener('pointerdown', unlockForUserEdit, { passive: true });
+                        });
                     } else {
                         setTimeout(() => store.focus(), 100);
                     }
-                    if (!isMeal && !isTouchReceiptDevice) {
+                    if (!isMeal && !(isMobile || isReceiptTouchDevice)) {
                         setTimeout(() => {
                             const detailsInput = document.getElementById('swal-details');
                             if (detailsInput) {
