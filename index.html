@@ -7813,6 +7813,23 @@ textarea{
 </style>
 
 
+<!-- PATCH_RECEIPT_MODAL_MOBILE_HIDE_LABEL_ICONS_V1 -->
+<style>
+/* 모바일 영수증 수정 모달에서는 입력 라벨 아이콘을 숨기고 텍스트만 표시 */
+@media (max-width:767px), (pointer:coarse){
+  .receipt-ocr-swal .swal-input-label-new .input-label-icon,
+  .receipt-ocr-swal .swal-input-label-new i{
+    display:none !important;
+  }
+  .receipt-ocr-swal .swal-input-label-new{
+    gap:0 !important;
+    left:15px !important;
+    right:84px !important;
+  }
+}
+</style>
+
+
 <!-- PATCH_MODAL_DYNAMIC_USE_TYPE_TONE_V1 -->
 <style>
 /* 일반/특근매식 토글에 따라 모달의 테두리, 자동입력 배지, 사용 구분 색상을 즉시 동기화 */
