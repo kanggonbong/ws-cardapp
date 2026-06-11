@@ -9483,12 +9483,15 @@ const CardApp = (function() {
             return allowedUsers.some(name => currentNames.includes(name));
         },
         getCurrentReturnMealHeadcount() {
-            const fromCard = String(state.currentReturnCard?.userInfo?.userName || '')
+            // 내선번호 1개를 1명으로 봅니다. 같은 내선번호가 중복 입력되면 1명으로만 계산합니다.
+            const enteredExtCount = Array.isArray(state.enteredUsers)
+                ? new Set(state.enteredUsers.map(u => String(u.extension || '').trim()).filter(Boolean)).size
+                : 0;
+            const fromCardNames = new Set(String(state.currentReturnCard?.userInfo?.userName || '')
                 .split(',')
                 .map(x => x.trim())
-                .filter(Boolean).length;
-            const fromEntered = Array.isArray(state.enteredUsers) ? state.enteredUsers.length : 0;
-            return Math.max(1, fromCard || fromEntered || 1);
+                .filter(Boolean)).size;
+            return Math.max(1, enteredExtCount || fromCardNames || 1);
         },
         renderCardButtonHTML: (card) => {
             const rawStatus = String(card.status || '').trim();
@@ -9616,6 +9619,16 @@ const CardApp = (function() {
             if (allowDining && diningPattern.test(detailsOnly)) return 'dining';
             if (allowPurchase && purchasePattern.test(detailsOnly)) return 'purchase';
             return CardLogic.getDefaultGeneralReceiptToneFromPurposes(list);
+        },
+        getReceiptPurposeFromTone(tone, purposeList = CardLogic.getCurrentReturnPurposeList()) {
+            const list = Array.isArray(purposeList) ? purposeList : [];
+            const general = list.filter(x => x !== '특근매식');
+            if (tone === 'dining' && general.includes('식사다과')) return '식사다과';
+            if (tone === 'purchase' && general.includes('물품구매')) return '물품구매';
+            if (general.length === 1) return general[0];
+            if (general.includes('물품구매')) return '물품구매';
+            if (general.includes('식사다과')) return '식사다과';
+            return '';
         },
         /* =========================================================
         @SUBSECTION: JS_RECEIPT_DOMAIN_CART
@@ -10334,6 +10347,7 @@ const CardApp = (function() {
             const names = state.enteredUsers.map(u => u.name).join(', ');
             const item = {
                 requestId: Utils.createClientRequestId('rent'),
+                usageSessionId: Utils.createClientRequestId('usage'),
                 cardNumber: id,
                 userName: names,
                 purpose,
@@ -10393,6 +10407,7 @@ const CardApp = (function() {
             t.userInfo.userName = item.userName;
             t.userInfo.purpose = item.purpose;
             t.userInfo.receiveDate = Utils.formatDateKR();
+            t.userInfo.usageSessionId = item.usageSessionId || item.requestId || '';
             t.savedCart = [];
         },
         async runRentRequestWithRetry(item, opts = {}) {
@@ -10412,7 +10427,8 @@ const CardApp = (function() {
                             userName: item.userName,
                             purpose: item.purpose,
                             userExtensions: item.userExtensions || [],
-                            requestId: item.requestId
+                            requestId: item.requestId,
+                            usageSessionId: item.usageSessionId || item.requestId || ''
                         });
                         if (r?.status === 'conflict') {
                             CardLogic.removePendingRentRequest(item.requestId);
@@ -10425,7 +10441,11 @@ const CardApp = (function() {
                         }
                         CardLogic.removePendingRentRequest(item.requestId);
                         const t = state.allCardData?.find(c => c.id === item.cardNumber);
-                        if (t && String(t.status || '').trim() === '신청중') t.status = '사용중';
+                        if (t && String(t.status || '').trim() === '신청중') {
+                            t.status = '사용중';
+                            t.userInfo = t.userInfo || {};
+                            t.userInfo.usageSessionId = (r && r.usageSessionId) || item.usageSessionId || item.requestId || '';
+                        }
                         state.pendingPostReturnSync = true;
                         CardLogic.scheduleQuickSync(1, 900);
                         return true;
@@ -10846,7 +10866,7 @@ const CardApp = (function() {
                         amount: mealAmountInfo ? String(mealAmountInfo.amount) : rawRecognizedAmount,
                         originalAmount: rawRecognizedAmount,
                         isMealExpense: !!forceMealOnly,
-                        purpose: forceMealOnly ? '특근매식비' : '',
+                        purpose: forceMealOnly ? '특근매식비' : CardLogic.getReceiptPurposeFromTone(CardLogic.getDefaultGeneralReceiptToneFromPurposes()),
                         mealHeadcount: mealCountForReceipt,
                         mealLimitAmount: mealAmountInfo ? String(mealAmountInfo.mealLimitAmount) : '',
                         mealOverAmount: mealAmountInfo ? String(Math.max(0, mealAmountInfo.originalAmount - mealAmountInfo.amount)) : '',
@@ -11597,13 +11617,15 @@ ${receiptUseTypeHtml}
                         mealOverAmount = String(Math.max(0, info.originalAmount - info.amount));
                     }
                     const cachedPreview = data.previewImage || data.receiptImagePreview || '';
+                    const generalTone = CardLogic.getReceiptPopupToneFromPurposeText(store, details, CardLogic.getCurrentReturnPurposeList());
+                    const receiptPurpose = isMealExpense ? '특근매식비' : CardLogic.getReceiptPurposeFromTone(generalTone);
                     return {
                         usagePlace: store,
                         usageDetails: details,
                         amount,
                         originalAmount,
                         isMealExpense,
-                        purpose: isMealExpense ? '특근매식비' : '',
+                        purpose: receiptPurpose,
                         mealHeadcount: isMealExpense ? mealHeadcount : '',
                         mealLimitAmount,
                         mealOverAmount,
@@ -11746,6 +11768,9 @@ ${receiptUseTypeHtml}
                 cardNumber: state.currentReturnCard.id,
                 receiveDate: state.currentReturnCard.userInfo.receiveDate,
                 userName: state.enteredUsers.map(u=>u.name).join(', '),
+                purpose: state.currentReturnCard?.userInfo?.purpose || '',
+                usageSessionId: state.currentReturnCard?.userInfo?.usageSessionId || '',
+                requestId: Utils.createClientRequestId('return'),
                 multiEntries: JSON.stringify(Utils.sanitizeReceiptCart(state.receiptCart))
             };
             let delayedReturnLoadingTimer = null;
