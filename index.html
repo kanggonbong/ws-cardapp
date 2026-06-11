@@ -7813,21 +7813,8 @@ textarea{
 </style>
 
 
-<!-- PATCH_RECEIPT_MODAL_MOBILE_HIDE_LABEL_ICONS_V1 -->
-<style>
-/* 모바일 영수증 수정 모달에서는 입력 라벨 아이콘을 숨기고 텍스트만 표시 */
-@media (max-width:767px), (pointer:coarse){
-  .receipt-ocr-swal .swal-input-label-new .input-label-icon,
-  .receipt-ocr-swal .swal-input-label-new i{
-    display:none !important;
-  }
-  .receipt-ocr-swal .swal-input-label-new{
-    gap:0 !important;
-    left:15px !important;
-    right:84px !important;
-  }
-}
-</style>
+<!-- PATCH_RECEIPT_MODAL_MOBILE_HIDE_LABEL_ICONS_V1_REMOVED -->
+
 
 
 <!-- PATCH_MODAL_DYNAMIC_USE_TYPE_TONE_V1 -->
@@ -12491,6 +12478,71 @@ document.addEventListener('DOMContentLoaded', () => {
   - 0.8초를 넘길 때만 기존 중앙 로딩을 표시해 체감 대기 시간을 줄입니다.
 ========================================================= */
 </script>
+
+
+
+<!-- PATCH_MOBILE_RECEIPT_LIST_COMPACT_ICON_WRAP_V2 -->
+<style>
+/* 모바일: 입력 라벨 아이콘은 다시 표시하고, 영수증 목록 카드의 큰 왼쪽 아이콘만 숨김 */
+@media (max-width:767px), (pointer:coarse){
+  .receipt-ocr-swal .swal-input-label-new .input-label-icon,
+  .receipt-ocr-swal .swal-input-label-new i{
+    display:inline-flex !important;
+  }
+  .receipt-ocr-swal .swal-input-label-new{
+    gap:6px !important;
+  }
+
+  #screen-return-details .cart-item.with-inline-actions > .cart-item-icon,
+  #screen-return-details .cart-item.overlay-phase > .cart-item-icon{
+    display:none !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions{
+    grid-template-columns:minmax(0,1fr) minmax(64px,auto) 58px !important;
+    column-gap:7px !important;
+    padding-left:14px !important;
+    padding-right:10px !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-info{
+    grid-column:1 !important;
+    min-width:0 !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-amount-box{
+    grid-column:2 !important;
+    min-width:64px !important;
+    margin-left:4px !important;
+    margin-right:0 !important;
+    padding-left:0 !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide{
+    grid-column:3 !important;
+  }
+
+  #screen-return-details .cart-item-place,
+  #screen-return-details .cart-item.with-inline-actions .cart-item-place{
+    white-space:normal !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+    display:-webkit-box !important;
+    -webkit-line-clamp:2 !important;
+    -webkit-box-orient:vertical !important;
+    overflow-wrap:anywhere !important;
+    word-break:keep-all !important;
+    line-height:1.18 !important;
+    max-height:2.36em !important;
+  }
+}
+@media (max-width:360px){
+  #screen-return-details .cart-item.with-inline-actions{
+    grid-template-columns:minmax(0,1fr) minmax(58px,auto) !important;
+  }
+  #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide{
+    grid-column:2 / -1 !important;
+    justify-self:end !important;
+    margin-top:6px !important;
+  }
+}
+</style>
 
 </body>
 </html>
