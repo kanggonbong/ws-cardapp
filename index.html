@@ -4350,7 +4350,15 @@ img {
     
 
 <style id="woosung-final-portrait-keypad-stability-patch">
-
+/* =========================================================
+  @SECTION: WOOSUNG_FINAL_PORTRAIT_KEYPAD_STABILITY_PATCH
+  적용 목적
+  - PC 중앙정렬은 유지
+  - 모바일/태블릿 세로모드에서 내선번호 점 4칸 중앙축 고정
+  - 모바일 하단 과도한 빈 공간 완화
+  - 태블릿 세로모드 키패드 터치 영역 안정화
+  - 기존 기능/JS는 건드리지 않음
+========================================================= */
 
 /* 공통: 화면 기준을 dvh로 안정화 */
 html,
@@ -4454,7 +4462,7 @@ body {
   }
 
   #screen-login #keypadDisplay .digit-wrapper.active-cursor::after {
-    content: "" !important;
+    content: '' !important;
     position: absolute !important;
     width: 7px !important;
     height: 7px !important;
@@ -5782,7 +5790,6 @@ body #screen-confirmation.screen.hidden {
 
 
 <style>
-
 #screen-login .keypad-panel{
   width:100%;
   margin-top:4px;
@@ -5889,6 +5896,10 @@ body #screen-confirmation.screen.hidden {
 }
 
 
+/* =========================================================
+  @SECTION: FINAL_PATCH_CARD_PURPOSE_FLIGHT
+  41차: 시뮬레이터 기반 카드 비행/뒤집힘 목적 선택 레이어
+========================================================= */
 #purpose-flight-overlay{
   position:fixed;
   inset:0;
@@ -6114,6 +6125,12 @@ body.purpose-flight-open .card-item-wrapper.flight-source-hidden{
 }
 
 
+/* =========================================================
+  @SECTION: FINAL_PATCH_45_PURPOSE_FLIGHT_GPU_TRANSFORM
+  45차: 카드 비행 플립 transform-only GPU 가속 실험
+  - top/left/width/height transition 제거
+  - 크기는 최종 모달 크기로 고정 후 transform으로만 이동/확대/회전
+========================================================= */
 #purpose-flight-layer{
   perspective:1500px !important;
 }
@@ -6146,7 +6163,6 @@ body.purpose-flight-open .card-item-wrapper.flight-source-hidden{
 
 
 <style id="woosung-keypad-speed-patch-46">
-
   #screen-login .keypad-btn,
   #screen-login #keypad-submit-btn,
   #screen-login #keypad-add-btn,
@@ -7261,6 +7277,55 @@ textarea{
 .purpose-flight-available-label{font-size:.72rem;font-weight:850;letter-spacing:.1em;opacity:.86;}
 .card-header-badge--flush{margin-top:0 !important;}
 .return-submit-emphasis{color:#2563eb;font-weight:950;}
+</style>
+
+
+<style id="woosung-login-ready-border-v5">
+/* FINAL_PATCH_LOGIN_READY_BORDER_V5
+   로그인 준비 완료 상태에서 예전처럼 중앙 상태창에 초록 테두리/완료감을 복원합니다.
+   기능/JS/HTML 구조는 건드리지 않고 #dash-center-screen.success 상태만 시각 보정합니다. */
+body:has(#screen-login:not(.hidden)) #screen-login #dash-center-screen.success,
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen.success{
+  border:1.5px solid rgba(16,185,129,0.72) !important;
+  background:
+    linear-gradient(180deg,rgba(246,253,250,0.96) 0%,rgba(218,245,235,0.92) 100%) !important;
+  box-shadow:
+    inset 4px 4px 9px rgba(54,108,135,0.13),
+    inset -4px -4px 9px rgba(255,255,255,0.92),
+    0 0 0 3px rgba(16,185,129,0.10),
+    0 7px 16px rgba(16,185,129,0.12) !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login #dash-center-screen.success #dash-badge-area,
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen.success #dash-badge-area{
+  color:#166534 !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login #dash-center-screen.success #dash-badge-icon,
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen.success #dash-badge-icon{
+  color:#0f9f75 !important;
+  filter:drop-shadow(0 0 5px rgba(16,185,129,0.28)) !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login #dash-center-screen.success #dash-badge-text,
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen.success #dash-badge-text{
+  color:#166534 !important;
+  font-weight:900 !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login #dash-center-screen.success #login-instruction.login-ready,
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen.success #login-instruction.login-ready{
+  color:#166534 !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login #dash-center-screen.success .login-ready-keyword,
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen.success .login-ready-keyword{
+  background:linear-gradient(135deg,#34d399 0%,#10b981 55%,#059669 100%) !important;
+  color:#ffffff !important;
+  box-shadow:
+    0 5px 12px rgba(16,185,129,0.22),
+    inset 1px 1px 0 rgba(255,255,255,0.40) !important;
+}
 </style>
 
 </head>
@@ -11232,10 +11297,11 @@ ${receiptUseTypeHtml}
         const hasTouch = (navigator.maxTouchPoints || 0) > 0 || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
         const shortSide = Math.min(window.innerWidth || 0, window.innerHeight || 0);
         const longSide = Math.max(window.innerWidth || 0, window.innerHeight || 0);
-        const tabletSize = shortSide >= 600 && shortSide <= 1100 && longSide >= 800 && longSide <= 1400;
         const isiPad = /iPad/i.test(ua) || (platform === 'MacIntel' && (navigator.maxTouchPoints || 0) > 1);
         const isAndroidTablet = /Android/i.test(ua) && !/Mobile/i.test(ua);
-        return hasTouch && (isiPad || isAndroidTablet || tabletSize);
+        // PC/노트북 터치스크린 또는 브라우저 크기만으로 태블릿으로 오판하지 않도록
+        // visibilitychange 복귀 잠금은 명확한 iPad/Android 태블릿에서만 실행합니다.
+        return hasTouch && (isiPad || isAndroidTablet);
     }
 
     function hasActiveReceiptWork(){
@@ -11727,6 +11793,241 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 </style>
 
+
+
+
+<style id="woosung-login-title-dashboard-convex-safe-v2">
+/* =========================================================
+  SAFE PATCH: title/dashboard convex only v2
+  - 이전 convex_fix에서 화면 전체 크기와 대시보드 텍스트가 틀어진 부분을 복구합니다.
+  - 레이아웃 크기, #screen-login 폭/높이, 키패드, JS는 건드리지 않습니다.
+  - 상단 제목 박스와 대시보드 pill의 inset 느낌만 부드러운 outset으로 보정합니다.
+========================================================= */
+
+body:has(#screen-login:not(.hidden)) #main-title-container .inset-box{
+  background:linear-gradient(180deg,#edf4fb 0%,#e3edf8 54%,#dbe7f3 100%) !important;
+  border:1px solid rgba(255,255,255,0.80) !important;
+  box-shadow:
+    6px 7px 14px rgba(108,137,176,0.14),
+    -5px -6px 13px rgba(255,255,255,0.88),
+    inset 1px 1px 0 rgba(255,255,255,0.72) !important;
+}
+
+body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2{
+  color:#153b70 !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.82),
+    1px 2px 4px rgba(32,67,118,0.24) !important;
+}
+
+/* 대시보드 전체 pill: 좌/중/우를 각각 조각처럼 띄우지 않고 하나의 볼록한 캡슐로 유지 */
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard,
+body:has(#screen-login:not(.hidden)) .header-dashboard{
+  background:linear-gradient(180deg,#f2f7fd 0%,#e5eff9 56%,#dce8f5 100%) !important;
+  border:1px solid rgba(255,255,255,0.78) !important;
+  box-shadow:
+    6px 7px 15px rgba(108,137,176,0.13),
+    -5px -6px 13px rgba(255,255,255,0.84),
+    inset 1px 1px 0 rgba(255,255,255,0.72) !important;
+  overflow:hidden !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .stat-item,
+body:has(#screen-login:not(.hidden)) .header-dashboard .stat-item{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  min-width:0 !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .stat-label,
+body:has(#screen-login:not(.hidden)) .header-dashboard .stat-label{
+  color:#3f6597 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.78) !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .stat-value,
+body:has(#screen-login:not(.hidden)) .header-dashboard .stat-value{
+  color:#2563d6 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.72) !important;
+}
+
+/* 가운데 입력창은 살짝만 올라온 느낌. 크기와 텍스트 위치를 고정해서 잘림 방지 */
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen,
+body:has(#screen-login:not(.hidden)) .dashboard-center-screen{
+  width:142px !important;
+  height:58px !important;
+  min-height:58px !important;
+  max-height:58px !important;
+  padding:6px 12px !important;
+  border-radius:16px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:2px !important;
+  overflow:hidden !important;
+  background:linear-gradient(180deg,#eef5fc 0%,#e2edf8 60%,#d9e6f4 100%) !important;
+  border:1px solid rgba(255,255,255,0.78) !important;
+  box-shadow:
+    4px 5px 11px rgba(108,137,176,0.12),
+    -4px -5px 10px rgba(255,255,255,0.78),
+    inset 1px 1px 0 rgba(255,255,255,0.74) !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen::before,
+body:has(#screen-login:not(.hidden)) .dashboard-center-screen::before{
+  content:none !important;
+  display:none !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .status-badge-wrap,
+body:has(#screen-login:not(.hidden)) .status-badge-wrap{
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.05 !important;
+  font-size:.62rem !important;
+  white-space:nowrap !important;
+  overflow:visible !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .status-text-main,
+body:has(#screen-login:not(.hidden)) .status-text-main{
+  display:block !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  width:auto !important;
+  line-height:1.12 !important;
+  font-size:.82rem !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  overflow:visible !important;
+  text-align:center !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+@media (max-width:767px){
+  body:has(#screen-login:not(.hidden)) #screen-login .dashboard-center-screen,
+  body:has(#screen-login:not(.hidden)) .dashboard-center-screen{
+    width:128px !important;
+    height:56px !important;
+    min-height:56px !important;
+    max-height:56px !important;
+    padding:6px 8px !important;
+  }
+
+  body:has(#screen-login:not(.hidden)) #screen-login .status-badge-wrap,
+  body:has(#screen-login:not(.hidden)) .status-badge-wrap{
+    font-size:.58rem !important;
+  }
+
+  body:has(#screen-login:not(.hidden)) #screen-login .status-text-main,
+  body:has(#screen-login:not(.hidden)) .status-text-main{
+    font-size:.78rem !important;
+  }
+}
+</style>
+
+<!-- =========================================================
+  @SECTION: FINAL_PATCH_INDEX3_LATEST_WITH_USER_EXTENSION_LOGIN
+  - Base: index3 latest stable package.
+  - Transplanted only the user's current extension/login screen HTML plus matching login-focused CSS blocks.
+  - Latest card/rent/return/receipt/PDF/admin/PC-lock logic remains from stable index3.
+========================================================= -->
+
+<style id="woosung-login-dashboard-center-inset-final-v4">
+/* =========================================================
+  FINAL PATCH: dashboard center inset final v4
+  - Must be after convex_safe_v2 so the center panel is not overridden.
+  - Keeps title and outer dashboard convex.
+  - Restores ONLY the middle extension input window to inset/concave.
+========================================================= */
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .dashboard-center-screen,
+body:has(#screen-login:not(.hidden)) .header-dashboard .dashboard-center-screen,
+body:has(#screen-login:not(.hidden)) #dash-center-screen{
+  width:142px !important;
+  height:58px !important;
+  min-height:58px !important;
+  max-height:58px !important;
+  padding:6px 12px !important;
+  border-radius:16px !important;
+  background:linear-gradient(180deg,#dfeaf6 0%,#edf5fd 100%) !important;
+  border:1px solid rgba(255,255,255,0.62) !important;
+  box-shadow:
+    inset 5px 5px 10px rgba(112,140,178,0.20),
+    inset -5px -5px 10px rgba(255,255,255,0.82),
+    0 1px 0 rgba(255,255,255,0.44) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:2px !important;
+  overflow:hidden !important;
+  transform:none !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .dashboard-center-screen::before,
+body:has(#screen-login:not(.hidden)) .header-dashboard .dashboard-center-screen::before,
+body:has(#screen-login:not(.hidden)) #dash-center-screen::before{
+  content:none !important;
+  display:none !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .dashboard-center-screen .status-badge-wrap,
+body:has(#screen-login:not(.hidden)) .header-dashboard .dashboard-center-screen .status-badge-wrap,
+body:has(#screen-login:not(.hidden)) #dash-center-screen .status-badge-wrap{
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.05 !important;
+  font-size:.62rem !important;
+  white-space:nowrap !important;
+  color:#234f86 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.76) !important;
+}
+
+body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .dashboard-center-screen .status-text-main,
+body:has(#screen-login:not(.hidden)) .header-dashboard .dashboard-center-screen .status-text-main,
+body:has(#screen-login:not(.hidden)) #dash-center-screen .status-text-main{
+  display:block !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  width:auto !important;
+  line-height:1.12 !important;
+  font-size:.82rem !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  text-align:center !important;
+  color:#113a72 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.76) !important;
+}
+
+@media (max-width:767px){
+  body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .dashboard-center-screen,
+  body:has(#screen-login:not(.hidden)) .header-dashboard .dashboard-center-screen,
+  body:has(#screen-login:not(.hidden)) #dash-center-screen{
+    width:128px !important;
+    height:56px !important;
+    min-height:56px !important;
+    max-height:56px !important;
+    padding:6px 8px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #screen-login .header-dashboard .dashboard-center-screen .status-text-main,
+  body:has(#screen-login:not(.hidden)) .header-dashboard .dashboard-center-screen .status-text-main,
+  body:has(#screen-login:not(.hidden)) #dash-center-screen .status-text-main{
+    font-size:.78rem !important;
+  }
+}
+</style>
 </body>
 </html>
 
