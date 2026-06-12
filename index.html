@@ -12027,7 +12027,411 @@ body:has(#screen-login:not(.hidden)) #dash-center-screen .status-text-main{
     font-size:.78rem !important;
   }
 }
+
+
+/* =========================================================
+  @SECTION: WS_THEME_NAVY_GOLD_FULL_OVERRIDE
+  전체 테마 변경팩: 고급 네이비 + 골드 포인트
+  - 기능/JS/GAS 변경 없음
+  - CSS 최종 오버라이드만 적용
+========================================================= */
+:root{
+  --ws-theme-bg-color:#e7ecf4 !important;
+  --ws-theme-bg-gradient:radial-gradient(circle at top left,#ffffff 0%,#eef3f9 32%,#dbe4ef 100%) !important;
+  --ws-theme-primary:#123a72 !important;
+  --ws-theme-primary-soft:#315f9d !important;
+  --ws-theme-primary-deep:#09244d !important;
+  --ws-theme-primary-gradient:linear-gradient(135deg,#315f9d 0%,#123a72 52%,#09244d 100%) !important;
+  --ws-theme-accent:#c99a2e !important;
+  --ws-theme-danger:#c24155 !important;
+  --ws-theme-success:#0f8f6b !important;
+  --ws-theme-text-primary:#172b4d !important;
+  --ws-theme-text-secondary:#667896 !important;
+  --ws-theme-shadow-light:rgba(255,255,255,0.96) !important;
+  --ws-theme-shadow-dark:rgba(80,101,130,0.28) !important;
+  --ws-theme-surface-panel:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  --ws-theme-surface-card:linear-gradient(180deg,#ffffff 0%,#eef4fb 100%) !important;
+  --ws-theme-border-strong:rgba(255,255,255,0.86) !important;
+  --ws-theme-border-soft:rgba(255,255,255,0.64) !important;
+  --ws-theme-focus-blue:#123a72 !important;
+  --ws-theme-focus-purple:#7b5a1d !important;
+  --ws-theme-meal:#0f8f6b !important;
+  --ws-theme-warning:#c99a2e !important;
+
+  --bg-color:#e7ecf4 !important;
+  --primary-color:#123a72 !important;
+  --primary-gradient:linear-gradient(135deg,#315f9d 0%,#123a72 52%,#09244d 100%) !important;
+  --accent-color:#c99a2e !important;
+  --danger-color:#c24155 !important;
+  --success-color:#0f8f6b !important;
+  --text-primary:#172b4d !important;
+  --text-secondary:#667896 !important;
+  --shadow-light:rgba(255,255,255,0.96) !important;
+  --shadow-dark:rgba(80,101,130,0.28) !important;
+
+  --ws-final-card-blue-start:#102f5f !important;
+  --ws-final-card-blue-end:#315f9d !important;
+  --ws-final-lock-blue-start:#071d3f !important;
+  --ws-final-lock-blue-end:#214f8c !important;
+  --ws-final-card-red-start:#6f2530 !important;
+  --ws-final-card-red-end:#b84a55 !important;
+  --ws-final-card-blue-shadow:rgba(16,47,95,0.30) !important;
+  --ws-final-card-red-shadow:rgba(111,37,48,0.26) !important;
+  --ws-final-card-ring-blue:rgba(201,154,46,0.58) !important;
+  --ws-final-card-ring-red:rgba(246,190,96,0.56) !important;
+}
+
+html,body{
+  background:radial-gradient(circle at top left,#ffffff 0%,#eef3f9 34%,#dbe4ef 100%) !important;
+  color:#172b4d !important;
+}
+#lock-screen,#welcome-screen,#security-scan-overlay,#loadingOverlay,.morph-overlay{
+  background:radial-gradient(circle at top left,rgba(255,255,255,0.96) 0%,rgba(238,243,249,0.96) 38%,rgba(219,228,239,0.97) 100%) !important;
+}
+.screen,#screen-login,.loader-card-v2,#receipt-dashboard,.login-user-panel,.header-dashboard,.swal2-popup,.scanner-container,.scan-box,.inset-box{
+  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  border:1px solid rgba(255,255,255,0.70) !important;
+  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+}
+.keypad-btn,.simple-btn,.submit-btn,.purpose-btn,.user-tag,.cart-item,.digit-box.filled{
+  background:linear-gradient(180deg,#ffffff 0%,#eef4fb 100%) !important;
+  border:1px solid rgba(255,255,255,0.86) !important;
+  color:#172b4d !important;
+  box-shadow:10px 10px 20px rgba(80,101,130,0.22),-8px -8px 18px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.72) !important;
+}
+#main-title-container .inset-box h2,.loader-card-title,.confirmation-title,.morph-header,.card-name{
+  color:#172b4d !important;
+  text-shadow:-1px -1px 1px rgba(80,101,130,0.18),1px 1px 1px rgba(255,255,255,0.92) !important;
+}
+.text-gradient,.stat-value,.cart-item-amount,.detail-row-content,.loader-progress-percent,.dashboard-amount{
+  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  -webkit-background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+}
+.stat-label,#card-selection-header,.morph-subheader,.dashboard-label,.loader-card-subtitle,.loader-step-desc,.cart-item-details{
+  color:#667896 !important;
+}
+#keypad-submit-btn,.simple-btn.primary,.submit-btn.primary{
+  background:linear-gradient(135deg,#315f9d 0%,#123a72 55%,#09244d 100%) !important;
+  color:#ffffff !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:0 14px 24px rgba(18,58,114,0.22),inset 1px 1px 0 rgba(255,255,255,0.32) !important;
+}
+#keypad-submit-btn i,.simple-btn.primary i,.submit-btn.primary i{color:#ffffff !important;}
+#keypad-add-btn,.simple-btn.accent,#add-receipt-btn,.main-badge,.card-header-badge.badge-purpose-purchase{
+  color:#7a5515 !important;
+}
+.simple-btn.accent,#add-receipt-btn{
+  background:linear-gradient(135deg,#fff7df 0%,#f3d88c 52%,#c99a2e 100%) !important;
+  color:#6b4710 !important;
+  border:1px solid rgba(255,255,255,0.82) !important;
+  box-shadow:10px 10px 20px rgba(201,154,46,0.16),-8px -8px 16px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.72) !important;
+}
+#add-receipt-btn i,.simple-btn.accent i{color:#7a5515 !important;}
+#keypad-back-btn,.cart-item-delete,.warning-text{color:#c24155 !important;}
+.cart-item-delete,.cart-item-delete-wide{
+  background:linear-gradient(135deg,#d95c6e 0%,#b83248 100%) !important;
+  color:#ffffff !important;
+  box-shadow:0 8px 18px rgba(194,65,85,0.30),inset 1px 1px 0 rgba(255,255,255,0.26) !important;
+}
+.cart-item-delete i,.cart-item-delete-wide i{color:#ffffff !important;}
+.submit-guide,.ops-error-box{
+  background:linear-gradient(180deg,rgba(255,245,247,0.98) 0%,rgba(251,226,231,0.98) 100%) !important;
+  color:#9f1239 !important;
+  border:1px solid rgba(194,65,85,0.18) !important;
+}
+.ops-recovery-list{
+  background:linear-gradient(180deg,rgba(248,251,255,0.98),rgba(235,241,249,0.98)) !important;
+  color:#364d70 !important;
+  border:1px solid rgba(18,58,114,0.14) !important;
+}
+
+/* 잠금화면 카드 */
+#glass-card{
+  background:radial-gradient(circle at 18% 12%,rgba(255,255,255,0.24) 0%,rgba(255,255,255,0.08) 24%,transparent 45%),linear-gradient(135deg,#071d3f 0%,#214f8c 100%) !important;
+  border:1px solid rgba(255,255,255,0.24) !important;
+  box-shadow:18px 18px 40px rgba(7,29,63,0.30),-6px -6px 24px rgba(255,255,255,0.13),inset 1px 1px 0 rgba(255,255,255,0.28),inset -1px -1px 0 rgba(0,0,0,0.16) !important;
+}
+.card-chip,.hybrid-card-chip{
+  background:linear-gradient(135deg,#fff1b8 0%,#c99a2e 55%,#7a5515 100%) !important;
+}
+#glass-card .card-number,#glass-card .card-holder,#glass-card .card-nfc{color:rgba(255,255,255,0.96) !important;}
+
+/* 카드 선택 보관함 */
+#cardGrid{
+  background:radial-gradient(circle at 18% 10%,rgba(255,255,255,.46) 0%,transparent 28%),linear-gradient(180deg,#d4deeb 0%,#e1e8f1 52%,#c9d4e2 100%) !important;
+  border:1px solid rgba(255,255,255,.74) !important;
+  box-shadow:inset 7px 7px 16px rgba(80,101,130,.20),inset -7px -7px 16px rgba(255,255,255,.82),0 12px 28px rgba(23,43,77,.08) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available{
+  background:radial-gradient(circle at 18% 12%,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.08) 20%,transparent 42%),linear-gradient(135deg,#102f5f 0%,#315f9d 100%) !important;
+  border:1px solid rgba(255,255,255,0.22) !important;
+  box-shadow:0 10px 21px rgba(16,47,95,0.30),inset 1px 1px 0 rgba(255,255,255,0.25),inset -1px -1px 0 rgba(0,0,0,0.15) !important;
+}
+.card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available{
+  background:radial-gradient(circle at 18% 12%,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.08) 20%,transparent 42%),linear-gradient(135deg,#6f2530 0%,#b84a55 100%) !important;
+  box-shadow:0 10px 21px rgba(111,37,48,0.26),inset 1px 1px 0 rgba(255,255,255,0.25),inset -1px -1px 0 rgba(0,0,0,0.15) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available::after{
+  border-color:rgba(201,154,46,0.58) !important;
+  filter:drop-shadow(0 0 6px rgba(201,154,46,0.34)) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-available .card-name{
+  color:#ffffff !important;
+  text-shadow:0 2px 5px rgba(15,23,42,0.30) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-inuse,
+.card-item-wrapper.hybrid-card-slot.card-status-returning,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown{
+  background:linear-gradient(180deg,#f0f4f9 0%,#dfe8f3 100%) !important;
+  border:1.5px dashed rgba(110,124,146,.70) !important;
+  box-shadow:inset 4px 4px 10px rgba(80,101,130,.22),inset -4px -4px 10px rgba(255,255,255,.90) !important;
+}
+.card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+.card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+  color:#5c6f8c !important;
+}
+.hybrid-status-badge.inuse-only-badge{
+  background:linear-gradient(135deg,#8997aa 0%,#5b6d86 100%) !important;
+  color:#f8fafc !important;
+}
+.card-borrow-date{color:#74849b !important;}
+
+/* 목적/상태 컬러 */
+.purpose-btn[data-purpose="물품구매"],.purpose-btn[data-purpose="물품구매"] i{color:#c99a2e !important;}
+.purpose-btn[data-purpose="식사다과"],.purpose-btn[data-purpose="식사다과"] i{color:#0e8a9a !important;}
+.purpose-btn[data-purpose="기타운영"],.purpose-btn[data-purpose="기타운영"] i{color:#7b5a1d !important;}
+.purpose-btn[data-purpose="특근매식"],.purpose-btn[data-purpose="특근매식"] i{color:#0f8f6b !important;}
+.card-header-badge.badge-purpose-purchase,.main-badge{background:linear-gradient(135deg,#e9c56d 0%,#c99a2e 100%) !important;color:#34260c !important;}
+.card-header-badge.badge-purpose-dining{background:linear-gradient(135deg,#0e8a9a 0%,#123a72 100%) !important;color:#f8fbff !important;}
+.card-header-badge.badge-purpose-ops{background:linear-gradient(135deg,#7b5a1d 0%,#123a72 100%) !important;color:#fffaf0 !important;}
+.card-header-badge.badge-purpose-meal{background:linear-gradient(135deg,#0f8f6b 0%,#08664e 100%) !important;color:#f2fffb !important;}
+.card-header-badge.badge-purpose-default,.status-badge{background:linear-gradient(135deg,#315f9d 0%,#123a72 100%) !important;color:#f8fbff !important;}
+
+/* 입력/팝업 */
+.swal-input-group-new{background:#e2eaf4 !important;box-shadow:inset 6px 6px 12px rgba(80,101,130,0.15),inset -6px -6px 12px rgba(255,255,255,0.96) !important;}
+.swal2-input-new{color:#172b4d !important;}
+.swal-input-label-new{color:#667896 !important;}
+.swal-input-group-new.store-name .swal-input-label-new{color:#123a72 !important;}
+.swal-input-group-new.amount-field .swal-input-label-new{color:#0f8f6b !important;}
+.swal-input-group-new.details-field .swal-input-label-new{color:#7b5a1d !important;}
+
+/* 로더 */
+.loader-progress-fill{background:linear-gradient(90deg,#315f9d 0%,#123a72 54%,#c99a2e 100%) !important;box-shadow:0 8px 18px rgba(18,58,114,0.20) !important;}
+#loader-step-1.active .loader-step-icon{background:linear-gradient(135deg,#315f9d 0%,#123a72 100%) !important;color:#ffffff !important;}
+#loader-step-2.active .loader-step-icon{background:linear-gradient(135deg,#d9b75d 0%,#c99a2e 100%) !important;color:#34260c !important;}
+.loader-step-item.done .loader-step-icon,.loader-step-item.done .loader-step-badge{background:linear-gradient(135deg,#19b38a 0%,#0f8f6b 100%) !important;color:#ffffff !important;}
+.animated-check{stroke:#0f8f6b !important;}
+
+@media (hover:hover) and (pointer:fine){
+  .card-item-wrapper.hybrid-card-slot.card-status-available:hover{
+    filter:brightness(1.045) !important;
+    box-shadow:0 14px 27px rgba(16,47,95,0.34),inset 1px 1px 0 rgba(255,255,255,0.28) !important;
+  }
+  .keypad-btn:hover,.simple-btn:hover,.purpose-btn:hover,#add-receipt-btn:hover{filter:brightness(1.025) !important;}
+}
+
 </style>
+
+
+<!-- =========================================================
+  @SECTION: WS_REQUEST_PATCH_2026_06_12
+  요청 반영:
+  1) 대여 가능 / 사용 중 대시보드 텍스트 고대비화
+  2) 모든 주요 화면의 '우성고 카드 시스템' 타이틀 박스를
+     내선번호 입력 화면처럼 볼록한 뉴모피즘 형태로 통일
+========================================================= -->
+<style>
+/* 1. 상단 대시보드 텍스트 선명도 강화 */
+.header-dashboard .stat-label,
+#screen-login .header-dashboard .stat-label{
+  color:#0f356c !important;
+  font-weight:950 !important;
+  opacity:1 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.95) !important;
+}
+.header-dashboard .stat-value,
+#screen-login .header-dashboard .stat-value{
+  color:#123a72 !important;
+  font-weight:950 !important;
+  opacity:1 !important;
+  -webkit-text-fill-color:#123a72 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.92), 0 2px 6px rgba(18,58,114,0.18) !important;
+}
+#dash-badge-area,
+#dash-badge-area *{
+  color:#08244f !important;
+  font-weight:950 !important;
+  opacity:1 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.95) !important;
+}
+.header-dashboard{
+  background:linear-gradient(180deg,#eef5fd 0%,#dce8f6 100%) !important;
+  border:1px solid rgba(255,255,255,0.82) !important;
+  box-shadow:
+    8px 8px 18px rgba(80,101,130,0.16),
+    -8px -8px 18px rgba(255,255,255,0.92),
+    inset 1px 1px 0 rgba(255,255,255,0.86) !important;
+}
+
+/* 카드 선택 화면의 사용 중 슬롯 정보도 조금 더 또렷하게 */
+.card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name,
+.card-item-wrapper.hybrid-card-slot.card-status-returning .card-name,
+.card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name{
+  color:#334b70 !important;
+  font-weight:950 !important;
+  opacity:1 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,0.96) !important;
+}
+.card-borrow-date{
+  color:#405779 !important;
+  font-weight:950 !important;
+  opacity:1 !important;
+}
+.hybrid-status-badge.inuse-only-badge{
+  background:linear-gradient(135deg,#4e6380 0%,#253b5d 100%) !important;
+  color:#ffffff !important;
+  font-weight:950 !important;
+  box-shadow:0 6px 14px rgba(37,59,93,0.24), inset 1px 1px 0 rgba(255,255,255,0.28) !important;
+}
+
+/* 2. 타이틀 박스: 모든 화면 공통으로 볼록한 형태 통일 */
+#main-title-container,
+body:has(#screen-login:not(.hidden)) #main-title-container,
+body:has(#screen-main:not(.hidden)) #main-title-container,
+body:has(#screen-return-details:not(.hidden)) #main-title-container,
+body:has(#screen-return:not(.hidden)) #main-title-container,
+body.confirmation-result-mode #main-title-container{
+  width:min(86vw, 430px) !important;
+  max-width:430px !important;
+  margin-top:0 !important;
+  margin-bottom:14px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+}
+#main-title-container .inset-box,
+body:has(#screen-login:not(.hidden)) #main-title-container .inset-box,
+body:has(#screen-main:not(.hidden)) #main-title-container .inset-box,
+body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box,
+body:has(#screen-return:not(.hidden)) #main-title-container .inset-box,
+body.confirmation-result-mode #main-title-container .inset-box{
+  width:100% !important;
+  min-height:64px !important;
+  padding:10px 22px !important;
+  border-radius:22px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:12px !important;
+  background:
+    radial-gradient(circle at 24% 12%,rgba(255,255,255,0.72) 0%,rgba(255,255,255,0.28) 35%,transparent 58%),
+    linear-gradient(180deg,#f1f7ff 0%,#dce8f6 100%) !important;
+  border:1px solid rgba(255,255,255,0.88) !important;
+  box-shadow:
+    10px 10px 22px rgba(80,101,130,0.18),
+    -10px -10px 22px rgba(255,255,255,0.96),
+    inset 1px 1px 0 rgba(255,255,255,0.95),
+    inset -1px -1px 0 rgba(80,101,130,0.08) !important;
+  margin:0 !important;
+}
+#main-title-container .inset-box h2,
+body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2,
+body:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2,
+body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2,
+body:has(#screen-return:not(.hidden)) #main-title-container .inset-box h2,
+body.confirmation-result-mode #main-title-container .inset-box h2{
+  margin:0 !important;
+  font-size:clamp(1.35rem, 3.2vw, 1.95rem) !important;
+  line-height:1.08 !important;
+  letter-spacing:-0.055em !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  color:#08244f !important;
+  -webkit-text-fill-color:#08244f !important;
+  background:none !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.96),
+    0 3px 7px rgba(8,36,79,0.22) !important;
+}
+#main-title-container .school-mark--title,
+body:has(#screen-login:not(.hidden)) #main-title-container .school-mark--title,
+body:has(#screen-main:not(.hidden)) #main-title-container .school-mark--title,
+body:has(#screen-return-details:not(.hidden)) #main-title-container .school-mark--title,
+body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
+  width:34px !important;
+  height:34px !important;
+  flex:0 0 34px !important;
+  object-fit:contain !important;
+}
+
+/* 낮은 PC 화면에서도 카드신청/반납 제목이 지나치게 작아지지 않도록 기존 압축 규칙 덮어쓰기 */
+@media (min-width:768px) and (max-height:840px) and (pointer:fine){
+  body:has(#screen-login:not(.hidden)) #main-title-container,
+  body:has(#screen-main:not(.hidden)) #main-title-container,
+  body:has(#screen-return-details:not(.hidden)) #main-title-container,
+  body:has(#screen-return:not(.hidden)) #main-title-container{
+    width:min(86vw, 430px) !important;
+    max-width:430px !important;
+    margin-bottom:12px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #main-title-container .inset-box,
+  body:has(#screen-main:not(.hidden)) #main-title-container .inset-box,
+  body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box,
+  body:has(#screen-return:not(.hidden)) #main-title-container .inset-box{
+    min-height:58px !important;
+    padding:9px 20px !important;
+    border-radius:22px !important;
+  }
+  body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2,
+  body:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2,
+  body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2,
+  body:has(#screen-return:not(.hidden)) #main-title-container .inset-box h2{
+    font-size:1.52rem !important;
+    line-height:1.08 !important;
+  }
+  body:has(#screen-login:not(.hidden)) #main-title-container .school-mark--title,
+  body:has(#screen-main:not(.hidden)) #main-title-container .school-mark--title,
+  body:has(#screen-return-details:not(.hidden)) #main-title-container .school-mark--title,
+  body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
+    width:30px !important;
+    height:30px !important;
+    flex-basis:30px !important;
+  }
+}
+@media (max-width:767px){
+  #main-title-container,
+  body:has(#screen-login:not(.hidden)) #main-title-container,
+  body:has(#screen-main:not(.hidden)) #main-title-container,
+  body:has(#screen-return-details:not(.hidden)) #main-title-container,
+  body:has(#screen-return:not(.hidden)) #main-title-container{
+    width:min(88vw, 430px) !important;
+    max-width:430px !important;
+    margin-bottom:12px !important;
+  }
+  #main-title-container .inset-box,
+  body:has(#screen-login:not(.hidden)) #main-title-container .inset-box,
+  body:has(#screen-main:not(.hidden)) #main-title-container .inset-box,
+  body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box,
+  body:has(#screen-return:not(.hidden)) #main-title-container .inset-box{
+    min-height:58px !important;
+    padding:9px 18px !important;
+    border-radius:21px !important;
+    gap:10px !important;
+  }
+  #main-title-container .inset-box h2,
+  body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2,
+  body:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2,
+  body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2,
+  body:has(#screen-return:not(.hidden)) #main-title-container .inset-box h2{
+    font-size:1.48rem !important;
+  }
+}
+</style>
+
 </body>
 </html>
 
