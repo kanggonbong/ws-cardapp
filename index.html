@@ -1,42 +1,23 @@
 <!DOCTYPE html>
 <!--
-  WOOSUNG FINAL MAINTENANCE GUIDE / STEP 70C
-
-  BASELINE
-  - This file is based on the normal-tested STEP 68 baseline plus STEP 69C edit tokens.
-  - Do not continue deletion-style diet here. Avoid removing CSS blocks, media queries, keyframes, or !important in bulk.
+  WOOSUNG MAINTENANCE RULES / 58 BASELINE
+  - This file is based on the step 58 slim baseline.
   - Do not add temporary override CSS at the bottom of the file.
   - Prefer editing existing tokens, existing selectors, and the relevant screen section.
-
-  WHERE TO EDIT
-  - Global colors / common action colors: edit --ws-edit-*, --ws-action-*, --ws-status-* first.
-  - Lock / login / identity check: edit login-related selectors and primary/action tokens.
-  - Card selection / purpose application: edit card-selection and card/purpose screen sections only.
-  - Receipt / return / submit: edit receipt-return screen sections and action/status tokens.
-  - Modal / SweetAlert / PDF: edit modal/SweetAlert/PDF sections carefully; do not move z-index/position casually.
-  - Mobile: edit existing @media sections only; do not add final bottom overrides.
-
-  PROTECTED SKELETON CSS
-  - Be careful with display, position, z-index, flex, grid, width/height, overflow, visibility, pointer-events, transform.
-  - These often control screen switching, overlays, mobile layout, and JS state.
-
-  DECORATION CSS
-  - Prefer token-based changes for color, background, border, radius, shadow, typography.
-  - Button colors should use --ws-action-* when possible.
-  - Status colors should use --ws-status-* when possible.
-
-  JS RULES
-  - Do not change server calls, screen-flow logic, or Code.gs unless explicitly requested.
-  - If JS needs a design color, read a CSS token with readDesignToken() instead of hardcoding colors.
-  - Keep dynamic styles only when they control runtime state, animation, measured size, or interaction lock.
-
-  AFTER EDITS
-  - Validate login, identity check, card selection, purpose application, receipt/return, modal/SweetAlert, PDF, and mobile views.
-  - Apps Script upload files: index.html + Code.gs only.
+  - Treat layout skeleton CSS as protected: display, position, z-index, flex, grid, width/height, overflow, visibility, pointer-events.
+  - Prefer token-based changes for decoration: color, background, border, radius, shadow, typography.
+  - Do not change JS logic or Code.gs unless the requested task explicitly requires it.
+  - After edits, validate login, card selection, receipt/return, modal/SweetAlert, PDF, and mobile views.
 -->
+
 <html lang="ko">
 <head>
   <!-- STEP53_LEGACY_DECORATION_DIET_1: duplicate decorative declarations were removed only when exact same property/value repeated inside the same CSS rule. -->
+<!-- WS_BASELINE_COMPACT_MAP
+  기준: 50단계 안정판에서 주석/보고서성 코드와 빈 style을 걷어낸 슬림 베이스.
+  수정 원칙: 뼈대(display/position/grid/flex/z-index/overflow)는 보호, 디자인은 화면별 토큰/상태 토큰에서 수정.
+  Apps Script 업로드 파일: index.html + Code.gs
+-->
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -1442,13 +1423,6 @@ body.swal2-shown.swal2-height-auto {
   .receipt-ocr-swal .swal2-title {
     font-size: 1.28rem !important;
   }
-}
-
-#screen-return-details #return-screen-title .return-card-title{
-  background: var(--ws-receipt-return-title-bg) !important;
-  -webkit-background-clip:text !important;
-  -webkit-text-fill-color:transparent !important;
-  background-clip:text !important;
 }
 
 #screen-return-details #receipt-dashboard{
@@ -7456,8 +7430,8 @@ body.ws-app{
   --ws-login-keypad-inset-shadow:
     inset 8px 8px 14px rgba(126,156,198,0.22),
     inset -8px -8px 14px rgba(255,255,255,0.94);
-  --ws-login-submit-bg: var(--ws-action-primary-bg, var(--ws-base-primary-bg, linear-gradient(135deg,#3b82f6 0%,#2563eb 55%,#1d4ed8 100%)));
-  --ws-login-submit-text: var(--ws-action-primary-text, var(--ws-base-text-inverse, #ffffff));
+  --ws-login-submit-bg: var(--ws-base-primary-bg, linear-gradient(135deg,#3b82f6 0%,#2563eb 55%,#1d4ed8 100%));
+  --ws-login-submit-text: var(--ws-base-text-inverse, #ffffff);
   --ws-login-add-text: var(--ws-theme-warning, #f59e0b);
   --ws-login-back-text: var(--ws-base-danger-text, #ef4444);
 
@@ -7561,7 +7535,6 @@ body.ws-app #screen-login .user-tag{
   --ws-receipt-dashboard-shadow: var(--ws-receipt-panel-shadow);
   --ws-receipt-dashboard-label-color: var(--ws-base-text-muted, var(--ws-design-text-muted, #64748b));
   --ws-receipt-dashboard-amount-bg: var(--ws-design-accent-gradient, linear-gradient(135deg,#0f9f75 0%,#10b981 40%,#2563eb 100%));
-  --ws-receipt-return-title-bg: var(--ws-action-primary-bg, var(--ws-edit-primary-bg, var(--primary-gradient)));
 
   --ws-receipt-cart-item-bg: var(--ws-receipt-panel-bg);
   --ws-receipt-cart-item-border: var(--ws-receipt-panel-border);
@@ -7744,13 +7717,9 @@ body.ws-app #screen-login .user-tag{
 
   --ws-loader-card-bg: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08));
   --ws-loader-progress-bg: #dce7f5;
-  --ws-loader-progress-fill: var(--ws-action-primary-bg, var(--ws-base-primary-bg, linear-gradient(90deg, #3b82f6 0%, #6366f1 52%, #8b5cf6 100%)));
+  --ws-loader-progress-fill: var(--ws-base-primary-bg, linear-gradient(90deg, #3b82f6 0%, #6366f1 52%, #8b5cf6 100%));
   --ws-scan-box-bg: var(--ws-overlay-panel-bg);
-  --ws-scan-color: var(--ws-action-primary-color, var(--ws-edit-primary-color, var(--primary-color, #2563eb)));
-  --ws-scan-icon-color: var(--ws-scan-color);
-  --ws-scan-text-color: var(--ws-scan-color);
-  --ws-scan-laser-color: var(--ws-scan-color);
-  --ws-scan-laser-bg: linear-gradient(90deg, transparent, var(--ws-scan-laser-color), transparent);
+  --ws-scan-icon-color: var(--ws-design-primary, #2563eb);
   --ws-purpose-overlay-bg: var(--ws-base-surface-bg, radial-gradient(circle at top, #ffffff 0%, #e4edf8 36%, #d6e3f3 100%));
 }
 
@@ -7806,13 +7775,6 @@ body.ws-app #screen-login .user-tag{
 .scan-box.success .scan-icon{
   color: var(--ws-scan-icon-color) !important;
 }
-#security-scan-overlay .scan-text{
-  color: var(--ws-scan-text-color) !important;
-}
-#security-scan-overlay .laser{
-  background: var(--ws-scan-laser-bg) !important;
-  box-shadow: 0 0 12px var(--ws-scan-laser-color) !important;
-}
 .morph-overlay{
   background: var(--ws-purpose-overlay-bg) !important;
 }
@@ -7821,9 +7783,9 @@ body.ws-app #screen-login .user-tag{
 <style id="ws-step47-mixed-selector-decoration-split-1">
 :root{
 
-  --ws-base-surface-bg: var(--ws-edit-surface-bg, var(--ws-theme-surface-panel, linear-gradient(180deg,#f1f5fb 0%,#dce7f5 100%)));
-  --ws-base-card-bg: var(--ws-edit-card-bg, var(--ws-theme-surface-card, linear-gradient(180deg,#fbfdff 0%,#e8eff8 100%)));
-  --ws-base-primary-bg: var(--ws-edit-primary-bg, var(--primary-gradient, linear-gradient(135deg,#3b82f6,#1d4ed8)));
+  --ws-base-surface-bg: var(--ws-theme-surface-panel, linear-gradient(180deg,#f1f5fb 0%,#dce7f5 100%));
+  --ws-base-card-bg: var(--ws-theme-surface-card, linear-gradient(180deg,#fbfdff 0%,#e8eff8 100%));
+  --ws-base-primary-bg: var(--primary-gradient, linear-gradient(135deg,#3b82f6,#1d4ed8));
   --ws-base-muted-bg: linear-gradient(180deg,#eef4fb 0%,#dfe9f5 100%);
   --ws-base-danger-bg: linear-gradient(180deg,#fff7f7 0%,#ffe8e8 100%);
   --ws-base-success-bg: linear-gradient(135deg,#34d399 0%,#10b981 100%);
@@ -7850,16 +7812,7 @@ body.ws-app #screen-login .user-tag{
 
   --ws-base-motion-fast: 0.18s ease;
   --ws-base-motion-normal: 0.28s ease;
-
-  --ws-action-primary-color: var(--ws-edit-primary-color, var(--primary-color, #2563eb));
-  --ws-action-primary-bg: var(--ws-edit-primary-bg, var(--ws-base-primary-bg));
-  --ws-action-primary-text: var(--ws-edit-primary-text, var(--ws-base-text-inverse, #ffffff));
-  --ws-status-success-color: var(--ws-edit-success-color, var(--success-color, #10b981));
-  --ws-status-danger-color: var(--ws-edit-danger-color, var(--danger-color, #ef4444));
-  --ws-surface-main-bg: var(--ws-base-surface-bg);
-  --ws-surface-card-bg: var(--ws-base-card-bg);
 }
-
 
 body{
   --ws-baseline-decoration-contract-ready: 1;
@@ -7868,149 +7821,43 @@ body{
 
 <!-- STEP54_SAFE_HIGH_RISK_DECORATION_DIET: only exact duplicate decorative declarations were removed; layout/layer/mobile skeleton rules are protected. -->
 
-
-<style id="ws-final-step1-deepblue-status-badges">
-/*
-  FINAL STEP 1 - Deepblue point + card status badge polish
-  기준: 72C 최종본. 삭제형 다이어트 없음. JS/HTML 구조 변경 없음.
-  목적: 핵심 액션 딥블루 통일 + 카드 선택 상태 배지 가독성 정리.
-*/
+<style id="ws-step68a-deepblue-alignment">
 :root{
-  --ws-final-step-primary:#123a72;
-  --ws-final-step-primary-2:#315f9d;
-  --ws-final-step-primary-3:#09244d;
-  --ws-final-step-primary-soft:#dbeafe;
-  --ws-final-step-primary-bg:linear-gradient(135deg,#315f9d 0%,#123a72 55%,#09244d 100%);
-  --ws-final-step-primary-shadow:rgba(18,58,114,.26);
-
-  --ws-final-status-available-bg:rgba(255,255,255,.94);
-  --ws-final-status-available-text:#123a72;
-  --ws-final-status-available-border:rgba(18,58,114,.22);
-
-  --ws-final-status-inuse-bg:linear-gradient(135deg,#eef2f7 0%,#cbd5e1 100%);
-  --ws-final-status-inuse-text:#334155;
-  --ws-final-status-inuse-border:rgba(100,116,139,.30);
-
-  --ws-final-status-returning-bg:linear-gradient(135deg,#fff7ed 0%,#fed7aa 100%);
-  --ws-final-status-returning-text:#9a3412;
-  --ws-final-status-returning-border:rgba(234,88,12,.26);
-
-  --ws-final-status-unknown-bg:linear-gradient(135deg,#fff1f2 0%,#fecdd3 100%);
-  --ws-final-status-unknown-text:#be123c;
-  --ws-final-status-unknown-border:rgba(225,29,72,.24);
-
-  --ws-edit-primary-color:var(--ws-final-step-primary) !important;
-  --ws-edit-primary-bg:var(--ws-final-step-primary-bg) !important;
-  --ws-action-primary-color:var(--ws-final-step-primary) !important;
-  --ws-action-primary-bg:var(--ws-final-step-primary-bg) !important;
-  --ws-scan-color:var(--ws-final-step-primary) !important;
-}
-
-#keypad-submit-btn,
-.simple-btn.primary,
-.submit-btn.primary,
-.swal2-confirm{
-  background:var(--ws-final-step-primary-bg) !important;
-  color:#ffffff !important;
-  border-color:rgba(255,255,255,.30) !important;
-  box-shadow:0 14px 24px var(--ws-final-step-primary-shadow), inset 1px 1px 0 rgba(255,255,255,.32) !important;
-}
-
-.text-gradient,
-.stat-value,
-#screen-return-details .cart-item-amount,
-.detail-row-content,
-.loader-progress-percent,
-.dashboard-amount{
-  background:linear-gradient(135deg,var(--ws-final-step-primary) 0%,var(--ws-final-step-primary-2) 64%,var(--ws-theme-accent,#c99a2e) 100%) !important;
-  -webkit-background-clip:text !important;
-  -webkit-text-fill-color:transparent !important;
-  background-clip:text !important;
+  --ws-68a-login-active-color:#123a72;
+  --ws-68a-login-active-bg:linear-gradient(135deg,#315f9d 0%,#123a72 55%,#09244d 100%);
+  --ws-68a-login-active-text:#ffffff;
+  --ws-68a-login-active-shadow:0 14px 24px rgba(18,58,114,0.22),inset 1px 1px 0 rgba(255,255,255,0.32);
 }
 
 #security-scan-overlay .scan-text,
-.scan-icon,
-.scan-box.success .scan-icon{
-  color:var(--ws-final-step-primary) !important;
+#security-scan-overlay .scan-icon,
+#security-scan-overlay .scan-box.success .scan-icon{
+  color:var(--ws-68a-login-active-color) !important;
 }
 #security-scan-overlay .laser{
-  background:linear-gradient(90deg,transparent,var(--ws-final-step-primary),transparent) !important;
-  box-shadow:0 0 12px rgba(18,58,114,.46) !important;
+  background:linear-gradient(90deg,transparent,var(--ws-68a-login-active-color),transparent) !important;
+  box-shadow:0 0 12px rgba(18,58,114,0.55) !important;
 }
 
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-available{
-  background:radial-gradient(circle at 18% 12%,rgba(255,255,255,.23) 0%,rgba(255,255,255,.08) 22%,transparent 44%),linear-gradient(135deg,var(--ws-final-step-primary-3) 0%,var(--ws-final-step-primary) 58%,var(--ws-final-step-primary-2) 100%) !important;
-  box-shadow:0 12px 24px rgba(18,58,114,.30), inset 1px 1px 0 rgba(255,255,255,.26), inset -1px -1px 0 rgba(0,0,0,.16) !important;
-}
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-available::after{
-  border-color:rgba(49,95,157,.62) !important;
-  filter:drop-shadow(0 0 7px rgba(18,58,114,.36)) !important;
-}
-
-#cardGrid .hybrid-status-badge.status-badge,
-#cardGrid .hybrid-status-badge.inuse-only-badge{
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  min-height:24px !important;
-  padding:5px 10px !important;
-  border-radius:999px !important;
-  font-size:.66rem !important;
-  font-weight:950 !important;
-  letter-spacing:-.02em !important;
-  line-height:1 !important;
-}
-#cardGrid .card-status-available .hybrid-status-badge.status-badge{
-  background:var(--ws-final-status-available-bg) !important;
-  color:var(--ws-final-status-available-text) !important;
-  border:1px solid var(--ws-final-status-available-border) !important;
-  box-shadow:0 6px 14px rgba(15,23,42,.16) !important;
-}
-#cardGrid .card-status-inuse .hybrid-status-badge.status-badge,
-#cardGrid .card-status-inuse .hybrid-status-badge.inuse-only-badge{
-  background:var(--ws-final-status-inuse-bg) !important;
-  color:var(--ws-final-status-inuse-text) !important;
-  border:1px solid var(--ws-final-status-inuse-border) !important;
-  box-shadow:0 5px 12px rgba(100,116,139,.16), inset 1px 1px 0 rgba(255,255,255,.50) !important;
-}
-#cardGrid .card-status-returning .hybrid-status-badge.status-badge,
-#cardGrid .card-status-returning .hybrid-status-badge.inuse-only-badge{
-  background:var(--ws-final-status-returning-bg) !important;
-  color:var(--ws-final-status-returning-text) !important;
-  border:1px solid var(--ws-final-status-returning-border) !important;
-  box-shadow:0 5px 12px rgba(234,88,12,.13), inset 1px 1px 0 rgba(255,255,255,.55) !important;
-}
-#cardGrid .card-status-unknown .hybrid-status-badge.status-badge,
-#cardGrid .card-status-unknown .hybrid-status-badge.inuse-only-badge{
-  background:var(--ws-final-status-unknown-bg) !important;
-  color:var(--ws-final-status-unknown-text) !important;
-  border:1px solid var(--ws-final-status-unknown-border) !important;
-  box-shadow:0 5px 12px rgba(225,29,72,.12), inset 1px 1px 0 rgba(255,255,255,.55) !important;
+#screen-return-details #return-screen-title .return-card-title{
+  background:var(--ws-68a-login-active-bg) !important;
+  -webkit-background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+  text-shadow:none !important;
 }
 
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-inuse{
-  border-color:var(--ws-final-status-inuse-border) !important;
+#screen-return-details #submit-cart-btn.simple-btn.primary{
+  background:var(--ws-68a-login-active-bg) !important;
+  color:var(--ws-68a-login-active-text) !important;
+  border:1px solid rgba(255,255,255,0.30) !important;
+  box-shadow:var(--ws-68a-login-active-shadow) !important;
 }
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-returning{
-  background:linear-gradient(180deg,#fffaf3 0%,#f5eadc 100%) !important;
-  border-color:var(--ws-final-status-returning-border) !important;
-  box-shadow:inset 4px 4px 10px rgba(154,52,18,.11), inset -4px -4px 10px rgba(255,255,255,.92) !important;
+#screen-return-details #submit-cart-btn.simple-btn.primary i{
+  color:var(--ws-68a-login-active-text) !important;
 }
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-unknown{
-  background:linear-gradient(180deg,#fff7f8 0%,#f5e2e6 100%) !important;
-  border-color:var(--ws-final-status-unknown-border) !important;
-}
-#cardGrid .card-status-returning .card-name{
-  color:#7c3b12 !important;
-}
-#cardGrid .card-status-unknown .card-name{
-  color:#8f1539 !important;
-}
-#cardGrid .card-status-returning .card-borrow-date{
-  color:#9a3412 !important;
-}
-#cardGrid .card-status-unknown .card-borrow-date{
-  color:#be123c !important;
+#screen-return-details .return-submit-emphasis{
+  color:var(--ws-68a-login-active-color) !important;
 }
 </style>
 
@@ -9057,9 +8904,9 @@ const CardApp = (function() {
                 const offset = Math.round(ringDash * ratio);
                 cd.innerHTML = `
                     <div class="confirm-circular-timer" aria-label="${sec}초 뒤 복귀">
-                        <svg class="confirm-timer-svg" viewBox="0 0 74 74" aria-hidden="true">
+                        <svg viewBox="0 0 74 74" aria-hidden="true">
                             <circle class="confirm-timer-bg" cx="37" cy="37" r="32"></circle>
-                            <circle class="confirm-timer-ring" cx="37" cy="37" r="32" style="stroke-dashoffset:${-offset}"></circle>
+                            <circle class="confirm-timer-ring" cx="37" cy="37" r="32" style="stroke-dashoffset:${offset}"></circle>
                         </svg>
                         <div class="confirm-timer-text">${sec}</div>
                     </div>
@@ -12763,23 +12610,6 @@ body:has(#screen-login:not(.hidden)) #dash-center-screen .status-text-main{
   --ws-final-card-red-shadow:rgba(111,37,48,0.26) !important;
   --ws-final-card-ring-blue:rgba(201,154,46,0.58) !important;
   --ws-final-card-ring-red:rgba(246,190,96,0.56) !important;
-
-  /* WS_STEP69C_TOKEN_EDITING_MAP
-     Future design edits should start here: primary action, status, surface, radius, and shadow tokens.
-     These aliases do not change the current design; they make the safe edit points explicit. */
-  --ws-edit-primary-color:var(--primary-color) !important;
-  --ws-edit-primary-bg:var(--primary-gradient) !important;
-  --ws-edit-primary-text:#ffffff !important;
-  --ws-edit-danger-color:var(--danger-color) !important;
-  --ws-edit-success-color:var(--success-color) !important;
-  --ws-edit-text-main:var(--text-primary) !important;
-  --ws-edit-text-muted:var(--text-secondary) !important;
-  --ws-edit-surface-bg:var(--ws-theme-surface-panel) !important;
-  --ws-edit-card-bg:var(--ws-theme-surface-card) !important;
-  --ws-edit-border-soft:var(--ws-theme-border-soft) !important;
-  --ws-edit-border-strong:var(--ws-theme-border-strong) !important;
-  --ws-edit-shadow-light:var(--shadow-light) !important;
-  --ws-edit-shadow-dark:var(--shadow-dark) !important;
 }
 
 html,body{
@@ -13434,424 +13264,6 @@ body.ws-app .swal2-popup{
   body.ws-app #screen-main[data-ws-screen="card-select"],
   body.ws-app #screen-return-details[data-ws-screen="receipt-return"]{
     --ws-mobile-panel-radius:32px;
-  }
-}
-</style>
-
-
-<style id="ws-final-step2-return-actions-completion-polish">
-/*
-  WOOSUNG FINAL STEP 2
-  Scope: return/receipt button hierarchy + confirmation screen polish.
-  Base: 72C final + Final Step 1.
-  Rule: no deletion diet, no JS logic change, no Code.gs change.
-*/
-:root{
-  --ws-final-primary-bg:var(--ws-action-primary-bg, linear-gradient(135deg,#2563c9 0%,#1d4fb8 100%));
-  --ws-final-primary-text:var(--ws-action-primary-text,#ffffff);
-  --ws-final-secondary-bg:linear-gradient(180deg,#f8fbff 0%,#edf4ff 100%);
-  --ws-final-secondary-text:var(--ws-edit-primary-color,var(--primary-color,#1d4fb8));
-  --ws-final-secondary-border:rgba(37,99,201,.20);
-  --ws-final-secondary-shadow:0 10px 22px rgba(37,99,201,.10), inset 1px 1px 0 rgba(255,255,255,.78);
-  --ws-final-danger-bg:linear-gradient(180deg,#fff5f5 0%,#fee2e2 100%);
-  --ws-final-danger-text:var(--danger-color,#ef4444);
-  --ws-final-danger-border:rgba(239,68,68,.22);
-  --ws-final-success-bg:linear-gradient(135deg,#eafaf4 0%,#d1fae5 100%);
-  --ws-final-success-text:var(--ws-status-success-color,var(--success-color,#0f8f6b));
-  --ws-final-confirm-card-bg:linear-gradient(180deg,rgba(255,255,255,.94) 0%,rgba(245,249,255,.94) 100%);
-  --ws-final-confirm-border:rgba(37,99,201,.14);
-  --ws-final-confirm-shadow:0 18px 42px rgba(31,79,154,.13), inset 1px 1px 0 rgba(255,255,255,.82);
-}
-
-/* Return / receipt action hierarchy */
-#screen-return-details .simple-btn.primary,
-#screen-return-details .submit-btn.primary,
-#screen-return-details #submit-return-btn,
-#screen-return-details #btn-submit-return,
-#screen-return-details button[data-action="submit-return"]{
-  background:var(--ws-final-primary-bg) !important;
-  color:var(--ws-final-primary-text) !important;
-  border:1px solid rgba(255,255,255,.26) !important;
-  box-shadow:0 14px 28px rgba(37,99,201,.24), inset 1px 1px 0 rgba(255,255,255,.28) !important;
-  font-weight:900 !important;
-  letter-spacing:-.02em !important;
-}
-#screen-return-details .simple-btn.primary i,
-#screen-return-details .submit-btn.primary i{
-  color:var(--ws-final-primary-text) !important;
-}
-#screen-return-details .simple-btn.primary:not(:disabled):hover,
-#screen-return-details .submit-btn.primary:not(:disabled):hover{
-  filter:brightness(1.035) !important;
-  box-shadow:0 18px 34px rgba(37,99,201,.28), inset 1px 1px 0 rgba(255,255,255,.32) !important;
-}
-#screen-return-details .simple-btn.primary:not(:disabled):active,
-#screen-return-details .submit-btn.primary:not(:disabled):active{
-  transform:scale(.985) !important;
-  filter:none !important;
-  box-shadow:inset 7px 7px 14px rgba(29,78,216,.30), inset -4px -4px 10px rgba(96,165,250,.20) !important;
-}
-
-#screen-return-details #add-receipt-btn,
-#screen-return-details .simple-btn.accent,
-#screen-return-details .cart-item-attach{
-  background:var(--ws-final-secondary-bg) !important;
-  color:var(--ws-final-secondary-text) !important;
-  border:1px solid var(--ws-final-secondary-border) !important;
-  box-shadow:var(--ws-final-secondary-shadow) !important;
-  font-weight:850 !important;
-}
-#screen-return-details #add-receipt-btn i,
-#screen-return-details .simple-btn.accent i,
-#screen-return-details .cart-item-attach i{
-  color:var(--ws-final-secondary-text) !important;
-}
-#screen-return-details #add-receipt-btn:not(:disabled):hover,
-#screen-return-details .simple-btn.accent:not(:disabled):hover,
-#screen-return-details .cart-item-attach:not(:disabled):hover{
-  filter:brightness(1.02) !important;
-  box-shadow:0 14px 26px rgba(37,99,201,.13), inset 1px 1px 0 rgba(255,255,255,.82) !important;
-}
-
-#screen-return-details .cart-item-delete,
-#screen-return-details .cart-item-delete-wide,
-#screen-return-details button[data-action="delete-receipt"]{
-  background:var(--ws-final-danger-bg) !important;
-  color:var(--ws-final-danger-text) !important;
-  border:1px solid var(--ws-final-danger-border) !important;
-  box-shadow:0 10px 22px rgba(239,68,68,.11), inset 1px 1px 0 rgba(255,255,255,.72) !important;
-  font-weight:850 !important;
-}
-#screen-return-details .cart-item-delete i,
-#screen-return-details .cart-item-delete-wide i{
-  color:var(--ws-final-danger-text) !important;
-}
-#screen-return-details .cart-item-delete:hover,
-#screen-return-details .cart-item-delete-wide:hover{
-  filter:brightness(1.02) !important;
-  box-shadow:0 14px 26px rgba(239,68,68,.16), inset 1px 1px 0 rgba(255,255,255,.78) !important;
-}
-
-#screen-return-details .submit-guide.visible{
-  background:linear-gradient(180deg,#fff7ed 0%,#ffedd5 100%) !important;
-  color:#b45309 !important;
-  border:1px solid rgba(245,158,11,.22) !important;
-  box-shadow:0 10px 22px rgba(245,158,11,.09), inset 1px 1px 0 rgba(255,255,255,.72) !important;
-  border-radius:18px !important;
-  font-weight:800 !important;
-}
-
-/* Confirmation / completion screen polish */
-body.confirmation-result-mode #screen-confirmation[data-ws-screen="confirmation"],
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"]{
-  max-width:min(520px,calc(100vw - 28px)) !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirmation-container,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirmation-container{
-  max-width:440px !important;
-  padding:26px 22px 24px !important;
-  border-radius:32px !important;
-  background:var(--ws-final-confirm-card-bg) !important;
-  border:1px solid var(--ws-final-confirm-border) !important;
-  box-shadow:var(--ws-final-confirm-shadow) !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirmation-icon-wrapper,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirmation-icon-wrapper{
-  width:92px !important;
-  height:92px !important;
-  margin:0 auto 22px !important;
-  border-radius:50% !important;
-  display:grid !important;
-  place-items:center !important;
-  background:var(--ws-final-success-bg) !important;
-  box-shadow:0 16px 32px rgba(15,143,107,.16), inset 1px 1px 0 rgba(255,255,255,.80) !important;
-}
-body.confirmation-result-mode #screen-confirmation .animated-check,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .animated-check{
-  width:76px !important;
-  height:76px !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  stroke:var(--ws-final-success-text) !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirmation-title,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirmation-title{
-  color:#173a7a !important;
-  font-size:1.78rem !important;
-  font-weight:950 !important;
-  letter-spacing:-.045em !important;
-  line-height:1.16 !important;
-  text-shadow:none !important;
-  margin-bottom:20px !important;
-}
-body.confirmation-result-mode #screen-confirmation #confirmation-details,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] #confirmation-details{
-  gap:10px !important;
-  margin-bottom:22px !important;
-  padding:16px !important;
-  border-radius:22px !important;
-  background:rgba(255,255,255,.70) !important;
-  border:1px solid rgba(37,99,201,.10) !important;
-  box-shadow:inset 1px 1px 0 rgba(255,255,255,.72) !important;
-}
-body.confirmation-result-mode #screen-confirmation .detail-row,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .detail-row{
-  padding:10px 0 !important;
-  border-bottom:1px solid rgba(37,99,201,.10) !important;
-}
-body.confirmation-result-mode #screen-confirmation .detail-row:last-child,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .detail-row:last-child{
-  border-bottom:none !important;
-}
-body.confirmation-result-mode #screen-confirmation .detail-row-label,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .detail-row-label{
-  color:#6b7fa3 !important;
-  font-size:.95rem !important;
-  font-weight:800 !important;
-}
-body.confirmation-result-mode #screen-confirmation .detail-row-content,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .detail-row-content{
-  color:var(--ws-final-secondary-text) !important;
-  background:none !important;
-  -webkit-text-fill-color:initial !important;
-  font-size:1.02rem !important;
-  font-weight:950 !important;
-  letter-spacing:-.025em !important;
-}
-body.confirmation-result-mode #screen-confirmation #confirmation-countdown,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] #confirmation-countdown{
-  margin-top:18px !important;
-  color:#6b7fa3 !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirm-circular-timer,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-circular-timer{
-  position:relative !important;
-  width:74px !important;
-  height:74px !important;
-  margin:0 auto 8px !important;
-  display:grid !important;
-  place-items:center !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirm-timer-svg,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-timer-svg{
-  position:absolute !important;
-  inset:0 !important;
-  width:74px !important;
-  height:74px !important;
-  transform:rotate(-90deg) !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirm-timer-bg,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-timer-bg{
-  fill:none !important;
-  stroke:rgba(37,99,201,.12) !important;
-  stroke-width:7 !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirm-timer-ring,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-timer-ring{
-  fill:none !important;
-  stroke:var(--ws-final-secondary-text) !important;
-  stroke-width:7 !important;
-  stroke-linecap:round !important;
-  stroke-dasharray:201 !important;
-  filter:drop-shadow(0 4px 7px rgba(37,99,201,.22)) !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirm-timer-text,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-timer-text{
-  position:relative !important;
-  z-index:2 !important;
-  color:#173a7a !important;
-  font-size:1.3rem !important;
-  font-weight:950 !important;
-  font-variant-numeric:tabular-nums !important;
-}
-body.confirmation-result-mode #screen-confirmation .confirm-timer-caption,
-body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-timer-caption{
-  font-size:.86rem !important;
-  font-weight:750 !important;
-  color:#7b8faf !important;
-}
-
-@media (max-width:767px){
-  body.confirmation-result-mode #screen-confirmation .confirmation-container,
-  body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirmation-container{
-    padding:22px 18px 20px !important;
-    border-radius:28px !important;
-  }
-  body.confirmation-result-mode #screen-confirmation .confirmation-title,
-  body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirmation-title{
-    font-size:1.55rem !important;
-  }
-  #screen-return-details .simple-btn.primary,
-  #screen-return-details .submit-btn.primary,
-  #screen-return-details #add-receipt-btn{
-    min-height:58px !important;
-  }
-}
-</style>
-
-
-<style id="ws-final-step3-mobile-primary-polish">
-/*
-  WOOSUNG FINAL STEP 3
-  Scope: mobile usability polish + final deepblue point alignment.
-  Base: Final Step 2. No deletion diet, no JS logic change, no Code.gs change.
-*/
-:root{
-  --ws-final-mobile-bottom-gap:calc(env(safe-area-inset-bottom, 0px) + 14px);
-  --ws-final-mobile-side-gap:clamp(14px,4vw,20px);
-  --ws-final-touch-height:56px;
-  --ws-final-primary-ring:rgba(18,58,114,.18);
-  --ws-final-primary-ring-strong:rgba(18,58,114,.34);
-}
-
-/* Final primary point alignment */
-#lock-text-instruction,
-#screen-login .login-subtitle,
-#screen-return-details .cart-item-title,
-#screen-return-details .receipt-card-number,
-#screen-return-details .return-card-number,
-#screen-return-details [data-role="card-number"]{
-  color:var(--ws-final-step-primary,var(--ws-action-primary-color,#123a72)) !important;
-}
-
-#keypad-submit-btn:focus-visible,
-.simple-btn.primary:focus-visible,
-.submit-btn.primary:focus-visible,
-#cardGrid .card-item-wrapper.hybrid-card-slot:focus-visible,
-.purpose-btn:focus-visible,
-.swal2-confirm:focus-visible{
-  outline:3px solid var(--ws-final-primary-ring-strong) !important;
-  outline-offset:3px !important;
-}
-
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-available .card-number,
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-available .card-name,
-#cardGrid .card-item-wrapper.hybrid-card-slot.card-status-available .card-borrow-date{
-  text-shadow:0 1px 2px rgba(0,0,0,.16) !important;
-}
-
-/* Mobile polish: keep the existing theme, just make spacing and touch targets cleaner. */
-@media (max-width:767px){
-  html,body{
-    -webkit-text-size-adjust:100% !important;
-  }
-
-  body.ws-app{
-    min-height:100dvh !important;
-  }
-
-  #screen-login,
-  #cardSelectionScreen,
-  #screen-return-details,
-  #screen-confirmation[data-ws-screen="confirmation"]{
-    width:min(100%, calc(100vw - 20px)) !important;
-    max-width:460px !important;
-    margin-left:auto !important;
-    margin-right:auto !important;
-  }
-
-  #screen-login,
-  #screen-return-details,
-  .loader-card-v2,
-  .purpose-sheet,
-  .swal2-popup{
-    border-radius:26px !important;
-  }
-
-  .keypad-btn,
-  .simple-btn,
-  .submit-btn,
-  .purpose-btn,
-  #keypad-submit-btn,
-  #add-receipt-btn{
-    min-height:var(--ws-final-touch-height) !important;
-    border-radius:18px !important;
-    font-size:1rem !important;
-  }
-
-  #keypad-grid,
-  .keypad-grid{
-    gap:12px !important;
-  }
-
-  #cardGrid{
-    gap:12px !important;
-    padding:10px !important;
-  }
-
-  #cardGrid .card-item-wrapper.hybrid-card-slot{
-    border-radius:22px !important;
-    min-height:116px !important;
-  }
-
-  #cardGrid .hybrid-status-badge.status-badge,
-  #cardGrid .hybrid-status-badge.inuse-only-badge{
-    min-height:24px !important;
-    padding:5px 9px !important;
-    font-size:.64rem !important;
-  }
-
-  .morph-overlay,
-  .swal2-container{
-    padding-left:var(--ws-final-mobile-side-gap) !important;
-    padding-right:var(--ws-final-mobile-side-gap) !important;
-    padding-bottom:var(--ws-final-mobile-bottom-gap) !important;
-  }
-
-  .purpose-sheet{
-    width:min(100%, 430px) !important;
-    max-height:calc(100dvh - 28px) !important;
-    overflow:auto !important;
-  }
-
-  #screen-return-details .cart-item,
-  #screen-return-details .receipt-item,
-  #screen-return-details .receipt-card,
-  #confirmation-details{
-    border-radius:20px !important;
-  }
-
-  #screen-return-details .simple-btn.primary,
-  #screen-return-details .submit-btn.primary{
-    position:relative !important;
-    min-height:60px !important;
-  }
-
-  body.confirmation-result-mode #screen-confirmation .confirmation-container,
-  body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirmation-container{
-    width:min(100%, calc(100vw - 24px)) !important;
-    margin-left:auto !important;
-    margin-right:auto !important;
-  }
-
-  body.confirmation-result-mode #screen-confirmation .confirm-circular-timer,
-  body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-circular-timer{
-    width:70px !important;
-    height:70px !important;
-  }
-
-  body.confirmation-result-mode #screen-confirmation .confirm-timer-svg,
-  body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirm-timer-svg{
-    width:70px !important;
-    height:70px !important;
-  }
-}
-
-@media (max-width:390px){
-  #cardGrid .card-item-wrapper.hybrid-card-slot{
-    min-height:108px !important;
-    border-radius:20px !important;
-  }
-  .keypad-btn,
-  .simple-btn,
-  .submit-btn,
-  .purpose-btn,
-  #keypad-submit-btn{
-    min-height:52px !important;
-  }
-  body.confirmation-result-mode #screen-confirmation .confirmation-title,
-  body.ws-app #screen-confirmation[data-ws-screen="confirmation"] .confirmation-title{
-    font-size:1.42rem !important;
   }
 }
 </style>
