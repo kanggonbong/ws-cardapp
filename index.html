@@ -10940,6 +10940,17 @@ document.addEventListener('DOMContentLoaded', () => {
   --ws-theme-focus-purple:#7b5a1d !important;
   --ws-theme-meal:#0f8f6b !important;
   --ws-theme-warning:#c99a2e !important;
+  --ws-aggr-shared-surface-panel-bg:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  --ws-aggr-shared-surface-panel-border:1px solid rgba(255,255,255,0.70) !important;
+  --ws-aggr-shared-surface-panel-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+  --ws-aggr-shared-button-surface-bg:linear-gradient(180deg,#ffffff 0%,#eef4fb 100%) !important;
+  --ws-aggr-shared-button-surface-border:1px solid rgba(255,255,255,0.86) !important;
+  --ws-aggr-shared-button-surface-text:#172b4d !important;
+  --ws-aggr-shared-button-surface-shadow:10px 10px 20px rgba(80,101,130,0.22),-8px -8px 18px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.72) !important;
+  --ws-aggr-shared-strong-title-text:#172b4d !important;
+  --ws-aggr-shared-strong-title-shadow:-1px -1px 1px rgba(80,101,130,0.18),1px 1px 1px rgba(255,255,255,0.92) !important;
+  --ws-aggr-shared-emphasis-gradient:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  --ws-aggr-shared-label-muted:#667896 !important;
 
 
 }
@@ -10952,98 +10963,93 @@ html,body{
 
 /* AGGRESSIVE REBUILD GROUP A / shared shell surfaces extracted from mixed selector */
 .screen,.inset-box{
-  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
-  border:1px solid rgba(255,255,255,0.70) !important;
-  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+  background:var(--ws-aggr-shared-surface-panel-bg) !important;
+  border:var(--ws-aggr-shared-surface-panel-border) !important;
+  box-shadow:var(--ws-aggr-shared-surface-panel-shadow) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / login-owned shell surfaces extracted from mixed selector */
 #screen-login,.login-user-panel,.header-dashboard{
-  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
-  border:1px solid rgba(255,255,255,0.70) !important;
-  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+  background:var(--ws-aggr-shared-surface-panel-bg) !important;
+  border:var(--ws-aggr-shared-surface-panel-border) !important;
+  box-shadow:var(--ws-aggr-shared-surface-panel-shadow) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / loader-owned surface extracted from broad mixed selector */
 .loader-card-v2{
-  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
-  border:1px solid rgba(255,255,255,0.70) !important;
-  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+  background:var(--ws-aggr-shared-surface-panel-bg) !important;
+  border:var(--ws-aggr-shared-surface-panel-border) !important;
+  box-shadow:var(--ws-aggr-shared-surface-panel-shadow) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / modal-owned surface extracted from broad mixed selector */
 .swal2-popup{
-  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
-  border:1px solid rgba(255,255,255,0.70) !important;
-  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+  background:var(--ws-aggr-shared-surface-panel-bg) !important;
+  border:var(--ws-aggr-shared-surface-panel-border) !important;
+  box-shadow:var(--ws-aggr-shared-surface-panel-shadow) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / scan-owned surfaces extracted from broad mixed selector */
 .scanner-container,.scan-box{
-  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
-  border:1px solid rgba(255,255,255,0.70) !important;
-  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+  background:var(--ws-aggr-shared-surface-panel-bg) !important;
+  border:var(--ws-aggr-shared-surface-panel-border) !important;
+  box-shadow:var(--ws-aggr-shared-surface-panel-shadow) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / receipt-owned surface extracted from broad mixed selector */
 #receipt-dashboard{
-  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
-  border:1px solid rgba(255,255,255,0.70) !important;
-  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+  background:var(--ws-aggr-shared-surface-panel-bg) !important;
+  border:var(--ws-aggr-shared-surface-panel-border) !important;
+  box-shadow:var(--ws-aggr-shared-surface-panel-shadow) !important;
 }
 .keypad-btn,.simple-btn,.submit-btn,.purpose-btn,.user-tag{
-  background:linear-gradient(180deg,#ffffff 0%,#eef4fb 100%) !important;
-  border:1px solid rgba(255,255,255,0.86) !important;
-  color:#172b4d !important;
-  box-shadow:10px 10px 20px rgba(80,101,130,0.22),-8px -8px 18px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.72) !important;
+  background:var(--ws-aggr-shared-button-surface-bg) !important;
+  border:var(--ws-aggr-shared-button-surface-border) !important;
+  color:var(--ws-aggr-shared-button-surface-text) !important;
+  box-shadow:var(--ws-aggr-shared-button-surface-shadow) !important;
 }
 #main-title-container .inset-box h2,.loader-card-title,.confirmation-title,.morph-header,.card-name{
-  color:#172b4d !important;
-  text-shadow:-1px -1px 1px rgba(80,101,130,0.18),1px 1px 1px rgba(255,255,255,0.92) !important;
+  color:var(--ws-aggr-shared-strong-title-text) !important;
+  text-shadow:var(--ws-aggr-shared-strong-title-shadow) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / receipt-card-owned gradient text cluster */
 .text-gradient{
-  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  background:var(--ws-aggr-shared-emphasis-gradient) !important;
   -webkit-background-clip:text !important;
   -webkit-text-fill-color:transparent !important;
   background-clip:text !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / login-owned gradient value cluster */
 .stat-value{
-  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  background:var(--ws-aggr-shared-emphasis-gradient) !important;
   -webkit-background-clip:text !important;
   -webkit-text-fill-color:transparent !important;
   background-clip:text !important;
 }
-/* AGGRESSIVE REBUILD HOLD:
-   The next two GROUP A clusters intentionally stay split by owner even though
-   values are currently identical. The split is preserved here because these
-   are common future facelift points: dashboard values, card/receipt emphasis,
-   morph guidance, and loader copy often diverge later. */
 /* AGGRESSIVE REBUILD GROUP A / confirmation-owned gradient value cluster */
 .detail-row-content{
-  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  background:var(--ws-aggr-shared-emphasis-gradient) !important;
   -webkit-background-clip:text !important;
   -webkit-text-fill-color:transparent !important;
   background-clip:text !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / loader-owned gradient value cluster */
 .loader-progress-percent{
-  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  background:var(--ws-aggr-shared-emphasis-gradient) !important;
   -webkit-background-clip:text !important;
   -webkit-text-fill-color:transparent !important;
   background-clip:text !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / login-owned label cluster */
 .stat-label{
-  color:#667896 !important;
+  color:var(--ws-aggr-shared-label-muted) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / card-select-owned label cluster */
 #card-selection-header{
-  color:#667896 !important;
+  color:var(--ws-aggr-shared-label-muted) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / morph-owned label cluster */
 .morph-subheader{
-  color:#667896 !important;
+  color:var(--ws-aggr-shared-label-muted) !important;
 }
 /* AGGRESSIVE REBUILD GROUP A / loader-owned label cluster */
 .loader-card-subtitle,.loader-step-desc{
-  color:#667896 !important;
+  color:var(--ws-aggr-shared-label-muted) !important;
 }
 .simple-btn.primary,.submit-btn.primary{
   background:linear-gradient(135deg,#315f9d 0%,#123a72 55%,#09244d 100%) !important;
