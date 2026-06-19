@@ -10908,6 +10908,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+<!-- AGGRESSIVE REBUILD GROUP A: SHARED / COMPATIBILITY LAYER
+     Future heavy-prune candidate.
+     Aggressive goal:
+     - keep only truly cross-screen shared rules
+     - push screen-owned visuals back into login / receipt / card-select / modal owners
+-->
 <!-- CSS LAYER: GLOBAL THEME COMPATIBILITY / broad skin layer still spanning multiple screens. -->
 <style id="ws-step3-login-dashboard-center-finisher-mixed-theme">
 
@@ -10938,12 +10944,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 }
 
+/* AGGRESSIVE REBUILD GROUP A / truly shared document shell candidate */
 html,body{
   background:radial-gradient(circle at top left,#ffffff 0%,#eef3f9 34%,#dbe4ef 100%) !important;
   color:#172b4d !important;
 }
 
-.screen,#screen-login,.loader-card-v2,#receipt-dashboard,.login-user-panel,.header-dashboard,.swal2-popup,.scanner-container,.scan-box,.inset-box{
+/* AGGRESSIVE REBUILD GROUP A / shared shell surfaces extracted from mixed selector */
+.screen,.inset-box{
+  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  border:1px solid rgba(255,255,255,0.70) !important;
+  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / login-owned shell surfaces extracted from mixed selector */
+#screen-login,.login-user-panel,.header-dashboard{
+  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  border:1px solid rgba(255,255,255,0.70) !important;
+  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / loader-owned surface extracted from broad mixed selector */
+.loader-card-v2{
+  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  border:1px solid rgba(255,255,255,0.70) !important;
+  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / modal-owned surface extracted from broad mixed selector */
+.swal2-popup{
+  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  border:1px solid rgba(255,255,255,0.70) !important;
+  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / scan-owned surfaces extracted from broad mixed selector */
+.scanner-container,.scan-box{
+  background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
+  border:1px solid rgba(255,255,255,0.70) !important;
+  box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / receipt-owned surface extracted from broad mixed selector */
+#receipt-dashboard{
   background:linear-gradient(180deg,#f7f9fc 0%,#e3ebf5 100%) !important;
   border:1px solid rgba(255,255,255,0.70) !important;
   box-shadow:18px 18px 34px rgba(80,101,130,0.26),-12px -12px 26px rgba(255,255,255,0.96),inset 1px 1px 0 rgba(255,255,255,0.76) !important;
@@ -10958,13 +10996,53 @@ html,body{
   color:#172b4d !important;
   text-shadow:-1px -1px 1px rgba(80,101,130,0.18),1px 1px 1px rgba(255,255,255,0.92) !important;
 }
-.text-gradient,.stat-value,.detail-row-content,.loader-progress-percent{
+/* AGGRESSIVE REBUILD GROUP A / receipt-card-owned gradient text cluster */
+.text-gradient{
   background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
   -webkit-background-clip:text !important;
   -webkit-text-fill-color:transparent !important;
   background-clip:text !important;
 }
-.stat-label,#card-selection-header,.morph-subheader,.loader-card-subtitle,.loader-step-desc{
+/* AGGRESSIVE REBUILD GROUP A / login-owned gradient value cluster */
+.stat-value{
+  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  -webkit-background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+}
+/* AGGRESSIVE REBUILD HOLD:
+   The next two GROUP A clusters intentionally stay split by owner even though
+   values are currently identical. The split is preserved here because these
+   are common future facelift points: dashboard values, card/receipt emphasis,
+   morph guidance, and loader copy often diverge later. */
+/* AGGRESSIVE REBUILD GROUP A / confirmation-owned gradient value cluster */
+.detail-row-content{
+  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  -webkit-background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / loader-owned gradient value cluster */
+.loader-progress-percent{
+  background:linear-gradient(135deg,#123a72 0%,#315f9d 58%,#c99a2e 100%) !important;
+  -webkit-background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / login-owned label cluster */
+.stat-label{
+  color:#667896 !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / card-select-owned label cluster */
+#card-selection-header{
+  color:#667896 !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / morph-owned label cluster */
+.morph-subheader{
+  color:#667896 !important;
+}
+/* AGGRESSIVE REBUILD GROUP A / loader-owned label cluster */
+.loader-card-subtitle,.loader-step-desc{
   color:#667896 !important;
 }
 .simple-btn.primary,.submit-btn.primary{
@@ -10974,9 +11052,6 @@ html,body{
   box-shadow:0 14px 24px rgba(18,58,114,0.22),inset 1px 1px 0 rgba(255,255,255,0.32) !important;
 }
 .simple-btn.primary i,.submit-btn.primary i{color:#ffffff !important;}
-.simple-btn.accent,.main-badge{
-  color:#7a5515 !important;
-}
 .simple-btn.accent{
   background:linear-gradient(135deg,#fff7df 0%,#f3d88c 52%,#c99a2e 100%) !important;
   color:#6b4710 !important;
@@ -10990,18 +11065,25 @@ html,body{
   border:1px solid rgba(18,58,114,0.14) !important;
 }
 
+/* AGGRESSIVE REBUILD GROUP A / card-select-owned visual shell candidate */
 #glass-card{
   background:radial-gradient(circle at 18% 12%,rgba(255,255,255,0.24) 0%,rgba(255,255,255,0.08) 24%,transparent 45%),linear-gradient(135deg,#071d3f 0%,#214f8c 100%) !important;
   border:1px solid rgba(255,255,255,0.24) !important;
   box-shadow:18px 18px 40px rgba(7,29,63,0.30),-6px -6px 24px rgba(255,255,255,0.13),inset 1px 1px 0 rgba(255,255,255,0.28),inset -1px -1px 0 rgba(0,0,0,0.16) !important;
 }
+/* AGGRESSIVE REBUILD GROUP A / card-select-owned chip candidate */
 .card-chip,.hybrid-card-chip{
   background:linear-gradient(135deg,#fff1b8 0%,#c99a2e 55%,#7a5515 100%) !important;
 }
+/* AGGRESSIVE REBUILD GROUP A / card-select-owned glass-card text candidate */
 #glass-card .card-number,#glass-card .card-holder,#glass-card .card-nfc{color:rgba(255,255,255,0.96) !important;}
 
 
-.main-badge{background:linear-gradient(135deg,#e9c56d 0%,#c99a2e 100%) !important;color:#34260c !important;}
+/* AGGRESSIVE REBUILD GROUP A / likely card-select-owned badge candidate */
+.main-badge{
+  background:linear-gradient(135deg,#e9c56d 0%,#c99a2e 100%) !important;
+  color:#34260c !important;
+}
 .status-badge{background:linear-gradient(135deg,#315f9d 0%,#123a72 100%) !important;color:#f8fbff !important;}
 
 .swal-input-group-new{box-shadow:inset 6px 6px 12px rgba(80,101,130,0.15),inset -6px -6px 12px rgba(255,255,255,0.96) !important;}
@@ -11018,6 +11100,7 @@ html,body{
 .animated-check{stroke:#0f8f6b !important;}
 
 @media (hover:hover) and (pointer:fine){
+  /* AGGRESSIVE REBUILD GROUP A / card-select-owned available-hover candidate */
   .card-item-wrapper.hybrid-card-slot.card-status-available:hover{
     filter:brightness(1.045) !important;
     box-shadow:0 14px 27px rgba(16,47,95,0.34),inset 1px 1px 0 rgba(255,255,255,0.28) !important;
@@ -11029,16 +11112,18 @@ html,body{
 
 
 
+<!-- AGGRESSIVE REBUILD GROUP B: TITLE / READABILITY SHARED LAYER
+     Future redistribution candidate.
+     Aggressive goal:
+     - separate truly shared title/readability rules
+     - return screen-specific title visuals to their screen owners
+-->
 <!-- CSS: PROTECTED READABILITY + SHARED TITLE FINISHER / compatibility layer. -->
 <style id="ws-step3-login-readability-shared-title-finisher">
 
 
-#main-title-container,
-body:has(#screen-login:not(.hidden)) #main-title-container,
-body:has(#screen-main:not(.hidden)) #main-title-container,
-body:has(#screen-return-details:not(.hidden)) #main-title-container,
-body:has(#screen-return:not(.hidden)) #main-title-container,
-body.confirmation-result-mode #main-title-container{
+/* AGGRESSIVE REBUILD GROUP B / shared base title shell */
+#main-title-container{
   width:min(86vw, 430px) !important;
   max-width:430px !important;
   margin-top:0 !important;
@@ -11048,12 +11133,52 @@ body.confirmation-result-mode #main-title-container{
   align-items:center !important;
   flex-shrink:0 !important;
 }
-#main-title-container .inset-box,
-body:has(#screen-login:not(.hidden)) #main-title-container .inset-box,
-body:has(#screen-main:not(.hidden)) #main-title-container .inset-box,
-body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box,
-body:has(#screen-return:not(.hidden)) #main-title-container .inset-box,
-body.confirmation-result-mode #main-title-container .inset-box{
+/* AGGRESSIVE REBUILD GROUP B / login title shell cluster */
+body:has(#screen-login:not(.hidden)) #main-title-container{
+  width:min(86vw, 430px) !important;
+  max-width:430px !important;
+  margin-top:0 !important;
+  margin-bottom:14px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / main title shell cluster */
+body:has(#screen-main:not(.hidden)) #main-title-container{
+  width:min(86vw, 430px) !important;
+  max-width:430px !important;
+  margin-top:0 !important;
+  margin-bottom:14px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-details title shell cluster */
+body:has(#screen-return-details:not(.hidden)) #main-title-container{
+  width:min(86vw, 430px) !important;
+  max-width:430px !important;
+  margin-top:0 !important;
+  margin-bottom:14px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-submit title shell cluster */
+body:has(#screen-return:not(.hidden)) #main-title-container{
+  width:min(86vw, 430px) !important;
+  max-width:430px !important;
+  margin-top:0 !important;
+  margin-bottom:14px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / shared base title inset shell */
+#main-title-container .inset-box{
   width:100% !important;
   min-height:64px !important;
   padding:10px 22px !important;
@@ -11073,12 +11198,92 @@ body.confirmation-result-mode #main-title-container .inset-box{
     inset -1px -1px 0 rgba(80,101,130,0.08) !important;
   margin:0 !important;
 }
-#main-title-container .inset-box h2,
-body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2,
-body:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2,
-body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2,
-body:has(#screen-return:not(.hidden)) #main-title-container .inset-box h2,
-body.confirmation-result-mode #main-title-container .inset-box h2{
+/* AGGRESSIVE REBUILD GROUP B / login title inset shell cluster */
+body:has(#screen-login:not(.hidden)) #main-title-container .inset-box{
+  width:100% !important;
+  min-height:64px !important;
+  padding:10px 22px !important;
+  border-radius:22px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:12px !important;
+  background:
+    radial-gradient(circle at 24% 12%,rgba(255,255,255,0.72) 0%,rgba(255,255,255,0.28) 35%,transparent 58%),
+    linear-gradient(180deg,#f1f7ff 0%,#dce8f6 100%) !important;
+  border:1px solid rgba(255,255,255,0.88) !important;
+  box-shadow:
+    10px 10px 22px rgba(80,101,130,0.18),
+    -10px -10px 22px rgba(255,255,255,0.96),
+    inset 1px 1px 0 rgba(255,255,255,0.95),
+    inset -1px -1px 0 rgba(80,101,130,0.08) !important;
+  margin:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / main title inset shell cluster */
+body:has(#screen-main:not(.hidden)) #main-title-container .inset-box{
+  width:100% !important;
+  min-height:64px !important;
+  padding:10px 22px !important;
+  border-radius:22px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:12px !important;
+  background:
+    radial-gradient(circle at 24% 12%,rgba(255,255,255,0.72) 0%,rgba(255,255,255,0.28) 35%,transparent 58%),
+    linear-gradient(180deg,#f1f7ff 0%,#dce8f6 100%) !important;
+  border:1px solid rgba(255,255,255,0.88) !important;
+  box-shadow:
+    10px 10px 22px rgba(80,101,130,0.18),
+    -10px -10px 22px rgba(255,255,255,0.96),
+    inset 1px 1px 0 rgba(255,255,255,0.95),
+    inset -1px -1px 0 rgba(80,101,130,0.08) !important;
+  margin:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-details title inset shell cluster */
+body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box{
+  width:100% !important;
+  min-height:64px !important;
+  padding:10px 22px !important;
+  border-radius:22px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:12px !important;
+  background:
+    radial-gradient(circle at 24% 12%,rgba(255,255,255,0.72) 0%,rgba(255,255,255,0.28) 35%,transparent 58%),
+    linear-gradient(180deg,#f1f7ff 0%,#dce8f6 100%) !important;
+  border:1px solid rgba(255,255,255,0.88) !important;
+  box-shadow:
+    10px 10px 22px rgba(80,101,130,0.18),
+    -10px -10px 22px rgba(255,255,255,0.96),
+    inset 1px 1px 0 rgba(255,255,255,0.95),
+    inset -1px -1px 0 rgba(80,101,130,0.08) !important;
+  margin:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-submit title inset shell cluster */
+body:has(#screen-return:not(.hidden)) #main-title-container .inset-box{
+  width:100% !important;
+  min-height:64px !important;
+  padding:10px 22px !important;
+  border-radius:22px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:12px !important;
+  background:
+    radial-gradient(circle at 24% 12%,rgba(255,255,255,0.72) 0%,rgba(255,255,255,0.28) 35%,transparent 58%),
+    linear-gradient(180deg,#f1f7ff 0%,#dce8f6 100%) !important;
+  border:1px solid rgba(255,255,255,0.88) !important;
+  box-shadow:
+    10px 10px 22px rgba(80,101,130,0.18),
+    -10px -10px 22px rgba(255,255,255,0.96),
+    inset 1px 1px 0 rgba(255,255,255,0.95),
+    inset -1px -1px 0 rgba(80,101,130,0.08) !important;
+  margin:0 !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / shared base title heading */
+#main-title-container .inset-box h2{
   margin:0 !important;
   font-size:clamp(1.35rem, 3.2vw, 1.95rem) !important;
   line-height:1.08 !important;
@@ -11092,10 +11297,94 @@ body.confirmation-result-mode #main-title-container .inset-box h2{
     0 1px 0 rgba(255,255,255,0.96),
     0 3px 7px rgba(8,36,79,0.22) !important;
 }
-#main-title-container .school-mark--title,
-body:has(#screen-login:not(.hidden)) #main-title-container .school-mark--title,
-body:has(#screen-main:not(.hidden)) #main-title-container .school-mark--title,
-body:has(#screen-return-details:not(.hidden)) #main-title-container .school-mark--title,
+/* AGGRESSIVE REBUILD GROUP B / login title heading cluster */
+body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2{
+  margin:0 !important;
+  font-size:clamp(1.35rem, 3.2vw, 1.95rem) !important;
+  line-height:1.08 !important;
+  letter-spacing:-0.055em !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  color:#08244f !important;
+  -webkit-text-fill-color:#08244f !important;
+  background:none !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.96),
+    0 3px 7px rgba(8,36,79,0.22) !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / main title heading cluster */
+body:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2{
+  margin:0 !important;
+  font-size:clamp(1.35rem, 3.2vw, 1.95rem) !important;
+  line-height:1.08 !important;
+  letter-spacing:-0.055em !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  color:#08244f !important;
+  -webkit-text-fill-color:#08244f !important;
+  background:none !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.96),
+    0 3px 7px rgba(8,36,79,0.22) !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-details title heading cluster */
+body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2{
+  margin:0 !important;
+  font-size:clamp(1.35rem, 3.2vw, 1.95rem) !important;
+  line-height:1.08 !important;
+  letter-spacing:-0.055em !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  color:#08244f !important;
+  -webkit-text-fill-color:#08244f !important;
+  background:none !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.96),
+    0 3px 7px rgba(8,36,79,0.22) !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-submit title heading cluster */
+body:has(#screen-return:not(.hidden)) #main-title-container .inset-box h2{
+  margin:0 !important;
+  font-size:clamp(1.35rem, 3.2vw, 1.95rem) !important;
+  line-height:1.08 !important;
+  letter-spacing:-0.055em !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  color:#08244f !important;
+  -webkit-text-fill-color:#08244f !important;
+  background:none !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.96),
+    0 3px 7px rgba(8,36,79,0.22) !important;
+}
+#main-title-container .school-mark--title{
+  width:34px !important;
+  height:34px !important;
+  flex:0 0 34px !important;
+  object-fit:contain !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / login title school-mark cluster */
+body:has(#screen-login:not(.hidden)) #main-title-container .school-mark--title{
+  width:34px !important;
+  height:34px !important;
+  flex:0 0 34px !important;
+  object-fit:contain !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / main title school-mark cluster */
+body:has(#screen-main:not(.hidden)) #main-title-container .school-mark--title{
+  width:34px !important;
+  height:34px !important;
+  flex:0 0 34px !important;
+  object-fit:contain !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-details title school-mark cluster */
+body:has(#screen-return-details:not(.hidden)) #main-title-container .school-mark--title{
+  width:34px !important;
+  height:34px !important;
+  flex:0 0 34px !important;
+  object-fit:contain !important;
+}
+/* AGGRESSIVE REBUILD GROUP B / return-submit title school-mark cluster */
 body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
   width:34px !important;
   height:34px !important;
@@ -11104,6 +11393,7 @@ body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
 }
 
 @media (min-width:768px) and (max-height:840px) and (pointer:fine){
+  /* AGGRESSIVE REBUILD GROUP B / compact direct-screen title shell cluster */
   body:has(#screen-login:not(.hidden)) #main-title-container,
   body:has(#screen-main:not(.hidden)) #main-title-container,
   body:has(#screen-return-details:not(.hidden)) #main-title-container,
@@ -11112,6 +11402,7 @@ body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
     max-width:430px !important;
     margin-bottom:12px !important;
   }
+  /* AGGRESSIVE REBUILD GROUP B / compact direct-screen title inset cluster */
   body:has(#screen-login:not(.hidden)) #main-title-container .inset-box,
   body:has(#screen-main:not(.hidden)) #main-title-container .inset-box,
   body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box,
@@ -11120,6 +11411,7 @@ body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
     padding:9px 20px !important;
     border-radius:22px !important;
   }
+  /* AGGRESSIVE REBUILD GROUP B / compact direct-screen title heading cluster */
   body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2,
   body:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2,
   body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2,
@@ -11127,6 +11419,7 @@ body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
     font-size:1.52rem !important;
     line-height:1.08 !important;
   }
+  /* AGGRESSIVE REBUILD GROUP B / compact direct-screen title school-mark cluster */
   body:has(#screen-login:not(.hidden)) #main-title-container .school-mark--title,
   body:has(#screen-main:not(.hidden)) #main-title-container .school-mark--title,
   body:has(#screen-return-details:not(.hidden)) #main-title-container .school-mark--title,
@@ -11137,30 +11430,18 @@ body:has(#screen-return:not(.hidden)) #main-title-container .school-mark--title{
   }
 }
 @media (max-width:767px){
-  #main-title-container,
-  body:has(#screen-login:not(.hidden)) #main-title-container,
-  body:has(#screen-main:not(.hidden)) #main-title-container,
-  body:has(#screen-return-details:not(.hidden)) #main-title-container,
-  body:has(#screen-return:not(.hidden)) #main-title-container{
+  #main-title-container{
     width:min(88vw, 430px) !important;
     max-width:430px !important;
     margin-bottom:12px !important;
   }
-  #main-title-container .inset-box,
-  body:has(#screen-login:not(.hidden)) #main-title-container .inset-box,
-  body:has(#screen-main:not(.hidden)) #main-title-container .inset-box,
-  body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box,
-  body:has(#screen-return:not(.hidden)) #main-title-container .inset-box{
+  #main-title-container .inset-box{
     min-height:58px !important;
     padding:9px 18px !important;
     border-radius:21px !important;
     gap:10px !important;
   }
-  #main-title-container .inset-box h2,
-  body:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2,
-  body:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2,
-  body:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2,
-  body:has(#screen-return:not(.hidden)) #main-title-container .inset-box h2{
+  #main-title-container .inset-box h2{
     font-size:1.48rem !important;
   }
 }
@@ -11186,6 +11467,7 @@ body.ws-app{
   --ws-scope-success:#0f8f6b;
 }
 
+/* AGGRESSIVE REBUILD GROUP B / ws-step11 direct-screen title inset scope */
 body.ws-app:has(#screen-login:not(.hidden)) #main-title-container .inset-box,
 body.ws-app:has(#screen-main:not(.hidden)) #main-title-container .inset-box,
 body.ws-app:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box,
@@ -11194,6 +11476,7 @@ body.ws-app:has(#screen-confirmation:not(.hidden)) #main-title-container .inset-
   border-color:var(--ws-scope-panel-border) !important;
   box-shadow:var(--ws-scope-panel-shadow) !important;
 }
+/* AGGRESSIVE REBUILD GROUP B / ws-step11 direct-screen title heading scope */
 body.ws-app:has(#screen-login:not(.hidden)) #main-title-container .inset-box h2,
 body.ws-app:has(#screen-main:not(.hidden)) #main-title-container .inset-box h2,
 body.ws-app:has(#screen-return-details:not(.hidden)) #main-title-container .inset-box h2,
