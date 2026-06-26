@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>우성고 카드 - 옵션1</title>
+    <title>우성고 카드 </title>
 
     <meta name="theme-color" content="#2563eb" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -12615,12 +12615,38 @@ const CardApp = (function() {
         @SUBSECTION: JS_RECEIPT_OCR_HELPERS
         OCR 결과 검증, 처리 상태 라벨, 사용자 안내 toast
         ========================================================= */
+        normalizeReceiptAnalysisResult: (ocr) => {
+            if (!ocr || typeof ocr !== 'object') return ocr;
+            const pick = (...values) => {
+                for (const value of values) {
+                    const text = String(value == null ? '' : value).trim();
+                    if (text) return text;
+                }
+                return '';
+            };
+            return {
+                ...ocr,
+                storeName: pick(ocr.storeName, ocr.place, ocr.merchantName, ocr.shopName, ocr.vendor, ocr.companyName),
+                amount: pick(ocr.amount, ocr.totalAmount, ocr.recognizedAmount, ocr.price, ocr.sumAmount),
+                usageDetails: pick(ocr.usageDetails, ocr.itemSummary, ocr.itemsText, ocr.menuSummary, ocr.description),
+                date: pick(ocr.date, ocr.approvedAt, ocr.paymentDate, ocr.purchaseDate)
+            };
+        },
         isReceiptAnalysisFailed: (ocr) => {
-            if (!ocr || ocr.ok === false) return true;
-            const place = String(ocr.storeName || '').trim();
-            const amount = String(ocr.amount || '').replace(/[^\d]/g, '').trim();
+            const normalized = CardLogic.normalizeReceiptAnalysisResult(ocr);
+            if (!normalized || normalized.ok === false) return true;
+            if (!String(normalized.tempFileId || '').trim()) return true;
+            const place = String(normalized.storeName || '').trim();
+            const amount = String(normalized.amount || '').replace(/[^\d]/g, '').trim();
+            const details = String(normalized.usageDetails || '').trim();
 
-            // 금액은 필수입니다. 상호명이 비면 제출 데이터 품질이 떨어져서 직접 확인 대상으로 둡니다.
+            // 완전히 아무것도 못 읽은 경우만 직접입력으로 보내고, 일부만 읽힌 경우는 리뷰 상태로 둡니다.
+            return !place && !amount && !details;
+        },
+        shouldRequireReceiptReview: (ocr) => {
+            const normalized = CardLogic.normalizeReceiptAnalysisResult(ocr);
+            const place = String(normalized && normalized.storeName || '').trim();
+            const amount = String(normalized && normalized.amount || '').replace(/[^\d]/g, '').trim();
             return !place || !amount;
         },
         // 변경 부분: getReceiptProcessingLabel 처리 상태 추가 매핑
@@ -13526,8 +13552,9 @@ const CardApp = (function() {
 
                 /* @SERVER_API_GROUP_RECEIPT: 영수증 이미지 OCR/분석 */
                 /* @SERVER_API_GROUP_RECEIPT: 영수증 이미지 OCR/분석 */
-                const ocr = await Api.call('processReceiptImage', b64);
+                const ocr = CardLogic.normalizeReceiptAnalysisResult(await Api.call('processReceiptImage', b64));
                 const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
+                const needsManualReview = CardLogic.shouldRequireReceiptReview(ocr);
                 const recognizedAmount = String(ocr && ocr.amount ? ocr.amount : '');
                 let amt = recognizedAmount;
 
@@ -13558,7 +13585,7 @@ const CardApp = (function() {
                     date: analysisFailed ? '' : (ocr.date || ''),
                     processing: 'saving',
                     _uiTransient: true,
-                    needsManualReview: analysisFailed,
+                    needsManualReview: analysisFailed || needsManualReview,
                     analysisMeta: {
                         mediaResolution: ocr && ocr.mediaResolution ? ocr.mediaResolution : '',
                         usedFallback: !!(ocr && ocr.usedFallback),
@@ -13748,11 +13775,12 @@ const CardApp = (function() {
                 UIManager.setLoading(true, '영수증 교체 분석 중...', 'receipt');
                 const file = files[0];
                 const b64 = await CardLogic.prepareReceiptUploadImage(file);
-                const ocr = await Api.call('processReceiptImage', b64);
+                const ocr = CardLogic.normalizeReceiptAnalysisResult(await Api.call('processReceiptImage', b64));
                 if (!ocr || !ocr.tempFileId) {
                     throw new Error('영수증 이미지를 저장하지 못했습니다. 다시 첨부해 주세요.');
                 }
                 const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
+                const needsManualReview = CardLogic.shouldRequireReceiptReview(ocr);
                 const recognizedAmount = (ocr.amount || '').toString();
                 let amt = recognizedAmount;
                 UIManager.setLoading(false);
@@ -13765,12 +13793,13 @@ const CardApp = (function() {
                     previewImage: b64,
                     receiptImagePreview: b64,
                     usagePlace: analysisFailed ? '' : (ocr.storeName || ''),
-                    usageDetails: '',
+                    usageDetails: ocr.usageDetails || '',
                     amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
                     originalAmount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
                     isMealExpense: false,
                     mealHeadcount: CardLogic.getCurrentReturnMealHeadcount(),
-                    date: analysisFailed ? '' : (ocr.date || '')
+                    date: analysisFailed ? '' : (ocr.date || ''),
+                    needsManualReview
                 }, editIndex);
             } catch (e) {
                 UIManager.handleServerError(e);
@@ -14926,7 +14955,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </script><script>
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     });
