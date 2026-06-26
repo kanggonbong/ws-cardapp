@@ -9056,7 +9056,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   #screen-login {
     width: 100%;
     max-width: 100%;
-    min-height: calc(100dvh - 154px - env(safe-area-inset-bottom, 0px));
+    min-height: auto;
     margin: 0;
     padding: 18px 16px 20px;
     border-radius: 28px;
@@ -9079,8 +9079,52 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login .login-instruction-area.has-users {
-    min-height: 126px;
-    height: 126px;
+    min-height: 96px;
+    height: 96px;
+  }
+
+  body[data-current-screen="login"] #screen-login .login-instruction-area.has-users .login-user-panel {
+    padding: 8px 10px !important;
+    min-height: 80px !important;
+    top: 50% !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .login-instruction-area.has-users .main-user-box {
+    padding: 6px 10px !important;
+    margin-bottom: 6px !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .login-instruction-area.has-users .companion-chip {
+    padding: 4px 8px !important;
+  }
+
+  /* 대표자/동행인 추가 시 스크롤 방지를 위해 모바일 키패드 및 디스플레이 크기 동적 축소 */
+  body[data-current-screen="login"] #screen-login .login-instruction-area.has-users ~ .keypad-panel .keypad-btn {
+    min-height: 78px !important;
+    height: 78px !important;
+    font-size: 1.65rem !important;
+    border-radius: 16px !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .login-instruction-area.has-users ~ .keypad-panel #keypad-submit-btn {
+    min-height: 60px !important;
+    height: 60px !important;
+    font-size: 1.12rem !important;
+    border-radius: 16px !important;
+    margin-top: 8px !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .login-instruction-area.has-users ~ .keypad-panel #keypadDisplay {
+    margin-top: 2px !important;
+    margin-bottom: 6px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .login-instruction-area.has-users ~ .keypad-panel #keypadDisplay .digit-box.filled {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 1.15rem !important;
   }
 
   body[data-current-screen="login"] #keypadDisplay.display-area, body[data-current-screen="login"] #keypadDisplay {
@@ -9100,16 +9144,71 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] .keypad-btn {
-    min-height: 86px;
+    min-height: 92px;
+    aspect-ratio: 1.12 / 1;
     border-radius: 20px;
-    font-size: 1.9rem;
+    font-size: 1.95rem;
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    min-height: 58px;
+    min-height: 70px;
+    height: 70px;
     margin-top: 8px;
     padding: 0;
     border-radius: 20px;
+    font-size: 1.2rem;
+  }
+
+  body[data-current-screen="login"] #screen-login {
+    padding: 24px 16px 24px;
+    max-height: none;
+    overflow: visible !important;
+  }
+
+  body[data-current-screen="login"] #login-instruction-area:not(.has-users) {
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-current-screen="login"] #keypadDisplay {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    height: 52px;
+    min-height: 52px;
+  }
+
+  #screen-login .keypad-panel .keypad-grid {
+    gap: 10px !important;
+    margin-bottom: 6px !important;
+  }
+
+  body[data-current-screen="main"] #screen-main {
+    padding: 8px 12px;
+    max-height: none;
+    overflow: visible !important;
+  }
+
+  body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] #cardGrid {
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+
+  body[data-current-screen="main"] .card-item-wrapper.hybrid-card-slot {
+    min-height: 0 !important;
+    aspect-ratio: 1.62 / 1;
+    border-radius: 20px;
+  }
+
+  body[data-current-screen="main"] #main-welcome-message,
+  body[data-current-screen="main"] #card-selection-header {
+    margin-bottom: 4px !important;
+  }
+
+  #btn-back {
+    margin-top: 8px !important;
   }
 
 }
@@ -9727,8 +9826,8 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   body[data-current-screen="login"] #keypad-submit-btn {
     width: 100%;
-    min-height: clamp(84px, 28vw, 110px);
-    height: clamp(84px, 28vw, 110px);
+    min-height: 70px;
+    height: 70px;
     padding: 0;
     margin-top: 12px;
     border-radius: 18px;
@@ -9736,7 +9835,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 1.22rem;
+    font-size: 1.2rem;
     line-height: 1;
   }
 
