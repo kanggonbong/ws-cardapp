@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>우성고 카드 - 옵션1</title>
+    <title>우성고 카드/title>
 
     <meta name="theme-color" content="#2563eb" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -471,6 +471,8 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
 }
 
 :root {
+  --app-pdf-canvas-fill: #ffffff;
+  --ws-pdf-canvas-fill: #ffffff;
 
   /* ==========================================
      1. Brand Identity Tokens (Core Colors)
@@ -11048,7 +11050,7 @@ const CardApp = (function() {
     const UI_COLORS = Object.freeze({
         primary: () => readDesignToken('--primary-color', '#007aff'),
         danger: () => readDesignToken('--danger-color', '#ff3b30'),
-        pdfCanvasFill: () => readDesignToken('--app-pdf-canvas-fill', '#ffffff')
+        pdfCanvasFill: () => readDesignToken('--ws-pdf-canvas-fill', '#ffffff')
     });
     /* =========================================================
     @SECTION: JS_STATE
