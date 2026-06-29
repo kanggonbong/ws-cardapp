@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>우성고 카드 </title>
+    <title>우성고 카드 - 옵션1</title>
 
     <meta name="theme-color" content="#2563eb" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -10906,10 +10906,10 @@ const WORKER_API_URL = 'https://wscard.kang7762ek.workers.dev';
 const API_SHARED_SECRET = ''; // 선택 보안값: GAS Script Properties의 API_SHARED_SECRET을 설정한 경우 Worker가 이 값을 함께 전달해야 합니다.
 const isMobile = window.matchMedia('(max-width: 767px)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 const RECEIPT_IMAGE_OPTIMIZE_CONFIG = {
-    maxSide: 1280,
-    targetBytes: 450 * 1024,
-    minSide: 900,
-    qualities: [0.68, 0.60, 0.52, 0.46]
+    maxSide: 1100,
+    targetBytes: 350 * 1024,
+    minSide: 800,
+    qualities: [0.64, 0.56, 0.50, 0.44]
 };
 
 const RENT_SYNC_STORAGE_KEY = 'woosung_card_pending_rent_requests_v1';
@@ -10933,6 +10933,7 @@ const Api = {
     timeoutMs(func){
         const f = String(func || '');
         if (f === 'processReceiptImage') return 90000;
+        if (f === 'processReceiptImageFast') return 60000;
         if (f === 'saveReceiptImageOnly') return 60000;
         if (f === 'saveCartToMasterFile') return 45000;
         if (f === 'queueReturnRequest') return 30000;
@@ -12615,38 +12616,12 @@ const CardApp = (function() {
         @SUBSECTION: JS_RECEIPT_OCR_HELPERS
         OCR 결과 검증, 처리 상태 라벨, 사용자 안내 toast
         ========================================================= */
-        normalizeReceiptAnalysisResult: (ocr) => {
-            if (!ocr || typeof ocr !== 'object') return ocr;
-            const pick = (...values) => {
-                for (const value of values) {
-                    const text = String(value == null ? '' : value).trim();
-                    if (text) return text;
-                }
-                return '';
-            };
-            return {
-                ...ocr,
-                storeName: pick(ocr.storeName, ocr.place, ocr.merchantName, ocr.shopName, ocr.vendor, ocr.companyName),
-                amount: pick(ocr.amount, ocr.totalAmount, ocr.recognizedAmount, ocr.price, ocr.sumAmount),
-                usageDetails: pick(ocr.usageDetails, ocr.itemSummary, ocr.itemsText, ocr.menuSummary, ocr.description),
-                date: pick(ocr.date, ocr.approvedAt, ocr.paymentDate, ocr.purchaseDate)
-            };
-        },
         isReceiptAnalysisFailed: (ocr) => {
-            const normalized = CardLogic.normalizeReceiptAnalysisResult(ocr);
-            if (!normalized || normalized.ok === false) return true;
-            if (!String(normalized.tempFileId || '').trim()) return true;
-            const place = String(normalized.storeName || '').trim();
-            const amount = String(normalized.amount || '').replace(/[^\d]/g, '').trim();
-            const details = String(normalized.usageDetails || '').trim();
+            if (!ocr || ocr.ok === false) return true;
+            const place = String(ocr.storeName || '').trim();
+            const amount = String(ocr.amount || '').replace(/[^\d]/g, '').trim();
 
-            // 완전히 아무것도 못 읽은 경우만 직접입력으로 보내고, 일부만 읽힌 경우는 리뷰 상태로 둡니다.
-            return !place && !amount && !details;
-        },
-        shouldRequireReceiptReview: (ocr) => {
-            const normalized = CardLogic.normalizeReceiptAnalysisResult(ocr);
-            const place = String(normalized && normalized.storeName || '').trim();
-            const amount = String(normalized && normalized.amount || '').replace(/[^\d]/g, '').trim();
+            // 금액은 필수입니다. 상호명이 비면 제출 데이터 품질이 떨어져서 직접 확인 대상으로 둡니다.
             return !place || !amount;
         },
         // 변경 부분: getReceiptProcessingLabel 처리 상태 추가 매핑
@@ -13517,17 +13492,29 @@ const CardApp = (function() {
                 .then(r => {
                     if (r.isConfirmed) {
                         const org = [...state.receiptCart];
+                        const deletedItem = state.receiptCart[idx] ? { ...state.receiptCart[idx] } : null;
+                        const deletedReceiptImage = String(deletedItem && deletedItem.receiptImage ? deletedItem.receiptImage : '').trim();
+
                         state.receiptCart[idx] = { ...state.receiptCart[idx], processing: 'deleting' };
                         CardLogic.requestRenderReceiptCart();
+
                         const next = [...state.receiptCart];
                         next.splice(idx, 1);
                         state.receiptCart = next;
                         CardLogic.requestRenderReceiptCart();
-                        CardLogic.queueSaveCart(org).catch(e => {
-                            state.receiptCart = org;
-                            CardLogic.requestRenderReceiptCart();
-                            UIManager.handleServerError(e);
-                        });
+
+                        CardLogic.queueSaveCart(org)
+                            .then(() => {
+                                if (deletedReceiptImage && deletedReceiptImage.startsWith('id:')) {
+                                    Api.call('deleteTempReceiptImageOnly', deletedReceiptImage)
+                                        .catch(err => console.warn('임시 영수증 파일 삭제 실패:', err));
+                                }
+                            })
+                            .catch(e => {
+                                state.receiptCart = org;
+                                CardLogic.requestRenderReceiptCart();
+                                UIManager.handleServerError(e);
+                            });
                     }
                 });
         },
@@ -13550,11 +13537,17 @@ const CardApp = (function() {
                 state.receiptCart[actualIdx].usagePlace = '영수증 분석 중...';
                 CardLogic.requestRenderReceiptCart();
 
-                /* @SERVER_API_GROUP_RECEIPT: 영수증 이미지 OCR/분석 */
-                /* @SERVER_API_GROUP_RECEIPT: 영수증 이미지 OCR/분석 */
-                const ocr = CardLogic.normalizeReceiptAnalysisResult(await Api.call('processReceiptImage', b64));
+                /* @SERVER_API_GROUP_RECEIPT: 영수증 이미지 OCR/분석 + 이미지 저장 병렬 처리 */
+                const [ocrRaw, imageSave] = await Promise.all([
+                    Api.call('processReceiptImageFast', b64),
+                    Api.call('saveReceiptImageOnly', b64)
+                ]);
+                const ocr = ocrRaw || {};
+                if (imageSave && imageSave.tempFileId) {
+                    ocr.tempFileId = imageSave.tempFileId;
+                    ocr.tempFileUrl = imageSave.tempFileUrl || '';
+                }
                 const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
-                const needsManualReview = CardLogic.shouldRequireReceiptReview(ocr);
                 const recognizedAmount = String(ocr && ocr.amount ? ocr.amount : '');
                 let amt = recognizedAmount;
 
@@ -13585,7 +13578,7 @@ const CardApp = (function() {
                     date: analysisFailed ? '' : (ocr.date || ''),
                     processing: 'saving',
                     _uiTransient: true,
-                    needsManualReview: analysisFailed || needsManualReview,
+                    needsManualReview: analysisFailed,
                     analysisMeta: {
                         mediaResolution: ocr && ocr.mediaResolution ? ocr.mediaResolution : '',
                         usedFallback: !!(ocr && ocr.usedFallback),
@@ -13775,12 +13768,19 @@ const CardApp = (function() {
                 UIManager.setLoading(true, '영수증 교체 분석 중...', 'receipt');
                 const file = files[0];
                 const b64 = await CardLogic.prepareReceiptUploadImage(file);
-                const ocr = CardLogic.normalizeReceiptAnalysisResult(await Api.call('processReceiptImage', b64));
+                const [ocrRaw, imageSave] = await Promise.all([
+                    Api.call('processReceiptImageFast', b64),
+                    Api.call('saveReceiptImageOnly', b64)
+                ]);
+                const ocr = ocrRaw || {};
+                if (imageSave && imageSave.tempFileId) {
+                    ocr.tempFileId = imageSave.tempFileId;
+                    ocr.tempFileUrl = imageSave.tempFileUrl || '';
+                }
                 if (!ocr || !ocr.tempFileId) {
                     throw new Error('영수증 이미지를 저장하지 못했습니다. 다시 첨부해 주세요.');
                 }
                 const analysisFailed = CardLogic.isReceiptAnalysisFailed(ocr);
-                const needsManualReview = CardLogic.shouldRequireReceiptReview(ocr);
                 const recognizedAmount = (ocr.amount || '').toString();
                 let amt = recognizedAmount;
                 UIManager.setLoading(false);
@@ -13793,13 +13793,12 @@ const CardApp = (function() {
                     previewImage: b64,
                     receiptImagePreview: b64,
                     usagePlace: analysisFailed ? '' : (ocr.storeName || ''),
-                    usageDetails: ocr.usageDetails || '',
+                    usageDetails: '',
                     amount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
                     originalAmount: analysisFailed ? '' : amt.replace(/[^\d]/g, ""),
                     isMealExpense: false,
                     mealHeadcount: CardLogic.getCurrentReturnMealHeadcount(),
-                    date: analysisFailed ? '' : (ocr.date || ''),
-                    needsManualReview
+                    date: analysisFailed ? '' : (ocr.date || '')
                 }, editIndex);
             } catch (e) {
                 UIManager.handleServerError(e);
@@ -14955,7 +14954,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </script><script>
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     });
