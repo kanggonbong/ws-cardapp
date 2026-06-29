@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>우성고 카드 - 옵션1</title>
+    <title>우성고 카드 - 옵션3</title>
 
     <meta name="theme-color" content="#2563eb" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -1786,8 +1786,9 @@ body[data-current-screen="login"] #keypad-submit-btn:not(:disabled):active, body
   margin-top: 4px;
   padding: 18px 16px 16px;
   border-radius: 30px;
-  background: #f8fafc;
-  border: 1px solid var(--app-border); box-shadow: var(--app-shadow-soft);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   overflow: visible;
 }
 
@@ -2211,9 +2212,9 @@ body[data-current-screen="login"] #screen-login .stat-item {
 }
 
 body[data-current-screen="login"] #screen-login .keypad-panel {
-  background: var(--login-keypad-bg);
-  border: 1px solid rgba(255,255,255,0.88);
-  box-shadow: var(--app-shadow-soft);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 body[data-current-screen="login"] #screen-login .display-area {
@@ -2777,9 +2778,9 @@ body[data-current-screen="login"] #dash-center-screen .status-badge-wrap {
   position: relative;
   border-radius: 30px;
   overflow: visible;
-  background: radial-gradient(circle at 18% 10%,rgba(255,255,255,.46) 0%,transparent 28%),linear-gradient(180deg,#d4deeb 0%,#e1e8f1 52%,#c9d4e2 100%);
-  border: 1px solid rgba(255,255,255,.74);
-  box-shadow: var(--app-shadow-soft);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .card-item-wrapper.hybrid-card-slot.card-status-available {
@@ -3963,10 +3964,9 @@ body[data-current-screen="returnDetails"] #screen-return-details #return-screen-
 }
 
 body[data-current-screen="returnDetails"] #screen-return-details #receipt-dashboard {
-  background: var(--receipt-hero-bg);
-  border-color: rgba(255,255,255,0.78);
-  border: 1px solid rgba(255,255,255,0.88);
-  box-shadow: var(--app-shadow-soft);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   border-radius: 24px;
   padding: 22px 18px;
   gap: 6px;
@@ -10553,12 +10553,20 @@ body.ws-app #screen-confirmation {
   border-radius: 28px !important;
 }
 
-/* 로그인 화면 내 대시보드 상태 패딩 및 카드 디자인 정돈 (테두리 조금 더 진하게 강조) */
+/* 로그인 화면 내 대시보드 상태 패딩 및 카드 디자인 정돈 (배경 제거하여 자연스럽게) */
 body[data-current-screen="login"] #screen-login .header-dashboard {
-  background: #f8fafc !important;
-  border: 1px solid #cbd5e1 !important; /* 대시보드 테두리 시인성 개선 */
+  background: transparent !important;
+  border: none !important;
   box-shadow: none !important;
-  border-radius: 20px !important;
+}
+
+/* 대시보드 내부 개별 스태츠 카드와 상태창 배경 제거 */
+body[data-current-screen="login"] #screen-login .header-dashboard .stat-item,
+body[data-current-screen="login"] #screen-login .dashboard-center-screen,
+body[data-current-screen="login"] #dash-center-screen {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* 대표 사용자 박스도 연한 회색 배경과 얇은 테두리로 매끄럽게 정돈 */
@@ -10579,43 +10587,533 @@ body.ws-app #screen-login .companion-chip,
   border-radius: 12px !important;
 }
 
-/* 키패드 디바이스 베젤 마감 */
-body[data-current-screen="login"] #screen-login {
+/* 키패드 디바이스 베젤 마감 및 전체 유리(Glass) 카드 효과 적용 */
+body[data-current-screen="login"] #screen-login,
+body.ws-app #screen-login {
   max-width: 440px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.02) !important;
+  border-radius: 36px !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
 }
 
-/* 키패드 버튼들도 둥글고 납작한 토스 물리 키 버튼 형태로 정돈 (테두리 조금 더 진하게 강조) */
+/* 잠금화면(lock)이 아닐 때, 모든 화면의 세로 스크롤 및 PC 휠 / 모바일 드래그 강제 활성화 */
+body:not([data-current-screen="lock"]):not([data-current-screen="welcome"]) html,
+body:not([data-current-screen="lock"]):not([data-current-screen="welcome"]),
+body:not([data-current-screen="lock"]):not([data-current-screen="welcome"]) .content-wrapper,
+body:not([data-current-screen="lock"]):not([data-current-screen="welcome"]) .container,
+body:not([data-current-screen="lock"]):not([data-current-screen="welcome"]) .screen {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-y: auto !important;
+}
+
+/* 카드 선택 화면 메인 프레임 배경 투명화 */
+body[data-current-screen="main"] #screen-main,
+body.ws-app #screen-main {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 키패드 버튼들도 둥글고 납작한 토스 물리 키 버튼 형태로 정돈 (Border & Semi-transparent Glass 테마) */
 body[data-current-screen="login"] .keypad-btn {
-  background: #ffffff !important;
-  border: 1px solid #cbd5e1 !important; /* 키패드 버튼 테두리 시인성 개선 */
-  box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.04) !important;
-  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.35) !important; /* 그라데이션이 비치게 반투명화 */
+  border: 1px solid rgba(255, 255, 255, 0.5) !important; /* 미세한 화이트 테두리 */
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.02) !important;
+  border-radius: 18px !important;
   font-weight: 750 !important;
-  transition: background 0.1s ease !important;
+  transition: background 0.12s ease, transform 0.1s ease !important;
+  backdrop-filter: blur(4px) !important; /* 맑은 유리 질감 */
+  -webkit-backdrop-filter: blur(4px) !important;
 }
 body[data-current-screen="login"] .keypad-btn:active {
-  background: #f2f4f6 !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  transform: scale(0.94) !important;
 }
 
-/* 지우기/추가 버튼 색감 톤다운하여 토스 풍으로 세련되게 적용 (테두리 명확화) */
+/* 지우기/추가 버튼 색감 톤다운하여 토스 풍으로 세련되게 적용 (Border & Semi-transparent Glass 테마) */
 body[data-current-screen="login"] #keypad-add-btn {
-  background: #eefdf4 !important;
+  background: rgba(238, 253, 244, 0.45) !important;
   color: #10b981 !important;
-  border: 1px solid #a7f3d0 !important; /* 추가 버튼 테두리 시인성 개선 */
-  box-shadow: 0 1.5px 3px rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(167, 243, 208, 0.5) !important;
+  box-shadow: 0 1.5px 3px rgba(16, 185, 129, 0.04) !important;
 }
 body[data-current-screen="login"] #keypad-add-btn:not(:disabled):active {
-  background: #e1fbec !important;
+  background: rgba(238, 253, 244, 0.75) !important;
+  transform: scale(0.94) !important;
 }
 
 body[data-current-screen="login"] #keypad-back-btn {
-  background: #fff5f5 !important;
+  background: rgba(255, 245, 245, 0.45) !important;
   color: #ef4444 !important;
-  border: 1px solid #fecaca !important; /* 백스페이스 버튼 테두리 시인성 개선 */
-  box-shadow: 0 1.5px 3px rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(254, 202, 202, 0.5) !important;
+  box-shadow: 0 1.5px 3px rgba(239, 68, 68, 0.04) !important;
 }
 body[data-current-screen="login"] #keypad-back-btn:active {
-  background: #ffe3e3 !important;
+  background: rgba(255, 245, 245, 0.75) !important;
+  transform: scale(0.94) !important;
+}
+
+
+/* =========================================================
+   FINAL POLISH: Receipt UX visual refinement
+   - 영수증 카드 상태를 박스 안에서 더 명확하게 표시
+   - 여러 장 입력 진행 표시
+   - 저장중/저장완료/확인필요 색상 정리
+   - 기능 로직은 건드리지 않고 시각 표현만 보강
+========================================================= */
+/* 반납 화면 메인 프레임 배경 투명화 및 유리(Glass) 카드 효과 적용 */
+body[data-current-screen="returnDetails"] #screen-return-details,
+body.ws-app #screen-return-details {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.02) !important;
+  border-radius: 36px !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+
+#screen-return-details .return-neu-tray {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#screen-return-details #add-receipt-btn.receipt-dropzone-btn {
+  background: rgba(255, 255, 255, 0.35) !important;
+  border: 2px dashed rgba(49, 130, 246, 0.40) !important;
+  color: #1d4ed8 !important;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.03) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+
+/* 첨부된 영수증 내역 카드를 반투명 글래스 테마로 변경 */
+#screen-return-details .cart-item.with-inline-actions {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.02) !important;
+  border-radius: 20px !important;
+}
+
+#screen-return-details .cart-item.with-inline-actions .cart-item-place {
+  color: #173a6b;
+}
+
+/* 영수증 처리 상태에 따른 반투명 피드백 색상 조화 */
+#screen-return-details .cart-item.processing,
+body[data-current-screen="returnDetails"] #screen-return-details .cart-item.processing {
+  background: rgba(240, 248, 255, 0.65) !important;
+  border-color: rgba(56,189,248,.38) !important;
+  box-shadow: 0 0 0 2px rgba(56,189,248,.08), 0 12px 28px rgba(14,116,144,.10) !important;
+}
+
+#screen-return-details .cart-item.saving,
+body[data-current-screen="returnDetails"] #screen-return-details .cart-item.saving {
+  background: rgba(250, 247, 255, 0.65) !important;
+  border-color: rgba(139,92,246,.32) !important;
+  box-shadow: 0 0 0 2px rgba(139,92,246,.07), 0 12px 28px rgba(109,40,217,.10) !important;
+}
+
+#screen-return-details .cart-item.saved,
+body[data-current-screen="returnDetails"] #screen-return-details .cart-item.saved {
+  background: rgba(220, 252, 231, 0.65) !important;
+  border-color: rgba(34,197,94,.35) !important;
+  box-shadow: 0 0 0 2px rgba(34,197,94,.08), 0 14px 30px rgba(21,128,61,.10) !important;
+  animation: receiptSavedSoftPop .36s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+#screen-return-details .cart-item.saved .cart-item-place::after,
+body[data-current-screen="returnDetails"] #screen-return-details .cart-item.saved .cart-item-place::after {
+  content: "저장완료";
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 950;
+  letter-spacing: -.02em;
+  color: #047857;
+  background: rgba(16,185,129,.12);
+  border: 1px solid rgba(16,185,129,.18);
+  vertical-align: middle;
+}
+
+#screen-return-details .cart-item.needs-details,
+#screen-return-details .cart-item.needs-review,
+body[data-current-screen="returnDetails"] #screen-return-details .cart-item.needs-details,
+body[data-current-screen="returnDetails"] #screen-return-details .cart-item.needs-review {
+  background: rgba(255, 241, 242, 0.65) !important;
+  border-color: rgba(244,63,94,.36) !important;
+  box-shadow: 0 0 0 2px rgba(244,63,94,.07), 0 12px 28px rgba(190,18,60,.08) !important;
+}
+
+.receipt-review-progress {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  margin: 0 0 2px;
+  border-radius: 18px;
+  background: linear-gradient(180deg,#f8fbff 0%,#edf5ff 100%);
+  border: 1px solid rgba(191,211,238,.9);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.92);
+}
+
+.receipt-review-progress-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #1d4ed8;
+  background: rgba(37,99,235,.10);
+  border: 1px solid rgba(37,99,235,.14);
+  font-size: .82rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.receipt-review-progress-text {
+  color: #64748b;
+  font-size: .78rem;
+  font-weight: 800;
+  text-align: right;
+  line-height: 1.25;
+}
+
+.receipt-ocr-swal .swal2-title {
+  letter-spacing: -.045em;
+  color: #173a6b;
+}
+
+.receipt-ocr-swal .swal2-confirm {
+  font-weight: 950 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 20px rgba(37,99,235,.18) !important;
+}
+
+.receipt-ocr-swal .swal2-cancel {
+  border-radius: 16px !important;
+  font-weight: 900 !important;
+}
+
+@keyframes receiptSavedSoftPop {
+  0% { transform: scale(.992); filter: saturate(.92); }
+  100% { transform: scale(1); filter: saturate(1); }
+}
+
+@media (max-width: 640px) {
+  .receipt-review-progress {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .receipt-review-progress-text {
+    text-align: left;
+  }
+}
+
+
+
+/* =========================================================
+   PULSE RING LOADER FULLSCREEN
+   2단계 로딩 화면 전체 디자인 교체. 기존 기능 ID(loader-bar,
+   loader-percent, loader-step-1, loader-step-2)는 유지합니다.
+========================================================= */
+#welcome-screen[data-ws-region="welcome-loader"] {
+  background:
+    radial-gradient(circle at 50% 14%, rgba(124,184,255,0.18) 0%, rgba(124,184,255,0) 34%),
+    radial-gradient(circle at 8% 88%, rgba(49,130,246,0.075) 0%, rgba(49,130,246,0) 36%),
+    radial-gradient(circle at 92% 94%, rgba(199,210,254,0.20) 0%, rgba(199,210,254,0) 38%),
+    linear-gradient(180deg, #fbfdff 0%, #f6f9fd 48%, #edf3f9 100%) !important;
+  padding: 22px;
+}
+
+#welcome-screen .ws-pulse-loader-shell {
+  width: min(92vw, 440px);
+  min-height: min(86vh, 620px);
+  padding: 42px 28px 30px;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  overflow: visible;
+  position: relative;
+  isolation: isolate;
+}
+
+#welcome-screen .ws-pulse-loader-shell::before {
+  content: "";
+  position: absolute;
+  width: 310px;
+  height: 310px;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.58) 0%, rgba(255,255,255,0.30) 34%, rgba(255,255,255,0) 70%),
+    radial-gradient(circle, rgba(49,130,246,0.12) 0%, rgba(49,130,246,0) 66%);
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.ws-pulse-loader-stage {
+  position: relative;
+  width: 188px;
+  height: 188px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2px;
+  flex: 0 0 auto;
+}
+
+.ws-pulse-loader-icon {
+  position: relative;
+  z-index: 5;
+  width: 74px;
+  height: 74px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--app-primary);
+  font-size: 1.76rem;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(49,130,246,0.10);
+  box-shadow: 0 18px 42px rgba(49,130,246,0.13), 0 1px 0 rgba(255,255,255,0.9) inset;
+}
+
+.ws-pulse-loader-icon::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 29px;
+  border: 1px solid rgba(49,130,246,0.10);
+  pointer-events: none;
+}
+
+.ws-pulse-ring {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  border-radius: 25px;
+  border: 2px solid rgba(49,130,246,0.30);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#welcome-screen.is-visible .ws-pulse-ring-1,
+#welcome-screen:not(.hidden) .ws-pulse-ring-1 {
+  animation: wsPulseRingExpand 2.05s infinite cubic-bezier(0.1,0.8,0.3,1);
+}
+#welcome-screen.is-visible .ws-pulse-ring-2,
+#welcome-screen:not(.hidden) .ws-pulse-ring-2 {
+  animation: wsPulseRingExpand 2.05s infinite cubic-bezier(0.1,0.8,0.3,1) .64s;
+}
+#welcome-screen.is-visible .ws-pulse-ring-3,
+#welcome-screen:not(.hidden) .ws-pulse-ring-3 {
+  animation: wsPulseRingExpand 2.05s infinite cubic-bezier(0.1,0.8,0.3,1) 1.28s;
+}
+
+#welcome-screen .ws-pulse-loader-title {
+  margin: 0;
+  font-size: clamp(2.15rem, 6vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.065em;
+  font-weight: 950;
+  color: #142b4f;
+  text-align: center;
+}
+
+#welcome-screen .ws-pulse-loader-subtitle {
+  margin: -12px 0 2px;
+  font-size: 1.02rem;
+  line-height: 1.44;
+  color: #71839f;
+  font-weight: 800;
+  text-align: center;
+  word-break: keep-all;
+}
+
+#welcome-screen .ws-pulse-progress-area {
+  width: 100%;
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 13px;
+}
+
+#welcome-screen .ws-pulse-progress-shell {
+  width: 100%;
+  height: 11px;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgba(226,234,244,0.76);
+  border: 1px solid rgba(255,255,255,0.62);
+  box-shadow: inset 0 1px 2px rgba(31,65,117,0.06);
+  overflow: hidden;
+}
+
+#welcome-screen .ws-pulse-progress-shell .loader-progress-fill {
+  height: 100%;
+  min-width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7cb8ff 0%, var(--app-primary) 54%, #1d4ed8 100%);
+  box-shadow: 0 8px 16px rgba(49,130,246,0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+#welcome-screen .ws-pulse-progress-shell .loader-progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.58) 45%, transparent 80%);
+  transform: translateX(-130%);
+  animation: wsPulseLoaderShimmer 1.35s linear infinite;
+  border-radius: inherit;
+}
+
+#welcome-screen .ws-pulse-loader-percent {
+  min-width: 48px;
+  text-align: right;
+  font-size: .96rem;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  color: #1d4fb8;
+  -webkit-text-fill-color: initial;
+  background: none;
+}
+
+#welcome-screen .ws-pulse-mini-steps {
+  width: 100%;
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+#welcome-screen .ws-pulse-mini-step {
+  min-height: 44px;
+  padding: 10px 11px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.34);
+  border: 1px solid rgba(255,255,255,0.48);
+  color: #8a9ab2;
+  box-shadow: none;
+}
+
+#welcome-screen .ws-pulse-mini-step .mini-step-dot {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.54);
+  color: #9aabc3;
+  font-size: .74rem;
+  box-shadow: none;
+  flex: 0 0 auto;
+}
+
+#welcome-screen .ws-pulse-mini-step .mini-step-text {
+  min-width: 0;
+  font-size: .84rem;
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#welcome-screen .ws-pulse-mini-step.active {
+  background: rgba(255,255,255,0.62);
+  border-color: rgba(49,130,246,0.18);
+  color: #203a62;
+  box-shadow: 0 8px 22px rgba(31,65,117,0.045);
+}
+
+#welcome-screen .ws-pulse-mini-step.active .mini-step-dot {
+  color: var(--app-primary);
+  background: #edf4ff;
+}
+
+#welcome-screen .ws-pulse-mini-step.done {
+  background: rgba(240,251,246,0.58);
+  border-color: rgba(16,185,129,0.16);
+  color: #0f766e;
+}
+
+#welcome-screen .ws-pulse-mini-step.done .mini-step-dot {
+  color: #ffffff;
+  background: #12b981;
+}
+
+#welcome-screen .ws-pulse-mini-step.done .mini-step-dot i::before {
+  content: "\f00c";
+}
+
+/* 기존 로딩 JS가 접근하는 step 요소는 유지하되, 실제 디자인은 mini-step이 담당합니다. */
+#welcome-screen .ws-pulse-hidden-steps {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@keyframes wsPulseRingExpand {
+  0% { transform: scale(1); opacity: .46; border-radius: 25px; }
+  70% { opacity: .12; }
+  100% { transform: scale(2.92); opacity: 0; border-radius: 46px; }
+}
+
+@keyframes wsPulseLoaderShimmer {
+  0% { transform: translateX(-130%); }
+  100% { transform: translateX(210%); }
+}
+
+@media (max-width: 420px) {
+  #welcome-screen[data-ws-region="welcome-loader"] { padding: 8px; }
+  #welcome-screen .ws-pulse-loader-shell {
+    width: min(100%, 420px);
+    min-height: calc(100dvh - 16px);
+    padding: 36px 22px 26px;
+    border-radius: 0;
+  }
+  .ws-pulse-loader-stage { width: 166px; height: 166px; }
+  #welcome-screen .ws-pulse-loader-title { font-size: 2.2rem; }
+  #welcome-screen .ws-pulse-loader-subtitle { font-size: .96rem; }
+  #welcome-screen .ws-pulse-mini-steps { gap: 8px; }
+  #welcome-screen .ws-pulse-mini-step { padding: 10px 9px; }
+  #welcome-screen .ws-pulse-mini-step .mini-step-text { font-size: .78rem; }
 }
 </style>
 
@@ -10733,33 +11231,47 @@ body[data-current-screen="login"] #keypad-back-btn:active {
 </div>
 
 <div id="welcome-screen" class="hidden" data-ws-region="welcome-loader">
-    <div class="loader-card-v2">
-        <div class="loader-card-icon-wrap">
-            <img src="./assets/icon-192.png" alt="우성고 마크" class="school-mark school-mark--loader">
+    <div class="ws-pulse-loader-shell">
+        <div class="ws-pulse-loader-stage" aria-hidden="true">
+            <div class="ws-pulse-ring ws-pulse-ring-1"></div>
+            <div class="ws-pulse-ring ws-pulse-ring-2"></div>
+            <div class="ws-pulse-ring ws-pulse-ring-3"></div>
+            <div class="ws-pulse-loader-icon">
+                <i class="fa-solid fa-credit-card"></i>
+            </div>
         </div>
-        <div class="loader-card-title" id="loader-title-main">시스템 연결 중...</div>
-        <div class="loader-card-subtitle" id="loader-title-sub">안전하게 접속을 준비하고 있습니다</div>
-        <div class="loader-progress-row">
-            <div class="loader-progress-shell">
+        <div class="ws-pulse-loader-title" id="loader-title-main">시스템 연결 중</div>
+        <div class="ws-pulse-loader-subtitle" id="loader-title-sub">카드 데이터와 화면 정보를 불러오고 있어요</div>
+        <div class="ws-pulse-progress-area">
+            <div class="ws-pulse-progress-shell">
                 <div class="loader-progress-fill" id="loader-bar"></div>
             </div>
-            <div class="loader-progress-percent" id="loader-percent">0%</div>
+            <div class="ws-pulse-loader-percent" id="loader-percent">0%</div>
         </div>
-        <div class="loader-step-panel">
+        <div class="ws-pulse-mini-steps" aria-hidden="true">
+            <div class="ws-pulse-mini-step active" id="ws-mini-loader-step-1">
+                <span class="mini-step-dot"><i class="fa-solid fa-link"></i></span>
+                <span class="mini-step-text">시스템 연결</span>
+            </div>
+            <div class="ws-pulse-mini-step" id="ws-mini-loader-step-2">
+                <span class="mini-step-dot"><i class="fa-solid fa-shield-halved"></i></span>
+                <span class="mini-step-text">보안 확인</span>
+            </div>
+        </div>
+        <div class="loader-step-panel ws-pulse-hidden-steps" aria-hidden="true">
             <div class="loader-step-item active" id="loader-step-1">
-                <div class="loader-step-icon"><i class="fa-solid fa-server"></i></div>
+                <div class="loader-step-icon"><i class="fa-solid fa-link"></i></div>
                 <div class="loader-step-texts">
-                    <div class="loader-step-title">학교 시스템 연결 중...</div>
-                    <div class="loader-step-desc">안전하게 연결하고 있습니다.</div>
+                    <div class="loader-step-title">시스템 연결</div>
+                    <div class="loader-step-desc">카드 데이터와 화면 정보를 불러오는 중</div>
                 </div>
                 <div class="loader-step-badge">1</div>
             </div>
-            <div class="loader-step-divider"></div>
             <div class="loader-step-item" id="loader-step-2">
-                <div class="loader-step-icon"><i class="fa-solid fa-shield"></i></div>
+                <div class="loader-step-icon"><i class="fa-solid fa-shield-halved"></i></div>
                 <div class="loader-step-texts">
-                    <div class="loader-step-title">보안 정보 확인 중...</div>
-                    <div class="loader-step-desc">사용자 정보를 안전하게 확인하고 있습니다.</div>
+                    <div class="loader-step-title">보안 확인</div>
+                    <div class="loader-step-desc">사용자 정보를 안전하게 확인하는 중</div>
                 </div>
                 <div class="loader-step-badge">2</div>
             </div>
@@ -10767,7 +11279,41 @@ body[data-current-screen="login"] #keypad-back-btn:active {
     </div>
 </div>
 
-<div id="security-scan-overlay" data-ws-region="security-scan">
+
+<script>
+(function installPulseMiniStepMirror(){
+  function syncPulseMiniSteps(){
+    try {
+      var s1 = document.getElementById('loader-step-1');
+      var s2 = document.getElementById('loader-step-2');
+      var m1 = document.getElementById('ws-mini-loader-step-1');
+      var m2 = document.getElementById('ws-mini-loader-step-2');
+      [[s1,m1],[s2,m2]].forEach(function(pair){
+        var source = pair[0], target = pair[1];
+        if (!source || !target) return;
+        target.classList.toggle('active', source.classList.contains('active'));
+        target.classList.toggle('done', source.classList.contains('done'));
+      });
+    } catch(e) {}
+  }
+  function initPulseMiniStepMirror(){
+    syncPulseMiniSteps();
+    ['loader-step-1','loader-step-2'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (!el || el.__wsPulseMirrorInstalled) return;
+      el.__wsPulseMirrorInstalled = true;
+      new MutationObserver(syncPulseMiniSteps).observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPulseMiniStepMirror);
+  } else {
+    initPulseMiniStepMirror();
+  }
+})();
+</script>
+
+<div id="security-scan-overlay"<div id="security-scan-overlay" data-ws-region="security-scan">
     <div class="scan-box" id="scan-box">
         <div class="laser" id="laser"></div>
         <i class="fa-solid fa-user scan-icon" id="scan-icon"></i>
@@ -10868,7 +11414,7 @@ body[data-current-screen="login"] #keypad-back-btn:active {
     </div>
 </div>
 
-<input type="file" id="receipt-file-input" class="file-input-hidden" accept="image/*,application/pdf" multiple>
+<input type="file" id="receipt-file-input" class="file-input-hidden" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf,image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf" multiple>
 <script>
 
 /* =========================================================
@@ -11412,7 +11958,7 @@ const CardApp = (function() {
         ========================================================= */
         syncScrollContext: (sid) => {
             const isAppScreen = UIManager.appScreens.includes(sid);
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = isAppScreen ? 'auto' : 'hidden'; /* 앱 화면일 때는 스크롤이 가능하도록 변경 */
             if (elements.contentWrapper) {
                 elements.contentWrapper.style.overflowY = isAppScreen ? 'auto' : 'hidden';
                 elements.contentWrapper.style.overscrollBehaviorY = isAppScreen ? 'contain' : 'none';
@@ -11611,8 +12157,8 @@ const CardApp = (function() {
         초기 연결/보안 확인 로더 진행 애니메이션
         ========================================================= */
         async runRandomLoader(chk) {
-            const step1Text = '학교 시스템 연결 중...';
-            const step2Text = '보안 정보 확인 중...';
+            const step1Text = '시스템 연결 중';
+            const step2Text = '보안 확인 중';
             const doneText = '시스템 접속 완료';
 
             const titleMain = document.getElementById('loader-title-main');
@@ -11660,11 +12206,11 @@ const CardApp = (function() {
                 if (percentEl) percentEl.textContent = `${Math.round(safePercent)}%`;
 
                 if (currentStep === 1) {
-                    if (titleMain) titleMain.textContent = '시스템 연결 중...';
-                    if (titleSub) titleSub.textContent = '안전하게 접속을 준비하고 있습니다';
+                    if (titleMain) titleMain.textContent = '시스템 연결 중';
+                    if (titleSub) titleSub.textContent = '카드 데이터와 화면 정보를 불러오고 있어요';
                 } else if (currentStep === 2) {
-                    if (titleMain) titleMain.textContent = '보안 확인 중...';
-                    if (titleSub) titleSub.textContent = '보안 토큰과 사용자 정보를 검증하고 있습니다';
+                    if (titleMain) titleMain.textContent = '보안 확인 중';
+                    if (titleSub) titleSub.textContent = '사용자 정보를 안전하게 확인하고 있어요';
                 } else {
                     if (titleMain) titleMain.textContent = '시스템 접속 완료';
                     if (titleSub) titleSub.textContent = '로그인 화면으로 이동합니다';
@@ -12586,6 +13132,7 @@ const CardApp = (function() {
                     if (!isMeal && !String(it.usageDetails||'').trim()) q.push(idx);
                 }
                 state.reviewQueue = q;
+                state.reviewTotal = q.length;
             } catch(e) {}
         },
         continueReviewIfNeeded: (savedIdx) => {
@@ -12605,6 +13152,8 @@ const CardApp = (function() {
                             CardLogic.openOcrPopup(state.receiptCart[nextIdx], nextIdx);
                         } catch(e) {}
                     }, 250);
+                } else {
+                    state.reviewTotal = 0;
                 }
             } catch(e) {}
         },
@@ -14003,6 +14552,19 @@ const CardApp = (function() {
             const storeStatus = getOcrFieldStatus(!!storeValue);
             const amountStatus = getOcrFieldStatus(!!amountValue);
             const detailsStatus = getOcrFieldStatus(!!detailsValue);
+            const reviewQueue = Array.isArray(state.reviewQueue) ? state.reviewQueue : [];
+            const reviewTotal = Math.max(Number(state.reviewTotal || 0), reviewQueue.length || 0);
+            const reviewQueuePos = reviewQueue.indexOf(editIndex);
+            const isReviewSequence = editIndex > -1 && reviewTotal > 1 && reviewQueuePos > -1;
+            const reviewCurrentNo = isReviewSequence ? Math.max(1, reviewTotal - reviewQueue.length + 1) : 1;
+            const hasNextReviewItem = isReviewSequence && reviewQueue[0] === editIndex && reviewQueue.length > 1;
+            const receiptPopupTitle = isReviewSequence ? `영수증 확인 ${reviewCurrentNo} / ${reviewTotal}` : '영수증 정보';
+            const receiptConfirmText = hasNextReviewItem ? '저장하고 다음' : (editIndex > -1 ? '저장 완료' : '추가');
+            const reviewProgressHtml = isReviewSequence ? `
+                    <div class="receipt-review-progress" aria-label="영수증 입력 진행 상황">
+                        <span class="receipt-review-progress-badge"><i class="fa-solid fa-layer-group"></i> ${reviewCurrentNo} / ${reviewTotal}</span>
+                        <span class="receipt-review-progress-text">여러 장 입력 중 · 중간 저장 알림은 박스 안에 표시됩니다</span>
+                    </div>` : '';
             
             const getReceiptPopupToneFromText = (storeText = '', detailsText = '') =>
                 CardLogic.getReceiptPopupToneFromPurposeText(storeText, detailsText, receiptPurposeList);
@@ -14030,6 +14592,7 @@ const CardApp = (function() {
                             </div>` : '');
             const html = `
                 <div class="swal-custom-container receipt-ocr-layout">
+${reviewProgressHtml}
                     <div class="receipt-ocr-image-panel">
                         <div class="receipt-ocr-panel-title"><i class="fa-solid fa-receipt"></i> 영수증 이미지</div>
                         <div id="swal-image-container">
@@ -14060,9 +14623,9 @@ ${receiptUseTypeHtml}
                     </div>
                 </div>`;
             await Swal.fire({
-                title: '영수증 정보', html, showCancelButton: true,
+                title: receiptPopupTitle, html, showCancelButton: true,
                 customClass: { popup: `receipt-ocr-swal receipt-tone-${receiptPopupTone}` },
-                confirmButtonText: editIndex > -1 ? '저장' : '추가', cancelButtonText: '취소',
+                confirmButtonText: receiptConfirmText, cancelButtonText: '취소',
                 focusConfirm: false, focusCancel: false, allowOutsideClick: false, returnFocus: false,
                 
                 didOpen: () => {
