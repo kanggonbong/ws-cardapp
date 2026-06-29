@@ -12592,23 +12592,19 @@ const CardApp = (function() {
             try {
                 if (!state.reviewQueue || !state.reviewQueue.length) return;
                 if (state.reviewQueue[0] !== savedIdx) return;
+
                 state.reviewQueue.shift();
+
                 if (state.reviewQueue.length) {
                     const nextIdx = state.reviewQueue[0];
-                    try{
-                        if (window.Swal) {
-                            Swal.fire({
-                                title: '다음 영수증 준비중',
-                                text: '',
-                                showConfirmButton: false,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                                backdrop: true,
-                                didOpen: () => { try { Swal.showLoading(); } catch(e){} }
-                            });
-                        }
-                    } catch(e) {}
-                    setTimeout(() => { try{ if(window.Swal) Swal.close(); }catch(e){}; CardLogic.openOcrPopup(state.receiptCart[nextIdx], nextIdx); }, 650);
+
+                    // 여러 장 영수증을 연속 입력할 때는 중간 안내 모달을 띄우지 않습니다.
+                    // 모달/토스트가 다음 입력창의 포커스를 빼앗아 작성 중 튕기는 현상을 방지합니다.
+                    setTimeout(() => {
+                        try {
+                            CardLogic.openOcrPopup(state.receiptCart[nextIdx], nextIdx);
+                        } catch(e) {}
+                    }, 250);
                 }
             } catch(e) {}
         },
@@ -14367,18 +14363,30 @@ ${receiptUseTypeHtml}
                 if (!(res.isConfirmed && res.value)) return;
                 
                 try {
+                    const suppressSaveToast =
+                        Array.isArray(state.reviewQueue) &&
+                        state.reviewQueue[0] === editIndex &&
+                        state.reviewQueue.length > 1;
+
                     await CardLogic.saveCartItemOptimistic(res.value, editIndex, { closeSwal: false });
-                    try {
-                        Swal.fire({
-                            toast: true,
-                            position: 'top',
-                            icon: 'success',
-                            title: '저장 완료',
-                            showConfirmButton: false,
-                            timer: 1500,
-                            timerProgressBar: false
-                        });
-                    } catch(e) {}
+
+                    // 1장 입력 또는 여러 장 중 마지막 입력 때만 저장완료 토스트를 표시합니다.
+                    // 여러 장 중간 단계에서는 각 영수증 박스의 저장완료 표시만 사용합니다.
+                    if (!suppressSaveToast) {
+                        try {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top',
+                                icon: 'success',
+                                title: '저장 완료',
+                                showConfirmButton: false,
+                                timer: 1200,
+                                timerProgressBar: false,
+                                backdrop: false,
+                                heightAuto: false
+                            });
+                        } catch(e) {}
+                    }
                 } catch (e) {
                     await UIManager.showOperationalError({
                         title: '저장 실패',
