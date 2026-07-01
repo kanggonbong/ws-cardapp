@@ -864,6 +864,22 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
 /* ==========================================
    3. Welcome Loader & Preloader
    ========================================== */
+/* v12.7 simplified loading: 하단 단계 박스 제거 */
+#welcome-screen .ws-pulse-mini-steps,
+#welcome-screen .loader-step-panel,
+#welcome-screen .ws-pulse-hidden-steps {
+  display: none !important;
+}
+#welcome-screen .ws-pulse-loader-shell {
+  gap: 16px;
+}
+#welcome-screen .ws-pulse-loader-title {
+  letter-spacing: -0.035em;
+}
+#welcome-screen .ws-pulse-loader-subtitle {
+  margin-top: -4px;
+}
+
 #welcome-screen.is-visible {
   opacity: 1;
   visibility: visible;
@@ -11133,6 +11149,156 @@ body[data-current-screen="returnDetails"] #screen-return-details .cart-item.need
 
 
 /* =========================================================
+   v12.8: 우성고 마크 원형 진행 링 로딩 화면
+   - 시스템 연결/보안 확인 단계는 계속 숨김
+   - 기존 GitHub assets/icon-192.png 학교 마크를 진행 링 중심에 배치
+   - 100% 완료 시 짧게 "완료"만 표시
+========================================================= */
+#welcome-screen .ws-pulse-loader-shell {
+  width: min(92vw, 430px);
+  min-height: auto;
+  padding: 44px 30px 38px;
+  gap: 16px;
+  border-radius: 34px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(240,247,255,0.90) 100%);
+  border: 1px solid rgba(255,255,255,0.88);
+  box-shadow: 0 24px 62px rgba(31,65,117,0.13), 0 1px 0 rgba(255,255,255,0.95) inset;
+}
+
+#welcome-screen .ws-pulse-loader-shell::before {
+  width: 260px;
+  height: 260px;
+  top: 24px;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.68) 0%, rgba(255,255,255,0.32) 36%, rgba(255,255,255,0) 70%),
+    radial-gradient(circle, rgba(49,130,246,0.13) 0%, rgba(49,130,246,0) 67%);
+}
+
+#welcome-screen .ws-logo-ring-loader-stage {
+  position: relative;
+  width: 148px;
+  height: 148px;
+  margin: 0 auto 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+#welcome-screen .ws-logo-ring-svg {
+  position: absolute;
+  inset: 0;
+  width: 148px;
+  height: 148px;
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 10px 22px rgba(49,130,246,0.12));
+}
+
+#welcome-screen .ws-logo-ring-track,
+#welcome-screen .ws-logo-ring-fill {
+  fill: none;
+  stroke-width: 7.5;
+  stroke-linecap: round;
+}
+
+#welcome-screen .ws-logo-ring-track {
+  stroke: rgba(214,226,242,0.86);
+}
+
+#welcome-screen .ws-logo-ring-fill {
+  stroke: url(#wsLogoRingGradient);
+  stroke: #3182f6;
+  stroke-dasharray: 351.858;
+  stroke-dashoffset: 351.858;
+  transition: stroke-dashoffset 150ms linear, stroke 220ms ease;
+}
+
+#welcome-screen .ws-logo-ring-fill.is-done {
+  stroke: #12b981;
+}
+
+#welcome-screen .ws-logo-ring-mark-wrap {
+  position: relative;
+  z-index: 2;
+  width: 92px;
+  height: 92px;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg,#ffffff 0%,#eef6ff 100%);
+  border: 1px solid rgba(255,255,255,0.92);
+  box-shadow: 0 18px 42px rgba(31,65,117,0.10), 0 1px 0 rgba(255,255,255,0.95) inset;
+  overflow: hidden;
+}
+
+#welcome-screen .ws-logo-ring-mark {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  margin: 0;
+  display: block;
+}
+
+#welcome-screen .ws-pulse-loader-title {
+  margin: 4px 0 0;
+  font-size: clamp(1.18rem, 4.6vw, 1.42rem);
+  line-height: 1.24;
+  letter-spacing: -0.045em;
+  font-weight: 950;
+  color: #142b4f;
+}
+
+#welcome-screen .ws-logo-ring-subtitle {
+  display: none !important;
+}
+
+#welcome-screen .ws-logo-ring-percent {
+  margin-top: -2px;
+  min-width: 0;
+  text-align: center;
+  font-size: 1.08rem;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.035em;
+  color: #1d4fb8;
+  -webkit-text-fill-color: initial;
+  background: none;
+}
+
+#welcome-screen .ws-logo-ring-percent.loader-tone-done {
+  color: #12b981;
+}
+
+#welcome-screen .ws-logo-ring-fallback-progress {
+  display: none !important;
+}
+
+@media (max-width: 420px) {
+  #welcome-screen .ws-pulse-loader-shell {
+    width: min(92vw, 360px);
+    min-height: auto;
+    padding: 38px 24px 34px;
+    border-radius: 30px;
+  }
+  #welcome-screen .ws-logo-ring-loader-stage,
+  #welcome-screen .ws-logo-ring-svg {
+    width: 136px;
+    height: 136px;
+  }
+  #welcome-screen .ws-logo-ring-mark-wrap {
+    width: 84px;
+    height: 84px;
+    border-radius: 25px;
+  }
+  #welcome-screen .ws-logo-ring-mark {
+    width: 62px;
+    height: 62px;
+  }
+}
+
+
+/* =========================================================
    v3: 목적/반납 용도 이모지 통일 + 반납 제출 버튼 골드 텍스트
    대상: 물품구매 / 식사다과 / 특근매식
 ========================================================= */
@@ -11200,6 +11366,400 @@ body.ws-app #submit-cart-btn.simple-btn.primary:not(:disabled) i,
 #screen-return-details #submit-cart-btn:not(:disabled) .return-submit-emphasis {
   color: #eaf4ff !important;
   -webkit-text-fill-color: #eaf4ff !important;
+}
+
+
+
+/* =========================================================
+ * v12.1 receipt use-type meal button light outline patch
+ * - 영수증 OCR 팝업의 사용 구분 > 특근매식 버튼에서 이모지를 제거하고
+ *   진한 채움형 버튼 대신 가벼운 흰 배경 + 초록 테두리 스타일로 표시합니다.
+ * ======================================================= */
+.receipt-ocr-swal .use-type-btn[data-use-type="meal"] .use-type-emoji {
+  display: none !important;
+}
+
+.receipt-ocr-swal .use-type-btn[data-use-type="meal"] {
+  min-height: 44px;
+  padding: 9px 18px;
+  border-radius: 14px;
+  gap: 0;
+}
+
+.receipt-ocr-swal .receipt-use-type-segment:has(> .use-type-btn:only-child) {
+  grid-template-columns: max-content;
+  justify-content: start;
+}
+
+.receipt-ocr-swal .use-type-btn.active[data-use-type="meal"],
+.receipt-ocr-swal.receipt-tone-meal .use-type-btn.active[data-use-type="meal"] {
+  color: #047857 !important;
+  background: #ffffff !important;
+  border: 1.5px solid rgba(16,185,129,.58) !important;
+  box-shadow: 0 4px 10px rgba(16,185,129,.08), inset 0 0 0 1px rgba(255,255,255,.76) !important;
+}
+
+.receipt-ocr-swal .use-type-btn.active[data-use-type="meal"]:active,
+.receipt-ocr-swal.receipt-tone-meal .use-type-btn.active[data-use-type="meal"]:active {
+  transform: scale(.985);
+  box-shadow: 0 2px 6px rgba(16,185,129,.08), inset 0 0 0 1px rgba(255,255,255,.76) !important;
+}
+
+
+/* =========================================================
+ * v12.2 purpose chip unification / dynamic lightweight UI
+ * - 반납 화면 상단 목적 배지와 영수증 팝업 사용 구분 버튼을 같은 '가벼운 칩' 톤으로 통일합니다.
+ * - 이모지/굵은 채움 버튼을 제거하고, 신청 목적에 따라 색상만 부드럽게 달라지도록 합니다.
+ * - 1개 목적일 때는 작은 칩처럼 내용 크기만큼, 2개 선택 가능일 때는 줄바꿈 가능한 유동형 칩으로 표시합니다.
+ * ======================================================= */
+body.ws-app .return-purpose-emoji,
+body.ws-app .use-type-emoji,
+.receipt-ocr-swal .use-type-btn i {
+  display: none !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge,
+#screen-return-details .card-header-badge.card-header-badge--flush {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: max-content !important;
+  min-height: 28px;
+  padding: 5px 12px !important;
+  border-radius: 999px !important;
+  font-size: .78rem !important;
+  line-height: 1;
+  font-weight: 900 !important;
+  letter-spacing: -.02em;
+  gap: 0 !important;
+  margin: 4px auto 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(126,150,184,.24) !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-meal,
+#screen-return-details .card-header-badge.badge-purpose-meal {
+  color: #047857 !important;
+  border-color: rgba(16,185,129,.42) !important;
+  background: rgba(240,253,244,.72) !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-purchase,
+#screen-return-details .card-header-badge.badge-purpose-purchase {
+  color: #b45309 !important;
+  border-color: rgba(245,158,11,.42) !important;
+  background: rgba(255,251,235,.82) !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-dining,
+#screen-return-details .card-header-badge.badge-purpose-dining {
+  color: #0369a1 !important;
+  border-color: rgba(6,182,212,.38) !important;
+  background: rgba(236,254,255,.78) !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-default,
+#screen-return-details .card-header-badge.badge-purpose-default {
+  color: #1d4ed8 !important;
+  border-color: rgba(59,130,246,.34) !important;
+  background: rgba(239,246,255,.78) !important;
+}
+
+.receipt-ocr-swal .receipt-use-type-box {
+  padding: 10px !important;
+  gap: 8px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg,#ffffff 0%,#f8fbff 100%) !important;
+  border: 1px solid rgba(126,150,184,.18) !important;
+  box-shadow: none !important;
+}
+
+.receipt-ocr-swal .receipt-use-type-title {
+  font-size: .88rem !important;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.receipt-ocr-swal .receipt-use-type-segment,
+.receipt-ocr-swal .receipt-use-type-segment:has(> .use-type-btn:only-child) {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.receipt-ocr-swal .use-type-btn {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 88px;
+  min-height: 34px !important;
+  height: 34px;
+  padding: 7px 13px !important;
+  border-radius: 999px !important;
+  gap: 0 !important;
+  font-size: .84rem !important;
+  line-height: 1;
+  font-weight: 900 !important;
+  color: #64748b !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(126,150,184,.26) !important;
+  box-shadow: none !important;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
+}
+
+.receipt-ocr-swal .use-type-btn:active {
+  transform: scale(.985);
+}
+
+.receipt-ocr-swal.receipt-tone-purchase .use-type-btn.active[data-use-type="general"] {
+  color: #b45309 !important;
+  background: rgba(255,251,235,.92) !important;
+  border-color: rgba(245,158,11,.46) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.70) !important;
+}
+
+.receipt-ocr-swal.receipt-tone-dining .use-type-btn.active[data-use-type="general"] {
+  color: #0369a1 !important;
+  background: rgba(236,254,255,.88) !important;
+  border-color: rgba(6,182,212,.44) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.70) !important;
+}
+
+.receipt-ocr-swal .use-type-btn.active[data-use-type="meal"],
+.receipt-ocr-swal.receipt-tone-meal .use-type-btn.active[data-use-type="meal"] {
+  color: #047857 !important;
+  background: rgba(240,253,244,.88) !important;
+  border-color: rgba(16,185,129,.46) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.70) !important;
+}
+
+.receipt-ocr-swal .use-type-btn:not(.active):hover {
+  border-color: rgba(100,116,139,.34) !important;
+  background: #f8fafc !important;
+}
+
+
+/* =========================================================
+ * v12.3 completion summary + purpose selector polish
+ * - 신청/반납 완료 화면의 요약 박스를 중앙 정렬 카드형으로 정리합니다.
+ * - 영수증 확인 팝업에서 물품구매/식사다과 복수 목적도 직접 선택할 수 있게 합니다.
+ * ======================================================= */
+body.confirmation-result-mode #screen-confirmation #confirmation-details {
+  text-align: center !important;
+  padding: 24px 24px !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  min-height: auto !important;
+  padding: 12px 0 !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-label,
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-content {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-label {
+  font-size: .88rem !important;
+  letter-spacing: -.02em;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-content {
+  font-size: 1.12rem !important;
+  line-height: 1.35 !important;
+  word-break: keep-all;
+}
+
+.receipt-ocr-swal .use-type-btn[data-purpose-tone="purchase"].active {
+  color: #b45309 !important;
+  background: rgba(255,251,235,.92) !important;
+  border-color: rgba(245,158,11,.46) !important;
+}
+
+.receipt-ocr-swal .use-type-btn[data-purpose-tone="dining"].active {
+  color: #0369a1 !important;
+  background: rgba(236,254,255,.88) !important;
+  border-color: rgba(6,182,212,.44) !important;
+}
+
+
+
+/* =========================================================
+ * v12.4 purpose button redesign / filled selectable layout
+ * - 영수증 팝업 사용 구분은 1개/2개/3개 개수에 따라 같은 폭으로 꽉 채웁니다.
+ * - 선택된 목적은 진한 채움 버튼으로 표시해 선택 상태가 분명하게 보이게 합니다.
+ * - 반납 화면 카드 아래 목적 배지도 같은 진한 칩 톤으로 맞춥니다.
+ * ======================================================= */
+body.ws-app .return-purpose-emoji,
+body.ws-app .use-type-emoji,
+.receipt-ocr-swal .use-type-btn i {
+  display: none !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge,
+#screen-return-details .card-header-badge.card-header-badge--flush {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  max-width: min(92%, 360px) !important;
+  min-height: 30px !important;
+  padding: 7px 18px !important;
+  border-radius: 999px !important;
+  font-size: .82rem !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.035em !important;
+  gap: 0 !important;
+  margin: 7px auto 0 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.38) !important;
+  box-shadow: 0 10px 22px rgba(15,23,42,.12), inset 1px 1px 0 rgba(255,255,255,.28) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-purchase,
+#screen-return-details .card-header-badge.badge-purpose-purchase {
+  background: linear-gradient(135deg,#f59e0b 0%,#f97316 100%) !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-dining,
+#screen-return-details .card-header-badge.badge-purpose-dining {
+  background: linear-gradient(135deg,#06b6d4 0%,#2563eb 100%) !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-meal,
+#screen-return-details .card-header-badge.badge-purpose-meal {
+  background: linear-gradient(135deg,#10b981 0%,#059669 100%) !important;
+}
+
+body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge.badge-purpose-default,
+#screen-return-details .card-header-badge.badge-purpose-default {
+  background: linear-gradient(135deg,#3b82f6 0%,#1d4ed8 100%) !important;
+}
+
+.receipt-ocr-swal .receipt-use-type-box {
+  padding: 10px !important;
+  border-radius: 22px !important;
+  background: linear-gradient(180deg,#fbfdff 0%,#f1f7ff 100%) !important;
+  border: 1px solid rgba(148,163,184,.20) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.84) !important;
+}
+
+.receipt-ocr-swal .receipt-use-type-title {
+  margin-bottom: 8px !important;
+  font-size: .88rem !important;
+  font-weight: 950 !important;
+}
+
+.receipt-ocr-swal .receipt-use-type-segment,
+.receipt-ocr-swal .receipt-use-type-segment:has(> .use-type-btn:only-child) {
+  display: grid !important;
+  grid-template-columns: repeat(var(--ws-purpose-count, 1), minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  gap: 8px !important;
+  width: 100% !important;
+  flex-wrap: nowrap !important;
+}
+
+.receipt-ocr-swal .use-type-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  flex: 1 1 0 !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 8px !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 0 !important;
+  font-size: .94rem !important;
+  line-height: 1.1 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.035em !important;
+  color: #64748b !important;
+  background: #ffffff !important;
+  border: 1.5px solid rgba(148,163,184,.28) !important;
+  box-shadow: 0 6px 12px rgba(15,23,42,.035), inset 1px 1px 0 rgba(255,255,255,.72) !important;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease, box-shadow .12s ease;
+}
+
+.receipt-ocr-swal .use-type-btn:active {
+  transform: scale(.985);
+}
+
+.receipt-ocr-swal .use-type-btn:not(.active)[data-purpose-tone="purchase"] {
+  color: #b45309 !important;
+  background: rgba(255,251,235,.92) !important;
+  border-color: rgba(245,158,11,.34) !important;
+}
+
+.receipt-ocr-swal .use-type-btn:not(.active)[data-purpose-tone="dining"] {
+  color: #0369a1 !important;
+  background: rgba(236,254,255,.88) !important;
+  border-color: rgba(6,182,212,.32) !important;
+}
+
+.receipt-ocr-swal .use-type-btn:not(.active)[data-purpose-tone="meal"],
+.receipt-ocr-swal .use-type-btn:not(.active)[data-use-type="meal"] {
+  color: #047857 !important;
+  background: rgba(240,253,244,.88) !important;
+  border-color: rgba(16,185,129,.34) !important;
+}
+
+.receipt-ocr-swal .use-type-btn.active[data-purpose-tone="purchase"],
+.receipt-ocr-swal.receipt-tone-purchase .use-type-btn.active[data-use-type="general"] {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: linear-gradient(135deg,#f59e0b 0%,#f97316 100%) !important;
+  border-color: rgba(255,255,255,.38) !important;
+  box-shadow: 0 12px 22px rgba(249,115,22,.22), inset 1px 1px 0 rgba(255,255,255,.32) !important;
+}
+
+.receipt-ocr-swal .use-type-btn.active[data-purpose-tone="dining"],
+.receipt-ocr-swal.receipt-tone-dining .use-type-btn.active[data-use-type="general"] {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: linear-gradient(135deg,#06b6d4 0%,#2563eb 100%) !important;
+  border-color: rgba(255,255,255,.38) !important;
+  box-shadow: 0 12px 22px rgba(37,99,235,.20), inset 1px 1px 0 rgba(255,255,255,.32) !important;
+}
+
+.receipt-ocr-swal .use-type-btn.active[data-purpose-tone="meal"],
+.receipt-ocr-swal .use-type-btn.active[data-use-type="meal"],
+.receipt-ocr-swal.receipt-tone-meal .use-type-btn.active[data-use-type="meal"] {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: linear-gradient(135deg,#10b981 0%,#059669 100%) !important;
+  border-color: rgba(255,255,255,.38) !important;
+  box-shadow: 0 12px 22px rgba(5,150,105,.22), inset 1px 1px 0 rgba(255,255,255,.32) !important;
+}
+
+@media (max-width: 420px) {
+  .receipt-ocr-swal .use-type-btn {
+    min-height: 46px !important;
+    height: 46px !important;
+    font-size: .88rem !important;
+    padding: 0 6px !important;
+  }
+  .receipt-ocr-swal .receipt-use-type-segment {
+    gap: 6px !important;
+  }
 }
 
 </style>
@@ -11310,6 +11870,218 @@ body[data-current-screen="returnDetails"] #screen-return-details .submit-guide .
 }
 </style>
 
+
+<style id="ws-v12-5-confirmation-true-center">
+/* =========================================================
+ * v12.5 confirmation true center patch
+ * 완료 화면이 화면 위쪽에 붙지 않고 실제 뷰포트 중앙에 오도록
+ * 뒤쪽 전역 스크롤/높이 규칙보다 강하게 재정의합니다.
+ * ======================================================= */
+body.confirmation-result-mode,
+body[data-current-screen="confirmation"].confirmation-result-mode {
+  min-height: 100dvh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+body.confirmation-result-mode .content-wrapper,
+body[data-current-screen="confirmation"].confirmation-result-mode .content-wrapper {
+  width: 100% !important;
+  min-height: 100dvh !important;
+  height: 100dvh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 18px !important;
+  overflow: hidden !important;
+}
+
+body.confirmation-result-mode .container,
+body[data-current-screen="confirmation"].confirmation-result-mode .container {
+  width: 100% !important;
+  min-height: 100dvh !important;
+  height: 100dvh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+body.confirmation-result-mode #screen-confirmation.screen,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation.screen {
+  margin: 0 auto !important;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+body.confirmation-result-mode #screen-confirmation .confirmation-container,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .confirmation-container {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+@media (max-height: 620px) {
+  body.confirmation-result-mode,
+  body[data-current-screen="confirmation"].confirmation-result-mode {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow-y: auto !important;
+  }
+
+  body.confirmation-result-mode .content-wrapper,
+  body.confirmation-result-mode .container,
+  body[data-current-screen="confirmation"].confirmation-result-mode .content-wrapper,
+  body[data-current-screen="confirmation"].confirmation-result-mode .container {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow: visible !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+  }
+}
+</style>
+
+
+<style id="ws-v12-6-confirmation-compact-center">
+/* =========================================================
+ * v12.6 confirmation compact center patch
+ * 완료 화면의 흰 패널이 화면 전체를 크게 차지하지 않도록 줄이고,
+ * 실제 시각 중심에 오도록 카드 자체 크기를 compact하게 재정의합니다.
+ * ======================================================= */
+body.confirmation-result-mode .content-wrapper,
+body[data-current-screen="confirmation"].confirmation-result-mode .content-wrapper {
+  padding: 18px !important;
+}
+
+body.confirmation-result-mode .container,
+body[data-current-screen="confirmation"].confirmation-result-mode .container {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+body.confirmation-result-mode #screen-confirmation.screen,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation.screen {
+  width: min(92vw, 520px) !important;
+  max-width: 520px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  padding: 28px 22px 24px !important;
+  border-radius: 34px !important;
+  background: rgba(255,255,255,0.97) !important;
+  border: 1px solid rgba(226,236,249,0.95) !important;
+  box-shadow: 0 26px 70px rgba(37, 70, 120, 0.12), 0 1px 0 rgba(255,255,255,0.9) inset !important;
+  overflow: visible !important;
+}
+
+body.confirmation-result-mode #screen-confirmation .confirmation-container,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .confirmation-container {
+  width: 100% !important;
+  max-width: 420px !important;
+  padding: 0 !important;
+  gap: 14px !important;
+}
+
+body.confirmation-result-mode #screen-confirmation .confirmation-icon-wrapper,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .confirmation-icon-wrapper {
+  width: 78px !important;
+  height: 78px !important;
+  margin: 0 auto 2px !important;
+  box-shadow: 0 14px 36px rgba(37,99,201,0.13), 0 0 0 8px rgba(124,184,255,0.08) !important;
+}
+
+body.confirmation-result-mode #screen-confirmation .animated-check,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .animated-check {
+  width: 52px !important;
+  height: 52px !important;
+}
+
+body.confirmation-result-mode #screen-confirmation .confirmation-title,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .confirmation-title {
+  font-size: 1.82rem !important;
+  line-height: 1.12 !important;
+  margin: 2px 0 4px !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation #confirmation-details {
+  width: min(100%, 380px) !important;
+  margin: 2px auto 0 !important;
+  padding: 18px 22px !important;
+  border-radius: 24px !important;
+  box-shadow: 0 18px 42px rgba(31,65,117,0.10), 0 1px 0 rgba(255,255,255,0.9) inset !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation #confirmation-details .detail-row {
+  padding: 9px 0 !important;
+  gap: 4px !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-label,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-label {
+  font-size: .82rem !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-content,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation #confirmation-details .detail-row-content {
+  font-size: 1.05rem !important;
+}
+
+body.confirmation-result-mode #screen-confirmation #confirmation-countdown,
+body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation #confirmation-countdown {
+  margin-top: 6px !important;
+}
+
+body.confirmation-result-mode .confirm-circular-timer,
+body.confirmation-result-mode .confirm-circular-timer svg,
+body[data-current-screen="confirmation"].confirmation-result-mode .confirm-circular-timer,
+body[data-current-screen="confirmation"].confirmation-result-mode .confirm-circular-timer svg {
+  width: 56px !important;
+  height: 56px !important;
+}
+
+body.confirmation-result-mode .confirm-timer-text,
+body[data-current-screen="confirmation"].confirmation-result-mode .confirm-timer-text {
+  font-size: 1.02rem !important;
+}
+
+body.confirmation-result-mode .confirm-timer-caption,
+body[data-current-screen="confirmation"].confirmation-result-mode .confirm-timer-caption {
+  font-size: .86rem !important;
+}
+
+@media (max-height: 680px) {
+  body.confirmation-result-mode #screen-confirmation.screen,
+  body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation.screen {
+    padding: 22px 18px 20px !important;
+    border-radius: 28px !important;
+  }
+
+  body.confirmation-result-mode #screen-confirmation .confirmation-container,
+  body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .confirmation-container {
+    gap: 10px !important;
+  }
+
+  body.confirmation-result-mode #screen-confirmation .confirmation-icon-wrapper,
+  body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .confirmation-icon-wrapper {
+    width: 68px !important;
+    height: 68px !important;
+  }
+
+  body.confirmation-result-mode #screen-confirmation .confirmation-title,
+  body[data-current-screen="confirmation"].confirmation-result-mode #screen-confirmation .confirmation-title {
+    font-size: 1.62rem !important;
+  }
+}
+</style>
+
 </head>
 <body class="variant-lockscreen ws-app" data-current-screen="welcome" data-ws-foundation="2026-06-15" data-ws-page="card-system">
 <!-- ===== HTML: APP SHELL =====
@@ -11346,21 +12118,22 @@ body[data-current-screen="returnDetails"] #screen-return-details .submit-guide .
 
 <div id="welcome-screen" class="hidden" data-ws-region="welcome-loader">
     <div class="ws-pulse-loader-shell">
-        <div class="ws-pulse-loader-stage" aria-hidden="true">
-            <div class="ws-pulse-ring ws-pulse-ring-1"></div>
-            <div class="ws-pulse-ring ws-pulse-ring-2"></div>
-            <div class="ws-pulse-ring ws-pulse-ring-3"></div>
-            <div class="ws-pulse-loader-icon">
-                <i class="fa-solid fa-credit-card"></i>
+        <div class="ws-logo-ring-loader-stage" aria-label="데이터 로딩 진행률">
+            <svg class="ws-logo-ring-svg" viewBox="0 0 128 128" aria-hidden="true">
+                <circle class="ws-logo-ring-track" cx="64" cy="64" r="56"></circle>
+                <circle class="ws-logo-ring-fill" id="loader-ring-fill" cx="64" cy="64" r="56"></circle>
+            </svg>
+            <div class="ws-logo-ring-mark-wrap">
+                <img src="./assets/icon-192.png" alt="우성고 마크" class="school-mark ws-logo-ring-mark">
             </div>
         </div>
-        <div class="ws-pulse-loader-title" id="loader-title-main">시스템 연결 중</div>
-        <div class="ws-pulse-loader-subtitle" id="loader-title-sub">카드 데이터와 화면 정보를 불러오고 있어요</div>
-        <div class="ws-pulse-progress-area">
+        <div class="ws-pulse-loader-title" id="loader-title-main">데이터 불러오는 중</div>
+        <div class="ws-pulse-loader-subtitle ws-logo-ring-subtitle" id="loader-title-sub" aria-hidden="true"></div>
+        <div class="ws-logo-ring-percent loader-progress-percent" id="loader-percent">0%</div>
+        <div class="ws-pulse-progress-area ws-logo-ring-fallback-progress" aria-hidden="true">
             <div class="ws-pulse-progress-shell">
                 <div class="loader-progress-fill" id="loader-bar"></div>
             </div>
-            <div class="ws-pulse-loader-percent" id="loader-percent">0%</div>
         </div>
         <div class="ws-pulse-mini-steps" aria-hidden="true">
             <div class="ws-pulse-mini-step active" id="ws-mini-loader-step-1">
@@ -11740,6 +12513,18 @@ const CardApp = (function() {
         allUsersData: null,
 
         /* =========================================================
+        @SUBSECTION: JS_STATE_SAVED_CART_PREFETCH_V12
+        잠금화면 클릭 직후/초기 로딩 직후 저장 영수증 장바구니를 백그라운드로 미리 불러옵니다.
+        - 2단계 로딩은 카드/사용자 중심으로 빠르게 유지
+        - 반납 화면은 savedCart 단건 조회로 막지 않고, 미리 도착한 값을 즉시 표시
+        ========================================================= */
+        savedCartPrefetchPromise: null,
+        savedCartPrefetchStarted: false,
+        savedCartPrefetchDone: false,
+        savedCartPrefetchCardIds: [],
+        savedCartSingleFetches: {},
+
+        /* =========================================================
         @SUBSECTION: JS_STATE_LOGIN
         로그인 키패드 / 추가 사용자 / 입력 상태
         ========================================================= */
@@ -11799,6 +12584,158 @@ const CardApp = (function() {
     자주 쓰는 DOM 요소 캐시. init 단계에서 채워집니다.
     ========================================================= */
     let elements = {};
+
+    /* =========================================================
+    @SECTION: JS_SAVED_CART_PREFETCH_V12
+    잠금화면 클릭 후 초기 데이터가 도착하는 즉시 savedCart를 백그라운드 프리로드합니다.
+    핵심 목표:
+    - 2단계 로딩은 v8처럼 가볍게 유지
+    - 사용자가 내선번호를 입력하는 동안 저장 영수증을 미리 배달
+    - 반납 화면에서는 "저장된 영수증을 확인하고 있어요"로 화면을 막지 않음
+    ========================================================= */
+    const SavedCartPrefetch = {
+        normalizeInitialPayload(data) {
+            try {
+                const carts = data?.savedCarts || {};
+                if (Array.isArray(data?.allCards)) {
+                    data.allCards.forEach(c => {
+                        if (!c) return;
+                        c.savedCart = Utils.sanitizeReceiptCart(c.savedCart || carts[c.id] || []);
+                        c.savedCartPrefetched = Array.isArray(c.savedCart) && c.savedCart.length > 0;
+                    });
+                }
+            } catch (cartError) {
+                console.warn('[V12 PREFETCH] initial savedCart normalize failed', cartError);
+                if (Array.isArray(data?.allCards)) {
+                    data.allCards.forEach(c => {
+                        if (c && !Array.isArray(c.savedCart)) c.savedCart = [];
+                    });
+                }
+            }
+            return data;
+        },
+
+        normalizeStatus(value) {
+            const v = String(value || '').replace(/\s+/g, '').trim();
+            if (v === '대여가능' || v === '가능') return '사용가능';
+            if (v === '대여중') return '사용중';
+            return v;
+        },
+
+        getCandidateCardIds(cards) {
+            if (!Array.isArray(cards)) return [];
+            const busy = ['사용중', '반납처리중', '반납오류', '신청중'];
+            return Array.from(new Set(cards
+                .filter(c => c && c.id && busy.includes(this.normalizeStatus(c.status)))
+                .map(c => String(c.id || '').trim())
+                .filter(Boolean)));
+        },
+
+        applyCarts(carts, ids) {
+            const idList = Array.from(new Set((ids || Object.keys(carts || {}))
+                .map(id => String(id || '').trim())
+                .filter(Boolean)));
+            if (!Array.isArray(state.allCardData)) return;
+
+            idList.forEach(id => {
+                const loadedCart = Utils.sanitizeReceiptCart((carts && carts[id]) || []);
+                const target = state.allCardData.find(c => c && c.id === id);
+                if (target) {
+                    target.savedCart = loadedCart;
+                    target.savedCartPrefetched = true;
+                }
+                if (state.currentReturnCard && state.currentReturnCard.id === id) {
+                    state.currentReturnCard.savedCart = loadedCart;
+                    state.currentReturnCard.savedCartPrefetched = true;
+                }
+            });
+        },
+
+        start(reason = 'unlock') {
+            if (state.savedCartPrefetchPromise) return state.savedCartPrefetchPromise;
+            const ids = this.getCandidateCardIds(state.allCardData);
+            state.savedCartPrefetchStarted = true;
+            state.savedCartPrefetchDone = false;
+            state.savedCartPrefetchCardIds = ids;
+
+            if (!ids.length) {
+                state.savedCartPrefetchDone = true;
+                state.savedCartPrefetchPromise = Promise.resolve({});
+                return state.savedCartPrefetchPromise;
+            }
+
+            console.log('[V12 PREFETCH] savedCart prefetch start', { reason, ids });
+            state.savedCartPrefetchPromise = Api.call('getSavedCarts', ids)
+                .then(carts => {
+                    this.applyCarts(carts || {}, ids);
+                    state.savedCartPrefetchDone = true;
+                    console.log('[V12 PREFETCH] savedCart prefetch done', { ids });
+                    return carts || {};
+                })
+                .catch(e => {
+                    state.savedCartPrefetchDone = true;
+                    console.warn('[V12 PREFETCH] savedCart prefetch failed', e);
+                    return {};
+                });
+            return state.savedCartPrefetchPromise;
+        },
+
+        ensureForCard(cardId) {
+            const id = String(cardId || '').trim();
+            if (!id) return Promise.resolve({});
+
+            const target = Array.isArray(state.allCardData) ? state.allCardData.find(c => c && c.id === id) : null;
+            if (target && target.savedCartPrefetched) return Promise.resolve({ [id]: target.savedCart || [] });
+            if (state.savedCartPrefetchPromise && state.savedCartPrefetchCardIds && state.savedCartPrefetchCardIds.includes(id)) {
+                return state.savedCartPrefetchPromise;
+            }
+
+            state.savedCartSingleFetches = state.savedCartSingleFetches || {};
+            if (state.savedCartSingleFetches[id]) return state.savedCartSingleFetches[id];
+
+            console.log('[V12 PREFETCH] savedCart single background fetch start', id);
+            state.savedCartSingleFetches[id] = Api.call('getSavedCarts', [id])
+                .then(carts => {
+                    this.applyCarts(carts || {}, [id]);
+                    console.log('[V12 PREFETCH] savedCart single background fetch done', id);
+                    return carts || {};
+                })
+                .catch(e => {
+                    console.warn('[V12 PREFETCH] savedCart single background fetch failed', id, e);
+                    return {};
+                })
+                .finally(() => {
+                    try { delete state.savedCartSingleFetches[id]; } catch(e) {}
+                });
+            return state.savedCartSingleFetches[id];
+        },
+
+        refreshReturnScreenAfterBackgroundLoad(cardId, token) {
+            this.ensureForCard(cardId).then(() => {
+                if (!state.currentReturnCard || state.currentReturnCard.id !== cardId) return;
+                if (token && state.receiptReloadToken !== token) return;
+
+                const target = Array.isArray(state.allCardData) ? state.allCardData.find(c => c && c.id === cardId) : null;
+                const loadedCart = Utils.sanitizeReceiptCart((target && target.savedCart) || state.currentReturnCard.savedCart || []);
+
+                // 사용자가 이미 새 영수증을 추가/수정했다면 백그라운드 결과로 덮어쓰지 않습니다.
+                if (Array.isArray(state.receiptCart) && state.receiptCart.length > 0) return;
+                if (!loadedCart.length) return;
+
+                state.currentReturnCard.savedCart = loadedCart;
+                state.receiptCart = loadedCart;
+                CardLogic.requestRenderReceiptCart();
+            }).catch(console.warn);
+        },
+
+        reset() {
+            state.savedCartPrefetchPromise = null;
+            state.savedCartPrefetchStarted = false;
+            state.savedCartPrefetchDone = false;
+            state.savedCartPrefetchCardIds = [];
+            state.savedCartSingleFetches = {};
+        }
+    };
     /* =========================================================
     @SUBSECTION: JS_STATE_ADMIN_PERSISTENCE
     행정실 태블릿 운영용 관리자 모드 영구 유지.
@@ -12271,42 +13208,45 @@ const CardApp = (function() {
         초기 연결/보안 확인 로더 진행 애니메이션
         ========================================================= */
         async runRandomLoader(chk) {
-            const step1Text = '시스템 연결 중';
-            const step2Text = '보안 확인 중';
-            const doneText = '시스템 접속 완료';
+            const loadingText = '데이터 불러오는 중';
+            const loadingSubText = '';
+            const doneText = '완료';
+            const doneSubText = '';
 
             const titleMain = document.getElementById('loader-title-main');
             const titleSub = document.getElementById('loader-title-sub');
             const percentEl = document.getElementById('loader-percent');
             const step1El = document.getElementById('loader-step-1');
             const step2El = document.getElementById('loader-step-2');
+            const miniSteps = document.querySelector('.ws-pulse-mini-steps');
+            const ringFill = document.getElementById('loader-ring-fill');
+            const ringCircumference = 351.858;
 
             const wait = (ms) => new Promise(r => setTimeout(r, ms));
+            const startedAt = Date.now();
 
-            let currentStep = 1;
+            // v12.10: 예상 로딩 시간 기반으로 0~98%를 꾸준히 채우는 방식입니다.
+            // 데이터가 빠르게 도착해도 100%로 튀지 않고, 일정한 속도로 자연스럽게 마무리합니다.
+            // 데이터가 늦어지는 경우에는 98% 근처에서 아주 은은하게 대기한 뒤 실제 완료 시 100%가 됩니다.
+            const EXPECTED_MS = 3000;
+            const MIN_VISIBLE_MS = 1350;
+            const HOLD_LIMIT = 98;
             let currentPercent = 0;
 
-            const setStep = (step) => {
-                currentStep = step;
-                if (step1El && step2El) {
-                    step1El.classList.remove('active', 'done');
-                    step2El.classList.remove('active', 'done');
+            if (miniSteps) miniSteps.style.display = 'none';
+            if (step1El && step2El) {
+                step1El.classList.remove('active', 'done');
+                step2El.classList.remove('active', 'done');
+            }
 
-                    if (step === 1) {
-                        step1El.classList.add('active');
-                    } else if (step === 2) {
-                        step1El.classList.add('done');
-                        step2El.classList.add('active');
-                    } else {
-                        step1El.classList.add('done');
-                        step2El.classList.add('done');
-                    }
-                }
-
-                const toneClass = step === 3 ? 'loader-tone-done' : `loader-tone-step-${step || 1}`;
+            const setTone = (done) => {
+                const toneClass = done ? 'loader-tone-done' : 'loader-tone-step-1';
                 if (elements.loaderBar) {
                     elements.loaderBar.classList.remove('loader-tone-step-1', 'loader-tone-step-2', 'loader-tone-done');
                     elements.loaderBar.classList.add(toneClass);
+                }
+                if (ringFill) {
+                    ringFill.classList.toggle('is-done', !!done);
                 }
                 if (percentEl) {
                     percentEl.classList.remove('loader-tone-step-1', 'loader-tone-step-2', 'loader-tone-done');
@@ -12314,63 +13254,83 @@ const CardApp = (function() {
                 }
             };
 
-            const updateUI = (percent, text) => {
+            const updateUI = (percent, done) => {
                 const safePercent = Math.max(0, Math.min(100, percent));
                 if (elements.loaderBar) elements.loaderBar.style.width = `${safePercent}%`;
-                if (percentEl) percentEl.textContent = `${Math.round(safePercent)}%`;
-
-                if (currentStep === 1) {
-                    if (titleMain) titleMain.textContent = '시스템 연결 중';
-                    if (titleSub) titleSub.textContent = '카드 데이터와 화면 정보를 불러오고 있어요';
-                } else if (currentStep === 2) {
-                    if (titleMain) titleMain.textContent = '보안 확인 중';
-                    if (titleSub) titleSub.textContent = '사용자 정보를 안전하게 확인하고 있어요';
-                } else {
-                    if (titleMain) titleMain.textContent = '시스템 접속 완료';
-                    if (titleSub) titleSub.textContent = '로그인 화면으로 이동합니다';
+                if (ringFill) {
+                    const offset = ringCircumference - (ringCircumference * safePercent / 100);
+                    ringFill.style.strokeDasharray = String(ringCircumference);
+                    ringFill.style.strokeDashoffset = String(offset);
+                    ringFill.classList.toggle('is-done', !!done);
                 }
-
+                if (percentEl) percentEl.textContent = `${Math.round(safePercent)}%`;
+                if (titleMain) titleMain.textContent = done ? doneText : loadingText;
+                if (titleSub) titleSub.textContent = done ? doneSubText : loadingSubText;
             };
 
-            if (elements.loaderBar) elements.loaderBar.classList.add('loader-motion-live');
+            if (elements.loaderBar) {
+                elements.loaderBar.classList.remove('loader-motion-done');
+                elements.loaderBar.classList.add('loader-motion-live');
+            }
             if (percentEl) percentEl.classList.add('loader-gradient-text');
 
-            setStep(1);
-            updateUI(0, step1Text);
+            setTone(false);
+            updateUI(0, false);
 
+            // 0~98%: 예상 시간 안에서 거의 일정하게 차오르되,
+            // 아주 약한 ease-out만 적용해서 기계적으로 보이지 않게 합니다.
             while (true) {
-                if (chk && chk()) {
+                const elapsed = Date.now() - startedAt;
+                const ready = !!(chk && chk());
+                const ratio = Math.min(1, elapsed / EXPECTED_MS);
+                const smoothRatio = 1 - Math.pow(1 - ratio, 1.18);
+                const timedTarget = Math.min(HOLD_LIMIT, HOLD_LIMIT * smoothRatio);
+
+                // 프레임당 이동폭을 부드럽게 제한해서 갑작스러운 점프를 방지합니다.
+                const delta = Math.max(0.45, Math.min(2.2, (timedTarget - currentPercent) * 0.34));
+                currentPercent = Math.min(timedTarget, currentPercent + delta);
+                updateUI(currentPercent, false);
+
+                // 데이터가 준비됐고, 최소 표시 시간도 지났으며, 링이 충분히 찼으면 마무리합니다.
+                // 이렇게 해야 75%에서 100%로 후다닥 넘어가는 느낌을 줄일 수 있습니다.
+                if (ready && elapsed >= MIN_VISIBLE_MS && currentPercent >= 94) {
                     break;
                 }
 
-                if (currentPercent < 48) {
-                    setStep(1);
-                    currentPercent = Math.min(52, currentPercent + 6.0);
-                    updateUI(currentPercent, step1Text);
-                    await wait(80);
-                    continue;
+                // 데이터는 준비됐지만 아직 94%에 못 갔으면 조금 더 빠르게, 그래도 자연스럽게 따라잡습니다.
+                if (ready && elapsed >= MIN_VISIBLE_MS && currentPercent < 94) {
+                    currentPercent = Math.min(94, currentPercent + 2.4);
+                    updateUI(currentPercent, false);
                 }
 
-                setStep(2);
-                if (currentPercent < 92) {
-                    currentPercent = Math.min(92, currentPercent + 4.2);
-                    updateUI(currentPercent, step2Text);
-                    await wait(80);
-                } else {
-                    currentPercent = Math.min(97, currentPercent + 1.0);
-                    updateUI(currentPercent, step2Text);
-                    await wait(120);
+                // 서버가 예상보다 늦으면 98% 근처에서만 조용히 기다립니다. 100%는 실제 완료 후에만 표시합니다.
+                if (!ready && elapsed > EXPECTED_MS) {
+                    currentPercent = Math.min(HOLD_LIMIT, currentPercent + 0.12);
+                    updateUI(currentPercent, false);
                 }
+
+                await wait(80);
             }
 
-            setStep(3);
+            // 실제 필수 데이터가 끝난 뒤에만 100%로 부드럽게 마무리합니다.
+            const finishStart = currentPercent;
+            const finishMs = 360;
+            const finishStartedAt = Date.now();
+            while (Date.now() - finishStartedAt < finishMs) {
+                const t = Math.min(1, (Date.now() - finishStartedAt) / finishMs);
+                const eased = 1 - Math.pow(1 - t, 2.4);
+                updateUI(finishStart + (100 - finishStart) * eased, false);
+                await wait(32);
+            }
+
+            setTone(true);
             if (elements.loaderBar) {
                 elements.loaderBar.classList.remove('loader-motion-live');
                 elements.loaderBar.classList.add('loader-motion-done');
             }
-            updateUI(100, doneText);
-            // 완료 상태 인지를 위해 약 150ms 동안만 짧게 보여준 후 내선번호 화면으로 전환
-            await wait(150);
+
+            updateUI(100, true);
+            await wait(340);
         },
         /* =========================================================
         @SUBSECTION: JS_UI_MANAGER_CONFIRMATION_SCREEN
@@ -12776,14 +13736,10 @@ const CardApp = (function() {
                 /* @SERVER_API_GROUP_INIT: 앱 최초 데이터 로딩 */
                 await Api.call('getInitialAppData')
                     .then(d => {
-                        const bundledCarts = d?.savedCarts || {};
+                        SavedCartPrefetch.normalizeInitialPayload(d);
                         state.allCardData = d.allCards;
                         state.allUsersData = d.allUsers;
-                        if (Array.isArray(state.allCardData)) {
-                            state.allCardData.forEach(c => {
-                                if (c) c.savedCart = Utils.sanitizeReceiptCart(c.savedCart || bundledCarts[c.id] || []);
-                            });
-                        }
+                        SavedCartPrefetch.start('login-fallback');
                     })
                     .catch(UIManager.handleServerError);
                 UIManager.setLoading(false);
@@ -13908,17 +14864,20 @@ const CardApp = (function() {
                     </div>` : ''}
                 </div>`;
             
-            // 저장 장바구니는 2단계 로딩에서 제외하고, 반납 화면 진입 시 해당 카드만 조회합니다.
-            state.receiptCartLoading = true;
-            state.receiptCart = [];
+            // v12: 반납 화면에서는 서버 조회로 화면을 막지 않습니다.
+            // 잠금화면 클릭 직후 시작한 백그라운드 프리로드 결과(card.savedCart)를 즉시 사용합니다.
+            state.receiptCartLoading = false;
+            const initialCart = Utils.sanitizeReceiptCart(card.savedCart || []);
+            card.savedCart = initialCart;
+            state.receiptCart = initialCart;
             
-            const receiptReloadToken = Utils.createClientRequestId('receipt_reload');
+            const receiptReloadToken = Utils.createClientRequestId('receipt_prefetch_view');
             state.receiptReloadToken = receiptReloadToken;
             const add = document.createElement('button');
             add.id='add-receipt-btn';
             add.className='simple-btn accent receipt-dropzone-btn';
             add.innerHTML='<span class="receipt-dropzone-main">+ 영수증 첨부</span><span class="receipt-dropzone-sub">#클릭 또는 드래그</span>';
-            add.disabled = true;
+            add.disabled = false;
             add.onclick=()=>CardLogic.triggerImageSelection(-1);
             ['dragenter','dragover'].forEach(evtName => {
                 add.addEventListener(evtName, (ev) => {
@@ -13986,25 +14945,8 @@ const CardApp = (function() {
             }
             CardLogic.requestRenderReceiptCart();
             UIManager.showScreen('returnDetails');
-            try {
-                const carts = await Api.call('getSavedCarts', [card.id]);
-                if (state.receiptReloadToken !== receiptReloadToken) return;
-                const loadedCart = Utils.sanitizeReceiptCart((carts && carts[card.id]) || []);
-                card.savedCart = loadedCart;
-                const targetCard = Array.isArray(state.allCardData) ? state.allCardData.find(c => c && c.id === card.id) : null;
-                if (targetCard) targetCard.savedCart = loadedCart;
-                state.receiptCart = loadedCart;
-            } catch (e) {
-                console.error('[RETURN] savedCart load failed', e);
-                if (state.receiptReloadToken === receiptReloadToken) state.receiptCart = [];
-            } finally {
-                if (state.receiptReloadToken === receiptReloadToken) {
-                    state.receiptCartLoading = false;
-                    if (isOwner && add) add.disabled = false;
-                    CardLogic.requestRenderReceiptCart();
-                }
-            }
-            // 반납 직전 단건 재조회 제거: 2단계 로딩에서 가져온 savedCart를 그대로 사용합니다.
+            // v12: 아직 프리로드가 끝나지 않은 예외 상황에서도 화면은 먼저 열고, 도착하면 빈 장바구니일 때만 조용히 갱신합니다.
+            SavedCartPrefetch.refreshReturnScreenAfterBackgroundLoad(card.id, receiptReloadToken);
         },
         /* =========================================================
         @SUBSECTION: JS_RECEIPT_CART_RENDER_STATE
@@ -14029,17 +14971,15 @@ const CardApp = (function() {
             
             let tot = 0;
             if (state.receiptCartLoading) {
-                document.getElementById('receipt-total-display').textContent = '0원';
-                c.innerHTML = `<div class="cart-placeholder cart-loading-placeholder"><i class="fa-solid fa-spinner fa-spin"></i><span>저장된 영수증을 확인하고 있어요</span></div>`;
-                c.classList.add('empty-cart');
-            } else {
-                c.innerHTML = state.receiptCart.length ? state.receiptCart.map((it, i) => {
-                    tot += Number(it.amount||0);
-                    return CardLogic.renderReceiptCartItemHTML(it, i, isMeal);
-                }).join('') : `<div class="cart-placeholder"><i class="fa-regular fa-file-lines"></i><span>추가된 영수증이 없습니다.</span></div>`;
-                document.getElementById('receipt-total-display').textContent = `${Utils.nfKR.format(tot)}원`;
-                c.classList.toggle('empty-cart', state.receiptCart.length===0);
+                // v12: 반납 화면을 저장 영수증 조회 로딩으로 막지 않습니다.
+                state.receiptCartLoading = false;
             }
+            c.innerHTML = state.receiptCart.length ? state.receiptCart.map((it, i) => {
+                tot += Number(it.amount||0);
+                return CardLogic.renderReceiptCartItemHTML(it, i, isMeal);
+            }).join('') : `<div class="cart-placeholder"><i class="fa-regular fa-file-lines"></i><span>추가된 영수증이 없습니다.</span></div>`;
+            document.getElementById('receipt-total-display').textContent = `${Utils.nfKR.format(tot)}원`;
+            c.classList.toggle('empty-cart', state.receiptCart.length===0);
             
             const guideEl = document.getElementById('submit-guide');
             const blockingIssues = CardLogic.getBlockingReceiptIssues();
@@ -14699,28 +15639,32 @@ const CardApp = (function() {
             
             const getReceiptPopupToneFromText = (storeText = '', detailsText = '') =>
                 CardLogic.getReceiptPopupToneFromPurposeText(storeText, detailsText, receiptPurposeList);
-            const getReceiptPopupTone = () => isMeal ? 'meal' : getReceiptPopupToneFromText(storeValue, detailsValue);
+            const initialGeneralTone = (() => {
+                const existingPurpose = String(data.purpose || '').trim();
+                if (/식사|다과/.test(existingPurpose)) return 'dining';
+                if (/물품|구매/.test(existingPurpose)) return 'purchase';
+                return getReceiptPopupToneFromText(storeValue, detailsValue);
+            })();
+            const getReceiptPopupTone = () => isMeal ? 'meal' : initialGeneralTone;
             const receiptPopupTone = getReceiptPopupTone();
-            const receiptUseTypeHtml = receiptPurposeConfig.mealOnly ? `
+            const getGeneralPurposeTone = (purpose) => /식사|다과/.test(String(purpose || '')) ? 'dining' : 'purchase';
+            const getGeneralPurposeLabel = (purpose) => /식사|다과/.test(String(purpose || '')) ? '식사다과' : '물품구매';
+            const generalPurposeButtonsHtml = (receiptPurposeConfig.generalPurposes || []).map((purpose, idx) => {
+                const tone = getGeneralPurposeTone(purpose);
+                const label = getGeneralPurposeLabel(purpose);
+                const active = !isMeal && (initialGeneralTone === tone || (!(receiptPurposeConfig.generalPurposes || []).some(p => getGeneralPurposeTone(p) === initialGeneralTone) && idx === 0));
+                return `<button id="swal-use-${tone}" type="button" data-use-type="general" data-purpose-tone="${tone}" class="use-type-btn use-type-btn--${tone} ${active ? 'active' : ''}" aria-pressed="${active ? 'true' : 'false'}">${label}</button>`;
+            }).join('');
+            const purposeButtonCount = Math.max(1, (receiptPurposeConfig.mealOnly ? 0 : (receiptPurposeConfig.generalPurposes || []).length) + (receiptPurposeConfig.hasMeal ? 1 : 0));
+            const shouldShowUseType = receiptPurposeConfig.mealOnly || receiptPurposeConfig.allowMealToggle || (receiptPurposeConfig.generalPurposes || []).length > 1;
+            const receiptUseTypeHtml = shouldShowUseType ? `
                             <div class="receipt-use-type-box">
                                 <div class="receipt-use-type-title"><i class="fa-solid fa-tags"></i> 사용 구분</div>
-                                <div class="receipt-use-type-segment" role="group" aria-label="영수증 사용 구분">
-                                    <button id="swal-use-meal" type="button" data-use-type="meal" class="use-type-btn active" aria-pressed="true">
-                                        <span class="use-type-emoji" aria-hidden="true">🍚</span> 특근매식
-                                    </button>
+                                <div class="receipt-use-type-segment" style="--ws-purpose-count:${purposeButtonCount};" role="group" aria-label="영수증 사용 구분">
+                                    ${receiptPurposeConfig.mealOnly ? '' : generalPurposeButtonsHtml}
+                                    ${receiptPurposeConfig.hasMeal ? `<button id="swal-use-meal" type="button" data-use-type="meal" data-purpose-tone="meal" class="use-type-btn use-type-btn--meal ${isMeal ? 'active' : ''}" aria-pressed="${isMeal ? 'true' : 'false'}">특근매식</button>` : ''}
                                 </div>
-                            </div>` : (receiptPurposeConfig.allowMealToggle ? `
-                            <div class="receipt-use-type-box">
-                                <div class="receipt-use-type-title"><i class="fa-solid fa-tags"></i> 사용 구분</div>
-                                <div class="receipt-use-type-segment" role="group" aria-label="영수증 사용 구분">
-                                    <button id="swal-use-general" type="button" data-use-type="general" class="use-type-btn ${isMeal ? '' : 'active'}" aria-pressed="${isMeal ? 'false' : 'true'}">
-                                        <i class="fa-solid fa-receipt"></i> 일반카드
-                                    </button>
-                                    <button id="swal-use-meal" type="button" data-use-type="meal" class="use-type-btn ${isMeal ? 'active' : ''}" aria-pressed="${isMeal ? 'true' : 'false'}">
-                                        <span class="use-type-emoji" aria-hidden="true">🍚</span> 특근매식
-                                    </button>
-                                </div>
-                            </div>` : '');
+                            </div>` : '';
             const html = `
                 <div class="swal-custom-container receipt-ocr-layout">
 ${reviewProgressHtml}
@@ -14863,15 +15807,19 @@ ${receiptUseTypeHtml}
                         group.dataset.ocrStatus = 'manual';
                         updateReceiptFieldVisual(inputEl);
                     };
-                    const useGeneral = document.getElementById('swal-use-general');
+                    const useGeneralButtons = Array.from(document.querySelectorAll('.use-type-btn[data-use-type="general"]'));
                     const useMeal = document.getElementById('swal-use-meal');
                     const mealPanel = document.getElementById('swal-meal-panel');
                     const mealSummary = document.getElementById('swal-meal-summary');
                     const mealCountValue = CardLogic.getCurrentReturnMealHeadcount();
+                    let selectedGeneralTone = (() => {
+                        const activeGeneral = useGeneralButtons.find(btn => btn.getAttribute('aria-pressed') === 'true');
+                        return activeGeneral?.dataset?.purposeTone || initialGeneralTone || getReceiptPopupToneFromText(storeValue, detailsValue);
+                    })();
                     let mealBaseAmount = String(originalAmountValue || (amount ? amount.value : '') || '').replace(/[^\d]/g, '');
                     const getMealBaseAmount = () => String(mealBaseAmount || originalAmountValue || (amount ? amount.value : '') || '').replace(/[^\d]/g, '');
                     const isMealMode = () => !!(useMeal && useMeal.getAttribute('aria-pressed') === 'true');
-                    const getCurrentGeneralTone = () => getReceiptPopupToneFromText(
+                    const getCurrentGeneralTone = () => selectedGeneralTone || getReceiptPopupToneFromText(
                         store ? store.value : storeValue,
                         details ? details.value : detailsValue
                     );
@@ -14892,33 +15840,49 @@ ${receiptUseTypeHtml}
                         const raw = getMealBaseAmount();
                         if (amount) amount.value = raw ? Utils.nfKR.format(Number(raw)) : '';
                     };
-                    const setMealMode = (on) => {
-                        const nextOn = receiptPurposeConfig.mealOnly ? true : (receiptPurposeConfig.allowMealToggle ? !!on : false);
-                        if (useGeneral) {
-                            useGeneral.classList.toggle('active', !nextOn);
-                            useGeneral.setAttribute('aria-pressed', nextOn ? 'false' : 'true');
-                        }
+                    const setGeneralMode = (tone) => {
+                        selectedGeneralTone = tone || selectedGeneralTone || getReceiptPopupToneFromText(store ? store.value : storeValue, details ? details.value : detailsValue);
+                        useGeneralButtons.forEach(btn => {
+                            const active = btn.dataset.purposeTone === selectedGeneralTone;
+                            btn.classList.toggle('active', active);
+                            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+                        });
                         if (useMeal) {
-                            useMeal.classList.toggle('active', !!nextOn);
-                            useMeal.setAttribute('aria-pressed', nextOn ? 'true' : 'false');
+                            useMeal.classList.remove('active');
+                            useMeal.setAttribute('aria-pressed', 'false');
                         }
                         if (mealPanel) mealPanel.style.display = 'none';
                         if (details) {
-                            if (nextOn) {
-                                mealBaseAmount = getMealBaseAmount();
-                                details.value = '특근매식비';
-                                details.readOnly = true;
-                                recalcMealAmount();
-                            } else {
-                                details.readOnly = false;
-                                if (details.value === '특근매식비') details.value = '';
-                                restoreGeneralAmount();
-                            }
-                        } else if (nextOn) {
+                            details.readOnly = false;
+                            if (details.value === '특근매식비') details.value = '';
+                        }
+                        restoreGeneralAmount();
+                        syncReceiptPopupTone();
+                        [store, amount, details].forEach(updateReceiptFieldVisual);
+                    };
+                    const setMealMode = (on) => {
+                        const nextOn = receiptPurposeConfig.mealOnly ? true : (receiptPurposeConfig.allowMealToggle ? !!on : false);
+                        if (!nextOn) {
+                            setGeneralMode(selectedGeneralTone);
+                            return;
+                        }
+                        useGeneralButtons.forEach(btn => {
+                            btn.classList.remove('active');
+                            btn.setAttribute('aria-pressed', 'false');
+                        });
+                        if (useMeal) {
+                            useMeal.classList.toggle('active', true);
+                            useMeal.setAttribute('aria-pressed', 'true');
+                        }
+                        if (mealPanel) mealPanel.style.display = 'none';
+                        if (details) {
                             mealBaseAmount = getMealBaseAmount();
+                            details.value = '특근매식비';
+                            details.readOnly = true;
                             recalcMealAmount();
                         } else {
-                            restoreGeneralAmount();
+                            mealBaseAmount = getMealBaseAmount();
+                            recalcMealAmount();
                         }
                         syncReceiptPopupTone();
                         [store, amount, details].forEach(updateReceiptFieldVisual);
@@ -14934,9 +15898,12 @@ ${receiptUseTypeHtml}
                         recalcMealAmount();
                         updateReceiptFieldVisual(e.target);
                     };
-                    if (useGeneral && receiptPurposeConfig.allowMealToggle) useGeneral.onclick = () => setMealMode(false);
-                    if (useMeal && receiptPurposeConfig.allowMealToggle) useMeal.onclick = () => setMealMode(true);
-                    setMealMode(isMeal);
+                    useGeneralButtons.forEach(btn => {
+                        btn.onclick = () => setGeneralMode(btn.dataset.purposeTone || selectedGeneralTone);
+                    });
+                    if (useMeal && receiptPurposeConfig.hasMeal) useMeal.onclick = () => setMealMode(true);
+                    if (isMeal || receiptPurposeConfig.mealOnly) setMealMode(true);
+                    else setGeneralMode(selectedGeneralTone);
                     const handleEnter = (e, nextElem) => {
                         if (e.key === 'Enter') {
                             e.preventDefault(); e.stopPropagation();
@@ -15036,7 +16003,8 @@ ${receiptUseTypeHtml}
                         mealOverAmount = String(Math.max(0, info.originalAmount - info.amount));
                     }
                     const cachedPreview = data.previewImage || data.receiptImagePreview || '';
-                    const generalTone = CardLogic.getReceiptPopupToneFromPurposeText(store, details, CardLogic.getCurrentReturnPurposeList());
+                    const activeGeneralBtn = document.querySelector('.use-type-btn[data-use-type="general"][aria-pressed="true"]');
+                    const generalTone = activeGeneralBtn?.dataset?.purposeTone || CardLogic.getReceiptPopupToneFromPurposeText(store, details, CardLogic.getCurrentReturnPurposeList());
                     const receiptPurpose = isMealExpense ? '특근매식비' : CardLogic.getReceiptPurposeFromTone(generalTone);
                     return {
                         usagePlace: store,
@@ -15122,14 +16090,11 @@ ${receiptUseTypeHtml}
                 /* @SERVER_API_GROUP_INIT: 카드 상태 재동기화 */
                 const data = await Api.call('getInitialAppData');
                 if (data && !data.error) {
-                    const bundledCarts = data.savedCarts || {};
+                    SavedCartPrefetch.normalizeInitialPayload(data);
                     state.allCardData = data.allCards;
                     state.allUsersData = data.allUsers;
-                    if (Array.isArray(state.allCardData)) {
-                        state.allCardData.forEach(c => {
-                            if (c) c.savedCart = Utils.sanitizeReceiptCart(c.savedCart || bundledCarts[c.id] || []);
-                        });
-                    }
+                    SavedCartPrefetch.reset();
+                    SavedCartPrefetch.start('quick-sync');
                     state.lastSyncTs = Date.now();
                 }
             } catch(e) {}
@@ -15304,20 +16269,7 @@ ${receiptUseTypeHtml}
         /* @SERVER_API_GROUP_INIT: 빠른 초기화 데이터 */
         const dataPromise = Api.call('getInitialAppData')
             .then(r => {
-                try {
-                    const carts = r?.savedCarts || {};
-                    if (Array.isArray(r?.allCards)) {
-                        r.allCards.forEach(c => {
-                            if (!c) return;
-                            c.savedCart = Utils.sanitizeReceiptCart(c.savedCart || carts[c.id] || []);
-                        });
-                    }
-                } catch (cartError) {
-                    console.warn('[INIT] savedCarts bundle normalize failed', cartError);
-                    if (Array.isArray(r?.allCards)) {
-                        r.allCards.forEach(c => { if (c && !Array.isArray(c.savedCart)) c.savedCart = []; });
-                    }
-                }
+                SavedCartPrefetch.normalizeInitialPayload(r);
                 isDataLoaded = true;
                 return r;
             })
@@ -15338,7 +16290,9 @@ ${receiptUseTypeHtml}
             state.allUsersData = data.allUsers;
             state.lastSyncTs = Date.now();
             setTimeout(() => CardLogic.drainPendingRentRequests(), 800);
-            // 저장 장바구니는 초기 응답에 포함하지 않고, 반납 화면 진입 시 해당 카드만 조회합니다.
+            // v12: 로그인 화면으로 넘어가는 즉시, 사용자가 내선번호를 입력하는 동안 savedCart를 백그라운드로 미리 불러옵니다.
+            SavedCartPrefetch.reset();
+            SavedCartPrefetch.start('unlock');
             UIManager.showScreen('login');
         } catch (e) {
             state.allCardData = [];
