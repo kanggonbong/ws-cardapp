@@ -702,6 +702,101 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   transition: transform 0.1s ease-in;
 }
 
+
+#lock-screen.ripple-card-exit .lock-content,
+#lock-screen.active-pop.ripple-card-exit .lock-content {
+  transform: scale(1);
+  transition: opacity 1.08s cubic-bezier(0.22, 1, 0.36, 1), transform 1.08s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#lock-screen.ripple-card-exit #glass-card-container {
+  opacity: 0;
+  transform: translate3d(0, -5px, 0) scale(0.985);
+  pointer-events: none;
+  transition: opacity 1.08s cubic-bezier(0.22, 1, 0.36, 1), transform 1.08s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#lock-screen.ripple-card-exit #lock-text-instruction {
+  opacity: 0;
+  transition: opacity 0.48s ease-out;
+}
+
+#lock-screen.ripple-screen-exit {
+  opacity: 0;
+  transform: scale(1.012);
+  pointer-events: none;
+  transition: opacity 0.78s cubic-bezier(0.22, 1, 0.36, 1), transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================
+   Lock card lake ripple transition
+   - One slightly slower, more visible ripple starts from the card center.
+   - Use a single wave only so the effect feels cleaner.
+   ========================================== */
+.ws-lake-ripple-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 1;
+  background: radial-gradient(circle at var(--ws-ripple-x, 50%) var(--ws-ripple-y, 50%), rgba(255, 255, 255, 0.080) 0%, rgba(138, 183, 255, 0.055) 16%, transparent 40%);
+  animation: wsLakeRippleLayer 1.28s ease-out forwards;
+  contain: layout paint style;
+}
+
+.ws-lake-ripple-wave {
+  position: fixed;
+  left: var(--ws-ripple-x, 50%);
+  top: var(--ws-ripple-y, 50%);
+  width: var(--ws-ripple-size, 1800px);
+  height: var(--ws-ripple-size, 1800px);
+  border-radius: 50%;
+  transform: translate3d(-50%, -50%, 0) scale(0.014);
+  opacity: 0;
+  will-change: transform, opacity;
+  filter: blur(0.1px);
+  background:
+    radial-gradient(circle,
+      transparent 0%,
+      transparent 41.5%,
+      rgba(255, 255, 255, 0.36) 44%,
+      rgba(160, 200, 255, 0.25) 46%,
+      rgba(255, 255, 255, 0.080) 50%,
+      transparent 55%,
+      transparent 100%);
+  animation: wsLakeRippleWave 1.24s cubic-bezier(0.16, 0.82, 0.24, 1) forwards;
+}
+
+.ws-lake-ripple-wave::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle,
+      rgba(255,255,255,0.105) 0%,
+      rgba(173, 208, 255, 0.065) 10%,
+      rgba(173, 208, 255, 0.018) 18%,
+      transparent 30%);
+  opacity: 0.75;
+}
+
+@keyframes wsLakeRippleWave {
+  0% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(0.014); }
+  10% { opacity: 0.84; }
+  52% { opacity: 0.58; }
+  84% { opacity: 0.26; }
+  100% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(1); }
+}
+
+@keyframes wsLakeRippleLayer {
+  0% { opacity: 0; }
+  14% { opacity: 1; }
+  82% { opacity: 0.70; }
+  100% { opacity: 0; }
+}
+
 .lock-content {
   position: relative;
   z-index: 2;
@@ -11299,6 +11394,53 @@ body[data-current-screen="returnDetails"] #screen-return-details .cart-item.need
 
 
 /* =========================================================
+   v12.11: 로딩 화면 배경을 앱 공통 오로라 배경과 맞춤
+   - v12.10 예상 시간 기반 자연 로딩은 유지
+   - 흰색 단독 배경을 제거하고 다른 화면과 같은 블루/민트/라벤더 톤 사용
+   - 중앙 카드도 완전 흰색이 아니라 은은한 반투명 글래스 카드로 정리
+========================================================= */
+#welcome-screen[data-ws-region="welcome-loader"],
+body.ws-app #welcome-screen[data-ws-region="welcome-loader"] {
+  background:
+    radial-gradient(circle at 0% 0%, #e0f2fe 0%, transparent 50%),
+    radial-gradient(circle at 100% 0%, #e6fdf5 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, #fae8ff 0%, #f8fafc 100%) !important;
+}
+
+#welcome-screen[data-ws-region="welcome-loader"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255,255,255,0.44) 0%, rgba(255,255,255,0.18) 30%, transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.00));
+  pointer-events: none;
+}
+
+#welcome-screen .ws-pulse-loader-shell {
+  background: linear-gradient(180deg, rgba(255,255,255,0.78) 0%, rgba(248,252,255,0.54) 100%) !important;
+  border: 1px solid rgba(255,255,255,0.76) !important;
+  box-shadow:
+    0 24px 64px rgba(49, 82, 130, 0.12),
+    0 8px 24px rgba(49, 130, 246, 0.07),
+    0 1px 0 rgba(255,255,255,0.85) inset !important;
+  backdrop-filter: blur(14px) saturate(1.08);
+  -webkit-backdrop-filter: blur(14px) saturate(1.08);
+}
+
+#welcome-screen .ws-pulse-loader-shell::before {
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.54) 0%, rgba(255,255,255,0.22) 36%, rgba(255,255,255,0) 70%),
+    radial-gradient(circle, rgba(49,130,246,0.10) 0%, rgba(49,130,246,0) 67%) !important;
+}
+
+#welcome-screen .ws-logo-ring-mark-wrap {
+  background: linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(239,247,255,0.78) 100%) !important;
+  border-color: rgba(255,255,255,0.88) !important;
+}
+
+
+/* =========================================================
    v3: 목적/반납 용도 이모지 통일 + 반납 제출 버튼 골드 텍스트
    대상: 물품구매 / 식사다과 / 특근매식
 ========================================================= */
@@ -12513,6 +12655,17 @@ const CardApp = (function() {
         allUsersData: null,
 
         /* =========================================================
+        @SUBSECTION: JS_STATE_INITIAL_DATA_PRELOAD_V13
+        잠금화면이 보이는 동안 가벼운 초기 데이터만 미리 불러옵니다.
+        - TTL은 3초로 짧게 유지해 여러 명이 동시에 사용하는 상황의 상태 오염을 줄입니다.
+        - 오래된 선로딩 데이터는 폐기하고 기존 로딩 흐름으로 최신 데이터를 다시 가져옵니다.
+        ========================================================= */
+        initialDataPreloadPromise: null,
+        initialDataPreloadData: null,
+        initialDataPreloadStartedAt: 0,
+        initialDataPreloadLoadedAt: 0,
+
+        /* =========================================================
         @SUBSECTION: JS_STATE_SAVED_CART_PREFETCH_V12
         잠금화면 클릭 직후/초기 로딩 직후 저장 영수증 장바구니를 백그라운드로 미리 불러옵니다.
         - 2단계 로딩은 카드/사용자 중심으로 빠르게 유지
@@ -12664,17 +12817,21 @@ const CardApp = (function() {
                 return state.savedCartPrefetchPromise;
             }
 
+            const prefetchStartedAt = Date.now();
             console.log('[V12 PREFETCH] savedCart prefetch start', { reason, ids });
+            console.log('[WS MEASURE] savedCart prefetch start', { reason, ids, at: new Date().toLocaleTimeString() });
             state.savedCartPrefetchPromise = Api.call('getSavedCarts', ids)
                 .then(carts => {
                     this.applyCarts(carts || {}, ids);
                     state.savedCartPrefetchDone = true;
                     console.log('[V12 PREFETCH] savedCart prefetch done', { ids });
+                    console.log('[WS MEASURE] savedCart prefetch done', `${Date.now() - prefetchStartedAt}ms`, { ids });
                     return carts || {};
                 })
                 .catch(e => {
                     state.savedCartPrefetchDone = true;
                     console.warn('[V12 PREFETCH] savedCart prefetch failed', e);
+                    console.log('[WS MEASURE] savedCart prefetch failed', `${Date.now() - prefetchStartedAt}ms`, e);
                     return {};
                 });
             return state.savedCartPrefetchPromise;
@@ -12693,15 +12850,19 @@ const CardApp = (function() {
             state.savedCartSingleFetches = state.savedCartSingleFetches || {};
             if (state.savedCartSingleFetches[id]) return state.savedCartSingleFetches[id];
 
+            const singleStartedAt = Date.now();
             console.log('[V12 PREFETCH] savedCart single background fetch start', id);
+            console.log('[WS MEASURE] savedCart single fetch start', { id, at: new Date().toLocaleTimeString() });
             state.savedCartSingleFetches[id] = Api.call('getSavedCarts', [id])
                 .then(carts => {
                     this.applyCarts(carts || {}, [id]);
                     console.log('[V12 PREFETCH] savedCart single background fetch done', id);
+                    console.log('[WS MEASURE] savedCart single fetch done', `${Date.now() - singleStartedAt}ms`, { id });
                     return carts || {};
                 })
                 .catch(e => {
                     console.warn('[V12 PREFETCH] savedCart single background fetch failed', id, e);
+                    console.log('[WS MEASURE] savedCart single fetch failed', `${Date.now() - singleStartedAt}ms`, { id, error: e });
                     return {};
                 })
                 .finally(() => {
@@ -12734,6 +12895,97 @@ const CardApp = (function() {
             state.savedCartPrefetchDone = false;
             state.savedCartPrefetchCardIds = [];
             state.savedCartSingleFetches = {};
+        }
+    };
+
+    /* =========================================================
+    @SECTION: JS_INITIAL_DATA_PRELOAD_V13
+    잠금화면 선로딩.
+    - 웹앱이 열려 잠금화면이 보이는 동안 getInitialAppData를 조용히 먼저 시작합니다.
+    - 카드 클릭 시 3초 이내의 선로딩 데이터만 재사용합니다.
+    - 3초가 지나거나 아직 준비되지 않았으면 기존처럼 로딩화면에서 새로 가져옵니다.
+    - localStorage나 긴 캐시는 사용하지 않습니다.
+    ========================================================= */
+    const InitialDataPreload = {
+        TTL_MS: 3000,
+
+        isFreshLoaded() {
+            return !!state.initialDataPreloadData &&
+                !!state.initialDataPreloadLoadedAt &&
+                (Date.now() - state.initialDataPreloadLoadedAt) <= this.TTL_MS;
+        },
+
+        isFreshPending() {
+            return !!state.initialDataPreloadPromise &&
+                !!state.initialDataPreloadStartedAt &&
+                (Date.now() - state.initialDataPreloadStartedAt) <= this.TTL_MS;
+        },
+
+        invalidate(reason = 'manual') {
+            state.initialDataPreloadPromise = null;
+            state.initialDataPreloadData = null;
+            state.initialDataPreloadStartedAt = 0;
+            state.initialDataPreloadLoadedAt = 0;
+            console.log('[WS MEASURE] initial preload invalidated', { reason });
+        },
+
+        refresh(reason = 'lock-visible-refresh') {
+            // 잠금화면이 새로 보이거나 태블릿이 다시 깨어났을 때는 TTL 재사용보다 최신성 우선.
+            // 즉시 기존 선로딩 데이터를 폐기하고 getInitialAppData를 새로 준비합니다.
+            this.invalidate(reason);
+            return this.start(reason);
+        },
+
+        start(reason = 'lock-visible') {
+            if (state.currentScreen !== 'lock' || state.isAppActive) return null;
+            if (this.isFreshLoaded()) return Promise.resolve(state.initialDataPreloadData);
+            if (this.isFreshPending()) return state.initialDataPreloadPromise;
+
+            state.initialDataPreloadStartedAt = Date.now();
+            state.initialDataPreloadLoadedAt = 0;
+            state.initialDataPreloadData = null;
+            console.log('[WS MEASURE] initial preload start', { reason, ttlMs: this.TTL_MS, at: new Date().toLocaleTimeString() });
+
+            state.initialDataPreloadPromise = Api.call('getInitialAppData')
+                .then(data => {
+                    const elapsed = Date.now() - state.initialDataPreloadStartedAt;
+                    if (!data || data.error) throw new Error(data?.error || 'No Data');
+                    SavedCartPrefetch.normalizeInitialPayload(data);
+                    state.initialDataPreloadData = data;
+                    state.initialDataPreloadLoadedAt = Date.now();
+                    console.log('[WS MEASURE] initial preload done', `${elapsed}ms`, { ttlMs: this.TTL_MS });
+
+                    // 잠금화면에 머무는 짧은 시간도 savedCart 프리로드에 활용합니다.
+                    // 단, 카드 클릭 시 TTL이 지났으면 initializeAppSequence에서 reset 후 최신 데이터를 다시 받습니다.
+                    if (state.currentScreen === 'lock' && !state.isAppActive && this.isFreshLoaded()) {
+                        state.allCardData = data.allCards || [];
+                        state.allUsersData = data.allUsers || [];
+                        state.lastSyncTs = Date.now();
+                        SavedCartPrefetch.reset();
+                        SavedCartPrefetch.start('lock-preload');
+                    }
+                    return data;
+                })
+                .catch(e => {
+                    console.log('[WS MEASURE] initial preload failed', `${Date.now() - state.initialDataPreloadStartedAt}ms`, e);
+                    this.invalidate('preload-failed');
+                    return null;
+                });
+
+            return state.initialDataPreloadPromise;
+        },
+
+        getUsablePromise() {
+            if (this.isFreshLoaded()) {
+                console.log('[WS MEASURE] initial preload reused', `${Date.now() - state.initialDataPreloadLoadedAt}ms old`);
+                return Promise.resolve(state.initialDataPreloadData);
+            }
+            if (this.isFreshPending()) {
+                console.log('[WS MEASURE] initial preload pending reused', `${Date.now() - state.initialDataPreloadStartedAt}ms since start`);
+                return state.initialDataPreloadPromise;
+            }
+            if (state.initialDataPreloadData || state.initialDataPreloadPromise) this.invalidate('ttl-expired');
+            return null;
         }
     };
     /* =========================================================
@@ -13151,8 +13403,9 @@ const CardApp = (function() {
             elements.cardGrid.classList.remove('is-loaded');
             elements.lockScreen.style.display = 'flex';
             try { elements.lockScreen.style.opacity = '1'; elements.lockScreen.style.visibility = 'visible'; elements.lockScreen.style.pointerEvents = 'auto'; } catch(e) {}
-            elements.lockScreen.classList.remove('hidden', 'fade-out', 'active-pop');
+            elements.lockScreen.classList.remove('hidden', 'fade-out', 'active-pop', 'ripple-card-exit', 'ripple-screen-exit');
             elements.glassCardContainer.classList.remove('hide-card');
+            document.querySelectorAll('.ws-lake-ripple-layer').forEach(el => el.remove());
             requestAnimationFrame(() => {
                 elements.lockScreen.style.opacity = '1';
                 document.getElementById('lock-text-instruction').classList.remove('hide');
@@ -13162,6 +13415,7 @@ const CardApp = (function() {
             state.currentScreen = 'lock';
             UIManager.stopInactivityDetection();
             state.isAppActive = false;
+            setTimeout(() => { try { InitialDataPreload.refresh('show-lock-screen'); } catch(e) {} }, 80);
         },
         resetToLogin: () => {
             clearTransitionTimers();
@@ -13224,12 +13478,13 @@ const CardApp = (function() {
 
             const wait = (ms) => new Promise(r => setTimeout(r, ms));
             const startedAt = Date.now();
+            console.log('[WS MEASURE] welcome loader animation start', { at: new Date().toLocaleTimeString() });
 
             // v12.10: 예상 로딩 시간 기반으로 0~98%를 꾸준히 채우는 방식입니다.
             // 데이터가 빠르게 도착해도 100%로 튀지 않고, 일정한 속도로 자연스럽게 마무리합니다.
             // 데이터가 늦어지는 경우에는 98% 근처에서 아주 은은하게 대기한 뒤 실제 완료 시 100%가 됩니다.
-            const EXPECTED_MS = 3000;
-            const MIN_VISIBLE_MS = 1350;
+            const EXPECTED_MS = 900;
+            const MIN_VISIBLE_MS = 300;
             const HOLD_LIMIT = 98;
             let currentPercent = 0;
 
@@ -13314,7 +13569,7 @@ const CardApp = (function() {
 
             // 실제 필수 데이터가 끝난 뒤에만 100%로 부드럽게 마무리합니다.
             const finishStart = currentPercent;
-            const finishMs = 360;
+            const finishMs = 120;
             const finishStartedAt = Date.now();
             while (Date.now() - finishStartedAt < finishMs) {
                 const t = Math.min(1, (Date.now() - finishStartedAt) / finishMs);
@@ -13330,7 +13585,8 @@ const CardApp = (function() {
             }
 
             updateUI(100, true);
-            await wait(340);
+            await wait(80);
+            console.log('[WS MEASURE] welcome loader animation done', `${Date.now() - startedAt}ms`);
         },
         /* =========================================================
         @SUBSECTION: JS_UI_MANAGER_CONFIRMATION_SCREEN
@@ -13730,6 +13986,8 @@ const CardApp = (function() {
             triggerKeypadVisualPress('Enter');
             Utils.haptic(18);
             const ext = state.keypadValues.map(v => v ? v.value : '').join('');
+            const loginStartedAt = Date.now();
+            console.log('[WS MEASURE] processLogin start', { extLength: ext.length, at: new Date().toLocaleTimeString() });
             UIManager.stopInactivityDetection();
             if (!state.allUsersData) {
                 UIManager.setLoading(true, '데이터 로딩 중...');
@@ -13765,19 +14023,41 @@ const CardApp = (function() {
             KeypadLogic.clearTyping();
             document.getElementById('main-welcome-message').innerHTML =
                 `<i class="fa-solid fa-hand-sparkles"></i> <strong>${state.enteredUsers.map(u=>u.name).join(', ')}</strong> 님 환영합니다`;
+
+            // v12.8: 내선번호가 확정되는 즉시, 스캔 애니메이션 시간 동안
+            // 해당 사용자의 반납 후보 카드 savedCart를 최우선으로 한 번 더 당깁니다.
+            // 별도 대기 화면을 만들지 않고 기존 스캔 시간을 데이터 준비 시간으로 활용합니다.
+            const mainUser = state.enteredUsers[0].name;
+            let prioritySavedCartPromise = Promise.resolve({});
+            let predictedReturnCard = Array.isArray(state.allCardData)
+                ? state.allCardData.find(c => c.status === "사용중" && c.userInfo && c.userInfo.userName.includes(mainUser))
+                : null;
+            if (predictedReturnCard && predictedReturnCard.id) {
+                prioritySavedCartPromise = SavedCartPrefetch.ensureForCard(predictedReturnCard.id);
+            }
+
+            const securityScanStartedAt = Date.now();
             await KeypadLogic.runSecurityScan();
+            console.log('[WS MEASURE] security scan done', `${Date.now() - securityScanStartedAt}ms`);
             if (state.syncPromise) {
                 UIManager.setLoading(true, '최신 카드 상태 확인 중...', 'receipt');
                 try { await state.syncPromise; } catch(e) {}
                 UIManager.setLoading(false);
                 state.syncPromise = null;
             }
-            const mainUser = state.enteredUsers[0].name;
             const cardToReturn = state.allCardData.find(c => c.status === "사용중" && c.userInfo && c.userInfo.userName.includes(mainUser));
             if (cardToReturn) {
+                if (!predictedReturnCard || predictedReturnCard.id !== cardToReturn.id) {
+                    prioritySavedCartPromise = SavedCartPrefetch.ensureForCard(cardToReturn.id);
+                }
+                // 스캔 중 이미 진행된 우선 조회 결과만 자연스럽게 반영합니다.
+                // 느린 네트워크에서도 별도 대기 화면을 만들지 않기 위해 화면 전환을 강제로 붙잡지는 않습니다.
+                try { await Promise.race([prioritySavedCartPromise, Promise.resolve({})]); } catch(e) {}
                 await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
                 await new Promise(r => setTimeout(r, 250));
+                console.log('[WS MEASURE] processLogin before return screen', `${Date.now() - loginStartedAt}ms`, { cardId: cardToReturn.id });
                 await CardLogic.setupAndShowReturnScreen(cardToReturn);
+                console.log('[WS MEASURE] return screen ready', `${Date.now() - loginStartedAt}ms`, { cardId: cardToReturn.id });
             }
             state.keypadValues = [null,null,null,null];
             state.activeDigitIndex = 0;
@@ -16249,6 +16529,8 @@ ${receiptUseTypeHtml}
     ========================================================= */
     async function initializeAppSequence() {
         const reqId = ++state.syncReqId;
+        const unlockStartedAt = Date.now();
+        console.log('[WS MEASURE] unlock sequence start', { at: new Date().toLocaleTimeString() });
         elements.welcomeScreen.classList.remove('hidden');
         elements.welcomeScreen.classList.add('is-visible');
         UIManager.currentScreenElement = elements.welcomeScreen;
@@ -16267,13 +16549,39 @@ ${receiptUseTypeHtml}
         hideLockAfterFade();
         let isDataLoaded = false;
         /* @SERVER_API_GROUP_INIT: 빠른 초기화 데이터 */
-        const dataPromise = Api.call('getInitialAppData')
+        const reusablePreloadPromise = InitialDataPreload.getUsablePromise();
+        const usingPreload = !!reusablePreloadPromise;
+        if (!usingPreload) SavedCartPrefetch.reset();
+        const initialDataStartedAt = Date.now();
+        console.log('[WS MEASURE] getInitialAppData start', {
+            source: usingPreload ? 'lock-preload' : 'fresh-call',
+            at: new Date().toLocaleTimeString()
+        });
+        const dataPromise = (reusablePreloadPromise || Api.call('getInitialAppData'))
             .then(r => {
+                console.log('[WS MEASURE] getInitialAppData done', `${Date.now() - initialDataStartedAt}ms`, { source: usingPreload ? 'lock-preload' : 'fresh-call' });
                 SavedCartPrefetch.normalizeInitialPayload(r);
+                if (!r || r.error) throw new Error(r?.error || 'No Data');
                 isDataLoaded = true;
+                if (reqId !== state.syncReqId) return r;
+
+                // v12.8: 카드/사용자 기본 데이터가 도착하는 즉시 state에 반영하고,
+                // 로딩 화면이 아직 떠 있는 동안 savedCart 프리로드를 바로 출발시킵니다.
+                // savedCart 완료를 로딩화면 종료 조건으로 묶지 않아 첫 진입은 가볍게 유지합니다.
+                state.allCardData = r.allCards || [];
+                state.allUsersData = r.allUsers || [];
+                state.lastSyncTs = Date.now();
+                if (!state.savedCartPrefetchPromise) {
+                    SavedCartPrefetch.start(usingPreload ? 'unlock-preloaded' : 'unlock-loader');
+                }
+
                 return r;
             })
-            .catch(e => { isDataLoaded = true; throw e; });
+            .catch(e => {
+                console.log('[WS MEASURE] getInitialAppData failed', `${Date.now() - initialDataStartedAt}ms`, e);
+                isDataLoaded = true;
+                throw e;
+            });
         await UIManager.runRandomLoader(() => isDataLoaded);
         elements.welcomeScreen.classList.remove('is-visible');
         elements.welcomeScreen.classList.add('is-hiding');
@@ -16286,18 +16594,18 @@ ${receiptUseTypeHtml}
             const data = await dataPromise;
             if (!data || data.error) throw new Error(data?.error || 'No Data');
             if (reqId !== state.syncReqId) return;
-            state.allCardData = data.allCards;
-            state.allUsersData = data.allUsers;
+            if (!Array.isArray(state.allCardData) || !state.allCardData.length) state.allCardData = data.allCards || [];
+            if (!Array.isArray(state.allUsersData) || !state.allUsersData.length) state.allUsersData = data.allUsers || [];
             state.lastSyncTs = Date.now();
             setTimeout(() => CardLogic.drainPendingRentRequests(), 800);
-            // v12: 로그인 화면으로 넘어가는 즉시, 사용자가 내선번호를 입력하는 동안 savedCart를 백그라운드로 미리 불러옵니다.
-            SavedCartPrefetch.reset();
-            SavedCartPrefetch.start('unlock');
+            // v12.8: savedCart는 이미 unlock-loader 단계에서 출발했습니다. 여기서는 로그인 화면만 즉시 표시합니다.
             UIManager.showScreen('login');
+            console.log('[WS MEASURE] unlock sequence to login screen', `${Date.now() - unlockStartedAt}ms`);
         } catch (e) {
             state.allCardData = [];
             state.allUsersData = [];
             UIManager.showScreen('login');
+            console.log('[WS MEASURE] unlock sequence fallback to login screen', `${Date.now() - unlockStartedAt}ms`);
         }
         UIManager.startInactivityDetection();
     }
@@ -16305,6 +16613,28 @@ ${receiptUseTypeHtml}
     @SECTION: JS_LOCK_SCREEN
     카드 잠금 화면 클릭 → 로더 → 로그인 화면 진입 흐름
     ========================================================= */
+    function playLakeRippleFromCardCenter() {
+        try {
+            document.querySelectorAll('.ws-lake-ripple-layer').forEach(el => el.remove());
+            const rect = elements.glassCardContainer.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            const farX = Math.max(x, window.innerWidth - x);
+            const farY = Math.max(y, window.innerHeight - y);
+            const rippleSize = Math.ceil(Math.sqrt(farX * farX + farY * farY) * 2.12);
+            const layer = document.createElement('div');
+            layer.className = 'ws-lake-ripple-layer';
+            layer.style.setProperty('--ws-ripple-x', `${x}px`);
+            layer.style.setProperty('--ws-ripple-y', `${y}px`);
+            layer.style.setProperty('--ws-ripple-size', `${Math.max(960, rippleSize)}px`);
+            layer.innerHTML = '<div class="ws-lake-ripple-wave"></div>';
+            document.body.appendChild(layer);
+            setTimeout(() => { try { layer.remove(); } catch(e) {} }, 1550);
+        } catch (e) {
+            console.warn('[WS] lake ripple failed', e);
+        }
+    }
+
     async function handleLockScreenClick() {
         if (state.isAppActive && state.currentScreen !== 'lock') return;
         state.isAppActive = true;
@@ -16312,17 +16642,27 @@ ${receiptUseTypeHtml}
         state.forceSyncOnNextUnlock = false;
         state.pendingPostReturnSync = false;
         state.syncPromise = null;
-        elements.lockScreen.classList.add('active-pop');
+        try { InitialDataPreload.start('lock-click'); } catch(e) { console.warn(e); }
+        elements.lockScreen.classList.add('active-pop', 'ripple-card-exit');
+        playLakeRippleFromCardCenter();
         document.getElementById('lock-text-instruction').classList.add('hide');
 
         /*
           행정실 키오스크 갱신 규칙:
           - 화면이 다시 켜질 때는 잠금화면으로만 복귀합니다.
-          - 실제 카드/사용자 최신 데이터는 잠금화면 카드를 누른 이 순간,
-            로딩 화면을 거치며 getInitialAppData로 항상 새로 가져옵니다.
+          - 잠금화면이 보이는 동안 3초 TTL 선로딩을 시도합니다.
+          - 카드 클릭 시 선로딩 데이터가 신선하면 재사용하고,
+            오래됐거나 없으면 로딩 화면을 거치며 getInitialAppData로 새로 가져옵니다.
+          - 카드와 파동을 같은 타임라인에서 같이 사라지게 하여,
+            카드 중심에서 퍼지는 물결이 끝날 때 로딩 화면으로 부드럽게 넘어갑니다.
         */
+        const SCREEN_FADE_START_MS = 560;
+        const RIPPLE_TO_LOADER_MS = 1160;
         requestAnimationFrame(() => {
-            setTimeout(() => initializeAppSequence(), 0);
+            setTimeout(() => {
+                try { elements.lockScreen.classList.add('ripple-screen-exit'); } catch(e) {}
+            }, SCREEN_FADE_START_MS);
+            setTimeout(() => initializeAppSequence(), RIPPLE_TO_LOADER_MS);
         });
     }
     
@@ -16436,10 +16776,12 @@ ${receiptUseTypeHtml}
     }
 
     function bindKioskVisibilityReturn() {
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState !== 'visible') return;
+        const refreshLockPreloadOnTabletWake = (reason) => {
             if (!isKioskTabletDevice()) return;
-            if (state.currentScreen === 'lock') return;
+            if (state.currentScreen === 'lock') {
+                try { InitialDataPreload.refresh(reason); } catch(e) { console.warn(e); }
+                return;
+            }
             try {
                 if (typeof Swal !== 'undefined' && Swal.isVisible()) {
                     // 영수증 입력/저장/관리자 확인 등 사용자가 조작 중인 모달은 강제로 닫지 않습니다.
@@ -16448,6 +16790,20 @@ ${receiptUseTypeHtml}
             } catch(e) {}
             if (hasActiveReceiptWork()) return;
             UIManager.showLockScreen();
+        };
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible') return;
+            refreshLockPreloadOnTabletWake('tablet-visible-lock-refresh');
+        });
+
+        window.addEventListener('focus', () => {
+            if (document.visibilityState && document.visibilityState !== 'visible') return;
+            refreshLockPreloadOnTabletWake('tablet-focus-lock-refresh');
+        });
+
+        window.addEventListener('pageshow', () => {
+            refreshLockPreloadOnTabletWake('tablet-pageshow-lock-refresh');
         });
     }
 
@@ -16603,6 +16959,7 @@ ${receiptUseTypeHtml}
             restoreAdminModeFromStorage();
             setupEventListeners();
             KeypadLogic.initializeKeypad();
+            setTimeout(() => { try { InitialDataPreload.start('dom-ready-lock'); } catch(e) {} }, 120);
         }
     };
 })();
@@ -16927,6 +17284,61 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- Consolidated Style Block 32 Removed -->
 
 <!-- Consolidated Style Block 33 Removed -->
+
+
+<style id="ws-v12-12-loading-bg-only">
+/* v12.12: 로딩 화면에서 중앙 카드/패널 제거, 배경 위 요소만 표시 */
+#welcome-screen[data-ws-region="welcome-loader"]::before {
+  display: none !important;
+}
+#welcome-screen .ws-pulse-loader-shell {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 28px 20px 24px !important;
+  min-height: min(82vh, 560px) !important;
+}
+#welcome-screen .ws-pulse-loader-shell::before {
+  display: none !important;
+  content: none !important;
+}
+#welcome-screen .ws-logo-ring-loader-stage {
+  margin-bottom: 2px !important;
+}
+#welcome-screen .ws-logo-ring-svg {
+  filter: none !important;
+}
+#welcome-screen .ws-logo-ring-track {
+  stroke: rgba(201, 214, 232, 0.92) !important;
+}
+#welcome-screen .ws-logo-ring-fill {
+  stroke: #3182f6 !important;
+}
+#welcome-screen .ws-logo-ring-mark-wrap {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  width: 78px !important;
+  height: 78px !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+#welcome-screen .ws-logo-ring-mark {
+  width: 58px !important;
+  height: 58px !important;
+}
+#welcome-screen .ws-pulse-loader-title {
+  margin-top: 2px !important;
+}
+#welcome-screen .ws-logo-ring-subtitle {
+  display: none !important;
+}
+#welcome-screen .ws-logo-ring-percent {
+  margin-top: -4px !important;
+}
+</style>
 
 </body>
 </html>
