@@ -17926,36 +17926,36 @@ body.office-tablet-portrait .container::-webkit-scrollbar {
 </script>
 
 
-
-<style id="ws-v153-office-tablet-vertical-fill">
+<style id="ws-v154-office-tablet-soft-fill">
 /* =========================================================
-   v153 Administrative office portrait tablet vertical fill
-   - Keep mobile/PC unchanged.
-   - Use the office portrait tablet height more aggressively.
-   - Card-select remains 3 columns, with hidden scrollbar.
+   v154 Administrative office portrait tablet soft fill
+   - Based on v152, not v153.
+   - Only fills a little more of the lower empty space.
+   - Avoids the overly full/large v153 layout.
    ========================================================= */
 @media (min-width: 700px) and (max-width: 1280px) and (orientation: portrait) {
   body.office-tablet-portrait .content-wrapper,
   body.ws-app .content-wrapper {
     min-height: 100svh !important;
     min-height: 100dvh !important;
-    padding-top: clamp(16px, 2.2vh, 28px) !important;
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(18px, 2.4vh, 32px)) !important;
+    padding-top: clamp(18px, 2.5vh, 34px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(20px, 2.8vh, 38px)) !important;
     justify-content: flex-start !important;
   }
 
   body.office-tablet-portrait #main-title-container,
   #main-title-container {
-    margin-bottom: clamp(10px, 1.4vh, 18px) !important;
+    margin-bottom: clamp(10px, 1.5vh, 20px) !important;
   }
 
-  /* Login: fill more of the tablet height instead of staying small in the middle. */
+  /* Login: v152 size plus a small vertical stretch. */
   body.office-tablet-portrait #screen-login,
   body[data-current-screen="login"] #screen-login {
-    width: min(92vw, 840px) !important;
-    max-width: min(92vw, 840px) !important;
-    min-height: min(78svh, 900px) !important;
-    padding: clamp(30px, 3.8vh, 52px) clamp(42px, 5.6vw, 70px) clamp(34px, 4.2vh, 58px) !important;
+    width: min(89vw, 780px) !important;
+    max-width: min(89vw, 780px) !important;
+    min-height: min(68svh, 780px) !important;
+    padding-top: clamp(30px, 3.6vh, 48px) !important;
+    padding-bottom: clamp(34px, 4vh, 54px) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -17963,54 +17963,53 @@ body.office-tablet-portrait .container::-webkit-scrollbar {
 
   body.office-tablet-portrait #screen-login .header-dashboard,
   body[data-current-screen="login"] #screen-login .header-dashboard {
-    width: min(100%, 700px) !important;
-    margin-bottom: clamp(24px, 3.2vh, 42px) !important;
+    margin-bottom: clamp(20px, 2.6vh, 34px) !important;
   }
 
   body.office-tablet-portrait #screen-login .keypad-panel,
   body[data-current-screen="login"] #screen-login .keypad-panel {
-    width: min(100%, 660px) !important;
-    max-width: 660px !important;
-    margin-top: clamp(10px, 1.8vh, 24px) !important;
+    width: min(100%, 590px) !important;
+    max-width: 590px !important;
+    margin-top: clamp(4px, 1vh, 14px) !important;
   }
 
   body.office-tablet-portrait #screen-login #keypadDisplay,
   body.office-tablet-portrait #screen-login #keypadDisplay.display-area,
   body[data-current-screen="login"] #screen-login #keypadDisplay,
   body[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
-    height: clamp(82px, 9.2vh, 112px) !important;
-    min-height: clamp(82px, 9.2vh, 112px) !important;
-    margin-bottom: clamp(24px, 3vh, 40px) !important;
+    height: clamp(74px, 8.5vh, 98px) !important;
+    min-height: clamp(74px, 8.5vh, 98px) !important;
+    margin-bottom: clamp(20px, 2.5vh, 32px) !important;
   }
 
   body.office-tablet-portrait #screen-login .keypad-grid,
   body[data-current-screen="login"] #screen-login .keypad-grid {
-    gap: clamp(16px, 2.2vh, 24px) clamp(18px, 2.6vw, 28px) !important;
-    margin-bottom: clamp(20px, 2.8vh, 36px) !important;
+    gap: clamp(14px, 2vh, 20px) clamp(14px, 2vw, 22px) !important;
+    margin-bottom: clamp(18px, 2.3vh, 28px) !important;
   }
 
   body.office-tablet-portrait #screen-login .keypad-btn,
   body[data-current-screen="login"] #screen-login .keypad-btn {
-    height: clamp(104px, 10.8vh, 132px) !important;
-    min-height: clamp(104px, 10.8vh, 132px) !important;
-    font-size: clamp(2.25rem, 4.4vw, 3.1rem) !important;
+    height: clamp(94px, 9.2vh, 116px) !important;
+    min-height: clamp(94px, 9.2vh, 116px) !important;
+    font-size: clamp(2.08rem, 4vw, 2.82rem) !important;
   }
 
   body.office-tablet-portrait #screen-login #keypad-submit-btn,
   body[data-current-screen="login"] #screen-login #keypad-submit-btn {
-    height: clamp(88px, 8.8vh, 110px) !important;
-    min-height: clamp(88px, 8.8vh, 110px) !important;
-    margin-top: clamp(18px, 2.4vh, 34px) !important;
-    font-size: clamp(1.28rem, 2.4vw, 1.62rem) !important;
+    height: clamp(80px, 7.8vh, 98px) !important;
+    min-height: clamp(80px, 7.8vh, 98px) !important;
+    margin-top: clamp(16px, 2.1vh, 28px) !important;
   }
 
-  /* Card select: 3 columns, wider and taller cards, but no visible side scrollbar. */
+  /* Card select: keep v152 balance, add only a little height/card size. */
   body.office-tablet-portrait #screen-main[data-ws-screen="card-select"],
   body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] {
-    width: min(98vw, 1080px) !important;
-    max-width: min(98vw, 1080px) !important;
-    min-height: min(84svh, 980px) !important;
-    padding: clamp(20px, 2.6vh, 34px) clamp(18px, 2.4vw, 30px) clamp(24px, 3vh, 40px) !important;
+    width: min(97vw, 1020px) !important;
+    max-width: min(97vw, 1020px) !important;
+    min-height: min(74svh, 840px) !important;
+    padding-top: clamp(20px, 2.6vh, 32px) !important;
+    padding-bottom: clamp(22px, 3vh, 36px) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -18018,20 +18017,12 @@ body.office-tablet-portrait .container::-webkit-scrollbar {
     scrollbar-width: none !important;
   }
 
-  body.office-tablet-portrait #screen-main[data-ws-screen="card-select"]::-webkit-scrollbar,
-  body.office-tablet-portrait #screen-main #cardGrid::-webkit-scrollbar,
-  body.office-tablet-portrait #screen-main #card-list-container::-webkit-scrollbar {
-    width: 0 !important;
-    height: 0 !important;
-    display: none !important;
-  }
-
   body.office-tablet-portrait #screen-main #main-welcome-message {
-    margin-bottom: clamp(10px, 1.4vh, 18px) !important;
+    margin-bottom: clamp(9px, 1.2vh, 16px) !important;
   }
 
   body.office-tablet-portrait #screen-main #card-selection-header {
-    margin-bottom: clamp(18px, 2.2vh, 30px) !important;
+    margin-bottom: clamp(17px, 2vh, 26px) !important;
   }
 
   body.office-tablet-portrait #screen-main #card-list-container {
@@ -18045,8 +18036,8 @@ body.office-tablet-portrait .container::-webkit-scrollbar {
 
   body.office-tablet-portrait #screen-main #cardGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: clamp(18px, 2.3vw, 28px) !important;
-    grid-auto-rows: clamp(158px, 15.4vh, 204px) !important;
+    gap: clamp(17px, 2.1vw, 25px) !important;
+    grid-auto-rows: clamp(148px, 13.2vh, 188px) !important;
     align-content: start !important;
     overflow: visible !important;
     scrollbar-width: none !important;
@@ -18060,16 +18051,17 @@ body.office-tablet-portrait .container::-webkit-scrollbar {
   }
 
   body.office-tablet-portrait #btn-back {
-    margin-top: clamp(26px, 3.2vh, 44px) !important;
+    margin-top: clamp(24px, 2.9vh, 38px) !important;
   }
 
-  /* Return details: larger panel and more vertical use for receipt/cart area. */
+  /* Return details: slightly more panel height than v152, far less than v153. */
   body.office-tablet-portrait #screen-return-details,
   body[data-current-screen="returnDetails"] #screen-return-details {
-    width: min(94vw, 940px) !important;
-    max-width: min(94vw, 940px) !important;
-    min-height: min(80svh, 920px) !important;
-    padding: clamp(34px, 4.2vh, 58px) clamp(42px, 5.4vw, 72px) clamp(34px, 4.2vh, 58px) !important;
+    width: min(93vw, 900px) !important;
+    max-width: min(93vw, 900px) !important;
+    min-height: min(72svh, 820px) !important;
+    padding-top: clamp(32px, 3.8vh, 50px) !important;
+    padding-bottom: clamp(34px, 4vh, 54px) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -18077,19 +18069,13 @@ body.office-tablet-portrait .container::-webkit-scrollbar {
     scrollbar-width: none !important;
   }
 
-  body.office-tablet-portrait #screen-return-details #receipt-dashboard,
-  body.office-tablet-portrait #screen-return-details .return-neu-tray,
-  body.office-tablet-portrait #screen-return-details .cart-wrap {
-    width: 100% !important;
-  }
-
   body.office-tablet-portrait #screen-return-details .cart-item {
-    min-height: clamp(100px, 10vh, 132px) !important;
+    min-height: clamp(92px, 9vh, 118px) !important;
   }
 
   body.office-tablet-portrait #screen-return-details #add-receipt-btn,
   body.office-tablet-portrait #screen-return-details #submit-cart-btn {
-    min-height: clamp(84px, 8.8vh, 110px) !important;
+    min-height: clamp(76px, 7.6vh, 98px) !important;
   }
 }
 </style>
