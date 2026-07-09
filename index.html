@@ -8547,7 +8547,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   .content-wrapper {
     min-height: 100dvh;
     padding: 20px 24px calc(env(safe-area-inset-bottom,0px) + 20px);
-    justify-content: flex-start;
+    justify-content: center;
     overflow-x: hidden !important;
   }
 
@@ -9086,7 +9086,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     min-height: 100dvh;
     height: auto;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     overflow: visible !important;
   }
 
@@ -17404,9 +17404,9 @@ document.addEventListener('DOMContentLoaded', () => {
   body.office-tablet-portrait[data-current-screen="returnDetails"] .content-wrapper {
     min-height: 100svh !important;
     min-height: 100dvh !important;
-    padding: clamp(16px, 2.2vh, 28px) clamp(16px, 2.8vw, 32px) calc(env(safe-area-inset-bottom, 0px) + clamp(14px, 2vh, 26px)) !important;
+    padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
     align-items: center !important;
-    justify-content: stretch !important;
+    justify-content: flex-start !important;
     overflow: hidden !important;
   }
 
@@ -17423,12 +17423,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login {
-    width: min(94vw, 760px) !important;
-    max-width: min(94vw, 760px) !important;
+    width: 100% !important;
+    max-width: 100% !important;
     min-height: auto !important;
     height: auto !important;
+    flex: 1 1 auto !important;
     max-height: none !important;
-    padding: 0 clamp(34px, 5vw, 62px) clamp(8px, 1.2vh, 14px) !important;
+    padding: 18px 20px 20px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -17436,12 +17437,14 @@ document.addEventListener('DOMContentLoaded', () => {
     background: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
+    border-radius: 28px !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .main-frame,
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .login-frame {
     min-height: auto !important;
     height: auto !important;
+    flex: 1 1 auto !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -17451,14 +17454,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .header-dashboard {
-    margin-bottom: clamp(20px, 2.8vh, 36px) !important;
+    flex: 0 0 auto !important;
+    margin-bottom: clamp(12px, 1.6dvh, 24px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-panel {
-    width: min(100%, 620px) !important;
-    max-width: 620px !important;
-    padding: 0 clamp(4px, 0.8vw, 10px) 0 !important;
-    margin: 0 auto !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
     background: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
@@ -17466,28 +17473,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypadDisplay,
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+    flex: 0 0 auto !important;
     height: clamp(62px, 6.4vh, 82px) !important;
     min-height: clamp(62px, 6.4vh, 82px) !important;
-    margin-bottom: clamp(12px, 1.6vh, 20px) !important;
+    margin-bottom: clamp(10px, 1.2dvh, 16px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-grid {
-    gap: clamp(12px, 1.55vh, 18px) clamp(16px, 2.2vw, 26px) !important;
-    margin-bottom: clamp(12px, 1.5vh, 18px) !important;
+    flex: 1 1 auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: repeat(4, 1fr) !important;
+    align-content: stretch !important;
+    gap: clamp(10px, 1.2dvh, 16px) clamp(10px, 1.4vw, 16px) !important;
+    margin-bottom: clamp(8px, 1dvh, 14px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-btn {
-    height: clamp(104px, 10.4vh, 132px) !important;
-    min-height: clamp(104px, 10.4vh, 132px) !important;
-    font-size: clamp(2.45rem, 4.7vw, 3.25rem) !important;
-    border-radius: clamp(20px, 2.8vw, 30px) !important;
+    height: auto !important;
+    min-height: 70px !important;
+    aspect-ratio: unset !important;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem) !important;
+    border-radius: clamp(18px, 2.4vw, 26px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypad-submit-btn {
-    height: clamp(76px, 7vh, 92px) !important;
-    min-height: clamp(76px, 7vh, 92px) !important;
-    margin-top: clamp(12px, 1.4vh, 18px) !important;
-    border-radius: clamp(18px, 2.4vw, 26px) !important;
+    flex: 0 0 auto !important;
+    height: clamp(60px, 6.5dvh, 80px) !important;
+    min-height: clamp(60px, 6.5dvh, 80px) !important;
+    margin-top: clamp(8px, 1dvh, 14px) !important;
+    border-radius: clamp(18px, 2.4vw, 24px) !important;
     box-shadow: none !important;
   }
 
