@@ -17645,5 +17645,94 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 </style>
 
+
+<style id="ws-v158-office-tablet-login-stretch-final">
+/* =========================================================
+   v158 Office tablet portrait login stretch final
+   - Root cause: #screen-login kept align-items:center, so the
+     inner .main-frame/login-frame could shrink to its content.
+   - This stretches the inner frame first, then the keypad fills it.
+   - Includes pointer:coarse fallback in case the JS body class is
+     not added on the installed tablet app.
+   ========================================================= */
+@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) {
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login {
+    align-items: stretch !important;
+    width: min(98vw, 940px) !important;
+    max-width: min(98vw, 940px) !important;
+  }
+
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login .main-frame,
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login .login-frame {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    align-self: stretch !important;
+    align-items: stretch !important;
+  }
+
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login .header-dashboard,
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-panel,
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-grid,
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypad-submit-btn {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    align-self: stretch !important;
+  }
+
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-panel {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    column-gap: clamp(14px, 2vw, 22px) !important;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) and (pointer: coarse) {
+  body[data-current-screen="login"] #screen-login {
+    align-items: stretch !important;
+    width: min(98vw, 940px) !important;
+    max-width: min(98vw, 940px) !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .main-frame,
+  body[data-current-screen="login"] #screen-login .login-frame {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    align-self: stretch !important;
+    align-items: stretch !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .header-dashboard,
+  body[data-current-screen="login"] #screen-login .keypad-panel,
+  body[data-current-screen="login"] #screen-login .keypad-grid,
+  body[data-current-screen="login"] #screen-login #keypad-submit-btn {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    align-self: stretch !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .keypad-panel {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  body[data-current-screen="login"] #screen-login .keypad-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    column-gap: clamp(14px, 2vw, 22px) !important;
+  }
+}
+</style>
+
 </body>
 </html>
