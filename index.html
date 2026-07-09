@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>우성고 카드 - 옵션3</title>
+    <title>우성고 카드</title>
 
     <meta name="theme-color" content="##8b5cf6" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -8563,11 +8563,11 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
-    min-height: calc(100dvh - 205px);
+    min-height: auto;
     max-height: none;
     display: flex !important;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     overflow: visible !important;
   }
 
@@ -8866,79 +8866,87 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
-    width: min(94vw, 560px);
-    max-width: 560px;
-    padding: 34px 30px 30px;
-    border-radius: 42px;
-    max-height: calc(100dvh - 112px);
-    overflow-y: auto !important;
+    width: min(94vw, 480px);
+    max-width: 480px;
+    min-height: auto;
+    padding: 18px 16px 20px;
+    border-radius: 28px;
+    max-height: none;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   #screen-login .header-dashboard {
-    border-radius: 24px;
-    margin-bottom: 18px;
+    border-radius: 20px;
+    margin-bottom: 8px;
   }
 
   #screen-login .stat-label {
-    font-size: 1rem;
+    font-size: .74rem;
   }
 
   #screen-login .stat-value {
-    font-size: 1.75rem;
+    font-size: 1.24rem;
   }
 
   #screen-login .login-instruction-area {
-    min-height: 86px;
-    height: 108px;
-    margin-top: 6px;
-    margin-bottom: 10px;
+    min-height: 34px;
+    height: 34px;
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
 
   #screen-login .login-instruction-area.has-users {
-    min-height: 170px;
-    height: 164px;
+    min-height: 96px;
+    height: 96px;
   }
 
   #screen-login .digit-box.filled {
-    width: 70px;
-    height: 70px;
-    border-radius: 20px;
-    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    font-size: 1.35rem;
   }
 
   #screen-login .digit-box.masked, #screen-login .digit-box {
-    width: 22px;
-    height: 22px;
+    width: 17px;
+    height: 17px;
   }
 
   body[data-current-screen="login"] .keypad-btn {
-    border-radius: 24px;
-    font-size: 2.25rem;
+    min-height: 82px;
+    aspect-ratio: 1.12 / 1;
+    border-radius: 20px;
+    font-size: 1.95rem;
   }
 
   body[data-current-screen="login"] #keypad-add-btn, body[data-current-screen="login"] #keypad-back-btn {
-    font-size: 1.45rem;
+    font-size: 1.25rem;
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    padding: 24px 0;
-    font-size: 1.35rem;
-    margin-top: 18px;
-    border-radius: 24px;
+    min-height: 60px;
+    height: 60px;
+    margin-top: 8px;
+    padding: 0;
+    font-size: 1.2rem;
+    border-radius: 20px;
   }
 
   #screen-login .display-area {
-    height: 74px;
-    margin: 8px 0 18px;
-    gap: 22px;
-    margin-bottom: -8px;
+    height: 58px;
+    margin: 6px 0 12px;
+    gap: 14px;
+    margin-bottom: -14px;
     align-items: center;
     justify-content: center;
   }
 
   #screen-login .digit-wrapper, body[data-current-screen="login"] #keypadDisplay .digit-wrapper {
-    width: 68px;
-    height: 68px;
+    width: 50px;
+    height: 50px;
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -8955,22 +8963,22 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-box.filled {
-    width: 62px;
-    height: 62px;
-    border-radius: 18px;
-    font-size: 1.72rem;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    font-size: 1.35rem;
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-box.masked, body[data-current-screen="login"] #keypadDisplay .digit-box:not(.filled) {
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     font-size: 0;
   }
 
   #screen-login .keypad-grid {
-    gap: 18px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 6px;
     margin-top: 0;
   }
 
@@ -9019,37 +9027,40 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
 @media (min-width:768px) and (max-width:1023px) and (pointer:coarse) and (max-height:900px) {
   #screen-login {
-    width: min(82vw, 660px);
-    padding: 32px 30px 28px;
-    max-height: calc(100dvh - 64px);
+    width: min(94vw, 480px);
+    padding: 18px 16px 20px;
+    max-height: none;
+    min-height: auto;
   }
 
   #screen-login .header-dashboard {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   #screen-login .login-instruction-area {
-    min-height: 66px;
-    height: 66px;
+    min-height: 34px;
+    height: 34px;
   }
 
   #screen-login .login-instruction-area.has-users {
-    min-height: 146px;
-    height: 146px;
+    min-height: 96px;
+    height: 96px;
   }
 
   #screen-login .display-area {
-    height: 64px;
-    margin: 2px 0 16px;
+    height: 52px;
+    margin: 4px 0 8px;
   }
 
   #screen-login .keypad-grid {
-    gap: 16px;
+    gap: 10px;
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    padding: 22px 0;
-    margin-top: 18px;
+    min-height: 60px;
+    height: 60px;
+    padding: 0;
+    margin-top: 8px;
   }
 
   .loader-card-v2 {
@@ -9357,12 +9368,12 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
-    width: min(92vw, 560px);
-    max-width: 560px;
-    min-height: calc(100dvh - 150px - env(safe-area-inset-bottom, 0px));
+    width: min(94vw, 480px);
+    max-width: 480px;
+    min-height: auto;
     margin: 0 auto;
-    padding: 34px 30px 30px;
-    border-radius: 38px;
+    padding: 18px 16px 20px;
+    border-radius: 28px;
     max-height: none;
     overflow: visible !important;
     display: flex !important;
@@ -9371,46 +9382,48 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login .header-dashboard {
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
 
   body[data-current-screen="login"] #keypadDisplay.display-area, body[data-current-screen="login"] #keypadDisplay {
-    --login-digit-slot: 64px;
-    --login-digit-dot: 20px;
-    --login-digit-filled: 56px;
-    height: 72px;
-    min-height: 72px;
-    margin-top: 14px;
-    margin-bottom: 20px;
-    column-gap: 18px;
+    --login-digit-slot: 50px;
+    --login-digit-dot: 17px;
+    --login-digit-filled: 46px;
+    height: 58px;
+    min-height: 58px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    column-gap: 14px;
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-box.filled {
-    font-size: 1.6rem;
-    border-radius: 16px;
+    font-size: 1.35rem;
+    border-radius: 14px;
   }
 
   #screen-login .keypad-grid {
-    gap: 16px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 6px;
   }
 
   body[data-current-screen="login"] .keypad-btn {
-    min-height: 96px;
-    border-radius: 22px;
-    font-size: 2.12rem;
+    min-height: 82px;
+    aspect-ratio: 1.12 / 1;
+    border-radius: 20px;
+    font-size: 1.95rem;
   }
 
   body[data-current-screen="login"] .keypad-btn:active:not(:disabled), body[data-current-screen="login"] .keypad-btn.pressed {
-    transform: scale(.97);
+    transform: scale(.94);
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    min-height: 66px;
-    margin-top: 14px;
+    min-height: 60px;
+    height: 60px;
+    margin-top: 8px;
     padding: 0;
-    border-radius: 22px;
-    font-size: 1.32rem;
+    border-radius: 20px;
+    font-size: 1.2rem;
   }
 
 }
