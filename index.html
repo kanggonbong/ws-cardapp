@@ -8552,8 +8552,8 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   .container {
-    min-height: calc(100dvh - 40px);
-    justify-content: flex-start;
+    min-height: auto;
+    justify-content: center;
   }
 
   #main-title-container {
@@ -8563,11 +8563,12 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
+    flex: 0 0 auto;
     min-height: auto;
     max-height: none;
     display: flex !important;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     overflow: visible !important;
   }
 
@@ -8866,6 +8867,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
+    flex: 0 0 auto;
     width: min(94vw, 480px);
     max-width: 480px;
     min-height: auto;
@@ -8875,7 +8877,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     overflow: visible !important;
     display: flex !important;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   #screen-login .header-dashboard {
@@ -9093,7 +9095,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     height: auto;
     min-height: auto;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   body[data-current-screen="login"] #keypadDisplay.display-area, body[data-current-screen="login"] #keypadDisplay {
@@ -9368,6 +9370,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
+    flex: 0 0 auto;
     width: min(94vw, 480px);
     max-width: 480px;
     min-height: auto;
@@ -9378,7 +9381,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     overflow: visible !important;
     display: flex !important;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   #screen-login .header-dashboard {
