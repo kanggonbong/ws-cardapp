@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>우성고 카드</title>
+    <title>우성고 카드 - 옵션3</title>
 
     <meta name="theme-color" content="##8b5cf6" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -17407,59 +17407,72 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login {
-    width: min(92vw, 700px) !important;
-    max-width: min(92vw, 700px) !important;
-    min-height: calc(100svh - clamp(48px, 7vh, 82px)) !important;
-    height: calc(100svh - clamp(48px, 7vh, 82px)) !important;
-    max-height: calc(100svh - clamp(48px, 7vh, 82px)) !important;
-    padding: clamp(28px, 3.6vh, 44px) clamp(30px, 4.8vw, 56px) !important;
+    width: min(94vw, 760px) !important;
+    max-width: min(94vw, 760px) !important;
+    min-height: calc(100svh - clamp(34px, 5vh, 58px)) !important;
+    height: calc(100svh - clamp(34px, 5vh, 58px)) !important;
+    max-height: calc(100svh - clamp(34px, 5vh, 58px)) !important;
+    padding: clamp(30px, 3.4vh, 42px) clamp(36px, 5vw, 62px) clamp(24px, 2.8vh, 34px) !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     overflow: hidden !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .main-frame,
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .login-frame {
     min-height: 100% !important;
+    height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .header-dashboard {
-    margin-bottom: clamp(22px, 3vh, 36px) !important;
+    margin-bottom: clamp(56px, 6.6vh, 86px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-panel {
-    width: min(100%, 580px) !important;
-    max-width: 580px !important;
-    padding: clamp(16px, 2vh, 24px) clamp(14px, 2vw, 22px) clamp(18px, 2.2vh, 26px) !important;
-    margin-top: auto !important;
+    width: min(100%, 620px) !important;
+    max-width: 620px !important;
+    padding: 0 clamp(8px, 1.4vw, 18px) 0 !important;
+    margin: 0 auto !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypadDisplay,
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
-    height: clamp(82px, 9.4vh, 112px) !important;
-    min-height: clamp(82px, 9.4vh, 112px) !important;
-    margin-bottom: clamp(20px, 2.8vh, 34px) !important;
+    height: clamp(92px, 8.8vh, 120px) !important;
+    min-height: clamp(92px, 8.8vh, 120px) !important;
+    margin-bottom: clamp(22px, 2.6vh, 34px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-grid {
-    gap: clamp(15px, 2.1vh, 23px) clamp(15px, 2.2vw, 24px) !important;
-    margin-bottom: clamp(18px, 2.4vh, 30px) !important;
+    gap: clamp(18px, 2.1vh, 26px) clamp(20px, 2.8vw, 34px) !important;
+    margin-bottom: clamp(18px, 2.2vh, 28px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-btn {
-    height: clamp(104px, 10.8vh, 132px) !important;
-    min-height: clamp(104px, 10.8vh, 132px) !important;
-    font-size: clamp(2.45rem, 4.7vw, 3.25rem) !important;
+    height: clamp(116px, 11.6vh, 146px) !important;
+    min-height: clamp(116px, 11.6vh, 146px) !important;
+    font-size: clamp(2.55rem, 4.9vw, 3.35rem) !important;
+    border-radius: clamp(20px, 2.8vw, 30px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypad-submit-btn {
-    height: clamp(84px, 8.4vh, 104px) !important;
-    min-height: clamp(84px, 8.4vh, 104px) !important;
-    margin-top: clamp(18px, 2.2vh, 30px) !important;
+    height: clamp(86px, 7.8vh, 104px) !important;
+    min-height: clamp(86px, 7.8vh, 104px) !important;
+    margin-top: clamp(18px, 2vh, 26px) !important;
+    border-radius: clamp(18px, 2.4vw, 26px) !important;
+    box-shadow: none !important;
+  }
+
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login::before,
+  body.office-tablet-portrait[data-current-screen="login"] #screen-login::after,
+  body.office-tablet-portrait[data-current-screen="login"] #keypad-submit-btn::after {
+    content: none !important;
+    display: none !important;
   }
 
   body.office-tablet-portrait[data-current-screen="main"] #screen-main[data-ws-screen="card-select"],
