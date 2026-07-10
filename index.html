@@ -14096,8 +14096,9 @@ const CardApp = (function() {
             text.classList.remove('fade-out');
             text.classList.add('fade-in');
             overlay.classList.add('active');
-            void box.offsetWidth;
-            box.classList.add('scanning');
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => box.classList.add('scanning'));
+            });
             setTimeout(() => {
                 box.classList.remove('scanning');
                 box.classList.add('success');
@@ -17854,6 +17855,69 @@ body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn).pre
   box-shadow:
     inset 0 4px 10px rgba(48, 91, 151, 0.13),
     0 2px 5px rgba(32, 65, 112, 0.05) !important;
+}
+
+/* Security scan: low-spec friendly compositor-only motion. */
+#security-scan-overlay {
+  transform: none !important;
+  transition:
+    opacity 0.24s ease-out,
+    visibility 0s linear 0.24s !important;
+  contain: layout paint style;
+}
+
+#security-scan-overlay.active {
+  transform: none !important;
+  transition:
+    opacity 0.24s ease-out,
+    visibility 0s linear 0s !important;
+  will-change: opacity;
+}
+
+#security-scan-overlay.exit {
+  transform: none !important;
+  transition: opacity 0.2s ease-in !important;
+  will-change: opacity;
+}
+
+#security-scan-overlay .scan-box {
+  transform: translateZ(0);
+  transition:
+    transform 0.22s ease-out,
+    border-color 0.22s ease-out,
+    background-color 0.22s ease-out !important;
+  will-change: transform;
+  contain: paint;
+}
+
+#security-scan-overlay .scan-box.success {
+  transform: translateZ(0) scale(1.04) !important;
+}
+
+#security-scan-overlay .scan-icon {
+  transition: color 0.18s ease-out, transform 0.18s ease-out !important;
+  will-change: transform;
+}
+
+#security-scan-overlay .scan-text {
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out !important;
+  will-change: opacity, transform;
+}
+
+#security-scan-overlay .laser {
+  box-shadow: 0 0 8px rgba(49, 95, 157, 0.46) !important;
+  transform: translate3d(0, -8px, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+#security-scan-overlay.active .scan-box.scanning .laser {
+  animation: ws-security-laser-smooth-sweep 1.05s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards !important;
+}
+
+@keyframes ws-security-laser-smooth-sweep {
+  from { transform: translate3d(0, -8px, 0); }
+  to { transform: translate3d(0, 148px, 0); }
 }
 
 /* Mobile: keep scrolling available but hide the thin browser scrollbar. */
