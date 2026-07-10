@@ -8546,7 +8546,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 @media (min-width:768px) and (max-width:1180px) and (orientation:portrait) and (pointer:coarse) {
   .content-wrapper {
     min-height: 100dvh;
-    padding: 20px 24px calc(env(safe-area-inset-bottom,0px) + 20px);
+    padding: 16px 14px calc(env(safe-area-inset-bottom,0px) + 16px);
     justify-content: center;
     overflow-x: hidden !important;
   }
@@ -9356,12 +9356,12 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
 @media (min-width: 768px) and (max-width: 1180px) and (orientation: portrait) {
   .content-wrapper {
-    padding: 24px 24px calc(env(safe-area-inset-bottom, 0px) + 24px);
+    padding: 16px 14px calc(env(safe-area-inset-bottom, 0px) + 16px);
   }
 
   #main-title-container {
     width: 100%;
-    max-width: 560px;
+    max-width: 100%;
     margin: 0 auto 22px;
   }
 
@@ -9371,8 +9371,8 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   #screen-login {
     flex: 0 0 auto;
-    width: min(94vw, 480px);
-    max-width: 480px;
+    width: 100%;
+    max-width: 100%;
     min-height: auto;
     margin: 0 auto;
     padding: 18px 16px 20px;
@@ -17010,10 +17010,94 @@ document.addEventListener('DOMContentLoaded', () => {
     const total=a+b;
     const ratio=total>0?(b/total)*100:0;
 
-    if(fill) fill.style.width=ratio+'%';
-    if(percent) percent.textContent=Math.round(ratio)+'%';
+     body.office-tablet-portrait[data-current-screen="main"] #btn-back,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #btn-back {
+    flex: 0 0 auto !important;
+    align-self: center !important;
+    margin-top: clamp(14px, 2vh, 24px) !important;
+    margin-bottom: 0 !important;
+    min-height: clamp(56px, 6.2vh, 74px) !important;
+  }
+}
+
+/* =========================================================
+   태블릿 가로 모드(landscape) 로그인 화면 여백 보정
+   - 세로 모드 전용 앱이지만, 가로 모드에서 과도한 좌우 여백이
+     생기지 않도록 login 패널을 화면 너비에 맞게 확장
+   ========================================================= */
+@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) and (pointer: coarse) {
+  /* content-wrapper: 가로 모드에서 중앙 정렬 + 좌우 여백 정상화 */
+  .content-wrapper {
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 16px 32px !important;
+    min-height: 100dvh !important;
   }
 
+  .container {
+    width: 100% !important;
+    max-width: 960px !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* 로그인 패널: 가로 모드에서 가로 공간을 충분히 활용 */
+  #screen-login {
+    width: min(96vw, 680px) !important;
+    max-width: 680px !important;
+    min-height: auto !important;
+    max-height: calc(100dvh - 32px) !important;
+    padding: 20px 28px 22px !important;
+    overflow-y: auto !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+    align-items: flex-start !important;
+  }
+
+  /* 가로 모드: 헤더 대시보드 전체 너비 */
+  #screen-login .header-dashboard {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* 가로 모드: 로그인 영역(instruction + display) 과 키패드를 나란히 */
+  #screen-login .login-instruction-area,
+  #screen-login .keypad-panel {
+    min-width: 0 !important;
+  }
+
+  /* 키패드를 우측, 디스플레이+안내를 좌측에 배치 */
+  #screen-login .keypad-panel {
+    flex: 1 1 280px !important;
+    max-width: 340px !important;
+    margin: 0 auto !important;
+  }
+
+  /* 가로 모드 키버튼 크기 조정 */
+  body[data-current-screen="login"] .keypad-btn {
+    min-height: 62px !important;
+    font-size: 1.7rem !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-current-screen="login"] #keypad-submit-btn {
+    min-height: 54px !important;
+    height: 54px !important;
+    margin-top: 8px !important;
+    font-size: 1.1rem !important;
+    border-radius: 18px !important;
+  }
+
+  /* 타이틀 컨테이너 가로 모드 */
+  #main-title-container {
+    width: 100% !important;
+    max-width: min(96vw, 680px) !important;
+    margin: 0 auto 12px !important;
+  }
+}
+</style><script>
   const observer=new MutationObserver(()=>{
     animateDashboardCounts();
   });
@@ -17570,6 +17654,37 @@ document.addEventListener('DOMContentLoaded', () => {
     margin-top: clamp(14px, 2vh, 24px) !important;
     margin-bottom: 0 !important;
     min-height: clamp(56px, 6.2vh, 74px) !important;
+  }
+}
+
+
+/* =========================================================
+   태블릿 세로 모드(portrait) 로그인 화면 좌우 여백 보정
+   - 태블릿(768px+)에서 #screen-login이 max-width:480px으로
+     고정되어 양옆 여백이 과도하게 생기는 문제 수정
+   ========================================================= */
+@media (min-width: 768px) and (max-width: 1180px) and (orientation: portrait) and (pointer: coarse) {
+  /* ❶ container의 680px 제한 해제 */
+  .container {
+    max-width: 100% !important;
+  }
+
+  /* ❷ screen-login의 480px 제한 해제 */
+  #screen-login {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* ❸ title container도 함께 확장 */
+  #main-title-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* ❹ keypad-panel 내부 좌우 패딩 정상화 */
+  #screen-login .keypad-panel {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
   }
 }
 </style>
