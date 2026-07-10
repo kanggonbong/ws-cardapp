@@ -17688,30 +17688,94 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 }
 
-/* Tablet portrait login: remove desktop width caps without touch detection. */
+/* Tablet portrait login: scale the full login UI with a phone-like keypad ratio. */
 @media (min-width: 768px) and (max-width: 1280px) and (orientation: portrait) {
   body.ws-app[data-current-screen="login"] .container {
     width: 100% !important;
     max-width: none !important;
   }
 
-  body.ws-app[data-current-screen="login"] #main-title-container,
+  body.ws-app[data-current-screen="login"] #main-title-container {
+    width: min(94vw, 760px) !important;
+    max-width: min(94vw, 760px) !important;
+  }
+
   body.ws-app[data-current-screen="login"] #screen-login {
+    width: min(94vw, 760px) !important;
+    max-width: min(94vw, 760px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: clamp(20px, 3vw, 34px) !important;
+    padding-right: clamp(20px, 3vw, 34px) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .main-frame,
+  body.ws-app[data-current-screen="login"] #screen-login .login-frame {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 680px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
     width: 100% !important;
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    max-width: min(620px, 58dvh) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     padding-left: 4px !important;
     padding-right: 4px !important;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .keypad-grid {
     width: 100% !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(10px, 1.5vw, 16px) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-btn {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1.12 / 1 !important;
+    font-size: clamp(1.9rem, 3vw, 2.5rem) !important;
+    border-radius: clamp(20px, 2.5vw, 28px) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login #keypad-add-btn,
+  body.ws-app[data-current-screen="login"] #screen-login #keypad-back-btn {
+    font-size: clamp(1.35rem, 2.2vw, 1.85rem) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn {
+    width: 100% !important;
+    height: clamp(60px, 6.5dvh, 76px) !important;
+    min-height: clamp(60px, 6.5dvh, 76px) !important;
+    aspect-ratio: auto !important;
+    font-size: clamp(1.15rem, 2vw, 1.45rem) !important;
+    border-radius: clamp(18px, 2.2vw, 24px) !important;
+  }
+}
+
+/* Mobile: keep scrolling available but hide the thin browser scrollbar. */
+@media (max-width: 767px) and (orientation: portrait) {
+  html,
+  body,
+  body.ws-app .content-wrapper,
+  body.ws-app .container,
+  body.ws-app #screen-login {
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  body.ws-app .content-wrapper::-webkit-scrollbar,
+  body.ws-app .container::-webkit-scrollbar,
+  body.ws-app #screen-login::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
   }
 }
 </style>
