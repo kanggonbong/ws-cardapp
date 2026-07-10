@@ -17791,19 +17791,19 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Keep the compact added-user state, but restore keypad-like button proportions. */
   body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area.has-users ~ .keypad-panel .keypad-grid {
     width: 100% !important;
-    max-width: 510px !important;
+    max-width: 465px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    gap: clamp(10px, 1.35vw, 14px) !important;
+    gap: clamp(10px, 1.25vw, 13px) !important;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area.has-users ~ .keypad-panel .keypad-btn {
     width: 100% !important;
-    height: clamp(92px, 9dvh, 112px) !important;
-    min-height: clamp(92px, 9dvh, 112px) !important;
+    height: clamp(82px, 8dvh, 96px) !important;
+    min-height: clamp(82px, 8dvh, 96px) !important;
     aspect-ratio: auto !important;
     font-size: clamp(2.15rem, 3.35vw, 2.75rem) !important;
-    border-radius: clamp(20px, 2.5vw, 26px) !important;
+    border-radius: clamp(18px, 2.2vw, 24px) !important;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area.has-users ~ .keypad-panel #keypad-add-btn,
@@ -17824,6 +17824,36 @@ document.addEventListener('DOMContentLoaded', () => {
   body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn i {
     font-size: 1.08em !important;
   }
+}
+
+/* All devices: make keypad boundaries visible while preserving the soft glass UI. */
+body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn) {
+  background: rgba(255, 255, 255, 0.62) !important;
+  border: 1.5px solid rgba(76, 111, 158, 0.22) !important;
+  box-shadow:
+    0 6px 14px rgba(32, 65, 112, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82) !important;
+}
+
+body.ws-app[data-current-screen="login"] #keypad-add-btn {
+  background: rgba(245, 158, 11, 0.10) !important;
+  border-color: rgba(217, 142, 24, 0.28) !important;
+  color: #c58b2a !important;
+}
+
+body.ws-app[data-current-screen="login"] #keypad-back-btn {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(220, 76, 76, 0.24) !important;
+  color: #d34f58 !important;
+}
+
+body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn):active,
+body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn).pressed {
+  background: rgba(230, 240, 253, 0.82) !important;
+  border-color: rgba(49, 130, 246, 0.34) !important;
+  box-shadow:
+    inset 0 4px 10px rgba(48, 91, 151, 0.13),
+    0 2px 5px rgba(32, 65, 112, 0.05) !important;
 }
 
 /* Mobile: keep scrolling available but hide the thin browser scrollbar. */
