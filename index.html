@@ -17687,6 +17687,33 @@ document.addEventListener('DOMContentLoaded', () => {
     padding-right: 4px !important;
   }
 }
+
+/* Tablet portrait login: remove desktop width caps without touch detection. */
+@media (min-width: 768px) and (max-width: 1280px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] .container {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #main-title-container,
+  body.ws-app[data-current-screen="login"] #screen-login {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-grid {
+    width: 100% !important;
+  }
+}
 </style>
 
 
