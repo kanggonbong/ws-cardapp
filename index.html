@@ -17717,9 +17717,42 @@ document.addEventListener('DOMContentLoaded', () => {
     margin-right: auto !important;
   }
 
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+    height: auto !important;
+    min-height: clamp(86px, 8.5dvh, 104px) !important;
+    padding: 10px clamp(16px, 2.5vw, 26px) !important;
+    margin-bottom: clamp(10px, 1.4dvh, 16px) !important;
+    border-radius: clamp(22px, 2.8vw, 28px) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-label {
+    font-size: clamp(.84rem, 1.4vw, 1rem) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-value {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen {
+    width: clamp(170px, 26vw, 210px) !important;
+    height: clamp(68px, 7dvh, 82px) !important;
+    min-height: clamp(68px, 7dvh, 82px) !important;
+    max-height: none !important;
+    padding: 8px 14px !important;
+    border-radius: clamp(18px, 2.2vw, 22px) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen .status-badge-wrap {
+    font-size: clamp(.7rem, 1.15vw, .84rem) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen .status-text-main {
+    font-size: clamp(.94rem, 1.65vw, 1.16rem) !important;
+  }
+
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
     width: 100% !important;
-    max-width: min(620px, 58dvh) !important;
+    max-width: min(590px, 55dvh) !important;
     margin-left: auto !important;
     margin-right: auto !important;
     padding-left: 4px !important;
@@ -17737,22 +17770,27 @@ document.addEventListener('DOMContentLoaded', () => {
     height: auto !important;
     min-height: 0 !important;
     aspect-ratio: 1.12 / 1 !important;
-    font-size: clamp(1.9rem, 3vw, 2.5rem) !important;
+    font-size: clamp(2.05rem, 3.2vw, 2.7rem) !important;
     border-radius: clamp(20px, 2.5vw, 28px) !important;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login #keypad-add-btn,
   body.ws-app[data-current-screen="login"] #screen-login #keypad-back-btn {
-    font-size: clamp(1.35rem, 2.2vw, 1.85rem) !important;
+    font-size: clamp(1.55rem, 2.4vw, 2rem) !important;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn {
     width: 100% !important;
-    height: clamp(60px, 6.5dvh, 76px) !important;
-    min-height: clamp(60px, 6.5dvh, 76px) !important;
+    height: clamp(68px, 7.5dvh, 88px) !important;
+    min-height: clamp(68px, 7.5dvh, 88px) !important;
     aspect-ratio: auto !important;
-    font-size: clamp(1.15rem, 2vw, 1.45rem) !important;
+    gap: clamp(10px, 1.5vw, 14px) !important;
+    font-size: clamp(1.28rem, 2.2vw, 1.6rem) !important;
     border-radius: clamp(18px, 2.2vw, 24px) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn i {
+    font-size: 1.08em !important;
   }
 }
 
