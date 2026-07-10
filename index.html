@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>우성고 카드</title>
 
-    <meta name="theme-color" content="#8b5cf6" />
+    <meta name="theme-color" content="##8b5cf6" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="우성고카드" />
@@ -17368,10 +17368,7 @@ document.addEventListener('DOMContentLoaded', () => {
       var h = window.innerHeight || document.documentElement.clientHeight || 0;
       var hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0 || (navigator.msMaxTouchPoints || 0) > 0;
       var isPortrait = h >= w;
-      /* v159: 행정실 세로 태블릿 기준을 560px부터 허용합니다.
-         일부 태블릿/PWA는 CSS viewport가 600px 안팎으로 잡혀서
-         기존 700px 조건에서는 태블릿 전용 레이아웃이 아예 적용되지 않을 수 있습니다. */
-      var looksLikeOfficeTablet = hasTouch && isPortrait && w >= 560 && w <= 1400 && h >= 760;
+      var looksLikeOfficeTablet = hasTouch && isPortrait && w >= 700 && w <= 1400 && h >= 850;
       document.body.classList.toggle('office-tablet-portrait', !!looksLikeOfficeTablet);
     } catch (e) {}
   }
@@ -17379,7 +17376,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', syncOfficeTabletClass, { passive: true });
   window.addEventListener('orientationchange', syncOfficeTabletClass, { passive: true });
   document.addEventListener('visibilitychange', syncOfficeTabletClass, { passive: true });
-  window.addEventListener('pageshow', syncOfficeTabletClass, { passive: true });
 })();
 </script>
 
@@ -17388,216 +17384,192 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <style id="ws-v156-office-tablet-bottom-anchor-fill">
 /* =========================================================
-   v159 Office portrait tablet final layout
-   - v157/v158처럼 새 덮어쓰기 블록을 추가하지 않고,
-     기존 행정실 태블릿 전용 블록 자체를 최종 형태로 교체합니다.
-   - 모바일/PC는 유지하고, 세로 터치 태블릿에서만 적용됩니다.
-   - CSS viewport가 600px 안팎인 태블릿도 잡도록 560px부터 허용합니다.
+   v156 Office tablet portrait bottom anchor / fill correction
+   - Keeps phone/mobile/desktop rules unchanged.
+   - Lets the shared "처음으로" button sit at the physical bottom
+     on card request and return screens.
+   - Restores the login keypad panel to use the tablet height.
    ========================================================= */
-@media (min-width: 560px) and (max-width: 1280px) and (orientation: portrait) {
+@media (min-width: 700px) and (max-width: 1280px) and (orientation: portrait) {
   body.office-tablet-portrait[data-current-screen="login"],
   body.office-tablet-portrait[data-current-screen="main"],
   body.office-tablet-portrait[data-current-screen="returnDetails"] {
-    min-height: 100svh;
-    min-height: 100dvh;
-    overflow: hidden;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+    overflow: hidden !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] .content-wrapper,
   body.office-tablet-portrait[data-current-screen="main"] .content-wrapper,
   body.office-tablet-portrait[data-current-screen="returnDetails"] .content-wrapper {
-    min-height: 100svh;
-    min-height: 100dvh;
-    padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 12px);
-    align-items: center;
-    justify-content: flex-start;
-    overflow: hidden;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+    padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow: hidden !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] .container,
   body.office-tablet-portrait[data-current-screen="main"] .container,
   body.office-tablet-portrait[data-current-screen="returnDetails"] .container {
-    min-height: calc(100svh - 30px);
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    overflow: hidden;
+    min-height: calc(100svh - clamp(30px, 4.4vh, 54px)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow: hidden !important;
   }
 
-  /* 내선번호 화면: 태블릿 폭을 실제로 쓰는 단일 설계 */
   body.office-tablet-portrait[data-current-screen="login"] #screen-login {
-    width: min(94vw, 760px);
-    max-width: min(94vw, 760px);
-    min-height: calc(100svh - 34px);
-    height: calc(100svh - 34px);
-    max-height: calc(100svh - 34px);
-    margin: 0 auto;
-    padding: clamp(18px, 2.2vh, 28px) clamp(20px, 3.2vw, 34px) clamp(18px, 2.2vh, 28px);
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    overflow: hidden;
-    background: var(--login-surface-main, linear-gradient(180deg,#f4f8fc 0%,#ebf1f8 100%));
-    border: 1px solid var(--app-border);
-    box-shadow: var(--login-shell-shadow);
-    border-radius: 34px;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+    flex: 1 1 auto !important;
+    max-height: none !important;
+    padding: 18px 20px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 28px !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .main-frame,
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .login-frame {
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-    min-height: 0;
-    height: 100%;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    overflow: hidden;
+    min-height: auto !important;
+    height: auto !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .header-dashboard {
-    flex: 0 0 auto;
-    width: 100%;
-    min-height: clamp(82px, 8.8vh, 104px);
-    height: clamp(82px, 8.8vh, 104px);
-    margin-bottom: clamp(12px, 1.8vh, 22px);
-    padding: clamp(10px, 1.4vh, 16px) clamp(12px, 2vw, 20px);
-  }
-
-  body.office-tablet-portrait[data-current-screen="login"] #screen-login .login-instruction-area {
-    flex: 0 0 auto;
-    width: 100%;
+    flex: 0 0 auto !important;
+    margin-bottom: clamp(12px, 1.6dvh, 24px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-panel {
-    flex: 1 1 auto;
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-    min-height: 0;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    overflow: hidden;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypadDisplay,
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
-    flex: 0 0 auto;
-    width: 100%;
-    height: clamp(56px, 6vh, 74px);
-    min-height: clamp(56px, 6vh, 74px);
-    margin: 0 0 clamp(10px, 1.3vh, 16px);
+    flex: 0 0 auto !important;
+    height: clamp(62px, 6.4vh, 82px) !important;
+    min-height: clamp(62px, 6.4vh, 82px) !important;
+    margin-bottom: clamp(10px, 1.2dvh, 16px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-grid {
-    flex: 1 1 auto;
-    width: 100%;
-    min-height: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: repeat(4, minmax(0, 1fr));
-    gap: clamp(10px, 1.35vh, 16px) clamp(12px, 1.8vw, 20px);
-    margin: 0 0 clamp(10px, 1.4vh, 18px);
-    padding: 0;
-    align-content: stretch;
+    flex: 1 1 auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: repeat(4, 1fr) !important;
+    align-content: stretch !important;
+    gap: clamp(10px, 1.2dvh, 16px) clamp(10px, 1.4vw, 16px) !important;
+    margin-bottom: clamp(8px, 1dvh, 14px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login .keypad-btn {
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    aspect-ratio: unset;
-    border-radius: clamp(18px, 2.5vw, 28px);
-    font-size: clamp(1.9rem, 4.1vw, 2.8rem);
+    height: auto !important;
+    min-height: 70px !important;
+    aspect-ratio: unset !important;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem) !important;
+    border-radius: clamp(18px, 2.4vw, 26px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login #keypad-submit-btn {
-    flex: 0 0 auto;
-    width: 100%;
-    height: clamp(62px, 6.8vh, 84px);
-    min-height: clamp(62px, 6.8vh, 84px);
-    margin: 0;
-    border-radius: clamp(20px, 2.7vw, 28px);
-    font-size: clamp(1.08rem, 2.2vw, 1.35rem);
+    flex: 0 0 auto !important;
+    height: clamp(60px, 6.5dvh, 80px) !important;
+    min-height: clamp(60px, 6.5dvh, 80px) !important;
+    margin-top: clamp(8px, 1dvh, 14px) !important;
+    border-radius: clamp(18px, 2.4vw, 24px) !important;
+    box-shadow: none !important;
   }
 
   body.office-tablet-portrait[data-current-screen="login"] #screen-login::before,
   body.office-tablet-portrait[data-current-screen="login"] #screen-login::after,
   body.office-tablet-portrait[data-current-screen="login"] #keypad-submit-btn::after {
-    content: none;
-    display: none;
+    content: none !important;
+    display: none !important;
   }
 
   body.office-tablet-portrait[data-current-screen="main"] #screen-main[data-ws-screen="card-select"],
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
-    width: min(96vw, 920px);
-    max-width: min(96vw, 920px);
-    min-height: auto;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    width: min(96vw, 920px) !important;
+    max-width: min(96vw, 920px) !important;
+    min-height: auto !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
 
   body.office-tablet-portrait[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] {
-    padding: clamp(20px, 2.6vh, 32px) clamp(20px, 2.8vw, 34px);
+    padding: clamp(20px, 2.6vh, 32px) clamp(20px, 2.8vw, 34px) !important;
   }
 
   body.office-tablet-portrait[data-current-screen="main"] #screen-main #card-list-container {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   body.office-tablet-portrait[data-current-screen="main"] #screen-main #cardGrid {
-    flex: 1 1 auto;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: minmax(0, 1fr);
-    align-content: stretch;
-    overflow: hidden;
+    flex: 1 1 auto !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(0, 1fr) !important;
+    align-content: stretch !important;
+    overflow: hidden !important;
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
-    padding: clamp(24px, 3vh, 38px) clamp(28px, 4vw, 48px);
-    justify-content: flex-start;
+    padding: clamp(24px, 3vh, 38px) clamp(28px, 4vw, 48px) !important;
+    justify-content: flex-start !important;
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #return-form-container {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray {
-    flex: 1 1 auto;
-    max-height: none;
-    min-height: 0;
-    overflow-y: auto;
+    flex: 1 1 auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
   }
 
   body.office-tablet-portrait[data-current-screen="main"] #btn-back,
   body.office-tablet-portrait[data-current-screen="returnDetails"] #btn-back {
-    flex: 0 0 auto;
-    align-self: center;
-    margin-top: clamp(14px, 2vh, 24px);
-    margin-bottom: 0;
-    min-height: clamp(56px, 6.2vh, 74px);
+    flex: 0 0 auto !important;
+    align-self: center !important;
+    margin-top: clamp(14px, 2vh, 24px) !important;
+    margin-bottom: 0 !important;
+    min-height: clamp(56px, 6.2vh, 74px) !important;
   }
 }
 </style>
