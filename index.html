@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>우성고 카드</title>
 
-    <link rel="manifest" href="./manifest.json" />
-    <meta name="theme-color" content="#f2f4f6" />
+    <meta name="theme-color" content="##8b5cf6" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="우성고카드" />
@@ -12104,6 +12103,283 @@ body[data-current-screen="confirmation"].confirmation-result-mode #screen-confir
     padding-bottom: 16px !important;
   }
 }
+
+/* =========================================================
+   PEARL WHITE TERMINAL THEME
+   One display surface + one keypad surface, no stacked glass cards.
+   ========================================================= */
+body.ws-app[data-current-screen="login"],
+body.ws-app[data-current-screen="login"] .content-wrapper {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(224, 242, 254, 0.96) 0%, transparent 50%),
+    radial-gradient(circle at 100% 0%, rgba(230, 253, 245, 0.88) 0%, transparent 48%),
+    radial-gradient(circle at 100% 100%, rgba(250, 232, 255, 0.90) 0%, #f8fafc 100%) !important;
+}
+
+body.ws-app[data-current-screen="login"] #main-title-container .inset-box {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #main-title-container .inset-box h2 {
+  color: #173a67 !important;
+  -webkit-text-fill-color: #173a67 !important;
+  text-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(246, 244, 250, 0.76) 100%) !important;
+  border: 1px solid rgba(210, 214, 226, 0.92) !important;
+  border-radius: 32px !important;
+  box-shadow:
+    0 18px 42px rgba(72, 67, 92, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Single white information display. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid #d2d6e2 !important;
+  border-radius: 22px !important;
+  box-shadow: 0 8px 20px rgba(72, 67, 92, 0.07) !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item {
+  min-height: clamp(58px, 6.5dvh, 74px) !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item:first-child {
+  border-right: 1px solid #dfe1e9 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .dashboard-center-screen + .stat-item {
+  border-left: 1px solid #dfe1e9 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-label {
+  color: #60758f !important;
+  -webkit-text-fill-color: #60758f !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-value {
+  color: #1f5fae !important;
+  -webkit-text-fill-color: #1f5fae !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen {
+  position: relative !important;
+  background: #eaf3ff !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen::after {
+  left: 32% !important;
+  right: 32% !important;
+  height: 3px !important;
+  background: #3182f6 !important;
+  opacity: 1 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen .status-badge-wrap,
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen .status-text-main {
+  color: #234f87 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success {
+  background: #e8f7f1 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success::after {
+  background: #10b981 !important;
+}
+
+/* One solid keypad deck. */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+  position: relative !important;
+  isolation: auto !important;
+  background: linear-gradient(180deg, #eef0f5 0%, #f0ecf6 100%) !important;
+  border: 1px solid #d2d6e2 !important;
+  border-radius: 26px !important;
+  box-shadow:
+    inset 0 2px 7px rgba(79, 74, 99, 0.07),
+    0 8px 18px rgba(72, 67, 92, 0.06) !important;
+  padding: clamp(14px, 2vw, 22px) !important;
+  overflow: hidden !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+  content: none !important;
+  display: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel > * {
+  position: relative !important;
+  z-index: auto !important;
+}
+
+/* PIN display becomes the device display strip. */
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+  width: 100% !important;
+  max-width: none !important;
+  height: clamp(62px, 7dvh, 78px) !important;
+  min-height: clamp(62px, 7dvh, 78px) !important;
+  margin: 0 0 clamp(12px, 1.5dvh, 18px) !important;
+  padding: 0 clamp(12px, 2vw, 20px) !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  column-gap: clamp(8px, 1.4vw, 14px) !important;
+  justify-items: center !important;
+  align-items: center !important;
+  background: rgba(255, 255, 255, 0.66) !important;
+  border: 1px solid #d5d8e2 !important;
+  border-radius: 18px !important;
+  box-shadow: inset 0 2px 5px rgba(79, 74, 99, 0.06) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel .keypad-grid {
+  padding: 0 !important;
+}
+
+body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn) {
+  background: #ffffff !important;
+  border: 1.5px solid #d2d6e2 !important;
+  border-radius: 18px !important;
+  color: #274b73 !important;
+  box-shadow:
+    0 4px 10px rgba(72, 67, 92, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+}
+
+body.ws-app[data-current-screen="login"] #keypad-add-btn {
+  background: #fff9ef !important;
+  border-color: #ead5ad !important;
+  color: #c28a32 !important;
+}
+
+body.ws-app[data-current-screen="login"] #keypad-back-btn {
+  background: #fff4f4 !important;
+  border-color: #ebc6ca !important;
+  color: #d44e59 !important;
+}
+
+body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn):active,
+body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn).pressed {
+  background: #e8f1fb !important;
+  border-color: #8db4df !important;
+  box-shadow: inset 0 4px 9px rgba(48, 91, 151, 0.13) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn {
+  background: #d9dce3 !important;
+  border: 1px solid #ced2db !important;
+  color: #7b8290 !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn:not(:disabled) {
+  background: #3182f6 !important;
+  border-color: #2874df !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 18px rgba(49, 130, 246, 0.24) !important;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login {
+    border-radius: 28px !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+    padding: 12px !important;
+    border-radius: 24px !important;
+  }
+
+  body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn) {
+    border-radius: 16px !important;
+  }
+}
+
+/* Tablet portrait: ultra-light security scan for low-spec kiosk hardware. */
+@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) {
+  #security-scan-overlay {
+    background: #f4f7fb !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+    transition: opacity 0.14s linear, visibility 0s linear 0.14s !important;
+    contain: strict;
+  }
+
+  #security-scan-overlay.active {
+    transition: opacity 0.14s linear, visibility 0s linear 0s !important;
+  }
+
+  #security-scan-overlay.exit {
+    transform: none !important;
+    transition: opacity 0.12s linear !important;
+  }
+
+  #security-scan-overlay .scan-box,
+  #security-scan-overlay .scan-box.success {
+    background: #ffffff !important;
+    border: 1px solid #d5dde7 !important;
+    box-shadow: none !important;
+    transform: translateZ(0) !important;
+    transition: border-color 0.12s linear, background-color 0.12s linear !important;
+    contain: paint;
+  }
+
+  #security-scan-overlay .scan-icon,
+  #security-scan-overlay .scan-box.success .scan-icon {
+    transform: none !important;
+    transition: color 0.12s linear !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  #security-scan-overlay .scan-text {
+    transform: none !important;
+    transition: opacity 0.12s linear !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  #security-scan-overlay .scan-text.fade-in,
+  #security-scan-overlay .scan-text.fade-out {
+    transform: none !important;
+  }
+
+  #security-scan-overlay .laser {
+    height: 2px !important;
+    background: #3182f6 !important;
+    box-shadow: none !important;
+    filter: none !important;
+    transform: translate3d(0, -4px, 0);
+    will-change: transform;
+  }
+
+  #security-scan-overlay.active .scan-box.scanning .laser {
+    animation: ws-security-laser-tablet-lite 0.78s linear forwards !important;
+  }
+}
+
+@keyframes ws-security-laser-tablet-lite {
+  from { transform: translate3d(0, -4px, 0); }
+  to { transform: translate3d(0, 144px, 0); }
+}
 </style>
 
 
@@ -17919,6 +18195,167 @@ body.ws-app[data-current-screen="login"] .keypad-btn:not(#keypad-submit-btn).pre
 @keyframes ws-security-laser-smooth-sweep {
   from { transform: translate3d(0, -8px, 0); }
   to { transform: translate3d(0, 148px, 0); }
+}
+
+/* Login dashboard: static three-zone emphasis with no continuous animation. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  gap: clamp(8px, 1.4vw, 14px) !important;
+  background: rgba(255, 255, 255, 0.54) !important;
+  border: 1.5px solid rgba(76, 111, 158, 0.24) !important;
+  box-shadow:
+    0 10px 24px rgba(32, 65, 112, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item {
+  min-height: clamp(54px, 6.2dvh, 70px) !important;
+  padding: 8px clamp(8px, 1.4vw, 14px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid transparent !important;
+  border-radius: clamp(15px, 2vw, 20px) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item:first-child {
+  background: rgba(49, 130, 246, 0.09) !important;
+  border-color: rgba(49, 130, 246, 0.19) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .dashboard-center-screen + .stat-item {
+  background: rgba(124, 92, 220, 0.08) !important;
+  border-color: rgba(124, 92, 220, 0.18) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item:first-child .stat-label {
+  color: #3d6fae !important;
+  -webkit-text-fill-color: #3d6fae !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item:first-child .stat-value {
+  color: #2563d6 !important;
+  -webkit-text-fill-color: #2563d6 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .dashboard-center-screen + .stat-item .stat-label {
+  color: #68549d !important;
+  -webkit-text-fill-color: #68549d !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .dashboard-center-screen + .stat-item .stat-value {
+  color: #7654c7 !important;
+  -webkit-text-fill-color: #7654c7 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-label,
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-value {
+  font-weight: 950 !important;
+  text-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen {
+  position: relative !important;
+  background: linear-gradient(180deg, rgba(239, 246, 255, 0.98), rgba(224, 237, 252, 0.96)) !important;
+  border: 1.5px solid rgba(49, 130, 246, 0.30) !important;
+  box-shadow:
+    0 6px 14px rgba(49, 95, 157, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 28% !important;
+  right: 28% !important;
+  bottom: 0 !important;
+  height: 3px !important;
+  border-radius: 999px 999px 0 0 !important;
+  background: #3182f6 !important;
+  opacity: 0.78 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen .status-badge-wrap,
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen .status-text-main {
+  color: #234f87 !important;
+  text-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success {
+  background: linear-gradient(180deg, rgba(238, 252, 247, 0.98), rgba(220, 246, 236, 0.96)) !important;
+  border-color: rgba(16, 185, 129, 0.34) !important;
+  box-shadow:
+    0 6px 14px rgba(16, 120, 91, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success::after {
+  background: #10b981 !important;
+}
+
+/* Keypad zone: transparent display area + softly separated control tray. */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+  position: relative !important;
+  isolation: isolate;
+  width: 100% !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 clamp(12px, 1.8vw, 20px) clamp(12px, 1.8vw, 20px) !important;
+  overflow: visible !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  top: clamp(68px, 7.8dvh, 86px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  border-radius: clamp(24px, 3.2vw, 34px) !important;
+  background: linear-gradient(
+    180deg,
+    rgba(234, 243, 253, 0.82) 0%,
+    rgba(241, 241, 252, 0.80) 56%,
+    rgba(248, 239, 251, 0.78) 100%
+  ) !important;
+  border: 1.5px solid rgba(91, 123, 166, 0.20) !important;
+  box-shadow:
+    inset 0 2px 8px rgba(55, 87, 132, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 10px 24px rgba(32, 65, 112, 0.06) !important;
+  pointer-events: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel .keypad-grid {
+  padding-top: clamp(12px, 1.5dvh, 18px) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel #keypad-submit-btn {
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-bottom: 10px !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+    top: 62px !important;
+    border-radius: 24px !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel .keypad-grid {
+    padding-top: 10px !important;
+  }
 }
 
 /* Mobile: keep scrolling available but hide the thin browser scrollbar. */
