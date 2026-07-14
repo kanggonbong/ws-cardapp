@@ -12380,6 +12380,659 @@ body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn:not(:d
   from { transform: translate3d(0, -4px, 0); }
   to { transform: translate3d(0, 144px, 0); }
 }
+
+/* Receipt attachment cards: make uploaded receipts unmistakable. */
+body.ws-app[data-current-screen="returnDetails"] #receipt-cart-container:not(.empty-cart)::before {
+  content: "첨부된 영수증  " attr(data-receipt-count) "건";
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 4px;
+  color: #24558f;
+  font-size: clamp(.98rem, 1.8vw, 1.18rem);
+  font-weight: 950;
+  letter-spacing: -.02em;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
+  position: relative !important;
+  min-height: 118px !important;
+  display: grid !important;
+  grid-template-columns: 76px minmax(0, 1fr) auto 50px !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 16px 14px 16px 16px !important;
+  overflow: hidden !important;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f0fbf7 0%, #f6fbff 58%, #ffffff 100%) !important;
+  border: 1.5px solid rgba(45, 157, 122, 0.34) !important;
+  border-left: 6px solid #20b486 !important;
+  border-radius: 22px !important;
+  box-shadow: 0 10px 24px rgba(37, 91, 115, 0.10) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card:hover {
+  transform: none !important;
+  filter: none !important;
+  border-color: rgba(37, 118, 179, 0.42) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  color: #24558f;
+  font-size: 2rem;
+  background: #ffffff;
+  border: 1px solid #cddbe7;
+  border-radius: 18px;
+  box-shadow: 0 5px 12px rgba(37, 91, 115, 0.09);
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-info {
+  gap: 6px !important;
+  overflow: visible !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: max-content;
+  padding: 5px 9px;
+  color: #087a5b;
+  font-size: .75rem;
+  font-weight: 950;
+  line-height: 1;
+  background: #dcf7ed;
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: 999px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-preview-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #5f7897;
+  font-size: .73rem;
+  font-weight: 800;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-place {
+  color: #173f6c !important;
+  font-size: clamp(.98rem, 1.8vw, 1.14rem) !important;
+  font-weight: 950 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-amount {
+  color: #1d5596 !important;
+  -webkit-text-fill-color: #1d5596 !important;
+  font-size: clamp(1.05rem, 2vw, 1.25rem) !important;
+  font-weight: 950 !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
+  position: static !important;
+  transform: none !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  padding: 0 !important;
+  border-radius: 16px !important;
+}
+
+@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
+    min-height: 132px !important;
+    grid-template-columns: 86px minmax(0, 1fr) auto 56px !important;
+    gap: 17px !important;
+    padding: 18px 16px 18px 18px !important;
+    border-left-width: 7px !important;
+    border-radius: 24px !important;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
+    width: 86px;
+    height: 86px;
+    border-radius: 20px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-badge {
+    padding: 6px 11px;
+    font-size: .84rem;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-preview-hint {
+    font-size: .8rem;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
+    width: 54px !important;
+    height: 54px !important;
+    min-width: 54px !important;
+  }
+}
+
+@media (max-width: 699px) {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
+    min-height: 104px !important;
+    grid-template-columns: 62px minmax(0, 1fr) auto 44px !important;
+    gap: 9px !important;
+    padding: 12px 10px 12px 12px !important;
+    border-left-width: 5px !important;
+    border-radius: 19px !important;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
+    width: 62px;
+    height: 62px;
+    border-radius: 15px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-preview-hint {
+    display: none;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* =========================================================
+   RETURN REVIEW CONSOLE
+   Compact summary + validation-driven receipt colors.
+   ========================================================= */
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details > #return-screen-title,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #receipt-dashboard {
+  display: none !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #return-form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(12px, 1.8vh, 18px) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
+  width: 100%;
+  min-height: 112px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(170px, .72fr);
+  align-items: center;
+  gap: 18px;
+  padding: 18px 22px;
+  background: rgba(255, 255, 255, 0.90);
+  border: 1px solid #d5dce7;
+  border-radius: 24px;
+  box-shadow: 0 10px 26px rgba(42, 72, 112, 0.08);
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-identity,
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-kicker,
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount > span {
+  color: #71839b;
+  font-size: .78rem;
+  font-weight: 850;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-card-name {
+  color: #173f6c;
+  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-user {
+  color: #647892;
+  font-size: .92rem;
+  font-weight: 800;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
+  max-width: 260px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 14px;
+  color: #1f5fae;
+  font-size: .88rem;
+  font-weight: 950;
+  text-align: center;
+  background: #edf5ff;
+  border: 1px solid #c8dcf5;
+  border-radius: 999px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
+  align-items: flex-end;
+  padding-left: 18px;
+  border-left: 1px solid #dfe5ed;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount strong {
+  color: #1b4f8d;
+  font-size: clamp(1.7rem, 3.5vw, 2.35rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray {
+  padding-top: 0 !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary {
+  width: 100%;
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  color: #35597f;
+  background: #f6f9fc;
+  border: 1px solid #d6e0ea;
+  border-radius: 18px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-label {
+  font-size: .84rem;
+  font-weight: 850;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-main strong {
+  color: #173f6c;
+  font-size: 1.12rem;
+  font-weight: 950;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 10px;
+  font-size: .78rem;
+  font-weight: 900;
+  border-radius: 999px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-count.is-complete {
+  color: #087a5b;
+  background: #e4f8f1;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-count.is-incomplete {
+  color: #c13d4b;
+  background: #fff0f1;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary.all-complete {
+  background: #f0fbf7;
+  border-color: #bfe8da;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary.has-issues {
+  background: #fff8f8;
+  border-color: #f1c5ca;
+}
+
+/* Incomplete always wins over attachment/purpose styling. */
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card.receipt-state-incomplete {
+  animation: none !important;
+  background: linear-gradient(135deg, #fff2f3 0%, #fff8f8 62%, #ffffff 100%) !important;
+  border-color: rgba(224, 72, 87, 0.48) !important;
+  border-left-color: #e44857 !important;
+  box-shadow: 0 10px 24px rgba(190, 55, 70, 0.10) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-badge.is-incomplete {
+  color: #b82f3f !important;
+  background: #ffe1e4 !important;
+  border-color: #f2b7bd !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-state-incomplete .receipt-detail-hashtag {
+  color: #bd3544 !important;
+  background: #fff0f1 !important;
+  border: 1px solid #f0c1c6 !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-badge.is-complete {
+  color: #087a5b !important;
+  background: #dcf7ed !important;
+  border-color: rgba(16, 185, 129, 0.24) !important;
+}
+
+/* Completed cards switch to purpose colors. */
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-state-complete.receipt-purpose-meal {
+  background: linear-gradient(135deg, #effbf6 0%, #f8fffc 100%) !important;
+  border-color: rgba(32, 180, 134, 0.38) !important;
+  border-left-color: #20b486 !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-state-complete.receipt-purpose-dining {
+  background: linear-gradient(135deg, #fff8ee 0%, #fffdf9 100%) !important;
+  border-color: rgba(227, 145, 45, 0.38) !important;
+  border-left-color: #e3912d !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-state-complete.receipt-purpose-purchase {
+  background: linear-gradient(135deg, #eef6ff 0%, #fbfdff 100%) !important;
+  border-color: rgba(49, 130, 246, 0.34) !important;
+  border-left-color: #3182f6 !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-state-complete.receipt-purpose-neutral {
+  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%) !important;
+  border-color: #cfd8e3 !important;
+  border-left-color: #8496ab !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #add-receipt-btn.receipt-dropzone-btn {
+  min-height: 70px !important;
+  padding: 12px 16px !important;
+  border-radius: 20px !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #submit-guide {
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 10px 14px !important;
+  border-radius: 16px !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #submit-cart-btn {
+  position: sticky;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 20;
+  min-height: 60px !important;
+  box-shadow: 0 12px 26px rgba(49, 95, 157, 0.22) !important;
+}
+
+@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
+    min-height: 118px;
+    padding: 18px 24px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #add-receipt-btn.receipt-dropzone-btn {
+    min-height: 72px !important;
+  }
+}
+
+@media (max-width: 699px) {
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
+    min-height: 142px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    padding: 14px 15px;
+    border-radius: 21px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+    padding: 7px 11px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
+    padding-left: 12px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    padding: 9px 10px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-main {
+    grid-column: 1 / -1;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-count {
+    justify-content: center;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #add-receipt-btn.receipt-dropzone-btn {
+    min-height: 60px !important;
+    padding: 9px 12px !important;
+  }
+}
+
+/* Return summary hierarchy refresh: terminal header + slim readiness meter. */
+body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
+  position: relative;
+  isolation: isolate;
+  width: min(92%, 620px);
+  min-height: 172px;
+  align-self: center;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  grid-template-areas:
+    "icon identity"
+    "purpose purpose"
+    "amount amount";
+  justify-items: center;
+  gap: 8px 12px;
+  padding: 20px 28px 22px;
+  overflow: hidden;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% -35%, rgba(120, 151, 226, .20), transparent 58%),
+    linear-gradient(145deg, rgba(255,255,255,.98), rgba(247,245,255,.96));
+  border: 1px solid rgba(159, 174, 211, .48);
+  border-radius: 28px;
+  box-shadow: 0 16px 34px rgba(48, 65, 116, .12), inset 0 1px 0 #fff;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-compact::before {
+  content: "";
+  position: absolute;
+  inset: 0 18% auto;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #7b8fe8, #a77adb, transparent);
+  border-radius: 0 0 999px 999px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-icon {
+  grid-area: icon;
+  width: 48px;
+  height: 48px;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 1.2rem;
+  background: linear-gradient(145deg, #5678cc, #765db8);
+  border-radius: 17px;
+  box-shadow: 0 9px 18px rgba(86, 94, 172, .24);
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-identity {
+  grid-area: identity;
+  align-items: flex-start;
+  text-align: left;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-kicker {
+  color: #75839a;
+  font-size: .72rem;
+  letter-spacing: .12em;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-card-name {
+  font-size: clamp(1.55rem, 3.2vw, 2rem);
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
+  grid-area: purpose;
+  max-width: 92%;
+  padding: 7px 13px;
+  font-size: .82rem;
+  background: rgba(237, 242, 255, .88);
+  border-color: #ccd6f0;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
+  grid-area: amount;
+  width: 100%;
+  align-items: center;
+  padding: 11px 0 0;
+  border-left: 0;
+  border-top: 1px solid rgba(174, 184, 208, .42);
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount strong {
+  font-size: clamp(2rem, 5vw, 2.65rem);
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary,
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary.has-issues,
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary.all-complete {
+  min-height: 68px;
+  grid-template-columns: minmax(140px, auto) minmax(120px, 1fr) auto;
+  gap: 14px;
+  padding: 11px 16px;
+  background: rgba(255,255,255,.62);
+  border-color: rgba(184, 194, 214, .56);
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-main {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 1px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-main strong {
+  font-size: .98rem;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-progress {
+  height: 9px;
+  overflow: hidden;
+  background: #e5e9f1;
+  border-radius: 999px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #6e8be0, #35b892);
+  border-radius: inherit;
+  transition: width .25s ease;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-result {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  color: #087a5b;
+  font-size: .78rem;
+  font-weight: 900;
+  white-space: nowrap;
+  background: #e4f8f1;
+  border-radius: 999px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .receipt-status-result.needs-check {
+  color: #b84552;
+  background: #fff0f1;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #submit-guide:not(.visible) {
+  display: none !important;
+}
+
+@media (max-width: 699px) {
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
+    width: min(94%, 520px);
+    min-height: 162px;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 7px 10px;
+    padding: 17px 18px 19px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 15px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: center;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
+    padding-left: 0;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary,
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary.has-issues,
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary.all-complete {
+    grid-template-columns: 1fr auto;
+    gap: 8px 10px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-main {
+    grid-column: auto;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-progress {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .receipt-status-result {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
 </style>
 
 
@@ -12517,6 +13170,178 @@ body[data-current-screen="confirmation"].confirmation-result-mode .confirm-timer
 }
 </style>
 
+<style id="ws-return-summary-balanced-v2">
+/* Smaller centered return terminal panel. */
+body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
+  width: min(82%, 520px);
+  min-height: 126px;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "identity"
+    "purpose"
+    "amount";
+  gap: 5px;
+  padding: 14px 24px 16px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-icon {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  width: 38px;
+  height: 38px;
+  font-size: 1rem;
+  border-radius: 13px;
+  opacity: .92;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-identity {
+  width: 100%;
+  align-items: center;
+  gap: 1px;
+  padding: 0;
+  text-align: center;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-kicker,
+body.ws-app[data-current-screen="returnDetails"] .return-summary-card-name,
+body.ws-app[data-current-screen="returnDetails"] .return-summary-user {
+  width: 100%;
+  text-align: center;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-card-name {
+  font-size: clamp(1.4rem, 2.7vw, 1.72rem);
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-user {
+  font-size: .82rem;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
+  justify-self: center;
+  max-width: 88%;
+  padding: 6px 12px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
+  padding-top: 8px;
+  gap: 1px;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount > span {
+  text-align: center;
+}
+
+body.ws-app[data-current-screen="returnDetails"] .return-summary-amount strong {
+  font-size: clamp(1.75rem, 4.2vw, 2.2rem);
+  text-align: center;
+}
+
+@media (max-width: 699px) {
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
+    width: min(90%, 470px);
+    min-height: 120px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "identity"
+      "purpose"
+      "amount";
+    gap: 5px;
+    padding: 12px 16px 14px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-icon {
+    top: 13px;
+    left: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] .return-summary-identity {
+    padding: 0;
+  }
+}
+</style>
+<style id="ws-login-spacing-delete-unify-v1">
+/* Default login: give the PIN display equal breathing room above and below. */
+body.ws-app[data-current-screen="login"] #screen-login .login-frame:has(.login-instruction-area:not(.has-users)) .header-dashboard {
+  margin-bottom: 0 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area:not(.has-users) {
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area:not(.has-users) ~ .keypad-panel #keypadDisplay,
+body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area:not(.has-users) ~ .keypad-panel #keypadDisplay.display-area {
+  margin-top: clamp(16px, 2dvh, 22px) !important;
+  margin-bottom: clamp(16px, 2dvh, 22px) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area:not(.has-users) ~ .keypad-panel .keypad-grid {
+  padding-top: 0 !important;
+}
+
+/* Main and companion removal actions share one clear trash-button language. */
+body.ws-app[data-current-screen="login"] #screen-login .main-reset-btn,
+body.ws-app[data-current-screen="login"] #screen-login .companion-remove-btn {
+  position: relative !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #d83e4f !important;
+  background: #fff0f2 !important;
+  border: 1px solid #f2bdc4 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 10px rgba(190, 55, 70, .10) !important;
+  cursor: pointer !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .main-reset-btn i,
+body.ws-app[data-current-screen="login"] #screen-login .companion-remove-btn i {
+  display: block !important;
+  color: inherit !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .main-reset-btn:hover,
+body.ws-app[data-current-screen="login"] #screen-login .companion-remove-btn:hover {
+  color: #fff !important;
+  background: #e44a59 !important;
+  border-color: #e44a59 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .main-reset-btn:active,
+body.ws-app[data-current-screen="login"] #screen-login .companion-remove-btn:active {
+  transform: scale(.92) !important;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area:not(.has-users) ~ .keypad-panel #keypadDisplay,
+  body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area:not(.has-users) ~ .keypad-panel #keypadDisplay.display-area {
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .main-reset-btn,
+  body.ws-app[data-current-screen="login"] #screen-login .companion-remove-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+}
+</style>
 </head>
 <body class="variant-lockscreen ws-app" data-current-screen="welcome" data-ws-foundation="2026-06-15" data-ws-page="card-system">
 <!-- ===== HTML: APP SHELL =====
@@ -14220,7 +15045,7 @@ const CardApp = (function() {
                     </span>
                 </div>
                 <button class="main-reset-btn" id="btn-remove-main" type="button" title="전체 초기화" aria-label="전체 사용자 초기화">
-                    <i class="fa-solid fa-rotate-left"></i>
+                    <i class="fa-solid fa-trash-can"></i>
                 </button>
             `;
             const btnRemoveMain = document.getElementById('btn-remove-main');
@@ -14249,7 +15074,7 @@ const CardApp = (function() {
                         <span class="name">${extLabel}</span>
                     </div>
                     <button class="companion-remove-btn" type="button" aria-label="내선번호 ${extLabel} 삭제">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i class="fa-solid fa-trash-can"></i>
                     </button>
                 `;
                 const removeBtn = chip.querySelector('.companion-remove-btn');
@@ -14677,12 +15502,26 @@ const CardApp = (function() {
             const displayEmoji = semanticMeta.emoji || '🛍️';
             const displayToneClass = semanticMeta.tone;
             const detailBadgeClass = semanticMeta.badgeClass;
-            const detailBadgeText = detailTextRaw ? `#${String(detailTextRaw).replace(/^#+/, '')}` : '#내역없음';
-            const detailBadgeHTML = `<span class="receipt-detail-hashtag ${detailTextRaw ? detailBadgeClass : 'tag-neutral'}">${Utils.esc(detailBadgeText)}</span>`;
+            const detailBadgeText = detailTextRaw ? `#${String(detailTextRaw).replace(/^#+/, '')}` : '터치해서 사용내용 입력';
+            const detailBadgeHTML = `<span class="receipt-detail-hashtag ${detailTextRaw ? detailBadgeClass : 'tag-neutral'}">${needDetails ? '<i class="fa-solid fa-pen" aria-hidden="true"></i> ' : ''}${Utils.esc(detailBadgeText)}</span>`;
+            const previewRaw = String(it.receiptImagePreview || it.previewImage || '');
+            const previewSrc = /^(data:image\/|blob:|https?:\/\/)/i.test(previewRaw) ? Utils.esc(previewRaw) : '';
+            const receiptVisualHTML = previewSrc
+                ? `<div class="receipt-card-visual has-preview"><img src="${previewSrc}" alt="첨부된 영수증 미리보기" loading="lazy" decoding="async"></div>`
+                : `<div class="receipt-card-visual ${displayToneClass}" aria-hidden="true">${Utils.esc(displayEmoji)}</div>`;
+            const receiptStateClass = needWarn ? 'receipt-state-incomplete' : 'receipt-state-complete';
+            const receiptPurposeClass = `receipt-purpose-${semanticMeta.semanticType || 'neutral'}`;
+            const receiptStateBadge = needWarn
+                ? `<span class="receipt-attached-badge is-incomplete"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> 내용 입력 필요</span>`
+                : `<span class="receipt-attached-badge is-complete"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> 입력 완료</span>`;
 
-            return `<div class="cart-item with-inline-actions ${cls} ${itemIsMeal ? 'meal-expense-item' : ''}" data-index="${i}" ${processing?`data-processing-text="${Utils.esc(CardLogic.getReceiptProcessingLabel(processing))}"`:''}>
-                <div class="cart-item-icon ${displayToneClass} receipt-emoji-icon" aria-hidden="true">${Utils.esc(displayEmoji)}</div>
+            return `<div class="cart-item receipt-attached-card ${receiptStateClass} ${receiptPurposeClass} with-inline-actions ${cls} ${itemIsMeal ? 'meal-expense-item' : ''}" data-index="${i}" ${processing?`data-processing-text="${Utils.esc(CardLogic.getReceiptProcessingLabel(processing))}"`:''}>
+                ${receiptVisualHTML}
                 <div class="cart-item-info">
+                    <div class="receipt-card-meta-row">
+                        ${receiptStateBadge}
+                        <span class="receipt-preview-hint"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 크게 보기</span>
+                    </div>
                     <span class="cart-item-place">${placeText}</span>
                     <span class="cart-item-details">${detailBadgeHTML}${adjustedNote}${needWarn ? ` <span class="review-pointer"><i class="fa-solid fa-hand-pointer"></i></span>` : ''}</span>
                 </div>
@@ -15437,6 +16276,23 @@ const CardApp = (function() {
                         ${purposeEmoji ? `<span class="return-purpose-emoji" aria-hidden="true">${Utils.esc(purposeEmoji)}</span>` : ``}${Utils.esc(purpose)}
                     </div>` : ''}
                 </div>`;
+
+            const compactSummary = document.createElement('section');
+            compactSummary.className = 'return-summary-compact';
+            compactSummary.setAttribute('aria-label', '반납 카드 요약');
+            compactSummary.innerHTML = `
+                <div class="return-summary-identity">
+                    <strong class="return-summary-card-name">${Utils.esc(card.displayName)}</strong>
+                    <span class="return-summary-user">${Utils.esc(card.userInfo.userName)}</span>
+                </div>
+                <div class="return-summary-purpose ${purposeBadgeClass}">
+                    ${purposeEmoji ? `<span aria-hidden="true">${Utils.esc(purposeEmoji)}</span>` : ''}
+                    <span>${Utils.esc(purpose || '일반카드사용')}</span>
+                </div>
+                <div class="return-summary-amount">
+                    <span>총 사용 금액</span>
+                    <strong id="return-summary-total">0원</strong>
+                </div>`;
             
             // v12: 반납 화면에서는 서버 조회로 화면을 막지 않습니다.
             // 잠금화면 클릭 직후 시작한 백그라운드 프리로드 결과(card.savedCart)를 즉시 사용합니다.
@@ -15450,7 +16306,13 @@ const CardApp = (function() {
             const add = document.createElement('button');
             add.id='add-receipt-btn';
             add.className='simple-btn accent receipt-dropzone-btn';
-            add.innerHTML='<span class="receipt-dropzone-main">+ 영수증 첨부</span><span class="receipt-dropzone-sub">#클릭 또는 드래그</span>';
+            add.innerHTML=`
+                <span class="receipt-add-icon" aria-hidden="true"><i class="fa-solid fa-camera"></i><b>+</b></span>
+                <span class="receipt-add-copy">
+                    <span class="receipt-dropzone-main">영수증 추가 첨부</span>
+                    <span class="receipt-dropzone-sub">사진 촬영 · 갤러리 선택 · 드래그</span>
+                </span>
+                <span class="receipt-add-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>`;
             add.disabled = false;
             add.onclick=()=>CardLogic.triggerImageSelection(-1);
             ['dragenter','dragover'].forEach(evtName => {
@@ -15470,7 +16332,7 @@ const CardApp = (function() {
                     ev.stopPropagation();
                     add.classList.remove('drag-over');
                     const sub = add.querySelector('.receipt-dropzone-sub');
-                    if (sub) sub.textContent = '#클릭 또는 드래그';
+                    if (sub) sub.textContent = '사진 촬영 · 갤러리 선택 · 드래그';
                 });
             });
             add.addEventListener('drop', (ev) => {
@@ -15478,7 +16340,7 @@ const CardApp = (function() {
                 ev.stopPropagation();
                 add.classList.remove('drag-over');
                 const sub = add.querySelector('.receipt-dropzone-sub');
-                if (sub) sub.textContent = '#클릭 또는 드래그';
+                if (sub) sub.textContent = '사진 촬영 · 갤러리 선택 · 드래그';
                 if (add.disabled) return;
                 const droppedFiles = ev.dataTransfer && ev.dataTransfer.files ? ev.dataTransfer.files : null;
                 if (droppedFiles && droppedFiles.length) CardLogic.handleReceiptFiles(droppedFiles);
@@ -15486,6 +16348,10 @@ const CardApp = (function() {
             const cw = document.createElement('div');
             cw.className='cart-wrapper';
             cw.appendChild(Object.assign(document.createElement('div'),{id:'receipt-cart-container'}));
+            const receiptStatusSummary = document.createElement('div');
+            receiptStatusSummary.id = 'receipt-status-summary';
+            receiptStatusSummary.className = 'receipt-status-summary';
+            receiptStatusSummary.setAttribute('aria-live', 'polite');
             const guide = document.createElement('div');
             guide.id = 'submit-guide';
             guide.className = 'submit-guide';
@@ -15504,8 +16370,8 @@ const CardApp = (function() {
                 msg.innerHTML = `※ 행정실 카드 반납 시 태블릿의 <b class="return-submit-emphasis">[반납 및 제출]</b> 버튼을 꼭 눌러주세요.`;
                 subEl = msg;
             }
-            returnTray.appendChild(cw);
-            form.append(returnTray, add, guide, subEl);
+            returnTray.append(receiptStatusSummary, add, cw);
+            form.append(compactSummary, returnTray, guide, subEl);
             
             
             const prim = card.userInfo.userName.split(',')[0].trim();
@@ -15553,7 +16419,37 @@ const CardApp = (function() {
                 return CardLogic.renderReceiptCartItemHTML(it, i, isMeal);
             }).join('') : `<div class="cart-placeholder"><i class="fa-regular fa-file-lines"></i><span>추가된 영수증이 없습니다.</span></div>`;
             document.getElementById('receipt-total-display').textContent = `${Utils.nfKR.format(tot)}원`;
+            const compactTotal = document.getElementById('return-summary-total');
+            if (compactTotal) compactTotal.textContent = `${Utils.nfKR.format(tot)}원`;
             c.classList.toggle('empty-cart', state.receiptCart.length===0);
+            c.dataset.receiptCount = String(state.receiptCart.length || 0);
+            const incompleteCount = state.receiptCart.filter(r => {
+                const processingState = String(r.processing || '');
+                const missingDetails = !Utils.isMealExpenseItem(r) && !String(r.usageDetails || '').trim();
+                return missingDetails || !!r.needsManualReview || ['review', 'save_error', 'error'].includes(processingState);
+            }).length;
+            const completeCount = Math.max(0, state.receiptCart.length - incompleteCount);
+            const statusSummary = document.getElementById('receipt-status-summary');
+            if (statusSummary) {
+                statusSummary.classList.toggle('has-issues', incompleteCount > 0);
+                statusSummary.classList.toggle('all-complete', state.receiptCart.length > 0 && incompleteCount === 0);
+                const receiptCount = state.receiptCart.length;
+                const completionRate = receiptCount > 0 ? Math.round((completeCount / receiptCount) * 100) : 0;
+                statusSummary.innerHTML = `
+                    <div class="receipt-status-main">
+                        <span class="receipt-status-label">제출 준비도</span>
+                        <strong>${completeCount} / ${receiptCount}건 작성 완료</strong>
+                    </div>
+                    <div class="receipt-status-progress" role="progressbar" aria-label="영수증 작성 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${completionRate}">
+                        <span style="width:${completionRate}%"></span>
+                    </div>
+                    <div class="receipt-status-result ${incompleteCount > 0 ? 'needs-check' : 'is-ready'}">
+                        <i class="fa-solid ${incompleteCount > 0 ? 'fa-pen-to-square' : 'fa-circle-check'}" aria-hidden="true"></i>
+                        ${incompleteCount > 0 ? `${incompleteCount}건 입력 필요` : (receiptCount > 0 ? '제출 준비 완료' : '영수증을 추가해 주세요')}
+                    </div>`;
+            }
+            const receiptAddMain = document.querySelector('#add-receipt-btn .receipt-dropzone-main');
+            if (receiptAddMain) receiptAddMain.textContent = state.receiptCart.length > 0 ? '영수증 추가 첨부' : '첫 영수증 첨부';
             
             const guideEl = document.getElementById('submit-guide');
             const blockingIssues = CardLogic.getBlockingReceiptIssues();
@@ -15565,8 +16461,8 @@ const CardApp = (function() {
                     guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 저장 실패/분석 실패 영수증이 있습니다. 해당 영수증을 눌러 직접 입력하거나 삭제 후 다시 첨부해 주세요.';
                     guideEl.classList.add('visible');
                 } else if (hasEmpty && state.receiptCart.length > 0) {
-                    guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 사용내역이 비어 있는 영수증이 있습니다. 제출 전 내용을 확인해 주세요.';
-                    guideEl.classList.add('visible');
+                    // 미입력 상태는 진행 막대와 해당 영수증의 빨간 카드에서 충분히 안내합니다.
+                    guideEl.classList.remove('visible');
                 } else {
                     // 분석/저장 진행 중에는 빨간 실패 안내를 띄우지 않습니다. 진행 상태는 각 영수증 카드 안에서만 표시합니다.
                     guideEl.classList.remove('visible');
@@ -18383,5 +19279,760 @@ body.ws-app[data-current-screen="login"] #screen-login .keypad-panel #keypad-sub
 </style>
 
 
+<style id="ws-receipt-add-primary-cta-v1">
+/* Primary receipt action: shown before the accumulated receipt list. */
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn {
+  position: relative !important;
+  isolation: isolate !important;
+  width: 100% !important;
+  min-height: 76px !important;
+  margin: 2px 0 6px !important;
+  padding: 11px 16px !important;
+  display: grid !important;
+  grid-template-columns: 52px minmax(0, 1fr) 30px !important;
+  align-items: center !important;
+  gap: 13px !important;
+  overflow: hidden !important;
+  color: #fff !important;
+  text-align: left !important;
+  background: linear-gradient(135deg, #246fe5 0%, #3182f6 52%, #526de2 100%) !important;
+  border: 1px solid rgba(31, 93, 196, .58) !important;
+  border-radius: 21px !important;
+  box-shadow: 0 12px 24px rgba(37, 100, 210, .24), inset 0 1px 0 rgba(255,255,255,.24) !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: -1 !important;
+  inset: 0 !important;
+  background: radial-gradient(circle at 18% -20%, rgba(255,255,255,.34), transparent 43%) !important;
+  pointer-events: none !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon {
+  position: relative !important;
+  width: 50px !important;
+  height: 50px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #fff !important;
+  font-size: 1.25rem !important;
+  background: rgba(255,255,255,.18) !important;
+  border: 1px solid rgba(255,255,255,.34) !important;
+  border-radius: 16px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon b {
+  position: absolute !important;
+  right: 5px !important;
+  bottom: 3px !important;
+  width: 17px !important;
+  height: 17px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #2367d1 !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  background: #fff !important;
+  border-radius: 50% !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-copy {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn .receipt-dropzone-main {
+  display: block !important;
+  color: #fff !important;
+  font-size: clamp(1.02rem, 2.2vw, 1.22rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+  text-shadow: 0 1px 2px rgba(18, 64, 140, .24) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn .receipt-dropzone-sub {
+  display: block !important;
+  color: rgba(255,255,255,.82) !important;
+  font-size: clamp(.72rem, 1.55vw, .84rem) !important;
+  font-weight: 750 !important;
+  line-height: 1.2 !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-arrow {
+  width: 28px !important;
+  height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #fff !important;
+  background: rgba(255,255,255,.16) !important;
+  border-radius: 50% !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn:hover,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn.drag-over {
+  background: linear-gradient(135deg, #185fcf 0%, #2478ec 48%, #405fd5 100%) !important;
+  box-shadow: 0 14px 28px rgba(37, 100, 210, .30), inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 7px 15px rgba(37, 100, 210, .22) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn:disabled {
+  color: #8995a7 !important;
+  background: #e3e8ef !important;
+  border-color: #d2d9e3 !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn:disabled .receipt-add-icon,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn:disabled .receipt-add-arrow {
+  color: #8995a7 !important;
+  background: rgba(255,255,255,.52) !important;
+  border-color: rgba(137,149,167,.20) !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn:disabled .receipt-dropzone-main,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn:disabled .receipt-dropzone-sub {
+  color: #8995a7 !important;
+  text-shadow: none !important;
+}
+
+@media (max-width: 699px) {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn {
+    min-height: 70px !important;
+    grid-template-columns: 46px minmax(0, 1fr) 26px !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+    border-radius: 19px !important;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 14px !important;
+  }
+}
+</style>
+<style id="ws-return-centered-column-v1">
+/* Match the return workflow to the compact summary width. */
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-admin-submit-note,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-owner-only-message {
+  width: min(82%, 520px) !important;
+  max-width: 520px !important;
+  align-self: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray {
+  padding: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 11px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary.has-issues,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary.all-complete {
+  width: 100% !important;
+  min-height: 52px !important;
+  padding: 8px 13px !important;
+  gap: 10px !important;
+  border-radius: 15px !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn {
+  width: 100% !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 8px 13px !important;
+  grid-template-columns: 44px minmax(0, 1fr) 27px !important;
+  gap: 11px !important;
+  border-radius: 18px !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon {
+  width: 42px !important;
+  height: 42px !important;
+  font-size: 1.08rem !important;
+  border-radius: 13px !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon b {
+  right: 3px !important;
+  bottom: 2px !important;
+  width: 15px !important;
+  height: 15px !important;
+  font-size: 11px !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .cart-wrapper,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #receipt-cart-container,
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #receipt-cart-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #receipt-cart-container:not(.empty-cart)::before {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+
+@media (max-width: 699px) {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-summary-compact,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-admin-submit-note,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .return-owner-only-message {
+    width: min(94%, 470px) !important;
+    max-width: 470px !important;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary.has-issues,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary.all-complete {
+    min-height: 50px !important;
+    padding: 7px 10px !important;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn {
+    min-height: 60px !important;
+    grid-template-columns: 40px minmax(0, 1fr) 24px !important;
+    padding: 8px 10px !important;
+    border-radius: 17px !important;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+  }
+}
+</style>
+<style id="ws-login-pastel-harmony-v1">
+/* Layered pastel login surfaces: pearl dashboard, inset PIN screen, floating keys. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  background:
+    radial-gradient(circle at 50% -30%, rgba(255,255,255,.98), transparent 58%),
+    linear-gradient(135deg, rgba(248,252,255,.88), rgba(246,245,255,.84)) !important;
+  border-color: rgba(117, 139, 180, .28) !important;
+  box-shadow:
+    0 10px 24px rgba(47, 75, 119, .08),
+    inset 0 1px 0 rgba(255,255,255,.96) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+  background: linear-gradient(135deg, rgba(232,241,252,.92) 0%, rgba(241,239,251,.90) 100%) !important;
+  border: 1.5px solid rgba(109, 133, 172, .30) !important;
+  box-shadow:
+    inset 0 3px 8px rgba(55, 82, 126, .08),
+    inset 0 1px 0 rgba(255,255,255,.62) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+  background: linear-gradient(
+    180deg,
+    rgba(225, 238, 251, .76) 0%,
+    rgba(235, 235, 249, .74) 52%,
+    rgba(245, 232, 248, .70) 100%
+  ) !important;
+  border-color: rgba(96, 120, 161, .24) !important;
+  box-shadow:
+    inset 0 3px 10px rgba(56, 78, 118, .075),
+    inset 0 1px 0 rgba(255,255,255,.70),
+    0 10px 22px rgba(42, 67, 108, .055) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-btn:not(#keypad-add-btn):not(#keypad-back-btn):not(#keypad-submit-btn) {
+  color: #244d79 !important;
+  background: linear-gradient(145deg, rgba(252,253,255,.98), rgba(244,248,255,.96)) !important;
+  border-color: rgba(100, 126, 165, .27) !important;
+  box-shadow:
+    0 6px 14px rgba(39, 68, 108, .075),
+    inset 0 1px 0 rgba(255,255,255,.98) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-btn:not(#keypad-add-btn):not(#keypad-back-btn):not(#keypad-submit-btn):active,
+body.ws-app[data-current-screen="login"] #screen-login .keypad-btn:not(#keypad-add-btn):not(#keypad-back-btn):not(#keypad-submit-btn).pressed {
+  background: #edf3fb !important;
+  box-shadow: inset 0 3px 7px rgba(42, 67, 108, .12) !important;
+}
+
+/* Four PIN indicators become the only saturated detail in the inset display. */
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay .digit-box:not(.filled):not(.masked) {
+  background: #dbe3ee !important;
+  border-color: rgba(109, 133, 172, .16) !important;
+  box-shadow: inset 0 1px 2px rgba(58, 82, 119, .06) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay .digit-wrapper.active-cursor::after {
+  width: 9px !important;
+  height: 9px !important;
+  background: #2f6fbd !important;
+  box-shadow: 0 0 0 4px rgba(47,111,189,.10), 0 0 9px rgba(47,111,189,.48) !important;
+  animation: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay .digit-box.masked {
+  background: #285d98 !important;
+  border-color: #285d98 !important;
+  box-shadow: 0 2px 5px rgba(35, 78, 130, .18) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay .digit-box.filled {
+  color: #fff !important;
+  background: linear-gradient(145deg, #397bc4, #285d98) !important;
+  border-color: rgba(37, 83, 139, .50) !important;
+  box-shadow: 0 5px 11px rgba(37, 83, 139, .18) !important;
+}
+
+/* Keep the two action keys distinct but harmonized with the softer palette. */
+body.ws-app[data-current-screen="login"] #screen-login #keypad-add-btn {
+  background: linear-gradient(145deg, #fffaf0, #fbf2df) !important;
+  border-color: rgba(201, 153, 76, .27) !important;
+  color: #cb8a22 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypad-back-btn {
+  background: linear-gradient(145deg, #fff7f8, #f9edf1) !important;
+  border-color: rgba(198, 94, 112, .24) !important;
+  color: #b7465b !important;
+}
+
+@media (prefers-contrast: more) {
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+    border-color: rgba(57, 86, 130, .52) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-btn:not(#keypad-submit-btn) {
+    border-color: rgba(57, 86, 130, .40) !important;
+  }
+}
+</style>
+<style id="ws-pearl-glass-terminal-v1">
+/* Pearl-glass terminal: the outer shell blends into the page. */
+body.ws-app[data-current-screen="login"] #screen-login {
+  background: rgba(255, 255, 255, .09) !important;
+  border: 1px solid rgba(92, 116, 156, .18) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login::before,
+body.ws-app[data-current-screen="login"] #screen-login::after {
+  box-shadow: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* The keypad deck is only a quiet organizing surface, not another colored card. */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+  background: rgba(241, 245, 251, .30) !important;
+  border: 1px solid rgba(93, 117, 157, .16) !important;
+  box-shadow:
+    inset 0 2px 7px rgba(52, 76, 114, .045),
+    inset 0 1px 0 rgba(255,255,255,.45) !important;
+}
+
+/* Pearl dashboard remains the clearest information layer. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  background:
+    radial-gradient(circle at 50% -45%, rgba(255,255,255,.96), transparent 62%),
+    linear-gradient(135deg, rgba(249,252,255,.84), rgba(247,246,253,.80)) !important;
+  border-color: rgba(103, 127, 167, .25) !important;
+  box-shadow:
+    0 8px 19px rgba(45, 70, 110, .065),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+/* The PIN strip keeps a slightly cooler inset tint than the surrounding shell. */
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+  background: linear-gradient(135deg, rgba(231,240,251,.80), rgba(240,238,249,.76)) !important;
+  border-color: rgba(93, 119, 162, .28) !important;
+  box-shadow:
+    inset 0 3px 8px rgba(48, 74, 115, .075),
+    inset 0 1px 0 rgba(255,255,255,.52) !important;
+}
+
+/* Keys float above the quiet deck without looking pure white. */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-btn:not(#keypad-add-btn):not(#keypad-back-btn):not(#keypad-submit-btn) {
+  background: linear-gradient(145deg, rgba(252,253,255,.96), rgba(244,248,254,.92)) !important;
+  border-color: rgba(91, 118, 158, .25) !important;
+  box-shadow:
+    0 5px 12px rgba(37, 65, 105, .07),
+    inset 0 1px 0 rgba(255,255,255,.96) !important;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login {
+    background: rgba(255, 255, 255, .075) !important;
+    border-color: rgba(92, 116, 156, .17) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+    background: rgba(241, 245, 251, .26) !important;
+  }
+}
+</style>
+<style id="ws-background-integrated-terminal-v1">
+/* Blend dashboard and PIN display into the page while preserving their outlines. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  background: linear-gradient(
+    135deg,
+    rgba(224, 238, 251, .38) 0%,
+    rgba(235, 235, 249, .35) 54%,
+    rgba(243, 230, 247, .31) 100%
+  ) !important;
+  border: 1px solid rgba(89, 116, 160, .25) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.46),
+    0 6px 16px rgba(44, 68, 106, .045) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item:first-child {
+  background: rgba(72, 137, 225, .10) !important;
+  border-color: rgba(65, 123, 204, .20) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .dashboard-center-screen + .stat-item {
+  background: rgba(132, 99, 204, .09) !important;
+  border-color: rgba(119, 89, 186, .19) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen {
+  background: linear-gradient(180deg, rgba(221,237,252,.54), rgba(210,229,248,.48)) !important;
+  border-color: rgba(55, 119, 198, .29) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.42),
+    0 4px 11px rgba(42, 83, 137, .055) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success {
+  background: linear-gradient(180deg, rgba(218,244,234,.58), rgba(202,237,223,.50)) !important;
+  border-color: rgba(16, 151, 109, .29) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.40),
+    0 4px 11px rgba(16, 120, 91, .05) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+  background: linear-gradient(
+    135deg,
+    rgba(215, 232, 249, .48) 0%,
+    rgba(229, 228, 246, .45) 58%,
+    rgba(239, 223, 244, .40) 100%
+  ) !important;
+  border: 1.5px solid rgba(82, 111, 158, .28) !important;
+  box-shadow:
+    inset 0 3px 8px rgba(47, 72, 111, .065),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+    background: linear-gradient(135deg, rgba(224,238,251,.34), rgba(238,231,247,.29)) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+    background: linear-gradient(135deg, rgba(215,232,249,.44), rgba(233,225,245,.39)) !important;
+  }
+}
+</style>
+<style id="ws-open-terminal-refinement-v1">
+/* Open layout: remove the empty outer cage and keep only functional surfaces. */
+body.ws-app[data-current-screen="login"] #screen-login {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Dashboard returns as the brightest, clearest information surface. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  background: linear-gradient(135deg, rgba(250,253,255,.72), rgba(246,246,253,.65)) !important;
+  border: 1px solid rgba(90, 116, 158, .27) !important;
+  box-shadow:
+    0 8px 18px rgba(43, 69, 109, .065),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen {
+  background: linear-gradient(180deg, rgba(224,239,253,.74), rgba(210,231,250,.66)) !important;
+  border-color: rgba(55, 119, 198, .30) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success {
+  background: linear-gradient(180deg, rgba(222,247,237,.78), rgba(203,239,225,.68)) !important;
+  border-color: rgba(16, 151, 109, .30) !important;
+}
+
+/* PIN strip is intentionally deeper than the dashboard, like a recessed display. */
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+  background: linear-gradient(135deg, rgba(206,226,247,.68), rgba(226,222,243,.64)) !important;
+  border: 1.5px solid rgba(73, 104, 153, .31) !important;
+  box-shadow:
+    inset 0 4px 10px rgba(45, 70, 109, .085),
+    inset 0 1px 0 rgba(255,255,255,.32) !important;
+}
+
+/* One borderless deck groups only the keypad and login action. */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+  background: rgba(226, 234, 246, .43) !important;
+  border: 0 !important;
+  box-shadow:
+    inset 0 3px 9px rgba(47, 70, 106, .055),
+    inset 0 1px 0 rgba(255,255,255,.42) !important;
+}
+
+/* Slightly warmer pearl keys stand apart from the cool deck. */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-btn:not(#keypad-add-btn):not(#keypad-back-btn):not(#keypad-submit-btn) {
+  color: #244d79 !important;
+  background: linear-gradient(145deg, rgba(255,254,252,.98), rgba(245,248,253,.96)) !important;
+  border-color: rgba(88, 115, 157, .27) !important;
+  box-shadow:
+    0 7px 15px rgba(36, 63, 101, .085),
+    inset 0 1px 0 rgba(255,255,255,.98) !important;
+}
+
+/* Disabled login stays in the same cool family instead of becoming a heavy gray slab. */
+body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn:disabled {
+  color: #74859b !important;
+  background: linear-gradient(180deg, #dfe7f0, #d3dde9) !important;
+  border: 1px solid rgba(105, 126, 153, .20) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.45) !important;
+  opacity: .90 !important;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+    background: linear-gradient(135deg, rgba(250,253,255,.69), rgba(246,246,253,.61)) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+    background: rgba(226, 234, 246, .39) !important;
+  }
+}
+</style>
+<style id="ws-minimal-kiosk-alignment-v1">
+/* One control width: dashboard, PIN indicators, keypad, and login align. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard,
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+  width: 100% !important;
+  max-width: 330px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Remove the dashboard shell; retain the three meaningful status cells. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  gap: 9px !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item,
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen {
+  box-shadow: 0 5px 12px rgba(39, 66, 105, .055), inset 0 1px 0 rgba(255,255,255,.48) !important;
+}
+
+/* The PIN strip disappears; only four state dots remain on the page background. */
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 18px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay .digit-box:not(.filled):not(.masked) {
+  background: #cfdbea !important;
+  border: 1px solid rgba(76, 108, 151, .16) !important;
+  box-shadow: inset 0 1px 2px rgba(47, 72, 110, .06) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay .digit-box.current-active {
+  background: #2f70bd !important;
+  border-color: #2f70bd !important;
+  box-shadow: 0 0 0 4px rgba(47,112,189,.10), 0 0 9px rgba(47,112,189,.42) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay .digit-wrapper.active-cursor::after {
+  content: none !important;
+  display: none !important;
+  animation: none !important;
+}
+
+/* Pull the quiet keypad deck up to meet the new dot-only indicator row. */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+  top: 48px !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel .keypad-grid {
+  padding-top: 10px !important;
+}
+
+@media (min-width: 768px) and (max-width: 1280px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard,
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+    max-width: min(590px, 55dvh) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+    min-height: clamp(54px, 5.7dvh, 68px) !important;
+    height: clamp(54px, 5.7dvh, 68px) !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
+    top: clamp(54px, 5.7dvh, 68px) !important;
+  }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+    gap: 8px !important;
+  }
+
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
+  body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay.display-area {
+    margin-top: 14px !important;
+    margin-bottom: 14px !important;
+  }
+}
+
+/*
+ * Visual column alignment:
+ * the dashboard and keypad panel already share the same outer width.
+ * Remove only the keypad's duplicated horizontal inset so the visible
+ * three-key row reaches the same left/right guides without shrinking keys.
+ */
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .keypad-panel .keypad-grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+</style>
+<style id="ws-pearl-dashboard-keypad-harmony-v1">
+/* Match all dashboard surfaces to the pearl-white keypad family. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item,
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen,
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 254, 252, .98),
+    rgba(245, 248, 253, .96)
+  ) !important;
+  box-shadow:
+    0 5px 12px rgba(36, 63, 101, .07),
+    inset 0 1px 0 rgba(255, 255, 255, .96) !important;
+}
+
+/* Use the same neutral key border; meaning remains in the existing text colors. */
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .stat-item:first-child {
+  border-color: rgba(88, 115, 157, .27) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .dashboard-center-screen {
+  border-color: rgba(88, 115, 157, .27) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard > .dashboard-center-screen + .stat-item {
+  border-color: rgba(88, 115, 157, .27) !important;
+}
+
+body.ws-app[data-current-screen="login"] #screen-login .header-dashboard #dash-center-screen.success {
+  border-color: rgba(88, 115, 157, .27) !important;
+}
+
+/* A barely visible terminal outline, fitted closely around dashboard through login. */
+body.ws-app[data-current-screen="login"] #screen-login .main-frame.login-frame {
+  width: min(100%, 350px) !important;
+  max-width: 350px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  padding: 10px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, .20),
+    rgba(233, 239, 250, .12) 52%,
+    rgba(250, 236, 250, .10)
+  ) !important;
+  border: 1px solid rgba(83, 108, 149, .075) !important;
+  border-radius: 30px !important;
+  box-shadow:
+    0 14px 32px rgba(45, 69, 108, .035),
+    inset 0 1px 0 rgba(255, 255, 255, .32) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@media (min-width: 768px) and (max-width: 1280px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="login"] #screen-login .main-frame.login-frame {
+    width: min(94vw, calc(min(590px, 55dvh) + 20px)) !important;
+    max-width: calc(min(590px, 55dvh) + 20px) !important;
+    padding: 10px !important;
+    border-radius: 34px !important;
+  }
+}
+</style>
 </body>
 </html>
