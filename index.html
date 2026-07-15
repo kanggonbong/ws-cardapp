@@ -14077,6 +14077,138 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-
     font-size: .72rem;
   }
 }
+
+/* Tablet portrait: keep receipt cards at their natural height instead of
+   letting the viewport-filling return tray compress its flex children. */
+@media (min-width: 700px) and (max-width: 1280px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .cart-wrapper,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #receipt-cart-container {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 124px;
+    height: auto;
+    grid-template-columns: 78px minmax(0, 1fr) max-content 48px;
+    align-items: center;
+    gap: 12px !important;
+    padding: 14px 13px 14px 15px;
+    border-left-width: 6px;
+    border-radius: 22px;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
+    width: 78px;
+    height: 78px;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 78px;
+    border-radius: 18px;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-info {
+    min-width: 0;
+    align-self: center;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-place {
+    line-height: 1.25;
+    word-break: keep-all;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-amount-box,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-amount {
+    min-width: max-content;
+    white-space: nowrap;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-amount-box {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    flex: 0 0 48px;
+    border-radius: 15px;
+    grid-column: 4;
+    grid-row: 1;
+  }
+}
+
+/* Phone portrait uses two content rows so long store names and amounts never
+   have to compete for the same narrow line. */
+@media (max-width: 699px) {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
+    flex: 0 0 auto;
+    min-height: 112px;
+    height: auto;
+    grid-template-columns: 62px minmax(0, 1fr) 42px;
+    grid-template-rows: auto auto;
+    column-gap: 10px !important;
+    row-gap: 3px !important;
+    align-items: center;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 62px;
+    height: 62px;
+    aspect-ratio: 1 / 1;
+    align-self: center;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-info {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    align-self: end;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-place {
+    max-height: 2.5em;
+    line-height: 1.25;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-amount-box {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    justify-self: start;
+    align-self: start;
+    text-align: left;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-amount {
+    white-space: nowrap;
+  }
+
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    align-self: center;
+    justify-self: center;
+  }
+}
 </style>
 <style id="ws-clean-login">
 /* Login terminal: consolidated final cascade (phase 3). */
