@@ -13976,8 +13976,9 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-
 
 body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-label {
   min-width: 0;
-  color: #c83448;
-  font-size: .9rem;
+  color: #334f73;
+  -webkit-text-fill-color: #334f73;
+  font-size: .92rem;
   font-weight: 950;
   line-height: 1.05;
   white-space: nowrap;
@@ -13985,20 +13986,34 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-
 
 body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count {
   position: static;
-  min-width: 36px;
-  min-height: 25px;
-  padding: 6px 8px;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
-  font-size: .76rem;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  color: #334f73;
+  -webkit-text-fill-color: #334f73;
+  font-size: .92rem;
   font-weight: 950;
-  line-height: 1;
+  line-height: 1.05;
   text-align: center;
   white-space: nowrap;
-  background: #ed4960;
+  background: transparent;
   border: 0;
-  border-radius: 999px;
+  border-radius: 0;
   box-shadow: none;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count-number {
+  color: #e33f57;
+  -webkit-text-fill-color: #e33f57;
+  font-weight: 1000;
+}
+
+body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count-unit {
+  color: #334f73;
+  -webkit-text-fill-color: #334f73;
 }
 
 body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn {
@@ -14067,14 +14082,14 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-label {
-    font-size: .86rem;
+    font-size: .88rem;
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count {
-    min-width: 34px;
-    min-height: 24px;
-    padding: 5px 8px;
-    font-size: .72rem;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    font-size: .88rem;
   }
 }
 
@@ -17625,7 +17640,7 @@ const CardApp = (function() {
                     guideEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> 저장 실패/분석 실패 영수증이 있습니다. 해당 영수증을 눌러 직접 입력하거나 삭제 후 다시 첨부해 주세요.';
                     guideEl.classList.add('visible');
                 } else if (incompleteCount > 0 && state.receiptCart.length > 0) {
-                    guideEl.innerHTML = `<span class="submit-guide-icon" aria-hidden="true"><i class="fa-solid fa-exclamation"></i></span><strong class="submit-guide-label">내용 입력</strong><span class="submit-guide-count">${incompleteCount}건</span>`;
+                    guideEl.innerHTML = `<span class="submit-guide-icon" aria-hidden="true"><i class="fa-solid fa-exclamation"></i></span><strong class="submit-guide-label">내용 입력</strong><span class="submit-guide-count"><strong class="submit-guide-count-number">${incompleteCount}</strong><span class="submit-guide-count-unit">건</span></span>`;
                     guideEl.classList.add('visible', 'has-incomplete-receipts');
                     guideEl.setAttribute('role', 'button');
                     guideEl.setAttribute('tabindex', '0');
