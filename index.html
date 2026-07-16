@@ -14447,88 +14447,167 @@ body.ws-app[data-current-screen="login"] #screen-login {
   }
 }
 
-/* Tablet portrait bottom action dock.
-   The shared home button stays at the physical bottom; return submission
-   sits directly above it and never moves with the receipt list. */
+/* Tablet portrait bottom action dock (body-level, viewport anchored).
+   The old version fixed controls inside the app wrapper.  On some tablet
+   browsers that wrapper becomes the containing block, so the controls stop in
+   the middle of the screen.  This dock lives directly under <body> and therefore
+   stays attached to the actual viewport bottom. */
+#tablet-bottom-action-dock {
+  display: none;
+}
+
 @media (min-width: 600px) and (max-width: 1400px) and (orientation: portrait) {
-  body.ws-app[data-current-screen="main"] #screen-main,
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details {
-    padding-bottom: calc(174px + env(safe-area-inset-bottom, 0px));
+  body.office-tablet-portrait[data-current-screen="main"] #tablet-bottom-action-dock,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #tablet-bottom-action-dock {
+    position: fixed;
+    z-index: 125;
+    inset: auto 0 0 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding:
+      4px
+      max(20px, env(safe-area-inset-right, 0px))
+      calc(6px + env(safe-area-inset-bottom, 0px))
+      max(20px, env(safe-area-inset-left, 0px));
+    box-sizing: border-box;
+    pointer-events: none;
+    background: transparent;
   }
 
-  body.ws-app[data-current-screen="main"] #btn-back,
-  body.ws-app[data-current-screen="returnDetails"] #btn-back {
-    position: fixed;
-    z-index: 120;
-    left: 50%;
-    right: auto;
-    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
-    width: min(86vw, 580px);
-    min-height: 60px !important;
-    margin: 0 !important;
-    display: flex;
+  body.office-tablet-portrait #tablet-bottom-action-dock .tablet-dock-btn {
+    width: auto;
+    margin: 0 auto;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #355d91;
-    font-size: 1.08rem;
-    background: rgba(248, 251, 255, .90);
-    border: 1px solid rgba(103, 132, 170, .18);
-    border-radius: 19px;
-    box-shadow: 0 6px 16px rgba(35, 64, 103, .06);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn {
-    position: fixed;
-    z-index: 121;
-    left: 50%;
-    right: auto;
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
-    width: min(86vw, 580px);
-    max-width: 580px;
-    min-height: 78px;
-    height: 78px;
-    margin: 0;
     gap: 12px;
-    font-size: 1.34rem;
+    box-sizing: border-box;
+    pointer-events: auto;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body.office-tablet-portrait #tablet-return-action {
+    width: min(86vw, 580px);
+    min-height: clamp(80px, 8.5dvh, 88px);
+    padding: 15px 24px;
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+    font-size: clamp(1.30rem, 2.5vw, 1.52rem);
     font-weight: 950;
-    letter-spacing: -.02em;
-    border-radius: 23px;
-  }
-
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn:not(:disabled) {
-    color: #fff;
-    -webkit-text-fill-color: #fff;
-    background: linear-gradient(145deg, #0b2d55 0%, #123f73 58%, #174b82 100%);
+    letter-spacing: -.025em;
+    line-height: 1.08;
+    background: linear-gradient(145deg, #082b52 0%, #0c396a 56%, #114a80 100%);
     border: 1px solid rgba(255, 255, 255, .24);
-    box-shadow: 0 15px 30px rgba(11, 45, 85, .28), inset 0 1px 0 rgba(255, 255, 255, .17);
+    border-radius: 24px;
+    box-shadow:
+      0 17px 34px rgba(8, 43, 82, .34),
+      inset 0 1px 0 rgba(255, 255, 255, .20);
   }
 
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn:not(:disabled) i {
-    color: #fff;
-    -webkit-text-fill-color: #fff;
+  body.office-tablet-portrait #tablet-return-action i {
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
     font-size: 1.08em;
   }
 
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide.visible.has-incomplete-receipts {
-    min-height: 54px;
-    height: 54px;
-    padding: 8px 15px;
+  body.office-tablet-portrait #tablet-return-action:active:not(:disabled) {
+    transform: translateY(2px) scale(.992);
+    box-shadow:
+      0 10px 22px rgba(8, 43, 82, .30),
+      inset 0 2px 5px rgba(0, 0, 0, .10);
+  }
+
+  body.office-tablet-portrait #tablet-return-action:disabled {
+    cursor: default;
+    opacity: .58;
+    filter: saturate(.72);
+    box-shadow: 0 8px 18px rgba(8, 43, 82, .18);
+  }
+
+  body.office-tablet-portrait #tablet-home-action {
+    width: auto;
+    min-width: 150px;
+    min-height: 52px;
+    padding: 0 22px;
+    color: #315b8b;
+    -webkit-text-fill-color: #315b8b;
+    font-size: clamp(1.04rem, 1.9vw, 1.16rem);
+    font-weight: 700;
+    letter-spacing: -.015em;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  body.office-tablet-portrait #tablet-home-action:active {
+    transform: translateY(1px) scale(.993);
+    background: transparent;
+  }
+
+  body.office-tablet-portrait #tablet-return-action[hidden] {
+    display: none !important;
+  }
+
+  body.office-tablet-portrait[data-current-screen="main"] #tablet-return-action {
+    display: none;
+  }
+
+  /* Hide only the original controls.  They stay in the DOM so the existing
+     application logic, validation, and click handlers remain the source of truth. */
+  body.office-tablet-portrait[data-current-screen="main"] #btn-back,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #btn-back,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn {
+    display: none !important;
+  }
+
+  /* Reserve enough room so the fixed dock never covers card/receipt content. */
+  body.office-tablet-portrait[data-current-screen="main"] #screen-main {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
+    padding-bottom: calc(166px + env(safe-area-inset-bottom, 0px)) !important;
+    scroll-padding-bottom: calc(166px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray {
+    scroll-padding-bottom: 24px;
+  }
+
+  /* Slightly larger tablet-only "내용 입력" affordances. */
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-badge.is-incomplete {
+    min-height: 36px;
+    padding: 9px 14px;
+    gap: 7px;
+    font-size: 1rem;
+    line-height: 1.05;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide.visible.has-incomplete-receipts {
+    min-height: 58px;
+    height: 58px;
+    padding: 9px 16px;
     gap: 10px;
   }
 
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-icon {
-    width: 24px;
-    height: 24px;
-    font-size: .82rem;
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-icon {
+    width: 26px;
+    height: 26px;
+    font-size: .86rem;
   }
 
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-label,
-  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count {
-    font-size: 1rem;
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-label,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count {
+    font-size: 1.04rem;
   }
 }
 </style>
@@ -14840,6 +14919,17 @@ body.ws-app[data-current-screen="login"] #screen-login {
 
 <button id="btn-back" class="hidden"><i class="fa-solid fa-chevron-left"></i> 처음으로</button>
     </div>
+</div>
+
+<div id="tablet-bottom-action-dock" aria-hidden="true" aria-label="태블릿 하단 작업 버튼">
+    <button id="tablet-return-action" class="tablet-dock-btn" type="button" disabled>
+        <i class="fa-solid fa-check" aria-hidden="true"></i>
+        <span>반납 및 제출</span>
+    </button>
+    <button id="tablet-home-action" class="tablet-dock-btn" type="button">
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+        <span>처음으로</span>
+    </button>
 </div>
 
 <input type="file" id="receipt-file-input" class="file-input-hidden" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf,image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf" multiple>
@@ -17626,7 +17716,8 @@ const CardApp = (function() {
             guide.className = 'submit-guide';
             guide.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> <b>내용(상세 내역)</b>이 비어있는 영수증이 있습니다.';
             let subEl = null;
-            if (state.isAdminMode) {
+            const isTabletReturnStation = document.body.classList.contains('office-tablet-portrait');
+            if (state.isAdminMode || isTabletReturnStation) {
                 const sub = document.createElement('button');
                 sub.id='submit-cart-btn';
                 sub.className='simple-btn primary';
@@ -19629,11 +19720,12 @@ document.addEventListener('DOMContentLoaded', () => {
 (function() {
   function syncOfficeTabletClass() {
     try {
-      var w = window.innerWidth || document.documentElement.clientWidth || 0;
-      var h = window.innerHeight || document.documentElement.clientHeight || 0;
+      var viewport = window.visualViewport;
+      var w = Math.round((viewport && viewport.width) || window.innerWidth || document.documentElement.clientWidth || 0);
+      var h = Math.round((viewport && viewport.height) || window.innerHeight || document.documentElement.clientHeight || 0);
       var hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0 || (navigator.msMaxTouchPoints || 0) > 0;
       var isPortrait = h >= w;
-      var looksLikeOfficeTablet = hasTouch && isPortrait && w >= 600 && w <= 1400 && h >= 760;
+      var looksLikeOfficeTablet = hasTouch && isPortrait && w >= 600 && w <= 1400 && h >= 650;
       document.body.classList.toggle('office-tablet-portrait', !!looksLikeOfficeTablet);
     } catch (e) {}
   }
@@ -19657,6 +19749,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+<script id="ws-tablet-bottom-action-dock-controller">
+(function() {
+  var body = document.body;
+  var dock = document.getElementById('tablet-bottom-action-dock');
+  var homeProxy = document.getElementById('tablet-home-action');
+  var submitProxy = document.getElementById('tablet-return-action');
+  if (!body || !dock || !homeProxy || !submitProxy) return;
+
+  var syncQueued = false;
+
+  function getOriginalSubmit() {
+    return document.querySelector('#screen-return-details #submit-cart-btn');
+  }
+
+  function syncDock() {
+    syncQueued = false;
+    var screen = body.getAttribute('data-current-screen') || '';
+    var isTablet = body.classList.contains('office-tablet-portrait');
+    var dockActive = isTablet && (screen === 'main' || screen === 'returnDetails');
+    var submitActive = dockActive && screen === 'returnDetails';
+    var originalSubmit = getOriginalSubmit();
+
+    dock.setAttribute('aria-hidden', dockActive ? 'false' : 'true');
+    homeProxy.tabIndex = dockActive ? 0 : -1;
+    submitProxy.tabIndex = submitActive ? 0 : -1;
+
+    if (originalSubmit) {
+      var nextHtml = originalSubmit.innerHTML || '<i class="fa-solid fa-check" aria-hidden="true"></i><span>반납 및 제출</span>';
+      if (submitProxy.innerHTML !== nextHtml) submitProxy.innerHTML = nextHtml;
+      if (submitProxy.disabled !== !!originalSubmit.disabled) submitProxy.disabled = !!originalSubmit.disabled;
+      var label = (originalSubmit.textContent || '반납 및 제출').trim();
+      if (submitProxy.getAttribute('aria-label') !== label) submitProxy.setAttribute('aria-label', label);
+      submitProxy.hidden = false;
+    } else {
+      submitProxy.disabled = true;
+      submitProxy.hidden = true;
+    }
+  }
+
+  function queueSync() {
+    if (syncQueued) return;
+    syncQueued = true;
+    requestAnimationFrame(syncDock);
+  }
+
+  homeProxy.addEventListener('click', function() {
+    var originalHome = document.getElementById('btn-back');
+    if (originalHome) originalHome.click();
+  });
+
+  submitProxy.addEventListener('click', function() {
+    var originalSubmit = getOriginalSubmit();
+    if (originalSubmit && !originalSubmit.disabled) originalSubmit.click();
+  });
+
+  var bodyObserver = new MutationObserver(queueSync);
+  bodyObserver.observe(body, {
+    attributes: true,
+    attributeFilter: ['class', 'data-current-screen']
+  });
+
+  var returnRoot = document.getElementById('screen-return-details');
+  if (returnRoot) {
+    var returnObserver = new MutationObserver(queueSync);
+    returnObserver.observe(returnRoot, {
+      attributes: true,
+      attributeFilter: ['disabled'],
+      childList: true,
+      characterData: true,
+      subtree: true
+    });
+  }
+
+  window.addEventListener('resize', queueSync, { passive: true });
+  window.addEventListener('orientationchange', queueSync, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', queueSync, { passive: true });
+  }
+  document.addEventListener('visibilitychange', queueSync, { passive: true });
+  queueSync();
+})();
+</script>
 
 </body>
 </html>
