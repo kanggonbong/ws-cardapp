@@ -14450,14 +14450,14 @@ body.ws-app[data-current-screen="login"] #screen-login {
 /* Tablet portrait bottom action dock.
    The shared home button stays at the physical bottom; return submission
    sits directly above it and never moves with the receipt list. */
-@media (orientation: portrait) {
-  body.office-tablet-portrait[data-current-screen="main"] #screen-main,
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
+@media (min-width: 600px) and (max-width: 1400px) and (orientation: portrait) {
+  body.ws-app[data-current-screen="main"] #screen-main,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details {
     padding-bottom: calc(174px + env(safe-area-inset-bottom, 0px));
   }
 
-  body.office-tablet-portrait[data-current-screen="main"] #btn-back,
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #btn-back {
+  body.ws-app[data-current-screen="main"] #btn-back,
+  body.ws-app[data-current-screen="returnDetails"] #btn-back {
     position: fixed;
     z-index: 120;
     left: 50%;
@@ -14480,7 +14480,7 @@ body.ws-app[data-current-screen="login"] #screen-login {
     -webkit-backdrop-filter: blur(8px);
   }
 
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn {
     position: fixed;
     z-index: 121;
     left: 50%;
@@ -14499,7 +14499,7 @@ body.ws-app[data-current-screen="login"] #screen-login {
     border-radius: 23px;
   }
 
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn:not(:disabled) {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn:not(:disabled) {
     color: #fff;
     -webkit-text-fill-color: #fff;
     background: linear-gradient(145deg, #0b2d55 0%, #123f73 58%, #174b82 100%);
@@ -14507,27 +14507,27 @@ body.ws-app[data-current-screen="login"] #screen-login {
     box-shadow: 0 15px 30px rgba(11, 45, 85, .28), inset 0 1px 0 rgba(255, 255, 255, .17);
   }
 
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn:not(:disabled) i {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-cart-btn:not(:disabled) i {
     color: #fff;
     -webkit-text-fill-color: #fff;
     font-size: 1.08em;
   }
 
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide.visible.has-incomplete-receipts {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide.visible.has-incomplete-receipts {
     min-height: 54px;
     height: 54px;
     padding: 8px 15px;
     gap: 10px;
   }
 
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-icon {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-icon {
     width: 24px;
     height: 24px;
     font-size: .82rem;
   }
 
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-label,
-  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count {
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-label,
+  body.ws-app[data-current-screen="returnDetails"] #screen-return-details #submit-guide .submit-guide-count {
     font-size: 1rem;
   }
 }
@@ -19633,7 +19633,7 @@ document.addEventListener('DOMContentLoaded', () => {
       var h = window.innerHeight || document.documentElement.clientHeight || 0;
       var hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0 || (navigator.msMaxTouchPoints || 0) > 0;
       var isPortrait = h >= w;
-      var looksLikeOfficeTablet = hasTouch && isPortrait && w >= 700 && w <= 1400 && h >= 850;
+      var looksLikeOfficeTablet = hasTouch && isPortrait && w >= 600 && w <= 1400 && h >= 760;
       document.body.classList.toggle('office-tablet-portrait', !!looksLikeOfficeTablet);
     } catch (e) {}
   }
