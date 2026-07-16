@@ -14469,9 +14469,9 @@ body.ws-app[data-current-screen="login"] #screen-login {
     gap: 5px;
     padding:
       4px
-      max(20px, env(safe-area-inset-right, 0px))
+      max(14px, env(safe-area-inset-right, 0px))
       calc(6px + env(safe-area-inset-bottom, 0px))
-      max(20px, env(safe-area-inset-left, 0px));
+      max(14px, env(safe-area-inset-left, 0px));
     box-sizing: border-box;
     pointer-events: none;
     background: transparent;
@@ -14492,18 +14492,19 @@ body.ws-app[data-current-screen="login"] #screen-login {
   }
 
   body.office-tablet-portrait #tablet-return-action {
-    width: min(86vw, 580px);
-    min-height: clamp(80px, 8.5dvh, 88px);
-    padding: 15px 24px;
+    width: calc(100vw - 28px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+    max-width: none;
+    min-height: clamp(100px, 10.8dvh, 120px);
+    padding: 20px 28px;
     color: #ffffff;
     -webkit-text-fill-color: #ffffff;
-    font-size: clamp(1.30rem, 2.5vw, 1.52rem);
+    font-size: clamp(1.48rem, 3vw, 1.82rem);
     font-weight: 950;
     letter-spacing: -.025em;
     line-height: 1.08;
     background: linear-gradient(145deg, #082b52 0%, #0c396a 56%, #114a80 100%);
     border: 1px solid rgba(255, 255, 255, .24);
-    border-radius: 24px;
+    border-radius: 28px;
     box-shadow:
       0 17px 34px rgba(8, 43, 82, .34),
       inset 0 1px 0 rgba(255, 255, 255, .20);
@@ -14512,7 +14513,7 @@ body.ws-app[data-current-screen="login"] #screen-login {
   body.office-tablet-portrait #tablet-return-action i {
     color: #ffffff;
     -webkit-text-fill-color: #ffffff;
-    font-size: 1.08em;
+    font-size: 1.12em;
   }
 
   body.office-tablet-portrait #tablet-return-action:active:not(:disabled) {
@@ -14575,8 +14576,8 @@ body.ws-app[data-current-screen="login"] #screen-login {
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
-    padding-bottom: calc(166px + env(safe-area-inset-bottom, 0px)) !important;
-    scroll-padding-bottom: calc(166px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(202px + env(safe-area-inset-bottom, 0px)) !important;
+    scroll-padding-bottom: calc(202px + env(safe-area-inset-bottom, 0px));
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray {
