@@ -14469,9 +14469,9 @@ body.ws-app[data-current-screen="login"] #screen-login {
     gap: 5px;
     padding:
       4px
-      max(6px, env(safe-area-inset-right, 0px))
+      max(12px, env(safe-area-inset-right, 0px))
       calc(6px + env(safe-area-inset-bottom, 0px))
-      max(6px, env(safe-area-inset-left, 0px));
+      max(12px, env(safe-area-inset-left, 0px));
     box-sizing: border-box;
     pointer-events: none;
     background: transparent;
@@ -14580,8 +14580,166 @@ body.ws-app[data-current-screen="login"] #screen-login {
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding-left: max(12px, env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(12px, env(safe-area-inset-right, 0px)) !important;
     padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px)) !important;
     scroll-padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #return-form-container {
+    width: 100%;
+    max-width: none;
+    align-items: stretch;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-summary-compact,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-admin-submit-note,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-owner-only-message {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0;
+    margin-right: 0;
+    align-self: stretch;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .cart-wrapper,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #receipt-cart-container,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  /* The wider tablet canvas needs a proportional type and control scale. */
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-summary-compact {
+    min-height: 84px;
+    padding: 10px 16px 13px;
+    gap: 6px 12px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-summary-card-name {
+    font-size: 1.38rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-summary-user {
+    font-size: 1.02rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-summary-purpose {
+    max-width: 270px;
+    padding: 7px 12px;
+    font-size: 1rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-summary-amount strong {
+    font-size: 1.62rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn {
+    min-height: 90px;
+    padding: 14px 18px;
+    grid-template-columns: 58px minmax(0, 1fr) 34px;
+    gap: 15px !important;
+    border-radius: 22px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 1.32rem;
+    border-radius: 16px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon b {
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-dropzone-main {
+    font-size: 1.24rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-dropzone-sub {
+    font-size: .94rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-add-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary {
+    min-height: 44px;
+    padding: 7px 4px 3px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-list-heading {
+    font-size: 1.18rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-list-count {
+    font-size: .96rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details #receipt-cart-container {
+    gap: 14px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
+    min-height: 146px;
+    grid-template-columns: 92px minmax(0, 1fr) max-content 58px;
+    gap: 18px !important;
+    padding: 18px 16px 18px 20px;
+    border-radius: 25px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
+    width: 92px;
+    height: 92px;
+    flex-basis: 92px;
+    border-radius: 21px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-card-meta-row {
+    gap: 9px;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-badge {
+    padding: 7px 12px;
+    font-size: .9rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-preview-hint {
+    font-size: .86rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-place {
+    font-size: 1.26rem;
+    line-height: 1.24;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-details,
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .receipt-detail-hashtag {
+    font-size: .96rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-amount {
+    font-size: 1.38rem;
+  }
+
+  body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    flex-basis: 56px;
+    border-radius: 17px;
+    font-size: 1.04rem;
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray {
