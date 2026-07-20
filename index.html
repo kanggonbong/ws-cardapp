@@ -14393,17 +14393,17 @@ body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn:disabl
   opacity: .90;
 }
 
-@media (min-width: 768px) and (max-width: 1280px) and (orientation: portrait) {
+@media (min-width: 600px) and (max-width: 1280px) and (orientation: portrait) {
   body.ws-app[data-current-screen="login"] #screen-login .main-frame.login-frame {
-    width: min(92vw, calc(min(560px, 52dvh) + 20px));
-    max-width: calc(min(560px, 52dvh) + 20px);
+    width: min(88vw, calc(min(500px, 47dvh) + 20px));
+    max-width: calc(min(500px, 47dvh) + 20px);
     padding: 10px;
     border-radius: 34px;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .header-dashboard,
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
-    max-width: min(560px, 52dvh);
+    max-width: min(500px, 47dvh);
   }
 
   body.ws-app[data-current-screen="login"] #screen-login #keypadDisplay,
@@ -14469,9 +14469,9 @@ body.ws-app[data-current-screen="login"] #screen-login {
     gap: 5px;
     padding:
       4px
-      max(14px, env(safe-area-inset-right, 0px))
+      max(6px, env(safe-area-inset-right, 0px))
       calc(6px + env(safe-area-inset-bottom, 0px))
-      max(14px, env(safe-area-inset-left, 0px));
+      max(6px, env(safe-area-inset-left, 0px));
     box-sizing: border-box;
     pointer-events: none;
     background: transparent;
@@ -14492,13 +14492,17 @@ body.ws-app[data-current-screen="login"] #screen-login {
   }
 
   body.office-tablet-portrait #tablet-return-action {
-    width: calc(100vw - 28px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
-    max-width: none;
-    min-height: clamp(100px, 10.8dvh, 120px);
-    padding: 20px 28px;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    align-self: stretch;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    min-height: clamp(112px, 12dvh, 136px);
+    padding: 22px 30px;
     color: #ffffff;
     -webkit-text-fill-color: #ffffff;
-    font-size: clamp(1.48rem, 3vw, 1.82rem);
+    font-size: clamp(1.58rem, 3.2vw, 1.96rem);
     font-weight: 950;
     letter-spacing: -.025em;
     line-height: 1.08;
@@ -14576,8 +14580,8 @@ body.ws-app[data-current-screen="login"] #screen-login {
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
-    padding-bottom: calc(202px + env(safe-area-inset-bottom, 0px)) !important;
-    scroll-padding-bottom: calc(202px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px)) !important;
+    scroll-padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px));
   }
 
   body.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details .return-neu-tray {
