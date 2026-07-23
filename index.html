@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>우성고 카드</title>
 
-    <meta name="theme-color" content="##8b5cf6" />
+  <meta name="theme-color" content="#8b5cf6" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="우성고카드" />
@@ -6534,7 +6534,6 @@ img {
 
 .morph-grid {
   display: flex;
-  grid-template-columns: 1fr 1fr;
   gap: 13px;
   width: 100%;
   max-width: none;
@@ -8380,9 +8379,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     font-size: 1.28rem;
   }
 
-}
-
-@media (max-width:520px) {
   .receipt-ocr-swal {
     padding-top: .9rem;
   }
@@ -15381,7 +15377,7 @@ const CardApp = (function() {
         ========================================================= */
         isAdminMode: false,
         adminSince: null,
-        adminPinCache: null
+        adminTokenCache: null
     };
 
     /* =========================================================
@@ -15651,20 +15647,21 @@ const CardApp = (function() {
             const raw = window.localStorage && localStorage.getItem(ADMIN_MODE_STORAGE_KEY);
             if (!raw) return null;
             const data = JSON.parse(raw);
-            if (!data || !data.enabled || !data.pin) return null;
+            if (!data || !data.enabled || (!data.token && !data.pin)) return null;
             return {
                 enabled: true,
-                pin: String(data.pin || ''),
+                token: String(data.token || ''),
+                legacyPin: String(data.pin || ''),
                 since: data.since || new Date().toISOString()
             };
         } catch(e) { return null; }
     }
     function persistAdminMode(){
         try {
-            if (!window.localStorage || !state.isAdminMode || !state.adminPinCache) return;
+            if (!window.localStorage || !state.isAdminMode || !state.adminTokenCache) return;
             localStorage.setItem(ADMIN_MODE_STORAGE_KEY, JSON.stringify({
                 enabled: true,
-                pin: String(state.adminPinCache),
+                token: String(state.adminTokenCache),
                 since: state.adminSince || new Date().toISOString()
             }));
         } catch(e) {}
@@ -15674,12 +15671,46 @@ const CardApp = (function() {
             if (window.localStorage) localStorage.removeItem(ADMIN_MODE_STORAGE_KEY);
         } catch(e) {}
     }
-    function restoreAdminModeFromStorage(){
+    async function restoreAdminModeFromStorage(){
         const saved = readPersistedAdminMode();
         if (!saved) return;
-        state.isAdminMode = true;
-        state.adminSince = saved.since;
-        state.adminPinCache = saved.pin;
+
+        // 새 토큰 저장 형식은 먼저 화면 상태를 복원하고 서버에서 조용히 유효성을 확인합니다.
+        if (saved.token) {
+            state.isAdminMode = true;
+            state.adminSince = saved.since;
+            state.adminTokenCache = saved.token;
+            try {
+                const result = await Api.call('validateAdminToken', saved.token);
+                if (!result || !result.ok) {
+                    state.isAdminMode = false;
+                    state.adminSince = null;
+                    state.adminTokenCache = null;
+                    clearPersistedAdminMode();
+                }
+            } catch(e) {
+                // 일시적인 오프라인 상태에서는 저장값을 지우지 않습니다.
+                // 실제 반납 제출 시 서버가 토큰을 다시 검증합니다.
+            }
+            return;
+        }
+
+        // 이전 버전에 평문으로 저장된 PIN은 최초 한 번만 서버 토큰으로 교환합니다.
+        if (saved.legacyPin) {
+            try {
+                const result = await Api.call('validateAdminPin', saved.legacyPin);
+                if (result && result.ok && result.adminToken) {
+                    state.isAdminMode = true;
+                    state.adminSince = saved.since;
+                    state.adminTokenCache = String(result.adminToken);
+                    persistAdminMode();
+                } else if (!result || !result.configurationError) {
+                    clearPersistedAdminMode();
+                }
+            } catch(e) {
+                // 교환에 실패한 동안에는 기존 PIN 저장값을 유지해 다음 실행에서 다시 시도합니다.
+            }
+        }
     }/* =========================================================
     @SUBSECTION: JS_STATE_ADMIN_HELPERS
     관리자 모드 state 변경 helper
@@ -15700,21 +15731,21 @@ const CardApp = (function() {
             });
         } catch (e) {}
     }
-    function setAdminMode(on, pin=null){
+    function setAdminMode(on, token=null, options={}){
         state.isAdminMode = !!on;
         if (state.isAdminMode) {
             const ts = state.adminSince || new Date().toISOString();
             state.adminSince = ts;
-            if (pin) {
-                state.adminPinCache = String(pin);
+            if (token) {
+                state.adminTokenCache = String(token);
             }
             persistAdminMode();
-            showAdminModeNotice(true);
+            if (!options.silent) showAdminModeNotice(true);
         } else {
             state.adminSince = null;
-            state.adminPinCache = null;
+            state.adminTokenCache = null;
             clearPersistedAdminMode();
-            showAdminModeNotice(false);
+            if (!options.silent) showAdminModeNotice(false);
         }
     }
     /* =========================================================
@@ -15747,7 +15778,7 @@ const CardApp = (function() {
         createDetailRow(label, content){
             return `<div class="detail-row"><span class="detail-row-label">${this.esc(label)}</span><span class="detail-row-content">${this.esc(content)}</span></div>`;
         },
-        celebrate(){ try{ confetti({particleCount:120,spread:80,origin:{y:.6}}); }catch(_){} },
+        celebrate(){},
         haptic(pattern=12){ try{ if(navigator && typeof navigator.vibrate === 'function') navigator.vibrate(pattern); }catch(_){} },
         clampMealAmount(amt, cnt){
             const entered=parseInt((amt||'').replace(/[^\d]/g,''),10)||0;
@@ -19170,7 +19201,7 @@ ${receiptUseTypeHtml}
             const btn = document.getElementById('submit-cart-btn');
             if(btn) { btn.disabled = true; btn.classList.add('is-loading'); }
             const params = {
-                adminPin: state.isAdminMode ? (state.adminPinCache || '') : '',
+                adminToken: state.isAdminMode ? (state.adminTokenCache || '') : '',
                 cardNumber: state.currentReturnCard.id,
                 receiveDate: state.currentReturnCard.userInfo.receiveDate,
                 userName: state.enteredUsers.map(u=>u.name).join(', '),
@@ -19217,9 +19248,15 @@ ${receiptUseTypeHtml}
             } catch (e) {
                 if (delayedReturnLoadingTimer) clearTimeout(delayedReturnLoadingTimer);
                 if (delayedReturnLoadingShown) { try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(_) {} }
-                state.lastReturnSubmitError = { cardNumber: params.cardNumber, message: Utils.getErrorMessage(e), at: new Date().toISOString() };
+                const returnErrorMessage = Utils.getErrorMessage(e);
+                state.lastReturnSubmitError = { cardNumber: params.cardNumber, message: returnErrorMessage, at: new Date().toISOString() };
                 clearInterval(state.countdownInterval);
                 if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); btn.textContent = originalSubmitText || '반납 제출'; }
+                if (String(returnErrorMessage).includes('ADMIN_SESSION_INVALID')) {
+                    setAdminMode(false, null, { silent: true });
+                    await Swal.fire('관리자 인증 필요', '저장된 반납 허가증이 유효하지 않습니다. 관리자 PIN을 다시 입력해 주세요.', 'warning');
+                    return;
+                }
                 await UIManager.showOperationalError({
                     title: '반납 처리 실패',
                     error: e,
@@ -19449,14 +19486,45 @@ ${receiptUseTypeHtml}
                     resetAdminTap();
                     if (state.isAdminMode) {
                         const r = await Swal.fire({
-                            title: '관리자 모드',
-                            text: '관리자 모드를 해제(잠금)할까요?',
-                            icon: 'question',
+                            title: '관리자 모드 해제',
+                            text: '처음 설정한 관리자 PIN을 입력해 주세요.',
+                            input: 'password',
+                            inputAttributes: { autocapitalize: 'off', inputmode: 'numeric' },
                             showCancelButton: true,
                             confirmButtonText: '해제',
-                            cancelButtonText: '유지'
+                            cancelButtonText: '유지',
+                            preConfirm: value => {
+                                const pin = String(value || '').trim();
+                                if (!pin) {
+                                    Swal.showValidationMessage('PIN을 입력해 주세요.');
+                                    return false;
+                                }
+                                return pin;
+                            }
                         });
-                        if (r.isConfirmed) setAdminMode(false);
+                        if (r.isConfirmed) {
+                            try {
+                                const result = await Api.call(
+                                    'deactivateAdminMode',
+                                    String(r.value || '').trim(),
+                                    state.adminTokenCache || ''
+                                );
+                                if (result && result.ok) {
+                                    setAdminMode(false);
+                                } else if (result && result.configurationError) {
+                                    Swal.fire('설정 필요', 'Apps Script의 스크립트 속성에 ADMIN_PIN을 설정해 주세요.', 'error');
+                                } else if (result && result.locked) {
+                                    Swal.fire('잠시 후 다시 시도', `PIN 입력이 잠겼습니다. 약 ${result.remainingSeconds || 300}초 후 다시 시도해 주세요.`, 'warning');
+                                } else {
+                                    const msg = result && result.remainingAttempts != null
+                                        ? `PIN이 올바르지 않습니다. 남은 시도: ${result.remainingAttempts}회`
+                                        : 'PIN이 올바르지 않습니다.';
+                                    Swal.fire('해제 실패', msg, 'error');
+                                }
+                            } catch(e) {
+                                UIManager.handleServerError(e);
+                            }
+                        }
                         return;
                     }
                     const res = await Swal.fire({
@@ -19471,8 +19539,10 @@ ${receiptUseTypeHtml}
                         const pin = String(res.value || '').trim();
                         /* @SERVER_API_GROUP_ADMIN: 관리자 PIN 검증 */
                         const result = await Api.call('validateAdminPin', pin);
-                        if (result && result.ok) {
-                            setAdminMode(true, pin);
+                        if (result && result.ok && result.adminToken) {
+                            setAdminMode(true, result.adminToken);
+                        } else if (result && result.configurationError) {
+                            Swal.fire('설정 필요', 'Apps Script의 스크립트 속성에 ADMIN_PIN을 설정해 주세요.', 'error');
                         } else if (result && result.locked) {
                             Swal.fire('잠시 후 다시 시도', `PIN 입력이 잠겼습니다. 약 ${result.remainingSeconds || 300}초 후 다시 시도해 주세요.`, 'warning');
                         } else {
@@ -19706,12 +19776,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-</script><script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    });
-  }
 </script><script id="woosung-fast-touch-keypad-final">
 
 (function() {
