@@ -14861,6 +14861,60 @@ body.ws-app[data-current-screen="login"] #screen-login {
 
 
 
+<style id="ws-laptop-fit">
+/* ============================================================
+   노트북(가로 넓고 세로 짧은 마우스 기기) 로그인/내선번호 화면을
+   스크롤 없이 한 화면에 맞춤. 태블릿(pointer:coarse)·모바일은 제외.
+   조절 노브는 아래 #screen-login 의 52vh 값 하나뿐:
+   - 아직 스크롤이 남으면 48vh 등으로 낮추기
+   - 너무 작아 보이면 56vh 등으로 올리기
+   ============================================================ */
+@media (min-width: 768px) and (pointer: fine) {
+
+  body[data-current-screen="login"] .content-wrapper {
+    justify-content: center;
+    padding-top: clamp(8px, 2vh, 24px);
+    padding-bottom: clamp(8px, 2vh, 24px);
+  }
+
+  /* ★ 핵심 지렛대: 카드 폭을 화면 높이에 연동.
+     세로가 짧아지면 폭이 줄고, 폭에서 나오는 키패드 높이도 함께 축소됨. */
+  body[data-current-screen="login"] #screen-login {
+    max-width: min(440px, 52vh);
+    padding: clamp(12px, 2.6vh, 32px) 18px;
+    max-height: calc(100dvh - 16px);
+    border-radius: clamp(24px, 3.4vh, 38px);
+  }
+
+  body[data-current-screen="login"] #screen-login .main-frame,
+  body[data-current-screen="login"] #screen-login .login-frame {
+    gap: clamp(6px, 1.4vh, 14px);
+  }
+
+  body[data-current-screen="login"] #screen-login .header-dashboard {
+    margin-bottom: clamp(6px, 1.4vh, 16px);
+  }
+
+  body[data-current-screen="login"] #screen-login .keypad-panel .keypad-grid {
+    gap: clamp(7px, 1.5vh, 13px);
+    margin-bottom: clamp(6px, 1.4vh, 12px);
+  }
+
+  body[data-current-screen="login"] .keypad-btn {
+    font-size: clamp(1.3rem, 3.2vh, 1.8rem);
+  }
+
+  body[data-current-screen="login"] .digit-wrapper,
+  body[data-current-screen="login"] .digit-box.filled {
+    width: clamp(42px, 7vh, 55px);
+    height: clamp(42px, 7vh, 55px);
+  }
+
+  body[data-current-screen="login"] .digit-box.filled {
+    font-size: clamp(1.2rem, 3vh, 1.5rem);
+  }
+}
+</style>
 </head>
 <body class="variant-lockscreen ws-app" data-current-screen="welcome" data-ws-foundation="2026-06-15" data-ws-page="card-system">
 <!-- ===== HTML: APP SHELL =====
