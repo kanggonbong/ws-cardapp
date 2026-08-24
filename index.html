@@ -79,7 +79,7 @@ body.confirmation-result-mode #main-title-container, body.confirmation-result-mo
 }
 
 body.confirmation-result-mode .content-wrapper {
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 0 18px;
   justify-content: center;
   align-items: center;
@@ -714,54 +714,47 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   pointer-events: none;
   overflow: hidden;
   opacity: 1;
-  background: radial-gradient(circle at var(--ws-ripple-x, 50%) var(--ws-ripple-y, 50%), rgba(255, 255, 255, 0.080) 0%, rgba(138, 183, 255, 0.055) 16%, transparent 40%);
+  background: radial-gradient(circle at var(--ws-ripple-x, 50%) var(--ws-ripple-y, 50%), rgba(255, 255, 255, 0.078) 0%, transparent 38%);
   animation: wsLakeRippleLayer 1.28s ease-out forwards;
+  will-change: opacity;
   contain: layout paint style;
 }
 
+/* [2026-08 성능 개선]
+   - filter: blur(0.1px) 제거: 눈에 보이지도 않으면서 매 프레임 필터 연산을 강제해
+     저사양 기기에서 렉의 주원인이었습니다.
+   - ::after 보조 그라데이션 레이어를 본체 그라데이션에 통합해 페인트 횟수를 줄였습니다.
+   - 실제 요소 크기를 최대 1200px로 고정하고, 부족한 크기는 scale로 확대합니다.
+     화면이 큰 PC에서 2000px가 넘는 초대형 텍스처를 만들지 않아 메모리/래스터 부담이 큽니다.
+     확대되는 마지막 구간은 이미 투명도가 0에 가까워 화질 차이는 보이지 않습니다. */
 .ws-lake-ripple-wave {
   position: fixed;
   left: var(--ws-ripple-x, 50%);
   top: var(--ws-ripple-y, 50%);
-  width: var(--ws-ripple-size, 1800px);
-  height: var(--ws-ripple-size, 1800px);
+  width: var(--ws-ripple-base, 1200px);
+  height: var(--ws-ripple-base, 1200px);
   border-radius: 50%;
-  transform: translate3d(-50%, -50%, 0) scale(0.014);
+  transform: translate3d(-50%, -50%, 0) scale(var(--ws-ripple-scale-start, 0.02));
   opacity: 0;
   will-change: transform, opacity;
-  filter: blur(0.1px);
+  backface-visibility: hidden;
   background:
     radial-gradient(circle,
-      transparent 0%,
-      transparent 41.5%,
-      rgba(255, 255, 255, 0.36) 44%,
-      rgba(160, 200, 255, 0.25) 46%,
-      rgba(255, 255, 255, 0.080) 50%,
-      transparent 55%,
-      transparent 100%);
+      rgba(255, 255, 255, 0.075) 0%,
+      rgba(173, 208, 255, 0.030) 22%,
+      transparent 38%,
+      rgba(255, 255, 255, 0.34) 44%,
+      rgba(160, 200, 255, 0.22) 47%,
+      transparent 55%);
   animation: wsLakeRippleWave 1.24s cubic-bezier(0.16, 0.82, 0.24, 1) forwards;
 }
 
-.ws-lake-ripple-wave::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(circle,
-      rgba(255,255,255,0.105) 0%,
-      rgba(173, 208, 255, 0.065) 10%,
-      rgba(173, 208, 255, 0.018) 18%,
-      transparent 30%);
-  opacity: 0.75;
-}
-
 @keyframes wsLakeRippleWave {
-  0% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(0.014); }
+  0% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(var(--ws-ripple-scale-start, 0.02)); }
   10% { opacity: 0.84; }
   52% { opacity: 0.58; }
   84% { opacity: 0.26; }
-  100% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(var(--ws-ripple-scale-end, 1)); }
 }
 
 @keyframes wsLakeRippleLayer {
@@ -16441,13 +16434,19 @@ const CardApp = (function() {
 
             const returnNow = () => {
                 clearTransitionTimers();
-                document.body.classList.remove('confirmation-result-mode');
                 if (cd) {
                     cd.innerHTML = '<div class="confirm-timer-caption">첫 화면으로 복귀 중...</div>';
                 }
                 showAppToast('첫 화면으로 복귀합니다');
                 document.getElementById('screen-confirmation').classList.add('is-hiding');
-                state.confirmLeaveTimeout2 = setTimeout(() => { state.forceSyncOnNextUnlock = true; UIManager.showLockScreen(); }, 250);
+                /* [2026-08 수정] confirmation-result-mode 제거를 페이드아웃이 끝난 뒤로 미룹니다.
+                   먼저 제거하면 숨겨져 있던 타이틀/뒤로가기 버튼이 되살아나며
+                   화면이 사라지는 도중에 레이아웃이 밀려 스크롤 잔상처럼 보였습니다. */
+                state.confirmLeaveTimeout2 = setTimeout(() => {
+                    document.body.classList.remove('confirmation-result-mode');
+                    state.forceSyncOnNextUnlock = true;
+                    UIManager.showLockScreen();
+                }, 250);
             };
 
             const renderCountdown = () => {
@@ -19549,12 +19548,19 @@ ${receiptUseTypeHtml}
             const y = rect.top + rect.height / 2;
             const farX = Math.max(x, window.innerWidth - x);
             const farY = Math.max(y, window.innerHeight - y);
-            const rippleSize = Math.ceil(Math.sqrt(farX * farX + farY * farY) * 2.12);
+            const rippleSize = Math.max(960, Math.ceil(Math.sqrt(farX * farX + farY * farY) * 2.12));
+            /* [2026-08 성능 개선] 실제 DOM 요소는 최대 1200px로만 만들고,
+               모자란 크기는 GPU가 처리하는 scale로 확대합니다.
+               큰 모니터에서 2000px가 넘는 텍스처를 만들지 않아 저사양 기기 렉이 크게 줄어듭니다. */
+            const rippleBase = Math.min(1200, rippleSize);
+            const rippleScaleEnd = rippleSize / rippleBase;
             const layer = document.createElement('div');
             layer.className = 'ws-lake-ripple-layer';
             layer.style.setProperty('--ws-ripple-x', `${x}px`);
             layer.style.setProperty('--ws-ripple-y', `${y}px`);
-            layer.style.setProperty('--ws-ripple-size', `${Math.max(960, rippleSize)}px`);
+            layer.style.setProperty('--ws-ripple-base', `${rippleBase}px`);
+            layer.style.setProperty('--ws-ripple-scale-end', rippleScaleEnd.toFixed(4));
+            layer.style.setProperty('--ws-ripple-scale-start', (0.014 * rippleScaleEnd).toFixed(5));
             layer.innerHTML = '<div class="ws-lake-ripple-wave"></div>';
             document.body.appendChild(layer);
             setTimeout(() => { try { layer.remove(); } catch(e) {} }, 1550);
@@ -20214,6 +20220,176 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.addEventListener('visibilitychange', queueSync, { passive: true });
   queueSync();
+})();
+</script>
+
+<style id="ws-auto-fit-style">
+/* =========================================================
+   [2026-08 추가] 화면 세로 자동 맞춤 (ws-auto-fit)
+   - PC / 노트북처럼 세로 높이가 제각각인 환경에서
+     UI 전체를 같은 비율로 축소/확대해 항상 한 화면에 꽉 차게 만듭니다.
+   - 레이아웃 구조는 전혀 건드리지 않고 배율만 바꾸므로
+     어느 해상도에서든 보이는 모양이 동일합니다.
+   - 고정 오버레이(잠금화면/로딩/영수증 시트/파동/토스트/하단독)는
+     모두 .content-wrapper 바깥에 있어 배율의 영향을 받지 않습니다.
+   ========================================================= */
+body.ws-auto-fit .content-wrapper {
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+body.ws-auto-fit .container {
+  transform: scale(var(--ws-fit-scale, 1));
+  transform-origin: center center;
+}
+
+/* 배율 계산이 끝나기 전 한 프레임 깜빡임 방지 */
+body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
+  visibility: hidden;
+}
+</style>
+
+<script id="ws-auto-fit-controller">
+/* =========================================================
+   화면 세로 자동 맞춤 컨트롤러
+   - 세로가 남으면 키우고, 모자라면 줄여서 스크롤이 생기지 않게 합니다.
+   - 마우스를 쓰는 PC/노트북에서만 동작합니다. (태블릿 터치 환경은 기존 그대로)
+   - 주소 뒤에 ?nofit=1 을 붙이면 이 기능을 끌 수 있습니다.
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var MIN_SCALE = 0.55;   // 이보다 더 줄이지 않음 (너무 작아지면 가독성 문제)
+  var MAX_SCALE = 1.60;   // 이보다 더 키우지 않음
+  var SAFE_GAP  = 12;     // 위아래 최소 여백(px)
+
+  function isDisabled() {
+    try {
+      if (location.search.indexOf('nofit=1') >= 0) return true;
+    } catch (e) {}
+    return false;
+  }
+
+  function isDesktopLike() {
+    try {
+      // 마우스/트랙패드 환경이면서 화면이 충분히 넓을 때만 적용
+      var finePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+      var wideEnough = window.innerWidth >= 1024;
+      var isOfficeTablet = document.body.classList.contains('office-tablet-portrait');
+      return !!finePointer && wideEnough && !isOfficeTablet;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  var wrapper = null;
+  var container = null;
+  var rafId = 0;
+  var enabled = false;
+
+  function resolveNodes() {
+    if (!wrapper) wrapper = document.querySelector('.content-wrapper');
+    if (!container && wrapper) container = wrapper.querySelector('.container');
+    return !!(wrapper && container);
+  }
+
+  function applyScale() {
+    rafId = 0;
+    if (!enabled || !resolveNodes()) return;
+
+    // offsetHeight / offsetWidth 는 레이아웃 기준값이라 transform 배율의 영향을 받지 않습니다.
+    var naturalH = container.offsetHeight;
+    var naturalW = container.offsetWidth;
+    if (!naturalH || !naturalW) return;
+
+    var availH = (window.innerHeight || document.documentElement.clientHeight) - SAFE_GAP * 2;
+    var availW = wrapper.clientWidth || window.innerWidth;
+    if (availH <= 0 || availW <= 0) return;
+
+    var scale = Math.min(availH / naturalH, availW / naturalW);
+    if (!isFinite(scale) || scale <= 0) scale = 1;
+    scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
+
+    var rounded = Math.round(scale * 1000) / 1000;
+    var current = parseFloat(document.body.style.getPropertyValue('--ws-fit-scale')) || 0;
+    if (Math.abs(current - rounded) > 0.002) {
+      document.body.style.setProperty('--ws-fit-scale', String(rounded));
+    }
+
+    if (!document.body.classList.contains('ws-auto-fit-ready')) {
+      document.body.classList.add('ws-auto-fit-ready');
+    }
+  }
+
+  function schedule() {
+    if (!enabled) return;
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(applyScale);
+  }
+
+  function enable() {
+    if (enabled) return;
+    if (!resolveNodes()) return;
+    enabled = true;
+    document.body.classList.add('ws-auto-fit');
+    schedule();
+  }
+
+  function disable() {
+    if (!enabled) return;
+    enabled = false;
+    document.body.classList.remove('ws-auto-fit', 'ws-auto-fit-ready');
+    document.body.style.removeProperty('--ws-fit-scale');
+  }
+
+  function refreshMode() {
+    if (isDisabled()) { disable(); return; }
+    if (isDesktopLike()) { enable(); schedule(); }
+    else { disable(); }
+  }
+
+  function init() {
+    if (!resolveNodes()) {
+      window.setTimeout(init, 120);
+      return;
+    }
+
+    refreshMode();
+
+    window.addEventListener('resize', function () { refreshMode(); schedule(); }, { passive: true });
+    window.addEventListener('orientationchange', function () { refreshMode(); schedule(); }, { passive: true });
+
+    // 화면 전환 / 완료 모드 전환 등 body 상태가 바뀔 때마다 다시 계산
+    try {
+      new MutationObserver(function () { refreshMode(); schedule(); })
+        .observe(document.body, { attributes: true, attributeFilter: ['class', 'data-current-screen'] });
+    } catch (e) {}
+
+    // 내용물 자체가 늘거나 줄 때(목록 렌더링 등) 다시 계산
+    try {
+      if (window.ResizeObserver) {
+        new ResizeObserver(function () { schedule(); }).observe(container);
+      }
+    } catch (e) {}
+
+    // 웹폰트가 늦게 적용되면 높이가 변하므로 한 번 더
+    try {
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { schedule(); });
+      }
+    } catch (e) {}
+
+    window.setTimeout(schedule, 400);
+    window.setTimeout(schedule, 1200);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
 })();
 </script>
 
