@@ -473,9 +473,6 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --app-accent: #f59e0b;
   --app-danger: #f04452;
   --app-inset-accent: var(--app-primary);
-  --app-primary: #3182f6;
-  --app-primary-deep: #1b64da;
-  --app-primary-gradient: #3182f6;
   --app-success: #00c773;
   --app-text-primary: #172b4d;
   --app-warning: #f59e0b;
@@ -487,7 +484,6 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
      2. Foundation UI Tokens (Fonts, Pages, Surface Bases)
      ========================================== */
   --app-bg: #f2f4f6;
-  --app-border: #e5e8ef;
   --app-border-soft: #eef1f5;
   --app-button-surface-bg: #ffffff;
   --app-button-surface-border: 1px solid rgba(255,255,255,0.86);
@@ -501,7 +497,6 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --app-inset-border: rgba(255,255,255,0.52);
   --app-inset-text: #2b4f86;
   --app-mobile-panel-bg: #ffffff;
-  --app-page-bg: #f2f4f6;
   --app-panel-bg: #ffffff;
   --app-panel-bg-soft: #ffffff;
   --app-panel-border: 1px solid #e5e8ef;
@@ -519,13 +514,11 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --app-text-soft: #8b95a1;
   --app-text-strong: #191f28;
   --app-text-sub: #6b7684;
-  --card-available-bg: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   --card-available-border: rgba(255,255,255,0.22);
   --card-inuse-border: var(--app-slot-border, rgba(148,163,184,.78));
   --card-muted-bg: linear-gradient(180deg,#f9fbfe 0%,#edf2f8 100%);
   --card-rack-bg: #f1f5f9;
   --card-returning-border: rgba(15,143,107,.42);
-  --card-special-bg: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
   --card-status-badge-text: var(--app-text-inverse, var(--app-color-white));
   --card-unknown-border: var(--app-muted-border, rgba(100,116,139,.54));
   --loader-bg: var(--app-page-bg);
@@ -550,7 +543,6 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --overlay-mobile-bg: var(--overlay-soft-bg, radial-gradient(circle at top left,rgba(255,255,255,0.92) 0%,#e4edf8EE 38%,#d6e3f3F2 100%));
   --overlay-panel-bg: #ffffff;
   --overlay-panel-border: 1px solid #e5e8ef;
-  --overlay-purpose-bg: var(--app-surface-bg, radial-gradient(circle at top, var(--app-color-white) 0%, #e4edf8 36%, #d6e3f3 100%));
   --overlay-soft-bg: #f7f8fa;
   --receipt-add-bg: #ffffff;
   --receipt-attach-bg: #ffffff;
@@ -566,7 +558,6 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --receipt-cart-bg: #ffffff;
   --receipt-dashboard-amount-bg: var(--app-accent-gradient, linear-gradient(135deg,#0f9f75 0%,var(--app-success) 40%,var(--app-primary) 100%));
   --receipt-hero-bg: #ffffff;
-  --receipt-inset-border: rgba(255,255,255,.58);
   --receipt-ops-bg: linear-gradient(180deg,rgba(255,247,247,.96),rgba(255,235,238,.96));
   --receipt-ops-border: rgba(239,68,68,.18);
   --receipt-panel-bg: #ffffff;
@@ -587,7 +578,6 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --app-radius-control: 16px;
   --app-radius-panel: 24px;
   --app-shadow-inset: none;
-  --app-shadow-light: rgba(255,255,255,0.96);
   --app-shadow-press: none;
   --app-transform-press: scale(.98);
   --app-shadow-raised: 0 1px 2px rgba(15,23,42,.04);
@@ -623,17 +613,13 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --app-label-muted: #8b95a1;
   --app-mobile-page-padding: 20px 16px;
   --app-return-dash: rgba(37,99,235,.18);
-  --app-scan-icon-color: var(--app-primary);
   --app-z-floating: 50;
   --app-z-header: 10;
   --app-z-loader: 310;
   --app-z-lock: 300;
-  --card-available-blue: linear-gradient(135deg,#1f4f9a 0%,#3b7fd8 100%);
   --card-badge-size: .58rem;
   --card-name-size: 1.12rem;
   --card-special-red: linear-gradient(135deg,#9c3442 0%,#cf5d68 100%);
-  --loader-progress-fill: #1b64da;
-  --login-cursor-color: var(--app-primary);
   --login-keypad-gap: 12px;
   --login-live-dot: var(--app-success-text, var(--app-success));
   --login-mobile-padding: 20px 16px 10px;
@@ -645,7 +631,6 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   --receipt-cart-icon-color: var(--app-primary-soft, #3b82f6);
   --receipt-cart-place-color: var(--app-text, var(--app-text-main, #1f4175));
   --receipt-dashboard-label-color: var(--app-text-muted, var(--app-text-muted, #64748b));
-  --receipt-inset-base: #f8fafc;
   --receipt-inset-surface: #ffffff;
   --receipt-ops-color: #9f1239;
   --receipt-state-needs-color: var(--app-danger, #ef4444);
@@ -668,100 +653,31 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
 #lock-screen.fade-out {
   opacity: 0;
   pointer-events: none;
-  transform: scale(1.05);
+  transition: opacity 0.34s ease-out;
 }
 
+/* 카드를 누르면 살짝 눌렸다가(active-pop), 화면이 걷히면서 카드가 앞으로 다가오듯 커진다(fade-out).
+   로그인 화면은 그 아래에서 떠오른다 (base.css .content-wrapper.unlock-enter). */
 #lock-screen.active-pop .lock-content {
-  transform: scale(0.96);
-  transition: transform 0.1s ease-in;
+  transform: scale(0.95);
+  transition: transform 0.12s cubic-bezier(0.3, 0, 0.5, 1);
 }
 
 
-#lock-screen.ripple-card-exit .lock-content,
-#lock-screen.active-pop.ripple-card-exit .lock-content {
-  transform: scale(1);
-  transition: opacity 1.08s cubic-bezier(0.22, 1, 0.36, 1), transform 1.08s cubic-bezier(0.22, 1, 0.36, 1);
+#lock-screen.fade-out .lock-content,
+#lock-screen.active-pop.fade-out .lock-content {
+  transform: scale(1.06);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-#lock-screen.ripple-card-exit #glass-card-container {
+/* 손이 닿으면 안내 문구는 바로 걷는다. 깜빡임(soft-pulse)이 opacity 를 쥐고 있어 함께 꺼야 사라진다. */
+#lock-screen.active-pop #lock-text-instruction {
+  animation: none;
   opacity: 0;
-  transform: translate3d(0, -5px, 0) scale(0.985);
-  pointer-events: none;
-  transition: opacity 1.08s cubic-bezier(0.22, 1, 0.36, 1), transform 1.08s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-#lock-screen.ripple-card-exit #lock-text-instruction {
-  opacity: 0;
-  transition: opacity 0.48s ease-out;
-}
-
-#lock-screen.ripple-screen-exit {
-  opacity: 0;
-  transform: scale(1.012);
-  pointer-events: none;
-  transition: opacity 0.78s cubic-bezier(0.22, 1, 0.36, 1), transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* ==========================================
-   Lock card lake ripple transition
-   - One slightly slower, more visible ripple starts from the card center.
-   - Use a single wave only so the effect feels cleaner.
-   ========================================== */
-.ws-lake-ripple-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 1;
-  background: radial-gradient(circle at var(--ws-ripple-x, 50%) var(--ws-ripple-y, 50%), rgba(255, 255, 255, 0.078) 0%, transparent 38%);
-  animation: wsLakeRippleLayer 1.28s ease-out forwards;
-  will-change: opacity;
-  contain: layout paint style;
-}
-
-/* [2026-08 성능 개선]
-   - filter: blur(0.1px) 제거: 눈에 보이지도 않으면서 매 프레임 필터 연산을 강제해
-     저사양 기기에서 렉의 주원인이었습니다.
-   - ::after 보조 그라데이션 레이어를 본체 그라데이션에 통합해 페인트 횟수를 줄였습니다.
-   - 실제 요소 크기를 최대 1200px로 고정하고, 부족한 크기는 scale로 확대합니다.
-     화면이 큰 PC에서 2000px가 넘는 초대형 텍스처를 만들지 않아 메모리/래스터 부담이 큽니다.
-     확대되는 마지막 구간은 이미 투명도가 0에 가까워 화질 차이는 보이지 않습니다. */
-.ws-lake-ripple-wave {
-  position: fixed;
-  left: var(--ws-ripple-x, 50%);
-  top: var(--ws-ripple-y, 50%);
-  width: var(--ws-ripple-base, 1200px);
-  height: var(--ws-ripple-base, 1200px);
-  border-radius: 50%;
-  transform: translate3d(-50%, -50%, 0) scale(var(--ws-ripple-scale-start, 0.02));
-  opacity: 0;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  background:
-    radial-gradient(circle,
-      rgba(255, 255, 255, 0.075) 0%,
-      rgba(173, 208, 255, 0.030) 22%,
-      transparent 38%,
-      rgba(255, 255, 255, 0.34) 44%,
-      rgba(160, 200, 255, 0.22) 47%,
-      transparent 55%);
-  animation: wsLakeRippleWave 1.24s cubic-bezier(0.16, 0.82, 0.24, 1) forwards;
-}
-
-@keyframes wsLakeRippleWave {
-  0% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(var(--ws-ripple-scale-start, 0.02)); }
-  10% { opacity: 0.84; }
-  52% { opacity: 0.58; }
-  84% { opacity: 0.26; }
-  100% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(var(--ws-ripple-scale-end, 1)); }
-}
-
-@keyframes wsLakeRippleLayer {
-  0% { opacity: 0; }
-  14% { opacity: 1; }
-  82% { opacity: 0.70; }
-  100% { opacity: 0; }
+@keyframes wsUnlockEnter {
+  from{opacity:0;transform:translateY(14px) scale(0.985);}to{opacity:1;transform:none;}
 }
 
 .lock-content {
@@ -1437,26 +1353,6 @@ body[data-current-screen="login"] #keypad-add-btn:not(:disabled) {
   color: #1f4175;
 }
 
-.login-preview {
-  width: 100%;
-  margin: 0 0 10px;
-  padding: 9px 13px;
-  border-radius: 15px;
-  text-align: center;
-  font-weight: 850;
-  letter-spacing: -0.02em;
-  color: #1d4ed8;
-  background: rgba(37,99,235,0.075);
-  border: 1px solid rgba(37,99,235,0.14);
-  box-shadow: inset 1px 1px 3px rgba(255,255,255,0.55),0 4px 10px rgba(37,99,235,0.04);
-}
-
-.login-preview.invalid {
-  color: #dc2626;
-  background: rgba(239,68,68,0.08);
-  border-color: rgba(239,68,68,0.18);
-}
-
 #screen-login .display-area {
   margin: 2px 0 18px;
   height: 50px;
@@ -1474,10 +1370,6 @@ body[data-current-screen="login"] #keypad-add-btn:disabled {
   box-shadow: var(--app-shadow-soft);
   transform: none;
   background: #e2ebf5;
-}
-
-#login-user-preview {
-  display: none;
 }
 
 #login-instruction.login-invalid {
@@ -1845,7 +1737,7 @@ body[data-current-screen="login"] #keypad-submit-btn.pressed {
 }
 
 body[data-current-screen="login"] #keypadDisplay .digit-box {
-  border: 1px solid var(--app-border); box-shadow: var(--app-shadow-soft);
+  border: 1px solid var(--app-border);
   background: #e2e8f0; border-color: #cbd5e1; box-shadow: none;
   width: 16px;
   height: 16px;
@@ -2196,7 +2088,6 @@ body[data-current-screen="login"] .keypad-btn {
   cursor: pointer;
   border: 1px solid var(--app-border);
   box-shadow: var(--app-shadow-soft);
-  background: var(--app-control-bg);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   will-change: auto;
@@ -2277,8 +2168,6 @@ body[data-current-screen="login"] #screen-login {
 }
 
 body[data-current-screen="login"] #screen-login .header-dashboard {
-  box-shadow: var(--login-inset-shadow);
-  background: var(--login-surface-sub, linear-gradient(180deg,#f4f8fc 0%,#ebf1f8 100%));
   border-color: rgba(255,255,255,0.82);
   overflow: hidden;
   min-height: 84px;
@@ -2357,7 +2246,6 @@ body[data-current-screen="login"] #keypad-submit-btn {
 }
 
 body[data-current-screen="login"] #keypad-add-btn {
-  color: var(--app-accent);
   font-size: 1.3rem;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -2366,7 +2254,6 @@ body[data-current-screen="login"] #keypad-add-btn {
 }
 
 body[data-current-screen="login"] #keypad-back-btn {
-  color: var(--app-danger);
   font-size: 1.3rem;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -2799,11 +2686,9 @@ body[data-current-screen="login"] #dash-center-screen .status-badge-wrap {
 
 .card-item-wrapper.hybrid-card-slot.card-status-available {
   cursor: pointer;
-  box-shadow: var(--app-shadow-inset);
 }
 
 .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available {
-  box-shadow: var(--app-shadow-inset);
 }
 
 .card-item-wrapper.hybrid-card-slot.card-status-available::after {
@@ -2824,11 +2709,9 @@ body[data-current-screen="login"] #dash-center-screen .status-badge-wrap {
   font-size: 1.34rem;
   font-weight: 850;
   letter-spacing: -.04em;
-  color: var(--app-color-white);
 }
 
 .card-item-wrapper.hybrid-card-slot.card-status-inuse, .card-item-wrapper.hybrid-card-slot.card-status-returning, .card-item-wrapper.hybrid-card-slot.card-status-unknown {
-  box-shadow: var(--app-shadow-soft);
 }
 
 .card-item-wrapper.hybrid-card-slot.card-status-inuse .card-name, .card-item-wrapper.hybrid-card-slot.card-status-returning .card-name, .card-item-wrapper.hybrid-card-slot.card-status-unknown .card-name {
@@ -2927,16 +2810,13 @@ body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .car
 }
 
 body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .card-item-wrapper.hybrid-card-slot.card-status-available {
-  background: var(--card-available-bg);
   border-color: var(--card-available-border);
 }
 
 body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .card-item-wrapper.hybrid-card-slot.special-overseas-card.card-status-available {
-  background: var(--card-special-bg);
 }
 
 body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .card-item-wrapper.hybrid-card-slot.card-status-available .card-name {
-  color: var(--app-color-white);
 }
 
 body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .card-item-wrapper.hybrid-card-slot.card-status-inuse {
@@ -3016,9 +2896,7 @@ body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .car
 #receipt-cart-container.empty-cart {
   justify-content: center;
   align-items: center;
-  background: var(--app-bg);
   border-radius: var(--receipt-card-radius);
-  box-shadow: var(--app-shadow-inset);
   padding: 20px;
   min-height: 80px;
 }
@@ -3513,9 +3391,6 @@ body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .car
   width: 100%;
   margin: 8px 0 16px;
   border-radius: 28px;
-  background: var(--receipt-inset-base);
-  box-shadow: var(--app-shadow-inset);
-  border: 1px solid var(--receipt-inset-border);
 }
 
 #screen-return-details .return-neu-tray #receipt-dashboard {
@@ -3532,7 +3407,7 @@ body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .car
   border: 1px solid rgba(255,255,255,.64);
 }
 
-#screen-return-details #add-receipt-btn.receipt-dropzone-btn { min-height: 98px; width: 100%; padding: 18px 16px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; cursor: pointer; color: var(--app-inset-accent); box-shadow: var(--app-shadow-soft);
+#screen-return-details #add-receipt-btn.receipt-dropzone-btn { min-height: 98px; width: 100%; padding: 18px 16px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; cursor: pointer;
   position: relative;
   overflow: hidden;
 }
@@ -3616,10 +3491,7 @@ body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .car
 
 #screen-return-details .cart-item {
   position: relative;
-  background: var(--receipt-cart-bg);
-  border-radius: var(--receipt-radius-md);
   padding: 11px 12px;
-  box-shadow: var(--app-shadow-soft);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3627,7 +3499,6 @@ body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] .car
   cursor: pointer;
   transition: background 0.18s ease,box-shadow 0.18s ease,border-color 0.18s ease,opacity 0.18s ease,color 0.18s ease;
   overflow: hidden;
-  border: 1px solid var(--app-border);
   letter-spacing: -0.01em;
 }
 
@@ -5195,11 +5066,9 @@ body[data-current-screen="returnDetails"] #screen-return-details .submit-guide, 
 }
 
 .receipt-ocr-swal.receipt-tone-purchase .use-type-btn.active[data-use-type="general"] {
-  color: var(--app-color-white);
 }
 
 .receipt-ocr-swal.receipt-tone-dining .use-type-btn.active[data-use-type="general"] {
-  color: var(--app-color-white);
 }
 
 .receipt-ocr-swal.receipt-tone-meal .use-type-btn.active[data-use-type="meal"] {
@@ -5213,8 +5082,6 @@ body[data-current-screen="returnDetails"] #screen-return-details .submit-guide, 
 }
 
 .receipt-ocr-swal .receipt-use-type-box {
-  background: linear-gradient(180deg,var(--app-color-white) 0%,#f7fbff 100%);
-  box-shadow: var(--app-shadow-soft);
   transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
 }
 
@@ -5592,7 +5459,6 @@ body[data-current-screen="confirmation"] #screen-confirmation .detail-row-conten
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--overlay-purpose-bg);
   z-index: var(--z-modal);
   display: flex;
   flex-direction: column;
@@ -5608,13 +5474,10 @@ body[data-current-screen="confirmation"] #screen-confirmation .detail-row-conten
   padding: 20px;
   padding-bottom: max(22px, env(safe-area-inset-bottom));
   visibility: hidden;
-  backdrop-filter: blur(8px) saturate(1.08) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(1.08) !important;
 }
 
 #security-scan-overlay .scan-text, #security-scan-overlay .scan-icon {
   box-sizing: border-box;
-  color: var(--app-text-strong);
 }
 
 #security-scan-overlay .scan-box.success .scan-icon {
@@ -5622,9 +5485,6 @@ body[data-current-screen="confirmation"] #screen-confirmation .detail-row-conten
 }
 
 #security-scan-overlay .laser {
-  width: 100vw;
-  background: linear-gradient(90deg,transparent 10%,var(--app-primary) 50%,transparent 90%) !important;
-  box-shadow: 0 0 20px var(--app-primary) !important;
 }
 
 /* ==========================================
@@ -5656,6 +5516,10 @@ body[data-current-screen="confirmation"] #screen-confirmation .detail-row-conten
 
 .content-wrapper.fade-in-up {
   animation: fadeInUp 0.8s cubic-bezier(0.2,0.8,0.2,1) forwards;
+}
+
+.content-wrapper.unlock-enter {
+  animation: wsUnlockEnter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 #main-title-container.is-visible, .scan-text.fade-in {
@@ -6899,7 +6763,7 @@ select, textarea {
   border-color: rgba(37,99,235,.28);
 }
 
-#add-receipt-btn.receipt-dropzone-btn { min-height: 98px; width: 100%; padding: 18px 16px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; cursor: pointer; color: var(--app-inset-accent); box-shadow: var(--app-shadow-soft);
+#add-receipt-btn.receipt-dropzone-btn { min-height: 98px; width: 100%; padding: 18px 16px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; cursor: pointer; color: var(--app-inset-accent);
   position: relative;
   overflow: hidden;
 }
@@ -7538,7 +7402,7 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 /* ==========================================
    Media Queries & Responsiveness
    ========================================== */
-@media (max-width:767px) {
+@media (max-width: 767px){
   .login-instruction-area {
     height: 62px;
     padding: 0;
@@ -7572,7 +7436,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   .swal2-popup {
-    width: 92%;
     max-width: 95%;
   }
 
@@ -7713,7 +7576,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-return-details .return-neu-tray {
-    padding: 15px 12px 13px;
     border-radius: 24px;
     margin-top: 6px;
   }
@@ -7722,19 +7584,10 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     margin-bottom: 12px;
   }
 
-  .login-preview {
-    font-size: .92rem;
-    padding: 7px 10px;
-  }
-
   #screen-login {
-    width: min(92vw,440px);
     padding-top: 16px;
     padding-bottom: 10px;
-    max-height: none;
     overflow-y: visible;
-    max-width: 92vw;
-    border-radius: 32px;
   }
 
   #screen-login .display-area {
@@ -7743,8 +7596,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-wrapper {
-    width: 48px;
-    height: 48px;
   }
 
   
@@ -7785,12 +7636,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypadDisplay {
-    margin-top: 4px;
-    margin-bottom: -12px;
   }
 
   #screen-login .header-dashboard {
-    margin-bottom: 6px;
   }
 
   .header-dashboard {
@@ -7818,15 +7666,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login .login-instruction-area {
-    height: 34px;
-    min-height: 34px;
-    margin-top: 8px;
-    margin-bottom: 7px;
   }
 
   #screen-login .login-instruction-area.has-users {
-    height: 136px;
-    min-height: 136px;
   }
 
   #screen-login .companion-remove-btn {
@@ -7847,8 +7689,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   .morph-overlay {
     padding: 14px;
     padding-bottom: max(16px, env(safe-area-inset-bottom));
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
 
   .purpose-icon-wrap {
@@ -7915,17 +7755,13 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #cardGrid {
-    gap: 10px;
-    padding: 10px;
     border-radius: 22px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 94%;
     margin: 0 auto;
   }
 
   .card-item-wrapper.hybrid-card-slot {
     border-radius: 18px;
-    aspect-ratio: 1.58 / 1;
     min-height: 82px;
   }
 
@@ -7992,14 +7828,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login .keypad-panel .keypad-grid {
-    gap: 11px;
-    margin-bottom: 9px;
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    padding: 14px 0;
-    font-size: 1.18rem;
-    margin-top: 8px;
   }
 
   #purpose-flight-overlay.active {
@@ -8046,7 +7877,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   #screen-return-details .cart-item-place, #screen-return-details .cart-item.with-inline-actions .cart-item-place {
     font-size: 1.02rem;
-    line-height: 1.14;
   }
 
   #screen-return-details .receipt-detail-hashtag, #screen-return-details .cart-item.with-inline-actions .receipt-detail-hashtag {
@@ -8091,12 +7921,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-return-details .cart-item.with-inline-actions {
-    grid-template-columns: minmax(0,1fr) minmax(60px,auto) 54px;
-    column-gap: 6px;
   }
 
   #screen-return-details .cart-item.with-inline-actions .cart-item-amount-box {
-    min-width: 60px;
   }
 
   #main-title-container {
@@ -8133,18 +7960,11 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] .keypad-btn {
-    font-size: 1.65rem;
     padding: 0;
     box-shadow: var(--app-shadow-soft);
-    aspect-ratio: 1.12 / 1;
-    border-radius: var(--login-keypad-radius);
-    background: var(--login-keypad-bg);
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-box.filled {
-    width: 46px;
-    height: 46px;
-    font-size: 1.26rem;
     background: var(--login-control-bg);
   }
 
@@ -8175,7 +7995,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   body[data-current-screen="login"] #screen-login {
     width: var(--login-mobile-width);
-    padding: var(--login-mobile-padding);
     border-radius: 30px;
     background: var(--app-mobile-panel-bg);
     box-shadow: var(--app-mobile-panel-shadow);
@@ -8183,8 +8002,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   body[data-current-screen="main"] #screen-main[data-ws-screen="card-select"] #cardGrid {
     grid-template-columns: repeat(2,1fr);
-    gap: 12px;
-    padding: 12px;
     border-radius: 24px;
   }
 
@@ -8294,18 +8111,11 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
-    width: min(94vw, 440px);
-    min-height: calc(100dvh - 185px);
-    max-height: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: visible;
   }
 
 }
 
-@media (min-width:768px) and (max-width:1180px) and (orientation:portrait) and (pointer:coarse) {
+@media (min-width: 768px) and (max-width: 1180px) and (orientation: portrait) and (pointer: coarse){
   .content-wrapper {
     min-height: 100dvh;
     padding: 16px 14px calc(env(safe-area-inset-bottom,0px) + 16px);
@@ -8325,13 +8135,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
-    flex: 0 0 auto;
-    min-height: auto;
-    max-height: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: visible;
   }
 
   
@@ -8342,7 +8145,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   
 
   #screen-return-details .cart-item.with-inline-actions .cart-item-amount-box {
-    min-width: 68px;
   }
 
   #screen-return-details .cart-item.with-inline-actions .cart-item-attach, #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide {
@@ -8361,11 +8163,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   .receipt-ocr-swal #swal-image-container {
-    max-height: 20vh;
   }
 
   .receipt-ocr-swal #swal-image {
-    max-height: 16vh;
   }
 
   .receipt-ocr-swal .swal2-title {
@@ -8458,7 +8258,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   .keypad-grid {
-    gap: 18px;
   }
 
   .purpose-sheet {
@@ -8610,22 +8409,10 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
-    flex: 0 0 auto;
-    width: min(94vw, 480px);
-    max-width: 480px;
-    min-height: auto;
-    padding: 18px 16px 20px;
-    border-radius: 28px;
-    max-height: none;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 
   #screen-login .header-dashboard {
     border-radius: 20px;
-    margin-bottom: 8px;
   }
 
   #screen-login .stat-label {
@@ -8661,10 +8448,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] .keypad-btn {
-    min-height: 82px;
-    aspect-ratio: 1.12 / 1;
-    border-radius: 20px;
-    font-size: 1.95rem;
   }
 
   body[data-current-screen="login"] #keypad-add-btn, body[data-current-screen="login"] #keypad-back-btn {
@@ -8672,12 +8455,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    min-height: 60px;
-    height: 60px;
-    margin-top: 8px;
-    padding: 0;
-    font-size: 1.2rem;
-    border-radius: 20px;
   }
 
   #screen-login .display-area {
@@ -8699,37 +8476,22 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    margin: 0;
     transform-origin: center center;
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-box.filled {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-    font-size: 1.35rem;
   }
 
   body[data-current-screen="login"] #keypadDisplay .digit-box.masked, body[data-current-screen="login"] #keypadDisplay .digit-box:not(.filled) {
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
-    font-size: 0;
   }
 
   #screen-login .keypad-grid {
-    gap: 10px;
-    margin-bottom: 6px;
     margin-top: 0;
   }
 
 }
 
-@media (max-width:390px) {
+@media (max-width: 390px){
   .card-item-wrapper.hybrid-card-slot {
     aspect-ratio: 1.82 / 1;
     min-height: 76px;
@@ -8744,13 +8506,11 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-login {
-    width: 96vw;
     padding-left: 12px;
     padding-right: 12px;
   }
 
   #screen-return-details .cart-item.with-inline-actions {
-    grid-template-columns: 38px minmax(0,1fr) auto;
     gap: 7px;
   }
 
@@ -8763,49 +8523,30 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide {
     grid-row: 2;
-    min-width: 0;
-    width: 100%;
-    grid-column: 3;
   }
 
 }
 
 @media (min-width:768px) and (max-width:1023px) and (pointer:coarse) and (max-height:900px) {
   #screen-login {
-    width: min(94vw, 480px);
-    padding: 18px 16px 20px;
-    max-height: none;
-    min-height: auto;
   }
 
   #screen-login .header-dashboard {
-    margin-bottom: 8px;
   }
 
   #screen-login .login-instruction-area {
-    min-height: 34px;
-    height: 34px;
   }
 
   #screen-login .login-instruction-area.has-users {
-    min-height: 96px;
-    height: 96px;
   }
 
   #screen-login .display-area {
-    height: 52px;
-    margin: 4px 0 8px;
   }
 
   #screen-login .keypad-grid {
-    gap: 10px;
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    min-height: 60px;
-    height: 60px;
-    padding: 0;
-    margin-top: 8px;
   }
 
   
@@ -8837,22 +8578,16 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypadDisplay.display-area, body[data-current-screen="login"] #keypadDisplay {
-    --login-digit-slot: 52px;
-    --login-digit-dot: 17px;
-    --login-digit-filled: 48px;
     display: grid;
     grid-template-columns: repeat(4, var(--login-digit-slot));
     width: max-content;
     max-width: 100%;
-    height: 62px;
-    min-height: 62px;
     margin-left: auto;
     margin-right: auto;
     padding: 0;
     justify-content: center;
     justify-items: center;
     align-items: center;
-    column-gap: 16px;
     row-gap: 0;
     transform: none;
     line-height: 1;
@@ -9025,17 +8760,10 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   body[data-current-screen="login"] .keypad-btn {
     min-height: 82px;
     aspect-ratio: 1.12 / 1;
-    border-radius: 20px;
     font-size: 1.95rem;
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    min-height: 60px;
-    height: 60px;
-    margin-top: 8px;
-    padding: 0;
-    border-radius: 20px;
-    font-size: 1.2rem;
   }
 
   body[data-current-screen="login"] #screen-login {
@@ -9109,8 +8837,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   #screen-login {
     flex: 0 0 auto;
-    width: 100%;
-    max-width: 100%;
     min-height: auto;
     margin: 0 auto;
     padding: 18px 16px 20px;
@@ -9149,8 +8875,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
   body[data-current-screen="login"] .keypad-btn {
     min-height: 82px;
-    aspect-ratio: 1.12 / 1;
-    border-radius: 20px;
     font-size: 1.95rem;
   }
 
@@ -9159,12 +8883,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    min-height: 60px;
-    height: 60px;
-    margin-top: 8px;
-    padding: 0;
-    border-radius: 20px;
-    font-size: 1.2rem;
   }
 
 }
@@ -9180,7 +8898,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #screen-login .main-frame, body[data-current-screen="login"] #screen-login .login-frame {
-    gap: 8px;
   }
 
   body[data-current-screen="login"] .header-dashboard {
@@ -9220,12 +8937,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
     width: 48px;
     height: 48px;
     border-radius: 15px;
-    font-size: 1.34rem;
   }
 
   body[data-current-screen="login"] .keypad-btn {
-    border-radius: 16px;
-    font-size: 1.72rem;
   }
 
   body[data-current-screen="login"] .content-wrapper, body[data-current-screen="main"] .content-wrapper {
@@ -9247,9 +8961,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #screen-login {
-    max-height: none;
-    padding: 22px 16px 18px;
-    border-radius: 34px;
     overflow-y: visible;
   }
 
@@ -9266,8 +8977,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    font-size: 1.14rem;
-    border-radius: 18px;
   }
 
   body[data-current-screen="main"] .container {
@@ -9398,11 +9107,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   body[data-current-screen="login"] .digit-box.filled {
     width: 44px;
     height: 44px;
-    font-size: 1.22rem;
   }
 
   body[data-current-screen="login"] .keypad-btn {
-    font-size: 1.56rem;
   }
 
   body[data-current-screen="login"] .content-wrapper {
@@ -9417,8 +9124,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #screen-login {
-    max-height: none;
-    padding: 18px 14px 15px;
     overflow-y: visible;
   }
 
@@ -9434,7 +9139,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    font-size: 1.04rem;
   }
 
   body[data-current-screen="main"] .content-wrapper {
@@ -9518,9 +9222,8 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
 }
 
-@media (min-width:768px) and (max-height:840px) and (pointer:fine) {
+@media (min-width: 768px) and (max-height: 840px) and (pointer: fine){
   body[data-current-screen="login"] #screen-login .keypad-panel {
-    padding: 15px 14px 13px;
     border-radius: 28px;
   }
 
@@ -9535,8 +9238,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    margin-top: 8px;
-    padding: 15px 0;
   }
 
   body[data-current-screen="login"] #main-title-container, body[data-current-screen="main"] #main-title-container, body[data-current-screen="returnDetails"] #main-title-container {
@@ -9564,9 +9265,8 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
 }
 
-@media (min-width:768px) and (max-height:740px) and (pointer:fine) {
+@media (min-width: 768px) and (max-height: 740px) and (pointer: fine){
   body[data-current-screen="login"] #screen-login .keypad-panel {
-    padding: 12px 12px 11px;
     border-radius: 26px;
   }
 
@@ -9581,8 +9281,6 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   body[data-current-screen="login"] #keypad-submit-btn {
-    margin-top: 7px;
-    padding: 13px 0;
   }
 
 }
@@ -9593,12 +9291,9 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
   }
 
   #screen-return-details .cart-item.with-inline-actions {
-    grid-template-columns: minmax(0,1fr) minmax(58px,auto);
   }
 
   #screen-return-details .cart-item.with-inline-actions .cart-item-delete-wide {
-    grid-column: 2 / -1;
-    justify-self: end;
     margin-top: 6px;
   }
 
@@ -9606,17 +9301,14 @@ box-shadow:0 0 24px rgba(139,92,246,0.22);
 
 @media (max-width:430px) {
   #screen-return-details .cart-item.with-inline-actions {
-    grid-template-columns: minmax(0,1fr) minmax(58px,auto) 52px;
-    column-gap: 6px;
   }
 
   #screen-return-details .cart-item.with-inline-actions .cart-item-amount-box {
-    min-width: 58px;
   }
 
 }
 
-@media (hover:hover) and (pointer:fine) {
+@media (hover: hover) and (pointer: fine){
   .card-item-wrapper.hybrid-card-slot.card-status-available:hover {
     filter: brightness(1.045);
     box-shadow: 0 14px 27px rgba(16,47,95,0.34),inset 1px 1px 0 rgba(255,255,255,0.28);
@@ -10038,7 +9730,6 @@ body[data-current-screen="main"]
   --app-primary-deep: #102f5f;
   --app-primary-gradient: var(--brand-deep-blue-gradient);
 
-  --card-available-bg: var(--brand-deep-blue-card-gradient);
   --card-available-blue: var(--brand-deep-blue-gradient);
 
   --loader-progress-fill: #315f9d;
@@ -10240,7 +9931,6 @@ body[data-current-screen="confirmation"] #main-title-container .inset-box h2 {
     aspect-ratio: auto;
     height: 82px; /* 평상시 터치하기 쉽도록 큼직한 높이 적용 */
     font-size: 1.58rem;
-    border-radius: 18px;
   }
 
   /* PC에서 사용자 태그 추가 시에만 세로 스크롤 방지를 위해 버튼 높이를 동적으로 축소 */
@@ -10683,10 +10373,6 @@ body[data-current-screen="returnDetails"] #screen-return-details .cart-item.need
 }
 
 #welcome-screen .ws-pulse-loader-shell {
-  width: min(92vw, 440px);
-  min-height: min(86vh, 620px);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10729,7 +10415,6 @@ body[data-current-screen="returnDetails"] #screen-return-details .cart-item.need
 }
 
 #welcome-screen .ws-pulse-loader-title {
-  font-size: clamp(2.15rem, 6vw, 3rem);
   text-align: center;
 }
 
@@ -10882,8 +10567,6 @@ body[data-current-screen="returnDetails"] #screen-return-details .cart-item.need
 @media (max-width: 420px) {
   #welcome-screen[data-ws-region="welcome-loader"] { padding: 8px; }
   #welcome-screen .ws-pulse-loader-shell {
-    width: min(100%, 420px);
-    min-height: calc(100dvh - 16px);
   }
   
   #welcome-screen .ws-pulse-loader-title { font-size: 2.2rem; }
@@ -11080,17 +10763,16 @@ body.ws-app #welcome-screen[data-ws-region="welcome-loader"] {
 #welcome-screen .ws-logo-ring-mark-wrap {
   background: linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(239,247,255,0.78) 100%) !important;
   border-color: rgba(255,255,255,0.88) !important;
-}
-
-
-/* =========================================================
+}/* =========================================================
    v3: 목적/반납 용도 이모지 통일 + 반납 제출 버튼 골드 텍스트
    대상: 물품구매 / 식사다과 / 특근매식
 ========================================================= */
+
+
+
 .purpose-emoji-wrap,
 .flight-purpose-emoji,
 .return-purpose-emoji,
-.use-type-emoji,
 #screen-return-details .cart-item-icon.receipt-emoji-icon {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
   line-height: 1;
@@ -11107,8 +10789,7 @@ body.ws-app #welcome-screen[data-ws-region="welcome-loader"] {
   font-size: 22px;
 }
 
-.return-purpose-emoji,
-.use-type-emoji {
+.return-purpose-emoji {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -11117,10 +10798,6 @@ body.ws-app #welcome-screen[data-ws-region="welcome-loader"] {
 
 .return-purpose-emoji {
   font-size: 0.95em;
-}
-
-.use-type-emoji {
-  font-size: 1.05em;
 }
 
 #screen-return-details .cart-item-icon.icon-tone-shopping.receipt-emoji-icon,
@@ -11151,17 +10828,6 @@ body.ws-app #submit-cart-btn.simple-btn.primary:not(:disabled) i,
 #screen-return-details #submit-cart-btn:not(:disabled) .return-submit-emphasis {
   color: #eaf4ff;
   -webkit-text-fill-color: #eaf4ff;
-}
-
-
-
-/* =========================================================
- * v12.1 receipt use-type meal button light outline patch
- * - 영수증 OCR 팝업의 사용 구분 > 특근매식 버튼에서 이모지를 제거하고
- *   진한 채움형 버튼 대신 가벼운 흰 배경 + 초록 테두리 스타일로 표시합니다.
- * ======================================================= */
-.receipt-ocr-swal .use-type-btn[data-use-type="meal"] .use-type-emoji {
-  display: none;
 }
 
 .receipt-ocr-swal .use-type-btn[data-use-type="meal"] {
@@ -11198,7 +10864,6 @@ body.ws-app #submit-cart-btn.simple-btn.primary:not(:disabled) i,
 
 body[data-current-screen="returnDetails"] #screen-return-details .card-header-badge,
 #screen-return-details .card-header-badge.card-header-badge--flush {
-  max-width: max-content;
   background: #ffffff;
 }
 
@@ -11236,7 +10901,6 @@ body[data-current-screen="returnDetails"] #screen-return-details .card-header-ba
 
 .receipt-ocr-swal .receipt-use-type-segment,
 .receipt-ocr-swal .receipt-use-type-segment:has(> .use-type-btn:only-child) {
-  grid-template-columns: none;
 }
 
 
@@ -11318,18 +10982,17 @@ body.confirmation-result-mode #screen-confirmation #confirmation-details .detail
   color: #0369a1;
   background: rgba(236,254,255,.88);
   border-color: rgba(6,182,212,.44);
-}
-
-
-
-/* =========================================================
+}/* =========================================================
  * v12.4 purpose button redesign / filled selectable layout
  * - 영수증 팝업 사용 구분은 1개/2개/3개 개수에 따라 같은 폭으로 꽉 채웁니다.
  * - 선택된 목적은 진한 채움 버튼으로 표시해 선택 상태가 분명하게 보이게 합니다.
  * - 반납 화면 카드 아래 목적 배지도 같은 진한 칩 톤으로 맞춥니다.
  * ======================================================= */
+
+
+
+
 body.ws-app .return-purpose-emoji,
-body.ws-app .use-type-emoji,
 .receipt-ocr-swal .use-type-btn i {
   display: none !important;
 }
@@ -11788,7 +11451,6 @@ body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn:not(:d
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
-    padding: 12px;
     border-radius: 24px;
   }
 
@@ -11798,7 +11460,7 @@ body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn:not(:d
 }
 
 /* Tablet portrait: ultra-light security scan for low-spec kiosk hardware. */
-@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) {
+@media (min-width: 700px) and (max-width: 1280px) and (orientation: portrait){
   #security-scan-overlay {
     background: #f4f7fb !important;
     backdrop-filter: none;
@@ -11988,20 +11650,11 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt
   border-radius: 16px;
 }
 
-@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) {
+@media (min-width: 700px) and (max-width: 1280px) and (orientation: portrait){
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
-    min-height: 132px;
-    grid-template-columns: 86px minmax(0, 1fr) auto 56px;
-    gap: 17px !important;
-    padding: 18px 16px 18px 18px;
-    border-left-width: 7px;
-    border-radius: 24px;
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
-    width: 86px;
-    height: 86px;
-    border-radius: 20px;
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-badge {
@@ -12014,16 +11667,11 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
-    width: 54px;
-    height: 54px;
-    min-width: 54px;
   }
 }
 
 @media (max-width: 699px) {
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card {
-    min-height: 104px;
-    grid-template-columns: 62px minmax(0, 1fr) auto 44px;
     gap: 9px !important;
     padding: 12px 10px 12px 12px;
     border-left-width: 5px;
@@ -12031,8 +11679,6 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-card-visual {
-    width: 62px;
-    height: 62px;
     border-radius: 15px;
   }
 
@@ -12041,9 +11687,6 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-attached-card .cart-item-delete-wide {
-    width: 42px;
-    height: 42px;
-    min-width: 42px;
     border-radius: 14px;
   }
 }
@@ -12064,7 +11707,6 @@ body.ws-app[data-current-screen="returnDetails"] #return-form-container {
 }
 
 body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
-  width: 100%;
   align-items: center;
 }
 
@@ -12086,7 +11728,6 @@ body.ws-app[data-current-screen="returnDetails"] .return-summary-amount > span {
 
 body.ws-app[data-current-screen="returnDetails"] .return-summary-card-name {
   color: #173f6c;
-  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
   font-weight: 950;
   line-height: 1.1;
 }
@@ -12114,7 +11755,6 @@ body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
 
 body.ws-app[data-current-screen="returnDetails"] .return-summary-amount strong {
   color: #1b4f8d;
-  font-size: clamp(1.7rem, 3.5vw, 2.35rem);
   font-weight: 950;
   line-height: 1;
   letter-spacing: -.04em;
@@ -12255,10 +11895,8 @@ body.ws-app[data-current-screen="returnDetails"] #submit-cart-btn {
   box-shadow: 0 12px 26px rgba(49, 95, 157, 0.22);
 }
 
-@media (min-width: 700px) and (max-width: 1400px) and (orientation: portrait) {
+@media (min-width: 700px) and (max-width: 1280px) and (orientation: portrait){
   body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
-    min-height: 118px;
-    padding: 18px 24px;
   }
 
   body.ws-app[data-current-screen="returnDetails"] #add-receipt-btn.receipt-dropzone-btn {
@@ -12268,11 +11906,9 @@ body.ws-app[data-current-screen="returnDetails"] #submit-cart-btn {
 
 @media (max-width: 699px) {
   body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
-    border-radius: 21px;
   }
 
   body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
-    padding: 7px 11px;
   }
 
   
@@ -12299,7 +11935,6 @@ body.ws-app[data-current-screen="returnDetails"] #submit-cart-btn {
 body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
   position: relative;
   isolation: isolate;
-  width: min(92%, 620px);
   align-self: center;
   display: grid;
   justify-items: center;
@@ -12331,7 +11966,6 @@ body.ws-app[data-current-screen="returnDetails"] .return-summary-identity {
 
 
 body.ws-app[data-current-screen="returnDetails"] .return-summary-card-name {
-  font-size: clamp(1.55rem, 3.2vw, 2rem);
 }
 
 body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
@@ -12351,7 +11985,6 @@ body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
 }
 
 body.ws-app[data-current-screen="returnDetails"] .return-summary-amount strong {
-  font-size: clamp(2rem, 5vw, 2.65rem);
 }
 
 body.ws-app[data-current-screen="returnDetails"] .receipt-status-summary,
@@ -12416,7 +12049,6 @@ body.ws-app[data-current-screen="returnDetails"] #submit-guide:not(.visible) {
 
 @media (max-width: 699px) {
   body.ws-app[data-current-screen="returnDetails"] .return-summary-compact {
-    width: min(94%, 520px);
   }
 
   
@@ -12424,7 +12056,6 @@ body.ws-app[data-current-screen="returnDetails"] #submit-guide:not(.visible) {
   body.ws-app[data-current-screen="returnDetails"] .return-summary-purpose {
     grid-column: auto;
     grid-row: auto;
-    justify-self: center;
   }
 
   body.ws-app[data-current-screen="returnDetails"] .return-summary-amount {
@@ -13053,11 +12684,7 @@ body.ws-app[data-current-screen="login"] #screen-login .companion-remove-btn:act
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
-    height: auto;
-    min-height: clamp(86px, 8.5dvh, 104px);
-    padding: 10px clamp(16px, 2.5vw, 26px);
     margin-bottom: clamp(10px, 1.4dvh, 16px) !important;
-    border-radius: clamp(22px, 2.8vw, 28px);
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-label {
@@ -13086,12 +12713,9 @@ body.ws-app[data-current-screen="login"] #screen-login .companion-remove-btn:act
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
-    width: 100%;
     max-width: min(590px, 55dvh);
     margin-left: auto;
     margin-right: auto;
-    padding-left: 4px;
-    padding-right: 4px;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .keypad-grid {
@@ -13400,18 +13024,14 @@ body.ws-app[data-current-screen="login"] #screen-login .keypad-panel #keypad-sub
 
 @media (max-width: 767px) and (orientation: portrait) {
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
-    padding-left: 8px;
-    padding-right: 8px;
     padding-bottom: 10px;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel::before {
-    top: 62px;
     border-radius: 24px;
   }
 
   body.ws-app[data-current-screen="login"] #screen-login .keypad-panel .keypad-grid {
-    padding-top: 10px;
   }
 }
 
@@ -13554,7 +13174,6 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-rec
 
 @media (max-width: 699px) {
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn {
-    gap: 10px !important;
   }
 
   
@@ -13654,15 +13273,9 @@ body.ws-app[data-current-screen="returnDetails"] #screen-return-details #receipt
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary,
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary.has-issues,
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-status-summary.all-complete {
-    min-height: 50px;
-    padding: 7px 10px;
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details #add-receipt-btn.receipt-dropzone-btn {
-    min-height: 60px;
-    grid-template-columns: 40px minmax(0, 1fr) 24px;
-    padding: 8px 10px;
-    border-radius: 17px;
   }
 
   body.ws-app[data-current-screen="returnDetails"] #screen-return-details .receipt-add-icon {
@@ -14382,7 +13995,7 @@ body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn:disabl
   opacity: .90;
 }
 
-@media (min-width: 600px) and (max-width: 1280px) and (orientation: portrait) {
+@media (min-width: 600px) and (max-width: 1400px) and (orientation: portrait){
   body.ws-app[data-current-screen="login"] #screen-login .main-frame.login-frame {
     width: min(88vw, calc(min(500px, 47dvh) + 20px));
     max-width: calc(min(500px, 47dvh) + 20px);
@@ -14979,7 +14592,7 @@ body.ws-app[data-current-screen="login"] #screen-login {
 }
 
 /* Extra-short laptop/browser viewport (common after browser chrome/taskbar). */
-@media (min-width: 768px) and (pointer: fine) and (max-height: 740px) {
+@media (min-width: 768px) and (max-height: 740px) and (pointer: fine){
   body[data-current-screen="login"] #screen-login {
     padding-top: 9px !important;
     padding-bottom: 9px !important;
@@ -15188,7 +14801,6 @@ body.ws-app[data-current-screen="login"] #screen-login {
                         <div class="companion-grid" id="login-user-inline"></div>
                     </div>
                 </div>
-                <div class="login-preview hidden" id="login-user-preview" aria-live="polite"></div>
 
 <div class="keypad-panel" aria-label="내선번호 입력 패널">
                     <div class="display-area" id="keypadDisplay">
@@ -15309,6 +14921,9 @@ const Api = {
         if (f === 'saveReceiptImageOnly') return 60000;
         if (f === 'saveCartToMasterFile') return 45000;
         if (f === 'queueReturnRequest') return 30000;
+        // 응답을 기다리지 않는 신호지만, 영수증이 많으면 처리가 30초를 넘을 수 있다.
+        // 너무 일찍 끊으면 Worker 경유 시 서버로 가는 요청까지 취소될 수 있어 넉넉히 둔다.
+        if (f === 'processQueueNow') return 150000;
         if (f === 'rentNow') return 25000;
         if (f === 'getReceiptImagePreview') return 30000;
         return 30000;
@@ -15441,6 +15056,8 @@ const CardApp = (function() {
         lastSyncTs: null,
         pendingPostReturnSync: false,
         forceSyncOnNextUnlock: false,
+        // 잠금 해제 후 뒤에서 최신 데이터를 받는 중인지 (loading.js JS_UNLOCK_FAST_PATH)
+        swrPending: false,
         lastOperationalError: null,
         lastReturnSubmitError: null,
 
@@ -15472,6 +15089,7 @@ const CardApp = (function() {
         savedCartPrefetchStarted: false,
         savedCartPrefetchDone: false,
         savedCartPrefetchCardIds: [],
+        savedCartLoaded: {},
         savedCartSingleFetches: {},
 
         /* =========================================================
@@ -15494,6 +15112,9 @@ const CardApp = (function() {
         currentReturnCard: null,
         receiptCart: [],
         pendingEditIndex: -1,
+        // 반납 제출 재시도 시 동일한 requestId를 재사용해 서버 측 중복 접수를 막는다.
+        pendingReturnRequestId: null,
+        pendingReturnRequestCardId: null,
         reviewQueue: [],
         _uploadPickerTimer: null,
 
@@ -15587,8 +15208,10 @@ const CardApp = (function() {
                 .filter(Boolean)));
             if (!Array.isArray(state.allCardData)) return;
 
+            state.savedCartLoaded = state.savedCartLoaded || {};
             idList.forEach(id => {
                 const loadedCart = Utils.sanitizeReceiptCart((carts && carts[id]) || []);
+                state.savedCartLoaded[id] = loadedCart;
                 const target = state.allCardData.find(c => c && c.id === id);
                 if (target) {
                     target.savedCart = loadedCart;
@@ -15692,6 +15315,21 @@ const CardApp = (function() {
             state.savedCartPrefetchDone = false;
             state.savedCartPrefetchCardIds = [];
             state.savedCartSingleFetches = {};
+            state.savedCartLoaded = {};
+        },
+
+        /* 최신 카드 목록이 도착해 state.allCardData 객체가 새로 바뀐 뒤에 부른다.
+           - 이미 받아 둔 장바구니는 새 카드 객체에 다시 붙인다
+             (탭하자마자 장바구니를 먼저 받기 시작하므로 카드 목록보다 먼저 도착할 수 있다).
+           - 그 사이 새로 사용중이 된 카드는 따로 받아 온다. */
+        reattachAfterFreshCards() {
+            const loaded = state.savedCartLoaded || {};
+            const loadedIds = Object.keys(loaded);
+            if (loadedIds.length) this.applyCarts(loaded, loadedIds);
+            const requested = state.savedCartPrefetchCardIds || [];
+            this.getCandidateCardIds(state.allCardData)
+                .filter(id => !requested.includes(id) && !(id in loaded))
+                .forEach(id => this.ensureForCard(id));
         }
     };
 
@@ -15982,6 +15620,12 @@ const CardApp = (function() {
             const rand = Math.random().toString(36).slice(2, 10);
             return `${prefix}_${Date.now()}_${rand}`;
         },
+        /* 내선번호 시트 C열(부서). 예전 데이터는 같은 열을 role로 내려주므로 둘 다 받아줍니다.
+           비어 있으면 빈 문자열이고, 이 경우 화면에는 이름만 표시됩니다. */
+        getUserDept(user){
+            if (!user) return '';
+            return String(user.dept || user.role || '').trim();
+        },
         sanitizeReceiptCart(cart){
             // 서버/Drive에 저장된 장바구니를 다시 불러올 때 UI 임시 상태가 살아나지 않도록 정리합니다.
             // 저장 대상은 실제 업무 데이터와 id: 영수증 파일 참조만입니다.
@@ -16097,7 +15741,7 @@ const CardApp = (function() {
             if (immediate) {
                 title.classList.add('is-visible');
             } else if (sid === 'main') {
-                elements.contentWrapper.classList.remove('fade-in-up');
+                elements.contentWrapper.classList.remove('fade-in-up', 'unlock-enter');
                 void elements.contentWrapper.offsetWidth;
                 elements.contentWrapper.classList.add('fade-in-up');
                 setTimeout(() => title.classList.add('is-visible'), 150);
@@ -16198,6 +15842,8 @@ const CardApp = (function() {
             state.activeDigitIndex = 0;
             state.receiptCart = [];
             state.currentReturnCard = null;
+            state.pendingReturnRequestId = null;
+            state.pendingReturnRequestCardId = null;
             state.loginTyping = false;
             UIManager.resetLoginUi();
             if (elements.keypadDisplay) KeypadLogic.renderDisplay();
@@ -16214,14 +15860,12 @@ const CardApp = (function() {
             elements.contentWrapper.style.overscrollBehaviorY='none';
             elements.cardGrid.classList.remove('is-loaded');
             elements.lockScreen.style.display = 'flex';
-            try { elements.lockScreen.style.opacity = '1'; elements.lockScreen.style.visibility = 'visible'; elements.lockScreen.style.pointerEvents = 'auto'; } catch(e) {}
-            elements.lockScreen.classList.remove('hidden', 'fade-out', 'active-pop', 'ripple-card-exit', 'ripple-screen-exit');
+            // 투명도/터치는 인라인으로 고정하지 않는다. 고정하면 다음 잠금 해제 때 fade-out 이 안 먹어서
+            // 잠금화면이 그대로 있다가 툭 사라진다.
+            try { elements.lockScreen.style.opacity = ''; elements.lockScreen.style.visibility = ''; elements.lockScreen.style.pointerEvents = ''; } catch(e) {}
+            elements.lockScreen.classList.remove('hidden', 'fade-out', 'active-pop');
+            elements.contentWrapper.classList.remove('unlock-enter');
             elements.glassCardContainer.classList.remove('hide-card');
-            document.querySelectorAll('.ws-lake-ripple-layer').forEach(el => el.remove());
-            requestAnimationFrame(() => {
-                elements.lockScreen.style.opacity = '1';
-                document.getElementById('lock-text-instruction').classList.remove('hide');
-            });
             state.cardTiltActive = true;
             UIManager.currentScreenElement = elements.lockScreen;
             state.currentScreen = 'lock';
@@ -16237,6 +15881,10 @@ const CardApp = (function() {
             state.keypadValues = [null, null, null, null];
             state.activeDigitIndex=0;
             state.loginTyping = false;
+            state.receiptCart = [];
+            state.currentReturnCard = null;
+            state.pendingReturnRequestId = null;
+            state.pendingReturnRequestCardId = null;
             UIManager.resetLoginUi();
             KeypadLogic.renderDisplay();
             UIManager.showScreen('login');
@@ -16553,7 +16201,6 @@ const CardApp = (function() {
             const hasUsers = Array.isArray(state.enteredUsers) && state.enteredUsers.length > 0;
             const addBtn = document.getElementById('keypad-add-btn');
             const submitBtn = document.getElementById('keypad-submit-btn');
-            const preview = document.getElementById('login-user-preview');
             const instruction = document.getElementById('login-instruction');
             const badgeText = document.getElementById('dash-badge-text');
             const badgeIcon = document.getElementById('dash-badge-icon');
@@ -16561,12 +16208,6 @@ const CardApp = (function() {
 
             if (addBtn) addBtn.disabled = !hasFullPin;
             if (submitBtn) submitBtn.disabled = !!KeypadLogic._loginInFlight || !(hasFullPin || hasUsers);
-
-            if (preview) {
-                preview.classList.add('hidden');
-                preview.textContent = '';
-                preview.classList.remove('invalid');
-            }
 
             if (centerScreen) centerScreen.classList.remove('success', 'invalid');
             if (!instruction) return;
@@ -16588,10 +16229,22 @@ const CardApp = (function() {
                 const user = state.allUsersData.find(u => String(u.extension) === ext);
                 if (user) {
                     instruction.classList.add('login-ready');
-                    instruction.innerHTML = '<span class="login-ready-keyword">로그인</span> 준비완료';
+                    /* 4자리를 다 누른 순간 이름(+부서)을 바로 보여줘서, 확인 버튼을 누르기 전에
+                       본인이 맞는지 스스로 확인할 수 있게 합니다. 부서가 비면 이름만 나옵니다. */
+                    const deptText = Utils.getUserDept(user);
+                    /* 두 span 사이의 공백은 폭이 좁을 때 줄바꿈이 일어날 지점을 만들어 줍니다. */
+                    instruction.innerHTML =
+                        `<span class="ws-user-name">${Utils.esc(user.name || ext)}</span>` +
+                        (deptText ? ` <span class="ws-user-dept">${Utils.esc(deptText)}</span>` : '');
                     if (centerScreen) centerScreen.classList.add('success');
                     if (badgeText) badgeText.textContent = '확인 완료';
                     if (badgeIcon) badgeIcon.className = 'fa-solid fa-circle-check';
+                } else if (state.swrPending) {
+                    /* 최신 사용자 목록이 아직 오는 중이면 '틀렸다'고 단정하지 않는다.
+                       도착하면 applyFreshInitialData 가 이 함수를 다시 불러 이름을 채운다. */
+                    instruction.innerHTML = '확인 중...';
+                    if (badgeText) badgeText.textContent = '확인 중';
+                    if (badgeIcon) badgeIcon.className = 'fa-solid fa-spinner fa-spin';
                 } else {
                     instruction.classList.add('login-invalid');
                     instruction.innerHTML = '번호 확인 필요';
@@ -16672,7 +16325,22 @@ const CardApp = (function() {
         @SUBSECTION: JS_KEYPAD_USER_CHIPS
         추가 사용자 등록/삭제 및 로그인 사용자 칩 표시
         ========================================================= */
-        handleAddUser: () => {
+        /* 잠금 해제 직후에는 '직전에 받아 둔' 사용자 목록으로 먼저 화면을 띄운다
+           (loading.js 의 JS_UNLOCK_FAST_PATH). 그 목록에 없는 번호라도, 최신 데이터가
+           아직 오는 중이면 새로 등록된 선생님일 수 있으니 기다렸다가 한 번 더 찾는다. */
+        findUserWaitingForFresh: async (ext) => {
+            const find = () => (Array.isArray(state.allUsersData) ? state.allUsersData : [])
+                .find(u => String(u.extension) === ext);
+            let user = find();
+            if (!user && state.swrPending && state.syncPromise) {
+                UIManager.setLoading(true, '사용자 정보 확인 중...');
+                try { await state.syncPromise; } catch (e) {}
+                UIManager.setLoading(false);
+                user = find();
+            }
+            return user || null;
+        },
+        handleAddUser: async () => {
             triggerKeypadVisualPress('+');
             if (document.getElementById('keypad-add-btn')?.disabled) return;
             Utils.haptic(18);
@@ -16689,7 +16357,7 @@ const CardApp = (function() {
             }
             const ext = state.keypadValues.map(v => v ? v.value : '').join('');
             if (ext.length !== 4) return Swal.fire('알림', '내선번호 4자리를 입력해주세요.', 'warning');
-            const user = state.allUsersData.find(u => String(u.extension) === ext);
+            const user = await KeypadLogic.findUserWaitingForFresh(ext);
             if (!user) return Swal.fire('조회 실패', '해당 내선번호를 찾을 수 없습니다.', 'error');
             if (state.enteredUsers.some(u => String(u.extension) === ext)) return Swal.fire('알림', '이미 추가된 사용자입니다.', 'info');
             KeypadLogic.markTyping();
@@ -16829,7 +16497,7 @@ const CardApp = (function() {
                     setTimeout(()=>elements.keypadDisplay.classList.remove('shake'), 500);
                     return UIManager.startInactivityDetection();
                 }
-                const user = state.allUsersData.find(u => String(u.extension) === ext);
+                const user = await KeypadLogic.findUserWaitingForFresh(ext);
                 if (!user) {
                     elements.keypadDisplay.classList.add('shake');
                     setTimeout(()=>elements.keypadDisplay.classList.remove('shake'), 500);
@@ -16887,6 +16555,8 @@ const CardApp = (function() {
             } finally {
                 KeypadLogic._loginInFlight = false;
                 KeypadLogic.updateLoginPreviewAndActions();
+                // 위 로직 어디서 예외가 나더라도 방치 시 자동잠금 타이머는 항상 재가동되어야 합니다.
+                UIManager.startInactivityDetection();
             }
         },
         /* =========================================================
@@ -16964,13 +16634,30 @@ const CardApp = (function() {
         @SUBSECTION: JS_CARD_VISIBILITY_TEMPLATES
         카드 표시 조건과 카드/목적/영수증 HTML 템플릿
         ========================================================= */
-        isCardVisibleToCurrentUsers: (card) => {
-            const allowedUsers = Array.isArray(card?.allowedUsers)
+        /* 카드상태 시트의 "전용사용자" 값으로 카드 노출을 제한합니다.
+           규칙 1) 전용사용자가 지정된 카드는 그 사람에게만 보입니다.
+           규칙 2) 전용사용자로 지정된 사람에게는 그 전용 카드만 보이고 나머지는 숨깁니다.
+                  (예: 학교장 → 업무추진비카드만 보이고 일반 카드는 안 보임)
+           전용사용자가 아무 카드에도 지정돼 있지 않으면 기존과 똑같이 전부 보입니다. */
+        getCardAllowedUsers: (card) => {
+            const list = Array.isArray(card?.allowedUsers)
                 ? card.allowedUsers
-                : (card?.visibleTo ? [card.visibleTo] : null);
-            if (!allowedUsers || allowedUsers.length === 0) return true;
-            const currentNames = state.enteredUsers.map(u => u.name);
-            return allowedUsers.some(name => currentNames.includes(name));
+                : (card?.visibleTo ? [card.visibleTo] : []);
+            return list.map(name => String(name || '').trim()).filter(Boolean);
+        },
+        isCardVisibleToCurrentUsers: (card) => {
+            const currentNames = state.enteredUsers.map(u => String(u.name || '').trim()).filter(Boolean);
+            if (!currentNames.length) return true;
+
+            const allowed = CardLogic.getCardAllowedUsers(card);
+
+            // 지금 로그인한 사람이 어떤 카드든 전용사용자로 지정돼 있는지
+            const boundToOwnCard = Array.isArray(state.allCardData) &&
+                state.allCardData.some(c => CardLogic.getCardAllowedUsers(c)
+                    .some(name => currentNames.includes(name)));
+
+            if (boundToOwnCard) return allowed.some(name => currentNames.includes(name));
+            return allowed.length === 0;
         },
         getCurrentReturnMealHeadcount() {
             // 내선번호 1개를 1명으로 봅니다. 같은 내선번호가 중복 입력되면 1명으로만 계산합니다.
@@ -18264,10 +17951,14 @@ const CardApp = (function() {
             const previous = idx > -1 ? (state.receiptCart[idx] || {}) : {};
             const cachedPreview = item.previewImage || item.receiptImagePreview || previous.previewImage || previous.receiptImagePreview || (!String(item.receiptImage || '').startsWith('id:') ? item.receiptImage : '');
             const ghost = { ...previous, ...item, processing: 'saving', _uiTransient: true, needsManualReview: false };
+            if (!ghost._cid) ghost._cid = Utils.createClientRequestId('receipt');
             if (cachedPreview) {
                 ghost.previewImage = cachedPreview;
                 ghost.receiptImagePreview = cachedPreview;
             }
+            // idx는 await 이후 다른 항목 삭제/삽입으로 밀릴 수 있으므로, 실제 쓰기 시점에는
+            // 안정적인 _cid로 현재 위치를 다시 찾는다 (배열 인덱스가 아니라 항목 자체를 추적).
+            const cid = ghost._cid;
             let targetIdx = idx;
             if (idx > -1) {
                 state.receiptCart[idx] = ghost;
@@ -18277,15 +17968,18 @@ const CardApp = (function() {
             }
             CardLogic.requestRenderReceiptCart();
 
-            
+
             try {
                 await CardLogic.queueSaveCart(null);
+                targetIdx = state.receiptCart.findIndex(x => x && x._cid === cid);
+                if (targetIdx === -1) return true;
                 const it = state.receiptCart[targetIdx];
                 if (it && it.processing === 'saving') {
                     it.processing = 'saved';
                     CardLogic.requestRenderReceiptCart();
                     setTimeout(() => {
-                        const cur = state.receiptCart[targetIdx];
+                        const liveIdx = state.receiptCart.findIndex(x => x && x._cid === cid);
+                        const cur = liveIdx > -1 ? state.receiptCart[liveIdx] : null;
                         if (cur && cur.processing === 'saved') {
                             delete cur.processing;
                             delete cur._uiTransient;
@@ -18296,7 +17990,8 @@ const CardApp = (function() {
                 CardLogic.continueReviewIfNeeded(idx);
                 return true;
             } catch (e) {
-                const it = state.receiptCart[targetIdx];
+                targetIdx = state.receiptCart.findIndex(x => x && x._cid === cid);
+                const it = targetIdx > -1 ? state.receiptCart[targetIdx] : null;
                 if (it) it.processing = 'save_error';
                 CardLogic.requestRenderReceiptCart();
                 try {
@@ -18307,18 +18002,23 @@ const CardApp = (function() {
             }
         },
         deleteCartItem: (idx) => {
+            // 확인창이 떠 있는 동안 다른 영수증의 OCR/저장이 끝나 배열이 밀릴 수 있으므로,
+            // 클릭 시점의 idx가 아니라 항목의 _cid로 실제 삭제 시점의 위치를 다시 찾는다.
+            const cid = state.receiptCart[idx] && state.receiptCart[idx]._cid;
             Swal.fire({title:'삭제 확인',text:"삭제하시겠습니까?",icon:'warning',showCancelButton:true,confirmButtonText:'삭제',cancelButtonText:'취소',confirmButtonColor:UI_COLORS.danger()})
                 .then(r => {
                     if (r.isConfirmed) {
+                        const liveIdx = cid ? state.receiptCart.findIndex(x => x && x._cid === cid) : idx;
+                        if (liveIdx === -1) return;
                         const org = [...state.receiptCart];
-                        const deletedItem = state.receiptCart[idx] ? { ...state.receiptCart[idx] } : null;
+                        const deletedItem = state.receiptCart[liveIdx] ? { ...state.receiptCart[liveIdx] } : null;
                         const deletedReceiptImage = String(deletedItem && deletedItem.receiptImage ? deletedItem.receiptImage : '').trim();
 
-                        state.receiptCart[idx] = { ...state.receiptCart[idx], processing: 'deleting' };
+                        state.receiptCart[liveIdx] = { ...state.receiptCart[liveIdx], processing: 'deleting' };
                         CardLogic.requestRenderReceiptCart();
 
                         const next = [...state.receiptCart];
-                        next.splice(idx, 1);
+                        next.splice(liveIdx, 1);
                         state.receiptCart = next;
                         CardLogic.requestRenderReceiptCart();
 
@@ -18344,16 +18044,24 @@ const CardApp = (function() {
 
         processReceiptQueueItem: async (file, actualIdx, forceMealOnly) => {
             let b64 = '';
+            // actualIdx는 배치 처리 도중 다른 영수증이 삭제/추가되면 밀릴 수 있으므로,
+            // await를 넘어갈 때마다 _cid로 이 항목의 현재 위치를 다시 찾아서 쓴다.
+            const cid = state.receiptCart[actualIdx] && state.receiptCart[actualIdx]._cid;
+            const liveIdx = () => cid ? state.receiptCart.findIndex(x => x && x._cid === cid) : actualIdx;
 
             try {
-                state.receiptCart[actualIdx].processing = 'optimizing';
-                state.receiptCart[actualIdx].usagePlace = CardLogic.isReceiptPdfFile(file) ? 'PDF 첫 페이지 변환 중...' : '영수증 압축 중...';
+                let idx = liveIdx();
+                if (idx === -1) return;
+                state.receiptCart[idx].processing = 'optimizing';
+                state.receiptCart[idx].usagePlace = CardLogic.isReceiptPdfFile(file) ? 'PDF 첫 페이지 변환 중...' : '영수증 압축 중...';
                 CardLogic.requestRenderReceiptCart();
 
                 b64 = await CardLogic.prepareReceiptUploadImage(file);
-                state.receiptCart[actualIdx].receiptImage = b64;
-                state.receiptCart[actualIdx].processing = 'ocr';
-                state.receiptCart[actualIdx].usagePlace = '영수증 분석 중...';
+                idx = liveIdx();
+                if (idx === -1) return;
+                state.receiptCart[idx].receiptImage = b64;
+                state.receiptCart[idx].processing = 'ocr';
+                state.receiptCart[idx].usagePlace = '영수증 분석 중...';
                 CardLogic.requestRenderReceiptCart();
 
                 /* @SERVER_API_GROUP_RECEIPT: 영수증 이미지 OCR/분석 + 이미지 저장 병렬 처리 */
@@ -18361,6 +18069,8 @@ const CardApp = (function() {
                     Api.call('processReceiptImageFast', b64),
                     Api.call('saveReceiptImageOnly', b64)
                 ]);
+                idx = liveIdx();
+                if (idx === -1) return;
                 const ocr = ocrRaw || {};
                 if (imageSave && imageSave.tempFileId) {
                     ocr.tempFileId = imageSave.tempFileId;
@@ -18370,8 +18080,8 @@ const CardApp = (function() {
                 const recognizedAmount = String(ocr && ocr.amount ? ocr.amount : '');
                 let amt = recognizedAmount;
 
-                state.receiptCart[actualIdx].processing = 'postprocessing';
-                state.receiptCart[actualIdx].usagePlace = analysisFailed ? '직접 입력 필요' : '분석 완료';
+                state.receiptCart[idx].processing = 'postprocessing';
+                state.receiptCart[idx].usagePlace = analysisFailed ? '직접 입력 필요' : '분석 완료';
                 CardLogic.requestRenderReceiptCart();
 
                 if (!ocr || !ocr.tempFileId) {
@@ -18381,7 +18091,10 @@ const CardApp = (function() {
                 const rawRecognizedAmount = analysisFailed ? '' : amt.replace(/[^\d]/g, '');
                 const mealCountForReceipt = CardLogic.getCurrentReturnMealHeadcount();
                 const mealAmountInfo = forceMealOnly && rawRecognizedAmount ? Utils.getMealAdjustedAmount(rawRecognizedAmount, mealCountForReceipt) : null;
-                state.receiptCart[actualIdx] = {
+                idx = liveIdx();
+                if (idx === -1) return;
+                state.receiptCart[idx] = {
+                    _cid: cid,
                     receiptImage: ocr.tempFileId,
                     previewImage: b64,
                     receiptImagePreview: b64,
@@ -18410,19 +18123,23 @@ const CardApp = (function() {
             } catch (err) {
                 console.error('Receipt analysis failed:', err);
                 Utils.haptic([20, 40, 20]);
-                state.receiptCart[actualIdx] = {
-                    receiptImage: '',
-                    previewImage: b64,
-                    receiptImagePreview: b64,
-                    usagePlace: '이미지 저장 실패',
-                    usageDetails: '',
-                    amount: '',
-                    date: '',
-                    processing: 'error',
-                    _uiTransient: true,
-                    needsManualReview: true,
-                    imageSaveError: String(err && err.message ? err.message : err)
-                };
+                const errIdx = liveIdx();
+                if (errIdx !== -1) {
+                    state.receiptCart[errIdx] = {
+                        _cid: cid,
+                        receiptImage: '',
+                        previewImage: b64,
+                        receiptImagePreview: b64,
+                        usagePlace: '이미지 저장 실패',
+                        usageDetails: '',
+                        amount: '',
+                        date: '',
+                        processing: 'error',
+                        _uiTransient: true,
+                        needsManualReview: true,
+                        imageSaveError: String(err && err.message ? err.message : err)
+                    };
+                }
             }
 
             if (state.receiptBatchProgress && state.receiptBatchProgress.active) {
@@ -18503,6 +18220,7 @@ const CardApp = (function() {
             const receiptPurposeConfig = CardLogic.getReceiptPurposeConfig();
             const forceMealOnly = receiptPurposeConfig.mealOnly;
             const newItems = files.map((file) => ({
+                _cid: Utils.createClientRequestId('receipt'),
                 receiptImage: '',
                 usagePlace: CardLogic.isReceiptPdfFile(file) ? 'PDF 분석 대기 중...' : '영수증 분석 대기 중...',
                 usageDetails: '',
@@ -19355,6 +19073,16 @@ ${receiptUseTypeHtml}
             CardLogic._submitInFlight = true;
             const btn = document.getElementById('submit-cart-btn');
             if(btn) { btn.disabled = true; btn.classList.add('is-loading'); }
+            // 네트워크 타임아웃 등으로 실패해 사용자가 다시 누르는 경우에도, 서버가 실제로는
+            // 이미 처리했을 수 있으므로 같은 카드에 대해서는 같은 requestId를 재사용해
+            // (서버의 requestId 기준 멱등 처리를 통해) 반납 기록이 중복 생성되지 않게 한다.
+            if (state.pendingReturnRequestId && state.pendingReturnRequestCardId === state.currentReturnCard.id) {
+                var returnRequestId = state.pendingReturnRequestId;
+            } else {
+                var returnRequestId = Utils.createClientRequestId('return');
+                state.pendingReturnRequestId = returnRequestId;
+                state.pendingReturnRequestCardId = state.currentReturnCard.id;
+            }
             const params = {
                 adminToken: state.isAdminMode ? (state.adminTokenCache || '') : '',
                 cardNumber: state.currentReturnCard.id,
@@ -19362,7 +19090,7 @@ ${receiptUseTypeHtml}
                 userName: state.enteredUsers.map(u=>u.name).join(', '),
                 purpose: state.currentReturnCard?.userInfo?.purpose || '',
                 usageSessionId: state.currentReturnCard?.userInfo?.usageSessionId || '',
-                requestId: Utils.createClientRequestId('return'),
+                requestId: returnRequestId,
                 multiEntries: JSON.stringify(Utils.sanitizeReceiptCart(state.receiptCart))
             };
             let delayedReturnLoadingTimer = null;
@@ -19386,8 +19114,16 @@ ${receiptUseTypeHtml}
 
                 /* @SERVER_API_GROUP_RETURN: 반납 요청 큐 등록 */
                 await Api.call('queueReturnRequest', params);
+
+                /* 큐에 넣은 직후 '지금 처리해' 신호를 한 번 보낸다. 응답은 기다리지 않는다.
+                   1분 트리거만 기다리면 그동안 카드가 '반납처리중'이라 바로 다음 사람이 못 쓴다.
+                   실패해도 트리거가 처리하므로 조용히 넘어간다. */
+                try { Api.call('processQueueNow').catch(() => {}); } catch (_) {}
+
                 if (delayedReturnLoadingTimer) clearTimeout(delayedReturnLoadingTimer);
                 if (delayedReturnLoadingShown) { try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(e) {} }
+                state.pendingReturnRequestId = null;
+                state.pendingReturnRequestCardId = null;
 
                 const t = state.allCardData.find(c => c.id === params.cardNumber);
                 if (t) t.status = '반납처리중';
@@ -19454,10 +19190,137 @@ ${receiptUseTypeHtml}
     앱 시작 / 초기 데이터 로딩 / 화면 진입 순서
     - getInitialAppData 호출과 로딩 진행률 흐름 유지
     ========================================================= */
+    /* =========================================================
+    @SUBSECTION: JS_UNLOCK_FAST_PATH (기다리지 않고 겹치기)
+
+    왜
+      예전에는 탭할 때마다 로딩화면에서 데이터가 올 때까지 기다렸다.
+      로딩 링이 94%까지 차야 끝나는 구조라, 데이터가 즉시 있어도 최소 2.0초,
+      파동 애니메이션 1.16초까지 더해 탭 후 내선번호 화면까지 최소 3.2초가 걸렸다.
+
+    어떻게
+      직전에 받아 둔 카드/사용자 데이터가 메모리에 있으면(키오스크는 거의 항상 있다)
+      그걸로 내선번호 화면을 바로 띄우고, 최신 데이터는 뒤에서 받는다.
+      선생님이 번호 4자리를 누르는 2~3초 동안 최신 데이터가 도착한다.
+
+    최신성은 그대로다
+      - 항상 새로 받는다. 기다리지 않을 뿐이다.
+      - 입력한 번호가 낡은 목록에 없으면, 최신 데이터가 올 때까지 기다렸다가 다시 확인한다.
+      - 반납할 카드를 고르는 판단은 보안 스캔 뒤 state.syncPromise 를 기다려 최신 데이터로 한다.
+      - 낡은 상태로 이미 빌린 카드를 고르더라도 서버(rentNow)가 충돌을 막는다.
+
+    처음 페이지를 연 직후처럼 받아 둔 데이터가 없을 때만 예전처럼 로딩화면을 거친다.
+    ========================================================= */
+    function hasLastKnownInitialData() {
+        return Array.isArray(state.allUsersData) && state.allUsersData.length > 0 &&
+               Array.isArray(state.allCardData) && state.allCardData.length > 0;
+    }
+
+    /* 최신 데이터를 state 에 반영하고, 지금 보이는 화면을 그 데이터로 다시 그린다. */
+    function applyFreshInitialData(r, source) {
+        state.allCardData = r.allCards || [];
+        state.allUsersData = r.allUsers || [];
+        state.lastSyncTs = Date.now();
+        if (!state.savedCartPrefetchPromise) SavedCartPrefetch.start(source);
+        else SavedCartPrefetch.reattachAfterFreshCards();
+        try {
+            if (state.currentScreen === 'login') {
+                KeypadLogic.updateDashboard();
+                KeypadLogic.updateLoginPreviewAndActions();
+            } else if (state.currentScreen === 'main') {
+                CardLogic.displayCardList();
+            }
+        } catch (e) { console.warn('[WS] fresh data repaint failed', e); }
+    }
+
+    // 내선번호 화면이 아래에서 살짝 떠오르며 나타난다 (base.css .content-wrapper.unlock-enter)
+    function playLoginEnter() {
+        const wrap = elements.contentWrapper;
+        wrap.classList.remove('unlock-enter', 'fade-in-up');
+        void wrap.offsetWidth;
+        wrap.classList.add('unlock-enter');
+        const onEnd = (ev) => {
+            if (ev.target !== wrap) return;
+            wrap.removeEventListener('animationend', onEnd);
+            wrap.classList.remove('unlock-enter');
+        };
+        wrap.addEventListener('animationend', onEnd);
+    }
+
+    // 잠금화면이 다 걷힌 뒤에 숨긴다. 중간에 숨기면 페이드가 툭 끊긴다.
+    function hideLockAfterExit() {
+        const lock = elements.lockScreen;
+        let done = false;
+        const finish = () => {
+            if (done) return;
+            done = true;
+            lock.removeEventListener('transitionend', onEnd);
+            // 그 사이 다시 잠겼으면(showLockScreen) 건드리지 않는다
+            if (!lock.classList.contains('fade-out')) return;
+            lock.classList.add('hidden');
+            try { lock.style.display = 'none'; } catch(e) {}
+        };
+        const onEnd = (ev) => { if (ev.target === lock && ev.propertyName === 'opacity') finish(); };
+        lock.addEventListener('transitionend', onEnd);
+        setTimeout(finish, 500);
+    }
+
+    function enterLoginWithLastKnownData(reqId, unlockStartedAt) {
+        console.log('[WS MEASURE] unlock fast path (last-known data)', {
+            cards: state.allCardData.length, users: state.allUsersData.length
+        });
+
+        // 잠금화면이 걷히는 동안 그 아래에서 내선번호 화면이 떠오른다 (로딩화면은 거치지 않는다)
+        elements.contentWrapper.style.display = 'flex';
+        elements.lockScreen.classList.add('fade-out');
+        hideLockAfterExit();
+
+        // 최신 데이터는 뒤에서 받는다. 탭할 때 이미 출발한 요청이 있으면 그걸 이어받는다.
+        if (InitialDataPreload.isFreshLoaded()) {
+            // 방금 받은 따끈한 데이터가 있으면 그대로 쓰고 추가 요청은 하지 않는다
+            applyFreshInitialData(state.initialDataPreloadData, 'unlock-preloaded');
+            state.swrPending = false;
+        } else {
+            SavedCartPrefetch.reset();
+            // 최신 카드 목록을 기다리지 않고, 직전에 알던 사용중 카드의 장바구니를 지금 같이 받기 시작한다.
+            // 그 사이 새로 빌려 간 카드는 최신 목록이 오면 reattachAfterFreshCards 가 따로 받아 온다.
+            SavedCartPrefetch.start('unlock-last-known');
+            const startedAt = Date.now();
+            state.swrPending = true;
+            state.syncPromise = (InitialDataPreload.getUsablePromise() || Api.call('getInitialAppData'))
+                .then(r => {
+                    SavedCartPrefetch.normalizeInitialPayload(r);
+                    if (!r || r.error) throw new Error(r?.error || 'No Data');
+                    console.log('[WS MEASURE] background fresh data done', `${Date.now() - startedAt}ms`);
+                    if (reqId === state.syncReqId) applyFreshInitialData(r, 'unlock-swr');
+                    return r;
+                })
+                .catch(e => {
+                    // 실패해도 받아 둔 데이터는 지우지 않는다 (지우면 번호 조회부터 막힌다)
+                    console.log('[WS MEASURE] background fresh data failed - keep last-known', e);
+                    return null;
+                })
+                // 이전 세션의 요청이 늦게 끝나면서 지금 세션의 '확인 중' 상태를 끄지 않도록 한다
+                .finally(() => { if (reqId === state.syncReqId) state.swrPending = false; });
+        }
+
+        UIManager.showScreen('login');
+        playLoginEnter();
+        setTimeout(() => CardLogic.drainPendingRentRequests(), 800);
+        console.log('[WS MEASURE] unlock sequence to login screen', `${Date.now() - unlockStartedAt}ms`, { path: 'fast' });
+        UIManager.startInactivityDetection();
+    }
+
     async function initializeAppSequence() {
         const reqId = ++state.syncReqId;
         const unlockStartedAt = Date.now();
         console.log('[WS MEASURE] unlock sequence start', { at: new Date().toLocaleTimeString() });
+
+        if (hasLastKnownInitialData()) {
+            enterLoginWithLastKnownData(reqId, unlockStartedAt);
+            return;
+        }
+
         elements.welcomeScreen.classList.remove('hidden');
         elements.welcomeScreen.classList.add('is-visible');
         UIManager.currentScreenElement = elements.welcomeScreen;
@@ -19527,6 +19390,7 @@ ${receiptUseTypeHtml}
             setTimeout(() => CardLogic.drainPendingRentRequests(), 800);
             // v12.8: savedCart는 이미 unlock-loader 단계에서 출발했습니다. 여기서는 로그인 화면만 즉시 표시합니다.
             UIManager.showScreen('login');
+            playLoginEnter();
             console.log('[WS MEASURE] unlock sequence to login screen', `${Date.now() - unlockStartedAt}ms`);
         } catch (e) {
             state.allCardData = [];
@@ -19540,64 +19404,33 @@ ${receiptUseTypeHtml}
     @SECTION: JS_LOCK_SCREEN
     카드 잠금 화면 클릭 → 로더 → 로그인 화면 진입 흐름
     ========================================================= */
-    function playLakeRippleFromCardCenter() {
-        try {
-            document.querySelectorAll('.ws-lake-ripple-layer').forEach(el => el.remove());
-            const rect = elements.glassCardContainer.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            const farX = Math.max(x, window.innerWidth - x);
-            const farY = Math.max(y, window.innerHeight - y);
-            const rippleSize = Math.max(960, Math.ceil(Math.sqrt(farX * farX + farY * farY) * 2.12));
-            /* [2026-08 성능 개선] 실제 DOM 요소는 최대 1200px로만 만들고,
-               모자란 크기는 GPU가 처리하는 scale로 확대합니다.
-               큰 모니터에서 2000px가 넘는 텍스처를 만들지 않아 저사양 기기 렉이 크게 줄어듭니다. */
-            const rippleBase = Math.min(1200, rippleSize);
-            const rippleScaleEnd = rippleSize / rippleBase;
-            const layer = document.createElement('div');
-            layer.className = 'ws-lake-ripple-layer';
-            layer.style.setProperty('--ws-ripple-x', `${x}px`);
-            layer.style.setProperty('--ws-ripple-y', `${y}px`);
-            layer.style.setProperty('--ws-ripple-base', `${rippleBase}px`);
-            layer.style.setProperty('--ws-ripple-scale-end', rippleScaleEnd.toFixed(4));
-            layer.style.setProperty('--ws-ripple-scale-start', (0.014 * rippleScaleEnd).toFixed(5));
-            layer.innerHTML = '<div class="ws-lake-ripple-wave"></div>';
-            document.body.appendChild(layer);
-            setTimeout(() => { try { layer.remove(); } catch(e) {} }, 1550);
-        } catch (e) {
-            console.warn('[WS] lake ripple failed', e);
-        }
-    }
-
     async function handleLockScreenClick() {
         if (state.isAppActive && state.currentScreen !== 'lock') return;
+        /* 선로딩은 isAppActive 를 켜기 '전에' 시작해야 한다.
+           InitialDataPreload.start() 는 첫 줄에서 isAppActive 가 켜져 있으면 바로 빠지는데,
+           예전에는 플래그를 먼저 켜고 나서 불러서 탭 순간에 아무것도 시작되지 않았다.
+           그 결과 잠금 해제 연출이 끝난 뒤에야 데이터를 받기 시작했다. */
+        try { InitialDataPreload.start('lock-click'); } catch(e) { console.warn(e); }
         state.isAppActive = true;
         state.cardTiltActive = false;
         state.forceSyncOnNextUnlock = false;
         state.pendingPostReturnSync = false;
         state.syncPromise = null;
-        try { InitialDataPreload.start('lock-click'); } catch(e) { console.warn(e); }
-        elements.lockScreen.classList.add('active-pop', 'ripple-card-exit');
-        playLakeRippleFromCardCenter();
-        document.getElementById('lock-text-instruction').classList.add('hide');
+        // 손을 대는 순간(pointerdown) 이미 눌려 있을 수 있다 (common.js bindMainActionHandlers)
+        elements.lockScreen.classList.add('active-pop');
 
         /*
           행정실 키오스크 갱신 규칙:
           - 화면이 다시 켜질 때는 잠금화면으로만 복귀합니다.
-          - 잠금화면이 보이는 동안 3초 TTL 선로딩을 시도합니다.
-          - 카드 클릭 시 선로딩 데이터가 신선하면 재사용하고,
-            오래됐거나 없으면 로딩 화면을 거치며 getInitialAppData로 새로 가져옵니다.
-          - 카드와 파동을 같은 타임라인에서 같이 사라지게 하여,
-            카드 중심에서 퍼지는 물결이 끝날 때 로딩 화면으로 부드럽게 넘어갑니다.
+          - 카드를 누르는 순간 최신 데이터 받기를 시작합니다.
+          - 직전에 받아 둔 데이터가 있으면 로딩화면 없이 바로 내선번호 화면을 띄우고,
+            최신 데이터는 뒤에서 받아 도착하는 대로 화면에 반영합니다 (loading.js JS_UNLOCK_FAST_PATH).
+          - 받아 둔 데이터가 없을 때(페이지를 처음 연 직후)만 로딩화면을 거칩니다.
+          - 연출: 카드가 살짝 눌림(0.12초) → 잠금화면이 걷히며 카드가 앞으로 다가오고,
+            내선번호 화면이 아래에서 떠오른다 (lock.css active-pop / fade-out, base.css unlock-enter).
         */
-        const SCREEN_FADE_START_MS = 560;
-        const RIPPLE_TO_LOADER_MS = 1160;
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                try { elements.lockScreen.classList.add('ripple-screen-exit'); } catch(e) {}
-            }, SCREEN_FADE_START_MS);
-            setTimeout(() => initializeAppSequence(), RIPPLE_TO_LOADER_MS);
-        });
+        const PRESS_FEEDBACK_MS = 120;
+        setTimeout(() => initializeAppSequence(), PRESS_FEEDBACK_MS);
     }
     
     /* =========================================================
@@ -19779,6 +19612,14 @@ ${receiptUseTypeHtml}
     ========================================================= */
     function bindMainActionHandlers() {
         elements.glassCardContainer.addEventListener('click', handleLockScreenClick);
+        // 손가락이 닿는 순간부터 카드가 눌린 느낌을 준다. 실제 진입은 click 에서 한다.
+        // 누른 채 밖으로 끌어내 click 이 오지 않으면 잠시 뒤 원래대로 돌려놓는다.
+        elements.glassCardContainer.addEventListener('pointerdown', () => {
+            if (state.currentScreen === 'lock' && !state.isAppActive) elements.lockScreen.classList.add('active-pop');
+        });
+        ['pointerup', 'pointercancel'].forEach(evt => elements.glassCardContainer.addEventListener(evt, () => {
+            setTimeout(() => { if (!state.isAppActive) elements.lockScreen.classList.remove('active-pop'); }, 250);
+        }));
         elements.btnBack.addEventListener('click', UIManager.resetToLogin);
         document.addEventListener('click', (e) => {
             const cardEl = e.target.closest('.card-item-wrapper[data-card-id]');
@@ -19842,6 +19683,48 @@ ${receiptUseTypeHtml}
                 if (e.target.files && e.target.files.length) { CardLogic.handleReceiptFiles(e.target.files); }
             });
         }
+    }
+
+    /* PC에서 화면을 캡처한 뒤 Ctrl+V로 바로 영수증을 첨부할 수 있게 합니다.
+       Alt+PrtScn(활성 창) / PrtScn(전체 화면) / Win+Shift+S(영역) 모두,
+       클립보드에 이미지가 들어 있으면 동일하게 처리됩니다.
+       클립보드에 이미지가 없으면(= 일반 텍스트 붙여넣기) 아무것도 하지 않으므로,
+       영수증 편집 팝업의 상호명/금액 입력에 텍스트를 붙여넣는 동작은 그대로 유지됩니다. */
+    function bindReceiptClipboardPaste() {
+        document.addEventListener('paste', (e) => {
+            if (state.currentScreen !== 'returnDetails') return;
+
+            const items = e.clipboardData && e.clipboardData.items ? Array.from(e.clipboardData.items) : [];
+            const images = items
+                .filter(item => item.kind === 'file' && String(item.type || '').startsWith('image/'))
+                .map(item => item.getAsFile())
+                .filter(Boolean);
+            if (!images.length) return;
+
+            e.preventDefault();
+
+            // 업로드/저장이 진행 중이면 기존 첨부 버튼과 동일한 기준으로 막습니다.
+            const addBtn = document.getElementById('add-receipt-btn');
+            if (addBtn && addBtn.disabled) {
+                try {
+                    Swal.fire({ toast: true, position: 'top', icon: 'info',
+                        title: '처리 중입니다. 잠시 후 다시 붙여넣어 주세요',
+                        showConfirmButton: false, timer: 2000 });
+                } catch (_) {}
+                return;
+            }
+
+            Utils.haptic(12);
+            try {
+                Swal.fire({ toast: true, position: 'top', icon: 'success',
+                    title: images.length > 1
+                        ? `붙여넣은 이미지 ${images.length}장을 추가합니다`
+                        : '붙여넣은 이미지를 추가합니다',
+                    showConfirmButton: false, timer: 1600 });
+            } catch (_) {}
+
+            CardLogic.handleReceiptFiles(images);
+        });
     }
 
     function bindKeyboardShortcuts() {
@@ -19910,6 +19793,7 @@ ${receiptUseTypeHtml}
         bindKioskVisibilityReturn();
         bindMainActionHandlers();
         bindReceiptFileInput();
+        bindReceiptClipboardPaste();
         bindKeyboardShortcuts();
         bindBeforeUnloadGuard();
         bindLockCardTilt();
@@ -20245,9 +20129,826 @@ body.ws-auto-fit .container {
   transform-origin: center center;
 }
 
+/* =========================================================
+   [2026-09 추가] 태블릿 / 모바일 세로 화면 전용 맞춤 규칙
+   - PC(가로) 동작은 위 규칙 그대로 두고 손대지 않습니다.
+   - 세로 화면에서만 아래 규칙이 추가로 적용됩니다.
+   - 앱 전역에 아래처럼 스크롤을 강제로 켜는 규칙이 이미 있습니다.
+       body:not([data-current-screen="lock"]):not([data-current-screen="welcome"]) .content-wrapper {
+         height: auto !important; min-height: 100% !important; overflow-y: auto !important; }
+     그 규칙의 특이도가 (0,3,1)이라, 여기서는 더 높은 특이도 + !important로 써야 적용됩니다.
+   ========================================================= */
+/* 전역 규칙이 body에도 세로 스크롤을 강제로 켜 둬서, 내용이 다 들어가는데도
+   스크롤바가 보이고 화면이 몇십 px씩 밀렸습니다. 세로 화면에서는 잠급니다. */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app .content-wrapper {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  /* 태블릿 하단 고정 버튼(독)이 떠 있는 화면에서는 그만큼 배치 영역을 비워,
+     내용이 버튼 뒤로 들어가지 않게 합니다. */
+  padding-bottom: var(--ws-fit-dock, 0px) !important;
+}
+
+/* 내선번호/신청/완료 화면은 내용 높이만큼만 차지하게 두고 배율로 맞춥니다.
+   (뷰포트 높이에 갇히면 .container 안에 스크롤바가 생겨서 배율 계산이 무의미해집니다) */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app:not(.ws-fit-fill) .container {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* 반납 화면은 화면을 꽉 채우고 영수증 목록만 내부에서 스크롤되게 그대로 둡니다. */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app.ws-fit-fill .container {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 앱 전역 규칙이 .screen에 min-height:100%를 강제해서, 꽉 채우는 화면에서는
+   화면 아래에 있는 '처음으로' 버튼이 뷰포트 밖으로 밀려 잘렸습니다.
+   화면 영역이 줄어들 수 있게 풀어 주고, 남은 자리를 채우도록 합니다. */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app.ws-fit-fill .container > .screen {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+}
+
 /* 배율 계산이 끝나기 전 한 프레임 깜빡임 방지 */
 body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
   visibility: hidden;
+}
+
+/* =========================================================
+   [2026-09 추가] 반납 화면 빈 공간 정리
+   - 태블릿 반납 화면에는 하단 독 자리를 잡으려고 padding-bottom: 220px가
+     하드코딩되어 있었는데, 이제 자동 맞춤이 실제 독 높이만큼(--ws-fit-dock)
+     .content-wrapper에서 자리를 비우므로 이중으로 잡혀 큰 여백이 생겼습니다.
+     세로 자동 맞춤이 켜진 상태에서는 이 하드코딩 여백을 없앱니다.
+   - 그렇게 생긴 자리는 영수증이 없을 때 '새 영수증 첨부' 버튼이 채우게 해서,
+     빈 화면 대신 크고 누르기 쉬운 촬영 영역이 되도록 합니다.
+   ========================================================= */
+html body.ws-auto-fit.ws-auto-fit-touch.office-tablet-portrait[data-current-screen="returnDetails"] #screen-return-details {
+  padding-bottom: 12px !important;
+  scroll-padding-bottom: 0;
+}
+
+/* 모바일에서는 반납 폼이 flex-grow: 0이라 화면 아래쪽에 빈 띠가 남았습니다.
+   세로 자동 맞춤 상태에서는 남는 높이를 폼이 채우게 합니다. */
+html body.ws-auto-fit.ws-auto-fit-touch[data-current-screen="returnDetails"] #return-form-container {
+  flex-grow: 1 !important;
+  min-height: 0 !important;
+}
+
+/* 영수증이 한 건도 없을 때만 첨부 버튼을 남는 높이만큼 키워
+   '사진을 여기에 올리세요' 형태의 큰 촬영 영역으로 보이게 합니다. */
+html body.ws-auto-fit.ws-auto-fit-touch .return-neu-tray:has(#receipt-cart-container.empty-cart) #add-receipt-btn {
+  flex: 1 1 auto !important;
+  max-height: 300px;
+  grid-template-columns: 1fr !important;
+  grid-auto-rows: min-content;
+  align-content: center;
+  justify-items: center;
+  gap: 12px !important;
+  text-align: center;
+}
+
+/* 커진 상태에서는 아이콘을 키우고, 오른쪽 화살표는 숨겨 가운데 정렬이 흐트러지지 않게 합니다. */
+html body.ws-auto-fit.ws-auto-fit-touch .return-neu-tray:has(#receipt-cart-container.empty-cart) #add-receipt-btn .receipt-add-icon {
+  width: 76px;
+  height: 76px;
+}
+
+html body.ws-auto-fit.ws-auto-fit-touch .return-neu-tray:has(#receipt-cart-container.empty-cart) #add-receipt-btn .receipt-add-arrow {
+  display: none;
+}
+
+/* 첨부 버튼이 최대 높이에 걸린 뒤 남는 자리는 '영수증 없음' 안내가 가운데에서 채웁니다. */
+html body.ws-auto-fit.ws-auto-fit-touch .return-neu-tray:has(#receipt-cart-container.empty-cart) .cart-wrapper {
+  flex: 1 1 auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================================================
+   [2026-09 추가] 내선번호 4자리 입력 시 상단 상태창에 이름 + 부서 표시
+   - 기존 "로그인 준비완료" 자리에 "강현성 교무기획부"를 보여줍니다.
+     (부서는 내선번호 시트 C열, 비어 있으면 이름만 나옵니다.)
+   - 이름과 부서를 색으로 구분해 한눈에 읽히게 합니다.
+   - 사용자 추가 후의 대표/동행인 표시는 기존처럼 내선번호 그대로 둡니다.
+   ========================================================= */
+body.ws-app .ws-user-name {
+  color: #0f2f5e;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+body.ws-app .ws-user-dept {
+  color: #4b7fc4;
+  font-weight: 700;
+  font-size: .84em;
+  letter-spacing: -.02em;
+  white-space: nowrap;
+}
+
+/* 상단 상태창(확인 완료)에서는 배경이 옅어 조금 더 또렷한 대비를 씁니다. */
+body.ws-app #login-instruction.login-ready .ws-user-name {
+  color: #14532d;
+}
+
+body.ws-app #login-instruction.login-ready .ws-user-dept {
+  color: #3f7d55;
+}
+
+/* =========================================================
+   [2026-10 추가] PC에서만 "붙여넣기(Ctrl+V)" 안내 노출
+   - 마우스를 쓰는 환경에서만 보여주고, 터치(태블릿/모바일)에서는 숨깁니다.
+   - 안내문은 ::after로 덧붙이므로, 드래그 중 문구가 바뀌어도 원문을 건드리지 않습니다.
+     (드래그 중에는 "여기에 놓으면~"만 보이도록 .drag-over 상태에서는 숨깁니다.)
+   ========================================================= */
+@media (pointer: fine) {
+  body.ws-app #add-receipt-btn:not(.drag-over) .receipt-dropzone-sub::after {
+    content: " · 붙여넣기(Ctrl+V)";
+  }
+}
+
+/* =========================================================
+   [2026-09 추가] 태블릿 세로에서 해외결제카드 위치 복원
+   - 원래 의도: .special-overseas-card { grid-row: 4; grid-column: 2 }
+     (전화기 자판처럼 마지막 줄 가운데, 우성고카드8 아래)
+   - 그런데 @media (max-width:1023px)에서 그 위치를 unset으로 풀어 버리고,
+     태블릿은 별도 규칙(office-tablet-portrait)으로 3열을 쓰기 때문에
+     해외결제카드가 마지막 줄 왼쪽 끝으로 밀려 있었습니다.
+   - 3열로 보이는 태블릿 세로에서는 원래 가운데 위치로 되돌립니다.
+   ========================================================= */
+body.office-tablet-portrait[data-current-screen="main"] #screen-main #cardGrid .card-item-wrapper.special-overseas-card {
+  grid-row: 4;
+  grid-column: 2;
+}
+
+/* =========================================================
+   [2026-09 추가] 내선번호 화면 사용자 패널 높이 자동 맞춤
+   - 기존에는 .login-instruction-area 높이가 화면 크기별로 고정(96/124/142px)인데
+     .login-user-panel은 absolute + 중앙정렬이라, 동행인이 3명을 넘어가면
+     패널이 영역 밖으로 넘쳐 위쪽 통계칸과 아래쪽 숫자 입력칸을 덮었습니다.
+   - 패널을 일반 흐름으로 되돌려 영역이 인원수만큼 같이 늘어나게 합니다.
+   - 인원은 앱에서 최대 5명(대표 1 + 동행 4)으로 제한되므로(login.js의 enteredUsers.length >= 5),
+     동행인 칩은 2열 × 2줄이면 항상 다 들어갑니다. 그래서 높이를 자르거나 내부 스크롤을
+     만들지 않고 4명 전부를 그대로 보여줍니다. 화면 높이가 모자라면 자동 맞춤이 전체를 줄입니다.
+   - 이 파일은 문서에서 가장 마지막에 오는 스타일이라 앞선 고정 높이 규칙을 덮습니다.
+   ========================================================= */
+body.ws-app #screen-login .login-instruction-area.has-users {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+body.ws-app #screen-login .login-instruction-area.has-users .login-user-panel {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  width: 100%;
+  min-height: 0;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+/* 사라질 때 애니메이션은 유지하되, 중앙정렬용 -50% 이동은 빼서 위치가 튀지 않게 합니다. */
+body.ws-app #screen-login .login-instruction-area.has-users .login-user-panel.hidden {
+  transform: scale(.965) !important;
+}
+
+/* 동행인 칩 목록: 최대 4명이라 잘릴 일이 없으므로 스크롤 없이 전부 표시합니다. */
+body.ws-app #screen-login .login-instruction-area.has-users .companion-grid {
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+/* =========================================================
+   [2026-10 추가] 신청/반납 화면 상단 헤더 정리
+   - 문제: 태블릿 세로(768x1024)에서 카드 그리드가 y=278px에서야 시작했습니다.
+     세로의 27%가 헤더인데, 그중 순수 여백이 121px(43%)이었습니다.
+       상단여백 59 + 로고/제목 109 + 24 + 환영문구 29 + 18 + 안내문구 19 + 20 = 278
+   - 로고 + "우성고 카드 시스템" 줄은 잠금화면과 로딩화면에서 이미 두 번 보여줍니다.
+     카드를 고르거나 영수증을 붙이는 작업 화면에서는 새 정보가 없는 자리라 숨깁니다.
+     (줄여서 쓰려고도 해봤지만, 이 요소의 높이를 90px로 고정하는 출처를 특정하지 못했습니다.
+      min-height / padding / height 를 인라인 !important 로 줘도 바뀌지 않았습니다.
+      숨기는 쪽이 동작도 확실하고 화면도 단순해져서 이 방법을 택했습니다.)
+   - 결과(태블릿 세로 실측): 그리드 시작 278px -> 124px, 헤더 비중 27% -> 12%.
+     스크롤이나 잘리는 요소는 없습니다.
+   - 범위: 세로(터치) 화면의 신청(main) / 반납(returnDetails)에만 적용합니다.
+     내선번호 화면과 PC 가로 화면은 건드리지 않습니다.
+   ========================================================= */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="main"] #main-title-container,
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="returnDetails"] #main-title-container {
+  display: none !important;
+}
+
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="main"] #screen-main {
+  padding-top: 14px !important;
+}
+
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="main"] #main-welcome-message {
+  margin-bottom: 8px !important;
+}
+
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="main"] #card-selection-header {
+  margin-bottom: 10px !important;
+}
+
+/* =========================================================
+   [2026-10 추가] 반납 화면 영수증 0건일 때 남던 빈 띠 제거
+   - 문제: 영수증이 없을 때 .cart-wrapper가 168px인데 안에 든
+     "추가된 영수증이 없습니다"는 25px뿐이라, 143px이 빈 띠로 남았습니다.
+   - 원인: 위쪽 규칙에서 .cart-wrapper에 flex:1 1 auto를 줘서, 첨부 버튼이
+     max-height:300px에 걸린 뒤 남은 높이를 전부 이 칸이 흡수하고 있었습니다.
+   - 해결: 남는 높이는 첨부 버튼(촬영 영역)이 가져가고, 안내 문구 칸은
+     내용 높이만 차지하게 합니다. 빈 화면일수록 누를 곳이 커집니다.
+   ========================================================= */
+html body.ws-auto-fit.ws-auto-fit-touch .return-neu-tray:has(#receipt-cart-container.empty-cart) #add-receipt-btn {
+  max-height: 460px;
+}
+
+html body.ws-auto-fit.ws-auto-fit-touch .return-neu-tray:has(#receipt-cart-container.empty-cart) .cart-wrapper {
+  flex: 0 0 auto !important;
+}
+</style>
+<style id="ws-login-fluid">/* =========================================================
+   [2026-10] 내선번호 화면 비율 레이아웃 (시범 적용)
+
+   왜 만들었나
+     이 화면 하나에 @media 조건이 19종, 규칙 218개가 붙어 있었다.
+     기기마다 px 값을 따로 맞춰 둔 것인데, 그러다 보니
+       - 태블릿(768x1024)에서는 제출 버튼이 16px 넘쳐서 배율 축소에 의존
+       - PC(1920x960)에서는 아래쪽 197px이 그냥 비어 있음
+       - 키패드 버튼 비율이 제각각 (노트북 99x52 납작 / 태블릿 152x136 정사각)
+     처럼 기기마다 다른 모양이 됐다.
+
+   어떻게 바꿨나
+     고정 px 대신 "남는 높이를 나눠 갖는" 방식으로 바꾼다.
+       화면 = 대시보드(내용만큼) + 사용자패널(내용만큼) + 키패드(나머지 전부)
+       키패드 = 입력칸(내용만큼) + 버튼판(나머지 전부) + 제출버튼(내용만큼)
+     버튼판은 3열 x 4행을 전부 1fr 로 두어 남은 자리를 균등하게 채운다.
+     글자 크기는 버튼판 크기에 비례시킨다 (cqh/cqw).
+
+   왜 vmin 이 아니라 컨테이너 단위(cq)인가
+     vmin 은 뷰포트 기준이라 폰(375)에서는 너무 작고 태블릿(768)에서는 너무 커진다.
+     버튼 글자는 "버튼이 얼마나 큰가"에 비례해야 하므로 버튼판을 기준으로 삼는다.
+     (container query 는 :has() 와 같은 시기에 나온 기능이고,
+      이 앱은 이미 :has() 를 쓰고 있으므로 지원 범위는 동일하다.)
+
+   범위
+     내선번호 화면(data-current-screen="login")에만 적용한다.
+     이 파일은 문서에서 가장 마지막 스타일시트라 앞선 규칙을 덮는다.
+     문제가 생기면 이 파일 내용만 비우면 원래 동작으로 돌아간다.
+   ========================================================= */
+
+/* ---------- 1. 세로 방향 뼈대: 남는 높이를 키패드가 가져간다 ---------- */
+
+/* .container 가 flex: 0 0 auto 라서 내용 높이에서 멈춘다.
+   이걸 늘려 주지 않으면 아래 flex 들이 나눠 가질 높이 자체가 생기지 않는다.
+   (처음에 height:100% 로 했더니 부모 높이가 확정되지 않아 풀렸다)
+
+   ws-auto-fit-style.css 에 아래 규칙이 있어서 그냥 쓰면 진다.
+     html body.ws-auto-fit.ws-auto-fit-touch.ws-app:not(.ws-fit-fill) .container
+       { flex: 0 0 auto !important }        <- 클래스 5개
+   둘 다 !important 라 특이도로 갈리므로, 세로(터치)용 선택자를 하나 더 둬서 이긴다.
+   다른 화면에 영향이 가지 않도록 내선번호 화면에서만 적용한다. */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="login"] .content-wrapper > .container,
+html body.ws-app[data-current-screen="login"] .content-wrapper > .container {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding: clamp(8px, 1.6vmin, 20px) clamp(10px, 2vmin, 24px) !important;
+  gap: 0 !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login .main-frame.login-frame {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  /* 가로 화면에서 지나치게 넓어지지 않게만 제한한다 */
+  width: min(100%, 30rem) !important;
+  margin-inline: auto !important;
+  gap: clamp(6px, 1.2vmin, 16px) !important;
+}
+
+/* 상단 통계 라벨("대여 가능" / "사용 중")이 줄바꿈되지 않게 한다.
+   PC 에서 .login-frame 폭을 제한하면서 좌우 칸이 69px 까지 좁아졌고,
+   "대여 가능"이 '대여 가' / '능' 으로 쪼개졌다.
+   줄바꿈을 막고, 좌우 칸은 글자 길이에 맞게 늘어나도록 한다(가운데 칸이 남는 폭을 가짐). */
+html body.ws-app[data-current-screen="login"] #screen-login .header-dashboard .stat-label {
+  white-space: nowrap !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+}
+
+/* 대시보드와 사용자 패널은 내용 높이만큼만 */
+html body.ws-app[data-current-screen="login"] #screen-login .header-dashboard {
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: clamp(6px, 1.1vmin, 12px) clamp(10px, 1.6vmin, 16px) !important;
+  margin-bottom: 0 !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login .login-instruction-area {
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+}
+
+/* ---------- 2. 키패드가 남는 높이를 전부 채운다 ---------- */
+
+html body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: clamp(8px, 1.4vmin, 16px) !important;
+  gap: clamp(6px, 1.2vmin, 14px) !important;
+  /* 제출 버튼 크기의 기준 (vmin 으로 하면 폰에서 너무 작아진다) */
+  container-type: inline-size;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login .display-area {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: clamp(34px, 6vmin, 56px) !important;
+  margin: 0 !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login #keypadContainer {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
+  gap: clamp(5px, 1.1vmin, 14px) !important;
+  margin: 0 !important;
+  /* 버튼 글자 크기의 기준이 된다.
+     size 가 아니라 inline-size 를 쓰는 이유: size 는 높이까지 containment 를 걸어서
+     "높이는 flex 가 정하는데 flex 는 내용을 못 본다"는 순환이 생기고,
+     그러면 cqh 가 0px 으로 해석된다 (실제로 그렇게 나왔다). 폭만 기준으로 삼는다. */
+  container-type: inline-size;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login #keypadContainer .keypad-btn {
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* 버튼판 폭에 비례시키되, 화면이 낮을 때 글자가 버튼보다 커지지 않도록
+     vmin 으로 한 번 더 눌러 준다 (노트북처럼 납작한 화면 대비). */
+  font-size: clamp(17px, min(10cqw, 7.5vmin), 34px) !important;
+  line-height: 1 !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login #keypadContainer .keypad-btn .btn-icon {
+  font-size: inherit !important;
+  line-height: 1 !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login #keypad-submit-btn {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: clamp(46px, 15cqw, 72px) !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: clamp(16px, 6cqw, 24px) !important;
+}
+
+/* ---------- 3. 입력칸(4자리)도 비율로 ---------- */
+
+html body.ws-app[data-current-screen="login"] #screen-login .display-area .digit-wrapper {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+}
+
+html body.ws-app[data-current-screen="login"] #screen-login .display-area .digit-box {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+/* ---------- 4. 가로형에서는 위아래 가운데 정렬 ---------- */
+/* 세로형(태블릿/모바일)은 높이를 꽉 채우고,
+   가로형(PC/노트북)은 남는 높이가 많아 전체를 가운데로 모아 주는 편이 자연스럽다.
+
+   기준을 pointer 가 아니라 orientation 으로 잡은 이유:
+     - 쓰는 기기가 "가로형(PC·노트북) / 세로형(태블릿·모바일)" 두 묶음이라
+       화면 방향이 의도와 정확히 일치한다.
+     - pointer 는 환경에 따라 태블릿이 fine 으로 보고되기도 해서 믿기 어렵다
+       (실제로 768px 폭 브라우저에서 coarse 가 아닌 fine 으로 나왔다). */
+@media (orientation: landscape) {
+  /* 가로형은 높이가 남으므로 전체 덩어리를 위아래 가운데로 모은다.
+     (늘려서 채우면 키패드만 커지고 위쪽이 허전해진다.
+      container 를 늘리지 않고, 남는 높이를 위아래로 반씩 나눠 갖게 한다) */
+  /* 전역 규칙이 .content-wrapper 에 height:auto 를 강제해서 가로형에서는
+     내용 높이(측정값 802px)밖에 안 됐다. 그러면 가운데 정렬할 여백 자체가 없다. */
+  html body.ws-app[data-current-screen="login"] .content-wrapper {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+  html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="login"] .content-wrapper > .container,
+  html body.ws-app[data-current-screen="login"] .content-wrapper > .container {
+    flex: 0 1 auto !important;
+  }
+  html body.ws-app[data-current-screen="login"] #screen-login .main-frame.login-frame {
+    justify-content: center !important;
+    flex: 0 1 auto !important;
+  }
+  /* 위로는 적당히 제한하되(너무 커지면 허전하다) 아래로는 줄어들 수 있게 둔다. */
+  html body.ws-app[data-current-screen="login"] #screen-login .keypad-panel {
+    flex: 1 1 auto !important;
+    max-height: min(66vh, 520px) !important;
+  }
+  /* 버튼판 자체에 바닥을 두면 동행인이 늘었을 때 줄어들지 못해 넘쳤고,
+     바닥을 없애니 이번엔 버튼이 28px 로 찌그러졌다.
+     그래서 바닥은 '버튼 하나'에 둔다 — 누를 수 있는 크기는 지키면서
+     버튼판은 필요한 만큼만 자리를 잡는다. */
+  html body.ws-app[data-current-screen="login"] #screen-login #keypadContainer {
+    min-height: 0 !important;
+  }
+  html body.ws-app[data-current-screen="login"] #screen-login #keypadContainer .keypad-btn {
+    min-height: clamp(34px, 7vh, 96px) !important;
+    /* 가로형은 버튼이 납작하므로(노트북에서 99x48) 글자를 조금 작게 */
+    font-size: clamp(16px, 8cqw, 28px) !important;
+  }
+}
+</style>
+<style id="ws-main-fluid">/* =========================================================
+   [2026-10] 신청화면(카드 선택) 비율 레이아웃
+
+   왜 만들었나
+     이 화면에도 @media 조건이 14종, 규칙 93개가 붙어 있었고 기기마다 모양이 달랐다.
+       모바일 375x812   2열  타일 136x84   헤더 27%  아래 115px 남음
+       태블릿 768x1024  3열  타일 210x152  헤더  9%  아래 243px 남음
+       노트북 1366x640  3열  타일 191x107  헤더 36%  그리드가 잘리고 내부 스크롤 113px
+       PC 1920x960      3열  타일 184x127  헤더 24%  아래 147px 남음
+     타일 가로세로비도 1.4 ~ 1.8 로 제각각이었다.
+
+   어떻게 바꿨나
+     카드 그리드가 남는 높이를 전부 가져가고, 행 높이를 1fr 로 두어 고르게 나눈다.
+     카드 이름 글자는 그리드 폭에 비례시킨다(cqw).
+
+   열 수는 왜 자동이 아닌가
+     repeat(auto-fit, minmax(...)) 로 자동화하려 했으나 불가능했다.
+     폰 그리드 폭(294~331px)과 PC(616px)의 비가 2.1배인데 열은 2->3 즉 1.5배만
+     늘어야 한다. auto-fit 은 폭에 거의 비례해 열을 늘리므로, 폰에서 2열이 되게
+     맞추면 태블릿/PC 에서 4열이 되고, 3열에 맞추면 폰이 1열이 된다.
+     그래서 열 수 분기 하나만 남겼다 (min-width: 600px).
+
+   해외결제카드
+     3열일 때만 4행 2열(전화기 자판 모양)에 둔다. 2열일 때는 그냥 흐르게 둔다.
+
+   범위
+     신청화면(data-current-screen="main")에만 적용한다.
+     문제가 생기면 이 파일 내용만 비우면 원래 동작으로 돌아간다.
+   ========================================================= */
+
+/* ---------- 0. 로고 + 제목 줄 숨김 ---------- */
+/* 잠금화면과 로딩화면에서 이미 두 번 보여준 줄이라 카드 고르는 화면에서는
+   새 정보가 없다. 세로형에서는 ws-auto-fit-style.css 가 이미 숨기고 있었는데,
+   가로형에서는 그대로 떠 있어서 1366x640 노트북에서 헤더가 38%를 차지했다.
+   화면 방향과 무관하게 숨겨서 규칙도 하나로 줄인다. */
+html body.ws-app[data-current-screen="main"] #main-title-container {
+  display: none !important;
+}
+
+/* ---------- 1. 세로 뼈대: 그리드가 남는 높이를 가져간다 ---------- */
+
+/* .container 가 flex: 0 0 auto 라 내용 높이에서 멈춘다. 늘려 주지 않으면
+   아래 flex 들이 나눠 가질 높이 자체가 생기지 않는다.
+   (ws-auto-fit-style.css 의 세로용 규칙이 클래스 5개짜리라, 이기려면
+    같은 모양에 선택자를 하나 더 붙여야 한다) */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="main"] .content-wrapper > .container,
+html body.ws-app[data-current-screen="main"] .content-wrapper > .container {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+html body.ws-app[data-current-screen="main"] #screen-main {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding: clamp(8px, 1.6vmin, 20px) clamp(10px, 2vmin, 24px) !important;
+  gap: clamp(4px, 0.8vmin, 10px) !important;
+}
+
+html body.ws-app[data-current-screen="main"] #main-welcome-message {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+html body.ws-app[data-current-screen="main"] #card-list-container {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  gap: clamp(4px, 0.8vmin, 10px) !important;
+}
+
+html body.ws-app[data-current-screen="main"] #card-selection-header {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+/* ---------- 2. 카드 그리드가 남는 높이를 고르게 나눈다 ---------- */
+
+html body.ws-app[data-current-screen="main"] #cardGrid {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-auto-rows: minmax(0, 1fr) !important;
+  gap: clamp(8px, 1.6vmin, 18px) !important;
+  /* 가로 화면에서 지나치게 넓어지지 않게만 제한한다 */
+  width: min(100%, 640px) !important;
+  max-width: min(100%, 640px) !important;
+  margin-inline: auto !important;
+  padding: 0 !important;
+  align-content: stretch !important;
+  /* 카드 이름 글자 크기의 기준 */
+  container-type: inline-size;
+}
+
+/* 높이를 그냥 다 채우게 두면 타일이 세로로 길어진다(태블릿에서 202x214 가 됐다).
+   카드처럼 보이려면 가로가 조금 더 길어야 하므로 높이에 상한을 둔다.
+   상한은 그리드 폭 기준(cqw)이라 어느 기기에서든 비슷한 비율이 나온다.
+   2열일 때는 타일이 그리드의 절반이라 더 넓으므로 상한도 크게 잡는다. */
+html body.ws-app[data-current-screen="main"] #cardGrid .card-item-wrapper {
+  height: auto !important;
+  /* 세로형에서는 그리드가 높이를 채우므로 이 값이 거의 안 쓰이지만,
+     가로형에서는 그리드가 내용 높이로 잡혀서 이 값이 곧 타일 높이가 된다.
+     고정 px 을 쓰면 PC 에서 200x78 처럼 납작해져서, 그리드 폭에 비례시키되
+     화면이 낮을 때(노트북)는 vh 로 한 번 더 눌러 준다. */
+  min-height: max(56px, min(20cqw, 14vh)) !important;
+  max-height: 30cqw !important;
+  aspect-ratio: auto !important;
+  margin: 0 !important;
+}
+
+html body.ws-app[data-current-screen="main"] #cardGrid .card-item-wrapper > .card-grid-btn,
+html body.ws-app[data-current-screen="main"] #cardGrid .card-item-wrapper > button {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+html body.ws-app[data-current-screen="main"] #cardGrid .card-name {
+  font-size: clamp(13px, 5.2cqw, 24px) !important;
+  line-height: 1.15 !important;
+}
+
+/* ---------- 3. 열 수 분기 (이 화면에서 유일하게 남는 구조 분기) ---------- */
+
+@media (min-width: 600px) {
+  html body.ws-app[data-current-screen="main"] #cardGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  /* 3열에서는 타일이 그리드의 1/3 이라 2열 때보다 좁다. 상한도 그만큼 낮춘다. */
+  html body.ws-app[data-current-screen="main"] #cardGrid .card-item-wrapper {
+    max-height: 25cqw !important;
+  }
+  /* 3열일 때만 전화기 자판처럼 마지막 줄 가운데에 둔다 */
+  html body.ws-app[data-current-screen="main"] #cardGrid .card-item-wrapper.special-overseas-card {
+    grid-row: 4 !important;
+    grid-column: 2 !important;
+  }
+}
+
+/* ---------- 4. 가로형은 위아래 가운데로 ---------- */
+/* 세로형은 높이를 꽉 채우고, 가로형(PC/노트북)은 남는 높이를 위아래로 나눈다.
+   내선번호 화면과 같은 방식이다. */
+@media (orientation: landscape) {
+  html body.ws-app[data-current-screen="main"] .content-wrapper {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+  /* 내용이 몇 px 더 큰 경우가 있어 .container 에 스크롤바가 생길 수 있다.
+     가운데 정렬 + 래퍼가 이미 넘침을 막고 있으므로 여기서도 막는다.
+     (진짜로 잘리는지는 측정의 '잘림' 항목으로 따로 확인한다) */
+  html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="main"] .content-wrapper > .container,
+  html body.ws-app[data-current-screen="main"] .content-wrapper > .container {
+    flex: 0 1 auto !important;
+    overflow: hidden !important;
+  }
+  /* 카드가 너무 커지지 않게만 막는다 (노트북에서는 이 값에 안 걸린다) */
+  html body.ws-app[data-current-screen="main"] #cardGrid {
+    max-height: min(70vh, 560px) !important;
+  }
+}
+</style>
+<style id="ws-return-fluid">/* =========================================================
+   [2026-10] 반납화면 비율 레이아웃
+
+   이 화면만 다른 점
+     앞의 두 화면과 달리 내용(영수증 목록)이 계속 늘어난다.
+     그래서 "전부 한 화면에 맞춘다"가 아니라
+     "위/아래는 고정하고 목록만 스크롤한다"가 맞다.
+
+   바꾸기 전 상태 (배율 보정 없는 날것, 영수증 8건)
+     태블릿 768x1024  트레이 전체가 스크롤됨 (661px 영역에 763px)
+                      -> 목록을 내리면 '영수증 추가 첨부' 버튼까지 같이 올라가 사라진다
+     모바일 375x812   화면 전체가 499px 스크롤, 제출 버튼이 화면 밖(1252~1310)
+
+   바꾼 뒤
+     요약 / 총액 / 첨부 버튼 / 상태줄 은 제자리에 고정하고
+     영수증 목록(.cart-wrapper)만 스크롤한다.
+     첨부 버튼이 항상 보이므로 영수증을 연달아 붙이기 쉽다.
+
+   하단 제출
+     태블릿 세로에서는 제출 버튼이 하단 고정 독으로 옮겨간다
+     (ws-tablet-bottom-action-dock-controller.js). 그 자리는
+     ws-auto-fit-style.css 가 --ws-fit-dock 으로 이미 비워 두고 있다.
+     그 외 기기에서는 제출 버튼이 목록 아래에 그대로 붙는다.
+
+   범위
+     반납화면(data-current-screen="returnDetails")에만 적용한다.
+     문제가 생기면 이 파일 내용만 비우면 원래 동작으로 돌아간다.
+   ========================================================= */
+
+/* ---------- 0. 로고 + 제목 줄 숨김 ---------- */
+/* 신청화면과 같은 이유다. 세로형에서는 ws-auto-fit-style.css 가 이미 숨기고 있었지만
+   가로형에서는 떠 있어서, 1366x640 노트북에서 영수증 목록이 181px(약 1.5건)밖에
+   남지 않았다. 화면 방향과 무관하게 숨겨 목록에 자리를 넘긴다. */
+html body.ws-app[data-current-screen="returnDetails"] #main-title-container {
+  display: none !important;
+}
+
+/* ---------- 1. 세로 뼈대 ---------- */
+
+/* 다른 화면과 같은 이유로 .container 를 늘려 준다.
+   (ws-auto-fit-style.css 의 세로용 규칙이 클래스 5개짜리라 선택자를 하나 더 붙여 이긴다) */
+html body.ws-auto-fit.ws-auto-fit-touch.ws-app[data-current-screen="returnDetails"] .content-wrapper > .container,
+html body.ws-app[data-current-screen="returnDetails"] .content-wrapper > .container {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+html body.ws-app[data-current-screen="returnDetails"] #screen-return-details {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  padding: clamp(6px, 1.2vmin, 16px) clamp(8px, 1.6vmin, 20px) !important;
+  gap: clamp(4px, 0.8vmin, 10px) !important;
+}
+
+html body.ws-app[data-current-screen="returnDetails"] #return-form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  gap: clamp(4px, 0.8vmin, 10px) !important;
+}
+
+/* ---------- 2. 고정 부분 ---------- */
+
+html body.ws-app[data-current-screen="returnDetails"] .return-summary-compact,
+html body.ws-app[data-current-screen="returnDetails"] #submit-guide,
+html body.ws-app[data-current-screen="returnDetails"] #submit-cart-btn,
+html body.ws-app[data-current-screen="returnDetails"] .return-admin-submit-note {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+/* ---------- 3. 트레이: 스크롤하지 않고, 목록에게 높이를 넘긴다 ---------- */
+
+html body.ws-app[data-current-screen="returnDetails"] .return-neu-tray {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  /* 예전에는 트레이 전체가 스크롤돼서 첨부 버튼까지 같이 올라갔다.
+     스크롤은 아래 .cart-wrapper 가 맡는다. */
+  overflow: visible !important;
+  gap: clamp(5px, 1vmin, 12px) !important;
+}
+
+html body.ws-app[data-current-screen="returnDetails"] #receipt-dashboard,
+html body.ws-app[data-current-screen="returnDetails"] #add-receipt-btn,
+html body.ws-app[data-current-screen="returnDetails"] #receipt-status-summary {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+/* ---------- 4. 영수증 목록만 스크롤 ---------- */
+
+html body.ws-app[data-current-screen="returnDetails"] .cart-wrapper {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+html body.ws-app[data-current-screen="returnDetails"] #receipt-cart-container {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+/* ---------- 5. 영수증이 없을 때는 첨부 영역을 크게 ---------- */
+/* ws-auto-fit-style.css 에 있던 동작을 여기로 모아 둔다.
+   위에서 #add-receipt-btn 을 flex: 0 0 auto 로 고정했으므로
+   비어 있을 때만 다시 늘어나도록 되돌려 준다. */
+
+html body.ws-app[data-current-screen="returnDetails"]
+  .return-neu-tray:has(#receipt-cart-container.empty-cart) #add-receipt-btn {
+  flex: 1 1 auto !important;
+  max-height: clamp(180px, 42vh, 460px) !important;
+}
+
+html body.ws-app[data-current-screen="returnDetails"]
+  .return-neu-tray:has(#receipt-cart-container.empty-cart) .cart-wrapper {
+  flex: 0 0 auto !important;
+  overflow: visible !important;
+}
+
+/* ---------- 6. 가로형: 너무 넓게 퍼지지 않게만 ---------- */
+/* 세로형은 폭을 그대로 쓰고, 가로형에서는 한 줄이 지나치게 길어지지 않도록 제한한다. */
+@media (orientation: landscape) {
+  html body.ws-app[data-current-screen="returnDetails"] #return-form-container {
+    width: min(100%, 820px) !important;
+    margin-inline: auto !important;
+  }
 }
 </style>
 
@@ -20255,14 +20956,19 @@ body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
 /* =========================================================
    화면 세로 자동 맞춤 컨트롤러
    - 세로가 남으면 키우고, 모자라면 줄여서 스크롤이 생기지 않게 합니다.
-   - 마우스를 쓰는 PC/노트북에서만 동작합니다. (태블릿 터치 환경은 기존 그대로)
+   - PC/노트북(가로 화면)뿐 아니라 태블릿/모바일 세로 화면에서도 동작합니다.
+     세로 기기는 손가락으로 눌러야 하므로 축소 하한을 더 높게 잡습니다.
+   - 태블릿 하단 고정 버튼(독)이 떠 있으면 그 높이만큼 빼고 계산해서,
+     내용이 버튼 뒤로 숨지 않게 합니다.
    - 주소 뒤에 ?nofit=1 을 붙이면 이 기능을 끌 수 있습니다.
    ========================================================= */
 (function () {
   'use strict';
 
-  var MIN_SCALE = 0.55;   // 이보다 더 줄이지 않음 (너무 작아지면 가독성 문제)
-  var MAX_SCALE = 1.60;   // 이보다 더 키우지 않음
+  var MIN_SCALE_POINTER = 0.55;  // 마우스 환경: 작아져도 클릭에 무리가 없음
+  var MIN_SCALE_TOUCH   = 0.72;  // 터치 환경: 더 줄이면 버튼을 누르기 어려워짐
+  var MAX_SCALE_POINTER = 1.60;  // PC/노트북은 기존 동작 그대로 확대까지 허용
+  var MAX_SCALE_TOUCH   = 1.00;  // 세로 기기는 확대하지 않음 (키우면 오히려 넘침)
   var SAFE_GAP  = 12;     // 위아래 최소 여백(px)
 
   function isDisabled() {
@@ -20272,15 +20978,46 @@ body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
     return false;
   }
 
-  function isDesktopLike() {
+  /* 'pointer' = 마우스 쓰는 넓은 화면, 'touch' = 태블릿/모바일 세로 화면, null = 사용 안 함 */
+  function fitMode() {
     try {
-      // 마우스/트랙패드 환경이면서 화면이 충분히 넓을 때만 적용
+      var w = window.innerWidth || document.documentElement.clientWidth || 0;
+      var h = window.innerHeight || document.documentElement.clientHeight || 0;
+      if (!w || !h) return null;
+
       var finePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
-      var wideEnough = window.innerWidth >= 1024;
-      var isOfficeTablet = document.body.classList.contains('office-tablet-portrait');
-      return !!finePointer && wideEnough && !isOfficeTablet;
+      var isPortrait = h >= w;
+
+      // 세로 화면이면 기기 종류와 상관없이 한 화면에 맞춥니다.
+      if (isPortrait) return 'touch';
+      // 가로 화면은 기존대로 마우스 + 충분한 너비일 때만 적용합니다.
+      if (finePointer && w >= 1024) return 'pointer';
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /* 반납 화면은 영수증 목록이 계속 늘어날 수 있어 '화면을 꽉 채우고 목록만 내부 스크롤'
+     하는 구조입니다. 이런 화면은 배율을 건드리지 않고 원래 크기(1배)로 둡니다. */
+  function isFillScreen() {
+    try {
+      return document.body.getAttribute('data-current-screen') === 'returnDetails';
     } catch (e) {
       return false;
+    }
+  }
+
+  /* 화면 하단에 고정으로 떠 있는 태블릿 작업 버튼이 가리는 높이 */
+  function bottomDockHeight() {
+    try {
+      var dock = document.getElementById('tablet-bottom-action-dock');
+      if (!dock) return 0;
+      var cs = window.getComputedStyle(dock);
+      if (cs.display === 'none' || cs.visibility === 'hidden') return 0;
+      return dock.offsetHeight || 0;
+    } catch (e) {
+      return 0;
     }
   }
 
@@ -20288,6 +21025,7 @@ body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
   var container = null;
   var rafId = 0;
   var enabled = false;
+  var mode = null;
 
   function resolveNodes() {
     if (!wrapper) wrapper = document.querySelector('.content-wrapper');
@@ -20295,22 +21033,53 @@ body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
     return !!(wrapper && container);
   }
 
+  /* class를 바꾸면 body를 지켜보는 MutationObserver가 다시 돌기 때문에,
+     실제로 상태가 달라질 때만 쓰기. (그냥 toggle하면 무한 루프가 됩니다) */
+  function setBodyClass(name, on) {
+    var has = document.body.classList.contains(name);
+    if (has === !!on) return;
+    if (on) document.body.classList.add(name);
+    else document.body.classList.remove(name);
+  }
+
   function applyScale() {
     rafId = 0;
     if (!enabled || !resolveNodes()) return;
 
-    // offsetHeight / offsetWidth 는 레이아웃 기준값이라 transform 배율의 영향을 받지 않습니다.
-    var naturalH = container.offsetHeight;
-    var naturalW = container.offsetWidth;
-    if (!naturalH || !naturalW) return;
-
-    var availH = (window.innerHeight || document.documentElement.clientHeight) - SAFE_GAP * 2;
+    var viewportH = window.innerHeight || document.documentElement.clientHeight;
+    var dockH = bottomDockHeight();
+    var availH = viewportH - SAFE_GAP * 2 - dockH;
     var availW = wrapper.clientWidth || window.innerWidth;
     if (availH <= 0 || availW <= 0) return;
 
-    var scale = Math.min(availH / naturalH, availW / naturalW);
-    if (!isFinite(scale) || scale <= 0) scale = 1;
-    scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
+    /* 하단 고정 버튼이 차지하는 만큼 배치 영역을 줄여, 내용이 버튼 뒤로 들어가지 않게 합니다. */
+    var dockPx = dockH ? (dockH + 'px') : '0px';
+    if (document.body.style.getPropertyValue('--ws-fit-dock') !== dockPx) {
+      document.body.style.setProperty('--ws-fit-dock', dockPx);
+    }
+
+    /* 세로 화면에서 반납 화면은 화면을 꽉 채우고 목록만 내부 스크롤하므로 1배로 고정합니다.
+       (PC 가로 화면은 기존 동작을 그대로 유지합니다.)
+       body의 class 변경은 아래 MutationObserver를 다시 깨우므로,
+       실제로 값이 달라질 때만 건드려서 무한 루프가 생기지 않게 합니다. */
+    var fill = (mode === 'touch') && isFillScreen();
+    setBodyClass('ws-fit-fill', fill);
+
+    var scale = 1;
+    if (!fill) {
+      // offsetHeight / offsetWidth 는 레이아웃 기준값이라 transform 배율의 영향을 받지 않습니다.
+      // .container가 내부 스크롤로 잘리는 경우까지 감안해 실제 내용 높이(scrollHeight)도 함께 봅니다.
+      var naturalH = Math.max(container.offsetHeight, container.scrollHeight);
+      var naturalW = container.offsetWidth;
+      if (!naturalH || !naturalW) return;
+
+      var isTouch = (mode === 'touch');
+      var minScale = isTouch ? MIN_SCALE_TOUCH : MIN_SCALE_POINTER;
+      var maxScale = isTouch ? MAX_SCALE_TOUCH : MAX_SCALE_POINTER;
+      scale = Math.min(availH / naturalH, availW / naturalW);
+      if (!isFinite(scale) || scale <= 0) scale = 1;
+      scale = Math.max(minScale, Math.min(maxScale, scale));
+    }
 
     var rounded = Math.round(scale * 1000) / 1000;
     var current = parseFloat(document.body.style.getPropertyValue('--ws-fit-scale')) || 0;
@@ -20329,24 +21098,32 @@ body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
     rafId = window.requestAnimationFrame(applyScale);
   }
 
-  function enable() {
-    if (enabled) return;
+  function enable(nextMode) {
     if (!resolveNodes()) return;
+    mode = nextMode;
+    setBodyClass('ws-auto-fit-touch', nextMode === 'touch');
+    if (enabled) return;
     enabled = true;
-    document.body.classList.add('ws-auto-fit');
+    setBodyClass('ws-auto-fit', true);
     schedule();
   }
 
   function disable() {
+    mode = null;
+    setBodyClass('ws-auto-fit-touch', false);
     if (!enabled) return;
     enabled = false;
-    document.body.classList.remove('ws-auto-fit', 'ws-auto-fit-ready');
+    setBodyClass('ws-auto-fit', false);
+    setBodyClass('ws-auto-fit-ready', false);
+    setBodyClass('ws-fit-fill', false);
     document.body.style.removeProperty('--ws-fit-scale');
+    document.body.style.removeProperty('--ws-fit-dock');
   }
 
   function refreshMode() {
     if (isDisabled()) { disable(); return; }
-    if (isDesktopLike()) { enable(); schedule(); }
+    var next = fitMode();
+    if (next) { enable(next); schedule(); }
     else { disable(); }
   }
 
@@ -20360,6 +21137,15 @@ body.ws-auto-fit:not(.ws-auto-fit-ready) .container {
 
     window.addEventListener('resize', function () { refreshMode(); schedule(); }, { passive: true });
     window.addEventListener('orientationchange', function () { refreshMode(); schedule(); }, { passive: true });
+
+    /* 화면이 꺼져 있는 동안에는 requestAnimationFrame이 실행되지 않아 계산이 멈춥니다.
+       태블릿을 다시 켰을 때 확실히 다시 맞추도록 예약을 초기화하고 재계산합니다. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState !== 'visible') return;
+      rafId = 0;
+      refreshMode();
+      schedule();
+    }, { passive: true });
 
     // 화면 전환 / 완료 모드 전환 등 body 상태가 바뀔 때마다 다시 계산
     try {
