@@ -3,6 +3,32 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
+<script>
+/* 첫 화면 데이터 요청을 페이지를 다 읽기 '전에' 먼저 보낸다.
+   이 아래로 CSS/JS 가 700KB 가까이 있어서, 다 읽고 나서 보내면 그만큼 늦게 출발한다.
+   응답은 loading.js InitialDataPreload.start() 가 이어받는다 (takeEarlyInitialRequest).
+   주소는 common.js 의 WORKER_API_URL 과 같아야 한다.
+   구글 Apps Script 안에서 열린 경우(google.script 사용)는 보내지 않는다. */
+(function () {
+  try {
+    if (/googleusercontent\.com$/.test(location.hostname)) return;
+    var at = Date.now();
+    var promise = fetch('https://wscard.kang7762ek.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ func: 'getInitialAppData', args: [], apiSecret: '' })
+    }).then(function (res) {
+      return res.text().then(function (text) {
+        var data = text ? JSON.parse(text) : {};
+        if (!res.ok || !data.ok) throw new Error(data && data.error ? data.error : 'HTTP_' + res.status);
+        return data.result;
+      });
+    });
+    promise.catch(function () {});
+    window.__WS_EARLY_INIT__ = { at: at, promise: promise };
+  } catch (e) {}
+})();
+</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>우성고 카드</title>
 
@@ -653,31 +679,27 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
 #lock-screen.fade-out {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.34s ease-out;
-}
-
-/* 카드를 누르면 살짝 눌렸다가(active-pop), 화면이 걷히면서 카드가 앞으로 다가오듯 커진다(fade-out).
-   로그인 화면은 그 아래에서 떠오른다 (base.css .content-wrapper.unlock-enter). */
-#lock-screen.active-pop .lock-content {
-  transform: scale(0.95);
-  transition: transform 0.12s cubic-bezier(0.3, 0, 0.5, 1);
+  transition: opacity 0.4s ease-out;
 }
 
 
-#lock-screen.fade-out .lock-content,
-#lock-screen.active-pop.fade-out .lock-content {
+/* 카드에 손이 닿는 순간 잠금화면이 걷히며 카드가 앞으로 다가오듯 커지고,
+   내선번호 화면은 아래에서 올라온다 (base.css .content-wrapper.unlock-enter). */
+#lock-screen.fade-out .lock-content {
   transform: scale(1.06);
-  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* 손이 닿으면 안내 문구는 바로 걷는다. 깜빡임(soft-pulse)이 opacity 를 쥐고 있어 함께 꺼야 사라진다. */
-#lock-screen.active-pop #lock-text-instruction {
-  animation: none;
-  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes wsUnlockEnter {
-  from{opacity:0;transform:translateY(14px) scale(0.985);}to{opacity:1;transform:none;}
+  from{opacity:0;transform:translateY(44px);}to{opacity:1;transform:none;}
+}
+
+@keyframes wsGateBlink {
+  0%,100%{opacity:1;}50%{opacity:0.35;}
+}
+
+@keyframes wsGateReadyPop {
+  0%{transform:scale(1);}45%{transform:scale(1.045);}100%{transform:scale(1);}
 }
 
 .lock-content {
@@ -698,6 +720,26 @@ body.ws-app .flight-purpose-btn.selected, body.ws-app .flight-purpose-btn[aria-p
   transform-style: preserve-3d;
   transition: transform 0.5s cubic-bezier(0.2,0.8,0.2,1);
   cursor: pointer;
+}
+
+/* 잠금화면 준비 상태 (lock.js LockGate) — 오락실의 INSERT COIN → PRESS START
+   loading: 최신 데이터를 받는 중. 카드를 흐리게 두고 누를 수 없으며 문구가 빠르게 깜빡인다.
+   ready  : 카드가 또렷해지며 한 번 톡 튀고, 문구가 '카드를 눌러 시작하세요' 로 바뀐다. */
+#lock-screen[data-gate] #glass-card-container {
+  transition: transform 0.5s cubic-bezier(0.2,0.8,0.2,1), opacity 0.45s ease;
+}
+
+#lock-screen[data-gate="loading"] #glass-card-container {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+#lock-screen[data-gate="loading"] #lock-text-instruction {
+  animation: wsGateBlink 1s ease-in-out infinite;
+}
+
+#glass-card-container.gate-ready-pop {
+  animation: wsGateReadyPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #glass-card-container.hide-card {
@@ -5519,7 +5561,7 @@ body[data-current-screen="confirmation"] #screen-confirmation .detail-row-conten
 }
 
 .content-wrapper.unlock-enter {
-  animation: wsUnlockEnter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: wsUnlockEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both;
 }
 
 #main-title-container.is-visible, .scan-text.fade-in {
@@ -14644,7 +14686,7 @@ body.ws-app[data-current-screen="login"] #screen-login {
 <div id="purpose-flight-overlay" aria-hidden="true"></div>
 <div id="purpose-flight-layer" aria-hidden="true"></div>
 
-<div id="lock-screen" data-ws-region="lock-screen">
+<div id="lock-screen" data-ws-region="lock-screen" data-gate="loading">
     <div class="lock-content">
         <div id="glass-card-container">
             <div id="glass-card">
@@ -14653,7 +14695,7 @@ body.ws-app[data-current-screen="login"] #screen-login {
                 <div class="card-bottom"><div class="card-holder">WOOSUNG HIGH SCHOOL</div><i class="fa-solid fa-wifi card-nfc"></i></div>
             </div>
         </div>
-        <p class="lock-text" id="lock-text-instruction">카드를 눌러 시작하세요</p>
+        <p class="lock-text" id="lock-text-instruction">카드 정보를 불러오는 중...</p>
     </div>
 </div>
 
@@ -15058,6 +15100,7 @@ const CardApp = (function() {
         forceSyncOnNextUnlock: false,
         // 잠금 해제 후 뒤에서 최신 데이터를 받는 중인지 (loading.js JS_UNLOCK_FAST_PATH)
         swrPending: false,
+        lockGate: 'loading',
         lastOperationalError: null,
         lastReturnSubmitError: null,
 
@@ -15341,6 +15384,16 @@ const CardApp = (function() {
     - 3초가 지나거나 아직 준비되지 않았으면 기존처럼 로딩화면에서 새로 가져옵니다.
     - localStorage나 긴 캐시는 사용하지 않습니다.
     ========================================================= */
+    // <head> 맨 앞에서 미리 보낸 첫 데이터 요청 (shell.html). 한 번만 쓴다.
+    function takeEarlyInitialRequest() {
+        const early = window.__WS_EARLY_INIT__;
+        window.__WS_EARLY_INIT__ = null;
+        if (!early || !early.promise || IS_GAS) return null;
+        // 너무 오래된 요청이면 쓰지 않는다 (페이지가 오래 멈춰 있었던 경우)
+        if (Date.now() - early.at > 15000) return null;
+        return early;
+    }
+
     const InitialDataPreload = {
         TTL_MS: 3000,
 
@@ -15376,22 +15429,25 @@ const CardApp = (function() {
             if (this.isFreshLoaded()) return Promise.resolve(state.initialDataPreloadData);
             if (this.isFreshPending()) return state.initialDataPreloadPromise;
 
-            state.initialDataPreloadStartedAt = Date.now();
+            const early = takeEarlyInitialRequest();
+            state.initialDataPreloadStartedAt = early ? early.at : Date.now();
             state.initialDataPreloadLoadedAt = 0;
             state.initialDataPreloadData = null;
-            console.log('[WS MEASURE] initial preload start', { reason, ttlMs: this.TTL_MS, at: new Date().toLocaleTimeString() });
+            console.log('[WS MEASURE] initial preload start', { reason, early: !!early, ttlMs: this.TTL_MS, at: new Date().toLocaleTimeString() });
 
-            state.initialDataPreloadPromise = Api.call('getInitialAppData')
+            state.initialDataPreloadPromise = (early ? early.promise : Api.call('getInitialAppData'))
                 .then(data => {
                     const elapsed = Date.now() - state.initialDataPreloadStartedAt;
                     if (!data || data.error) throw new Error(data?.error || 'No Data');
                     SavedCartPrefetch.normalizeInitialPayload(data);
                     state.initialDataPreloadData = data;
                     state.initialDataPreloadLoadedAt = Date.now();
-                    console.log('[WS MEASURE] initial preload done', `${elapsed}ms`, { ttlMs: this.TTL_MS });
+                    // cache: 서버 캐시 적중(hit)/시트에서 읽음(miss), serverMs: 서버 안에서 걸린 시간.
+                    // 전체 시간에서 serverMs 를 빼면 네트워크 + 구글 서버 깨우는 시간이다.
+                    console.log('[WS MEASURE] initial preload done', `${elapsed}ms`, { early: !!early, cache: data.cache, serverMs: data.serverMs, ttlMs: this.TTL_MS });
 
                     // 잠금화면에 머무는 짧은 시간도 savedCart 프리로드에 활용합니다.
-                    // 단, 카드 클릭 시 TTL이 지났으면 initializeAppSequence에서 reset 후 최신 데이터를 다시 받습니다.
+                    // 단, 카드 클릭 시 TTL이 지났으면 enterLoginScreen 에서 reset 후 최신 데이터를 다시 받습니다.
                     if (state.currentScreen === 'lock' && !state.isAppActive && this.isFreshLoaded()) {
                         state.allCardData = data.allCards || [];
                         state.allUsersData = data.allUsers || [];
@@ -15863,7 +15919,7 @@ const CardApp = (function() {
             // 투명도/터치는 인라인으로 고정하지 않는다. 고정하면 다음 잠금 해제 때 fade-out 이 안 먹어서
             // 잠금화면이 그대로 있다가 툭 사라진다.
             try { elements.lockScreen.style.opacity = ''; elements.lockScreen.style.visibility = ''; elements.lockScreen.style.pointerEvents = ''; } catch(e) {}
-            elements.lockScreen.classList.remove('hidden', 'fade-out', 'active-pop');
+            elements.lockScreen.classList.remove('hidden', 'fade-out');
             elements.contentWrapper.classList.remove('unlock-enter');
             elements.glassCardContainer.classList.remove('hide-card');
             state.cardTiltActive = true;
@@ -15871,7 +15927,9 @@ const CardApp = (function() {
             state.currentScreen = 'lock';
             UIManager.stopInactivityDetection();
             state.isAppActive = false;
-            setTimeout(() => { try { InitialDataPreload.refresh('show-lock-screen'); } catch(e) {} }, 80);
+            // 최신 데이터를 다시 받는 동안 카드를 잠근다 (LockGate)
+            LockGate.set('loading');
+            setTimeout(() => { try { LockGate.wait(InitialDataPreload.refresh('show-lock-screen')); } catch(e) {} }, 80);
         },
         resetToLogin: () => {
             clearTransitionTimers();
@@ -16188,8 +16246,9 @@ const CardApp = (function() {
             const inUse = state.allCardData.filter(c => busyStatuses.includes(normalizeCardStatus(c.status))).length;
             const elAvail = document.getElementById('dash-available');
             const elInuse = document.getElementById('dash-inuse');
-            if(elAvail) elAvail.textContent = available;
-            if(elInuse) elInuse.textContent = inUse;
+            const hasData = state.allCardData.length > 0;
+            if(elAvail) elAvail.textContent = hasData ? available : '-';
+            if(elInuse) elInuse.textContent = hasData ? inUse : '-';
         },
         /* =========================================================
         @SUBSECTION: JS_KEYPAD_DIGIT_INPUT
@@ -16331,12 +16390,30 @@ const CardApp = (function() {
         findUserWaitingForFresh: async (ext) => {
             const find = () => (Array.isArray(state.allUsersData) ? state.allUsersData : [])
                 .find(u => String(u.extension) === ext);
+            const hasUsers = () => Array.isArray(state.allUsersData) && state.allUsersData.length > 0;
             let user = find();
             if (!user && state.swrPending && state.syncPromise) {
                 UIManager.setLoading(true, '사용자 정보 확인 중...');
                 try { await state.syncPromise; } catch (e) {}
                 UIManager.setLoading(false);
                 user = find();
+            }
+            // 페이지를 연 뒤 첫 데이터 받기가 실패해 사용자 목록이 아예 없으면 한 번 더 받아 본다
+            if (!user && !hasUsers()) {
+                UIManager.setLoading(true, '사용자 정보 확인 중...');
+                try {
+                    const r = await Api.call('getInitialAppData');
+                    SavedCartPrefetch.normalizeInitialPayload(r);
+                    if (r && !r.error) applyFreshInitialData(r, 'login-retry');
+                } catch (e) { console.warn('[WS] login retry fetch failed', e); }
+                UIManager.setLoading(false);
+                user = find();
+                if (!hasUsers()) {
+                    UIManager.showOperationalError({
+                        title: '데이터를 불러오지 못했습니다',
+                        message: '인터넷 연결을 확인한 뒤 잠시 후 다시 시도해 주세요.'
+                    });
+                }
             }
             return user || null;
         },
@@ -19262,12 +19339,22 @@ ${receiptUseTypeHtml}
         };
         const onEnd = (ev) => { if (ev.target === lock && ev.propertyName === 'opacity') finish(); };
         lock.addEventListener('transitionend', onEnd);
-        setTimeout(finish, 500);
+        setTimeout(finish, 600);
     }
 
-    function enterLoginWithLastKnownData(reqId, unlockStartedAt) {
-        console.log('[WS MEASURE] unlock fast path (last-known data)', {
-            cards: state.allCardData.length, users: state.allUsersData.length
+    /* 잠금 해제 → 내선번호 화면 (로딩화면은 쓰지 않는다)
+       - 내선번호 화면을 바로 띄우고, 최신 데이터는 뒤에서 받아 도착하는 대로 화면에 반영한다.
+       - 잠금화면에서 데이터를 다 받은 뒤에야 카드를 누를 수 있으므로(lock.js LockGate) 보통은 데이터가 이미 있다.
+       - 그래도 최신 데이터가 오기 전에 확인을 누르면 '사용자 정보 확인 중...' 으로 기다린다
+         (login.js findUserWaitingForFresh). */
+    function enterLoginScreen(reqId, unlockStartedAt) {
+        const hadLastKnown = hasLastKnownInitialData();
+        // 처음엔 null 이다. 빈 배열로 맞춰 두어야 login.js 의 옛 'null 이면 따로 받기' 경로로 새지 않고
+        // 아래에서 받는 최신 데이터를 기다린다.
+        if (!Array.isArray(state.allCardData)) state.allCardData = [];
+        if (!Array.isArray(state.allUsersData)) state.allUsersData = [];
+        console.log('[WS MEASURE] unlock to login', {
+            lastKnown: hadLastKnown, cards: (state.allCardData || []).length, users: (state.allUsersData || []).length
         });
 
         // 잠금화면이 걷히는 동안 그 아래에서 내선번호 화면이 떠오른다 (로딩화면은 거치지 않는다)
@@ -19284,7 +19371,8 @@ ${receiptUseTypeHtml}
             SavedCartPrefetch.reset();
             // 최신 카드 목록을 기다리지 않고, 직전에 알던 사용중 카드의 장바구니를 지금 같이 받기 시작한다.
             // 그 사이 새로 빌려 간 카드는 최신 목록이 오면 reattachAfterFreshCards 가 따로 받아 온다.
-            SavedCartPrefetch.start('unlock-last-known');
+            // (직전 데이터가 없으면 최신 목록이 온 뒤 applyFreshInitialData 가 한 번에 받는다)
+            if (hadLastKnown) SavedCartPrefetch.start('unlock-last-known');
             const startedAt = Date.now();
             state.swrPending = true;
             state.syncPromise = (InitialDataPreload.getUsablePromise() || Api.call('getInitialAppData'))
@@ -19307,105 +19395,86 @@ ${receiptUseTypeHtml}
         UIManager.showScreen('login');
         playLoginEnter();
         setTimeout(() => CardLogic.drainPendingRentRequests(), 800);
-        console.log('[WS MEASURE] unlock sequence to login screen', `${Date.now() - unlockStartedAt}ms`, { path: 'fast' });
+        console.log('[WS MEASURE] unlock sequence to login screen', `${Date.now() - unlockStartedAt}ms`);
         UIManager.startInactivityDetection();
     }
 
-    async function initializeAppSequence() {
+    function initializeAppSequence() {
         const reqId = ++state.syncReqId;
         const unlockStartedAt = Date.now();
         console.log('[WS MEASURE] unlock sequence start', { at: new Date().toLocaleTimeString() });
-
-        if (hasLastKnownInitialData()) {
-            enterLoginWithLastKnownData(reqId, unlockStartedAt);
-            return;
-        }
-
-        elements.welcomeScreen.classList.remove('hidden');
-        elements.welcomeScreen.classList.add('is-visible');
-        UIManager.currentScreenElement = elements.welcomeScreen;
-        state.currentScreen = 'welcome';
-        elements.contentWrapper.style.display = 'flex';
-        await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
-        requestAnimationFrame(() => elements.lockScreen.classList.add('fade-out'));
-        const hideLockAfterFade = () => {
-            const onEnd = (ev) => {
-                if (ev.propertyName !== 'opacity') return;
-                elements.lockScreen.removeEventListener('transitionend', onEnd);
-                try { elements.lockScreen.style.display = 'none'; } catch(e) {}
-            };
-            elements.lockScreen.addEventListener('transitionend', onEnd);
-        };
-        hideLockAfterFade();
-        let isDataLoaded = false;
-        /* @SERVER_API_GROUP_INIT: 빠른 초기화 데이터 */
-        const reusablePreloadPromise = InitialDataPreload.getUsablePromise();
-        const usingPreload = !!reusablePreloadPromise;
-        if (!usingPreload) SavedCartPrefetch.reset();
-        const initialDataStartedAt = Date.now();
-        console.log('[WS MEASURE] getInitialAppData start', {
-            source: usingPreload ? 'lock-preload' : 'fresh-call',
-            at: new Date().toLocaleTimeString()
-        });
-        const dataPromise = (reusablePreloadPromise || Api.call('getInitialAppData'))
-            .then(r => {
-                console.log('[WS MEASURE] getInitialAppData done', `${Date.now() - initialDataStartedAt}ms`, { source: usingPreload ? 'lock-preload' : 'fresh-call' });
-                SavedCartPrefetch.normalizeInitialPayload(r);
-                if (!r || r.error) throw new Error(r?.error || 'No Data');
-                isDataLoaded = true;
-                if (reqId !== state.syncReqId) return r;
-
-                // v12.8: 카드/사용자 기본 데이터가 도착하는 즉시 state에 반영하고,
-                // 로딩 화면이 아직 떠 있는 동안 savedCart 프리로드를 바로 출발시킵니다.
-                // savedCart 완료를 로딩화면 종료 조건으로 묶지 않아 첫 진입은 가볍게 유지합니다.
-                state.allCardData = r.allCards || [];
-                state.allUsersData = r.allUsers || [];
-                state.lastSyncTs = Date.now();
-                if (!state.savedCartPrefetchPromise) {
-                    SavedCartPrefetch.start(usingPreload ? 'unlock-preloaded' : 'unlock-loader');
-                }
-
-                return r;
-            })
-            .catch(e => {
-                console.log('[WS MEASURE] getInitialAppData failed', `${Date.now() - initialDataStartedAt}ms`, e);
-                isDataLoaded = true;
-                throw e;
-            });
-        await UIManager.runRandomLoader(() => isDataLoaded);
-        elements.welcomeScreen.classList.remove('is-visible');
-        elements.welcomeScreen.classList.add('is-hiding');
-        setTimeout(() => {
-            elements.welcomeScreen.classList.add('hidden');
-            elements.welcomeScreen.classList.remove('is-hiding');
-            elements.lockScreen.classList.add('hidden');
-        }, 220);
-        try {
-            const data = await dataPromise;
-            if (!data || data.error) throw new Error(data?.error || 'No Data');
-            if (reqId !== state.syncReqId) return;
-            if (!Array.isArray(state.allCardData) || !state.allCardData.length) state.allCardData = data.allCards || [];
-            if (!Array.isArray(state.allUsersData) || !state.allUsersData.length) state.allUsersData = data.allUsers || [];
-            state.lastSyncTs = Date.now();
-            setTimeout(() => CardLogic.drainPendingRentRequests(), 800);
-            // v12.8: savedCart는 이미 unlock-loader 단계에서 출발했습니다. 여기서는 로그인 화면만 즉시 표시합니다.
-            UIManager.showScreen('login');
-            playLoginEnter();
-            console.log('[WS MEASURE] unlock sequence to login screen', `${Date.now() - unlockStartedAt}ms`);
-        } catch (e) {
-            state.allCardData = [];
-            state.allUsersData = [];
-            UIManager.showScreen('login');
-            console.log('[WS MEASURE] unlock sequence fallback to login screen', `${Date.now() - unlockStartedAt}ms`);
-        }
-        UIManager.startInactivityDetection();
+        enterLoginScreen(reqId, unlockStartedAt);
     }
     /* =========================================================
     @SECTION: JS_LOCK_SCREEN
     카드 잠금 화면 클릭 → 로더 → 로그인 화면 진입 흐름
     ========================================================= */
+    /* 잠금화면 준비 상태 — 오락실의 'INSERT COIN' → 'PRESS START' 처럼
+       - loading : 최신 데이터를 받는 중. 카드를 눌러도 반응하지 않는다.
+       - ready   : 데이터가 왔다. 카드를 누르면 바로 내선번호 화면 (데이터가 이미 있어 기다릴 일이 없다).
+       - failed  : 받지 못했다. 카드를 누르면 다시 받는다.
+       페이지를 열 때(confirmation.js init), 잠금화면으로 돌아올 때(showLockScreen),
+       태블릿 화면이 다시 켜질 때(common.js bindKioskVisibilityReturn) 새로 받으며 loading 이 된다. */
+    const LockGate = {
+        TEXT: {
+            loading: '카드 정보를 불러오는 중...',
+            ready: '카드를 눌러 시작하세요',
+            failed: '연결이 원활하지 않아요 · 카드를 눌러 다시 시도'
+        },
+        token: 0,
+        // 이 시간이 지나도 응답이 없으면 '다시 시도' 로 바꿔 누를 수 있게 한다 (요청 제한시간은 30초라 너무 길다).
+        // 그 뒤에라도 응답이 오면 바로 '카드를 눌러 시작하세요' 가 된다.
+        SLOW_MS: 8000,
+        set(gate) {
+            const prev = state.lockGate;
+            state.lockGate = gate;
+            elements.lockScreen.dataset.gate = gate;
+            const text = document.getElementById('lock-text-instruction');
+            if (text) text.textContent = this.TEXT[gate];
+            // 준비되는 순간 카드가 한 번 톡 튀어 '이제 눌러도 된다'를 알린다
+            if (prev === 'loading' && gate === 'ready') {
+                const card = elements.glassCardContainer;
+                card.classList.remove('gate-ready-pop');
+                void card.offsetWidth;
+                card.classList.add('gate-ready-pop');
+                setTimeout(() => card.classList.remove('gate-ready-pop'), 700);
+            }
+        },
+        // promise: InitialDataPreload 의 받기 요청 (성공하면 데이터, 실패하면 null)
+        wait(promise) {
+            const token = ++this.token;
+            this.set('loading');
+            if (!promise) {
+                this.set(hasLastKnownInitialData() ? 'ready' : 'failed');
+                return;
+            }
+            const startedAt = Date.now();
+            setTimeout(() => {
+                if (token === this.token && state.lockGate === 'loading' && state.currentScreen === 'lock' && !state.isAppActive) {
+                    console.log('[WS MEASURE] lock gate slow', `${Date.now() - startedAt}ms`);
+                    this.set('failed');
+                }
+            }, this.SLOW_MS);
+            Promise.resolve(promise).catch(() => null).then(data => {
+                // 그 사이 다시 받기 시작했거나 이미 잠금이 풀렸으면 이 결과는 무시한다
+                if (token !== this.token || state.currentScreen !== 'lock' || state.isAppActive) return;
+                console.log('[WS MEASURE] lock gate', data ? 'ready' : 'failed', `${Date.now() - startedAt}ms`);
+                this.set(data ? 'ready' : 'failed');
+            });
+        },
+        refresh(reason) {
+            this.wait(InitialDataPreload.refresh(reason));
+        }
+    };
+
     async function handleLockScreenClick() {
         if (state.isAppActive && state.currentScreen !== 'lock') return;
+        // 데이터를 받는 중에는 카드를 눌러도 반응하지 않는다. 받지 못했으면 다시 받는다.
+        if (state.lockGate === 'loading') return;
+        if (state.lockGate === 'failed') {
+            LockGate.refresh('lock-retry');
+            return;
+        }
         /* 선로딩은 isAppActive 를 켜기 '전에' 시작해야 한다.
            InitialDataPreload.start() 는 첫 줄에서 isAppActive 가 켜져 있으면 바로 빠지는데,
            예전에는 플래그를 먼저 켜고 나서 불러서 탭 순간에 아무것도 시작되지 않았다.
@@ -19416,21 +19485,20 @@ ${receiptUseTypeHtml}
         state.forceSyncOnNextUnlock = false;
         state.pendingPostReturnSync = false;
         state.syncPromise = null;
-        // 손을 대는 순간(pointerdown) 이미 눌려 있을 수 있다 (common.js bindMainActionHandlers)
-        elements.lockScreen.classList.add('active-pop');
+        // 손을 떼면서 생기는 click 이 새로 뜬 내선번호 키패드를 누르지 않게 잠깐 막는다 (common.js)
+        state.unlockGhostClickUntil = Date.now() + 500;
 
         /*
           행정실 키오스크 갱신 규칙:
           - 화면이 다시 켜질 때는 잠금화면으로만 복귀합니다.
           - 카드를 누르는 순간 최신 데이터 받기를 시작합니다.
-          - 직전에 받아 둔 데이터가 있으면 로딩화면 없이 바로 내선번호 화면을 띄우고,
-            최신 데이터는 뒤에서 받아 도착하는 대로 화면에 반영합니다 (loading.js JS_UNLOCK_FAST_PATH).
-          - 받아 둔 데이터가 없을 때(페이지를 처음 연 직후)만 로딩화면을 거칩니다.
-          - 연출: 카드가 살짝 눌림(0.12초) → 잠금화면이 걷히며 카드가 앞으로 다가오고,
-            내선번호 화면이 아래에서 떠오른다 (lock.css active-pop / fade-out, base.css unlock-enter).
+          - 잠금화면에서 최신 데이터를 다 받은 뒤에야 카드를 누를 수 있습니다 (LockGate).
+          - 누르면 로딩화면 없이 바로 내선번호 화면을 띄우고, 잠금화면이 오래 떠 있었으면
+            뒤에서 한 번 더 받아 도착하는 대로 반영합니다 (loading.js enterLoginScreen).
+          - 연출: 카드에 손이 닿는 순간(pointerdown) 바로 시작한다. 잠금화면이 걷히며 카드가
+            앞으로 다가오고, 내선번호 화면이 아래에서 올라온다 (lock.css fade-out, base.css unlock-enter).
         */
-        const PRESS_FEEDBACK_MS = 120;
-        setTimeout(() => initializeAppSequence(), PRESS_FEEDBACK_MS);
+        initializeAppSequence();
     }
     
     /* =========================================================
@@ -19577,7 +19645,7 @@ ${receiptUseTypeHtml}
         const refreshLockPreloadOnTabletWake = (reason) => {
             if (!isKioskTabletDevice()) return;
             if (state.currentScreen === 'lock') {
-                try { InitialDataPreload.refresh(reason); } catch(e) { console.warn(e); }
+                try { LockGate.refresh(reason); } catch(e) { console.warn(e); }
                 return;
             }
             try {
@@ -19611,15 +19679,19 @@ ${receiptUseTypeHtml}
     - 이벤트 위임 대상 selector 변경 금지
     ========================================================= */
     function bindMainActionHandlers() {
-        elements.glassCardContainer.addEventListener('click', handleLockScreenClick);
-        // 손가락이 닿는 순간부터 카드가 눌린 느낌을 준다. 실제 진입은 click 에서 한다.
-        // 누른 채 밖으로 끌어내 click 이 오지 않으면 잠시 뒤 원래대로 돌려놓는다.
-        elements.glassCardContainer.addEventListener('pointerdown', () => {
-            if (state.currentScreen === 'lock' && !state.isAppActive) elements.lockScreen.classList.add('active-pop');
+        // 카드에 손이 닿는 순간 바로 연다 (떼기를 기다리지 않는다). click 은 pointerdown 이 없는 경우 대비.
+        elements.glassCardContainer.addEventListener('pointerdown', (e) => {
+            if (e.button > 0) return; // 마우스 오른쪽/가운데 버튼은 무시
+            handleLockScreenClick();
         });
-        ['pointerup', 'pointercancel'].forEach(evt => elements.glassCardContainer.addEventListener(evt, () => {
-            setTimeout(() => { if (!state.isAppActive) elements.lockScreen.classList.remove('active-pop'); }, 250);
-        }));
+        elements.glassCardContainer.addEventListener('click', handleLockScreenClick);
+        // 잠금 해제 직후 손을 떼면서 생기는 click 이 내선번호 화면의 키패드를 누르지 않게 막는다
+        document.addEventListener('click', (e) => {
+            if (Date.now() < (state.unlockGhostClickUntil || 0)) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        }, true);
         elements.btnBack.addEventListener('click', UIManager.resetToLogin);
         document.addEventListener('click', (e) => {
             const cardEl = e.target.closest('.card-item-wrapper[data-card-id]');
@@ -19808,7 +19880,7 @@ ${receiptUseTypeHtml}
             restoreAdminModeFromStorage();
             setupEventListeners();
             KeypadLogic.initializeKeypad();
-            setTimeout(() => { try { InitialDataPreload.start('dom-ready-lock'); } catch(e) {} }, 120);
+            setTimeout(() => { try { LockGate.wait(InitialDataPreload.start('dom-ready-lock')); } catch(e) {} }, 120);
         }
     };
 })();
