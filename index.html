@@ -14940,6 +14940,9 @@ const RECEIPT_IMAGE_OPTIMIZE_CONFIG = {
 
 const RENT_SYNC_STORAGE_KEY = 'woosung_card_pending_rent_requests_v1';
 const RENT_RETRY_DELAYS_MS = [0, 1200, 3000, 8000, 20000];
+// 반납도 대여처럼 완료 화면을 먼저 보여 주고 서버 접수는 뒤에서 한다 (return.js runReturnRequestWithRetry)
+const RETURN_SYNC_STORAGE_KEY = 'woosung_card_pending_return_requests_v1';
+const RETURN_RETRY_DELAYS_MS = [0, 1500, 4000, 10000, 20000];
 /* =========================================================
   @SECTION: JS_API_BRIDGE
   GAS 환경이면 google.script.run, 외부 환경이면 Worker API 호출
@@ -15451,6 +15454,7 @@ const CardApp = (function() {
                     if (state.currentScreen === 'lock' && !state.isAppActive && this.isFreshLoaded()) {
                         state.allCardData = data.allCards || [];
                         state.allUsersData = data.allUsers || [];
+                        try { CardLogic.reapplyPendingReturnStates(); } catch (e) {}
                         state.lastSyncTs = Date.now();
                         SavedCartPrefetch.reset();
                         SavedCartPrefetch.start('lock-preload');
@@ -18142,10 +18146,20 @@ const CardApp = (function() {
                 CardLogic.requestRenderReceiptCart();
 
                 /* @SERVER_API_GROUP_RECEIPT: 영수증 이미지 OCR/분석 + 이미지 저장 병렬 처리 */
-                const [ocrRaw, imageSave] = await Promise.all([
-                    Api.call('processReceiptImageFast', b64),
-                    Api.call('saveReceiptImageOnly', b64)
-                ]);
+                const ocrPromise = Api.call('processReceiptImageFast', b64);
+                const savePromise = Api.call('saveReceiptImageOnly', b64);
+                /* OCR(Worker → Gemini 직접)이 사진 저장(Apps Script)보다 먼저 끝나는 경우가 많다.
+                   그러면 상호/금액부터 보여 주고, 사진 저장이 끝나면 아래에서 최종 정리한다. */
+                ocrPromise.then(early => {
+                    const i = liveIdx();
+                    if (i === -1 || !state.receiptCart[i] || state.receiptCart[i].processing !== 'ocr') return;
+                    const failed = CardLogic.isReceiptAnalysisFailed(early || {});
+                    state.receiptCart[i].processing = 'postprocessing';
+                    state.receiptCart[i].usagePlace = failed ? '직접 입력 필요' : ((early && early.storeName) || '상호명 없음');
+                    if (!failed && early && early.amount) state.receiptCart[i].amount = String(early.amount).replace(/[^\d]/g, '');
+                    CardLogic.requestRenderReceiptCart();
+                }).catch(() => {});
+                const [ocrRaw, imageSave] = await Promise.all([ocrPromise, savePromise]);
                 idx = liveIdx();
                 if (idx === -1) return;
                 const ocr = ocrRaw || {};
@@ -18463,7 +18477,16 @@ const CardApp = (function() {
             const arrayBuffer = await file.arrayBuffer();
             let pdfDoc = null;
             try {
-                pdfDoc = await pdfjs.getDocument({ data: arrayBuffer }).promise;
+                /* 한글 영수증 PDF 는 글꼴 지도(CMap)와 기본 글꼴 파일이 있어야 글자가 그려진다.
+                   없으면 글자가 빠진 그림이 만들어져 OCR 이 상호/금액을 못 읽는다.
+                   (cdnjs 에는 이 파일들이 없어서 같은 버전의 jsdelivr 배포본을 쓴다) */
+                const pdfAssetBase = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/';
+                pdfDoc = await pdfjs.getDocument({
+                    data: arrayBuffer,
+                    cMapUrl: pdfAssetBase + 'cmaps/',
+                    cMapPacked: true,
+                    standardFontDataUrl: pdfAssetBase + 'standard_fonts/'
+                }).promise;
                 if (!pdfDoc || !pdfDoc.numPages) throw new Error('PDF 페이지를 찾을 수 없습니다.');
                 const page = await pdfDoc.getPage(1);
                 const baseViewport = page.getViewport({ scale: 1 });
@@ -19150,16 +19173,10 @@ ${receiptUseTypeHtml}
             CardLogic._submitInFlight = true;
             const btn = document.getElementById('submit-cart-btn');
             if(btn) { btn.disabled = true; btn.classList.add('is-loading'); }
-            // 네트워크 타임아웃 등으로 실패해 사용자가 다시 누르는 경우에도, 서버가 실제로는
-            // 이미 처리했을 수 있으므로 같은 카드에 대해서는 같은 requestId를 재사용해
-            // (서버의 requestId 기준 멱등 처리를 통해) 반납 기록이 중복 생성되지 않게 한다.
-            if (state.pendingReturnRequestId && state.pendingReturnRequestCardId === state.currentReturnCard.id) {
-                var returnRequestId = state.pendingReturnRequestId;
-            } else {
-                var returnRequestId = Utils.createClientRequestId('return');
-                state.pendingReturnRequestId = returnRequestId;
-                state.pendingReturnRequestCardId = state.currentReturnCard.id;
-            }
+            // 같은 카드의 반납이 아직 서버에 접수되지 않은 채 남아 있으면 그 requestId 를 이어 쓴다.
+            // 서버는 requestId 기준으로 중복 접수를 막으므로 반납 기록이 두 번 생기지 않는다.
+            const pendingSameCard = CardLogic.getPendingReturnRequests().find(x => x.cardNumber === state.currentReturnCard.id);
+            const returnRequestId = pendingSameCard ? pendingSameCard.requestId : Utils.createClientRequestId('return');
             const params = {
                 adminToken: state.isAdminMode ? (state.adminTokenCache || '') : '',
                 cardNumber: state.currentReturnCard.id,
@@ -19170,40 +19187,18 @@ ${receiptUseTypeHtml}
                 requestId: returnRequestId,
                 multiEntries: JSON.stringify(Utils.sanitizeReceiptCart(state.receiptCart))
             };
-            let delayedReturnLoadingTimer = null;
-            let delayedReturnLoadingShown = false;
-            const originalSubmitText = btn ? btn.textContent : '';
-            if (btn) btn.textContent = '반납 처리중...';
+            /* 대여처럼 서버 접수를 기다리지 않고 바로 완료 화면을 보여 준다.
+               - 접수할 내용은 먼저 이 기기에 저장해 두고(페이지가 닫혀도 다음 잠금 해제 때 이어서 보냄)
+               - 서버 접수는 뒤에서 하고, 일시적인 실패는 자동으로 다시 시도한다.
+               - 서버가 접수를 거절하면(관리자 인증 만료, 반납할 수 없는 상태) 그때 안내한다.
+                 이 경우 영수증 장바구니는 서버에 그대로 남아 있어 다시 반납하면 된다. */
+            const item = { requestId: returnRequestId, cardNumber: params.cardNumber, params, attempts: 0, queuedAt: Date.now() };
             try {
-                
-                delayedReturnLoadingTimer = setTimeout(() => {
-                    delayedReturnLoadingShown = true;
-                    try {
-                        Swal.fire({
-                            title: '반납 처리중',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            showConfirmButton: false,
-                            didOpen: () => { try { Swal.showLoading(); } catch(e) {} }
-                        });
-                    } catch(e) {}
-                }, 800);
-
-                /* @SERVER_API_GROUP_RETURN: 반납 요청 큐 등록 */
-                await Api.call('queueReturnRequest', params);
-
-                /* 큐에 넣은 직후 '지금 처리해' 신호를 한 번 보낸다. 응답은 기다리지 않는다.
-                   5분 트리거만 기다리면 그동안 카드가 '반납처리중'이라 바로 다음 사람이 못 쓴다.
-                   실패해도 트리거가 처리하므로 조용히 넘어간다. */
-                try { Api.call('processQueueNow').catch(() => {}); } catch (_) {}
-
-                if (delayedReturnLoadingTimer) clearTimeout(delayedReturnLoadingTimer);
-                if (delayedReturnLoadingShown) { try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(e) {} }
+                CardLogic.enqueuePendingReturnRequest(item);
                 state.pendingReturnRequestId = null;
                 state.pendingReturnRequestCardId = null;
+                CardLogic.applyOptimisticReturnState(params.cardNumber);
 
-                const t = state.allCardData.find(c => c.id === params.cardNumber);
-                if (t) t.status = '반납처리중';
                 const returnTotalAmount = (state.receiptCart || []).reduce((sum, it) => sum + (Number(it?.amount || 0) || 0), 0);
                 UIManager.showConfirmationScreen('반납 처리 완료',
                     Utils.createDetailRow('카드번호', params.cardNumber) +
@@ -19211,31 +19206,144 @@ ${receiptUseTypeHtml}
                     Utils.createDetailRow('금액', `${Utils.nfKR.format(returnTotalAmount)}원`)
                 );
                 state.forceSyncOnNextUnlock = true;
-                state.pendingPostReturnSync = true;
-                CardLogic.scheduleQuickSync(3, 1200);
-            } catch (e) {
-                if (delayedReturnLoadingTimer) clearTimeout(delayedReturnLoadingTimer);
-                if (delayedReturnLoadingShown) { try { if (window.Swal && Swal.isVisible()) Swal.close(); } catch(_) {} }
-                const returnErrorMessage = Utils.getErrorMessage(e);
-                state.lastReturnSubmitError = { cardNumber: params.cardNumber, message: returnErrorMessage, at: new Date().toISOString() };
-                clearInterval(state.countdownInterval);
-                if(btn) { btn.disabled = false; btn.classList.remove('is-loading'); btn.textContent = originalSubmitText || '반납 제출'; }
-                if (String(returnErrorMessage).includes('ADMIN_SESSION_INVALID')) {
-                    setAdminMode(false, null, { silent: true });
-                    await Swal.fire('관리자 인증 필요', '저장된 반납 허가증이 유효하지 않습니다. 관리자 PIN을 다시 입력해 주세요.', 'warning');
-                    return;
-                }
-                await UIManager.showOperationalError({
-                    title: '반납 처리 실패',
-                    error: e,
-                    steps: [
-                        '다시 반납 제출을 눌러 주세요.',
-                        '반복 실패하면 카드 상태를 확인해 주세요.'
-                    ]
-                });
             } finally {
                 CardLogic._submitInFlight = false;
             }
+            CardLogic.runReturnRequestWithRetry(item, { silent: false }).catch(console.error);
+        },
+
+        /* =========================================================
+        @SUBSECTION: JS_RETURN_BACKGROUND_SYNC
+        반납 접수를 뒤에서 보내고, 실패하면 다시 시도한다 (rent.js 대여 흐름과 같은 방식)
+        ========================================================= */
+        getPendingReturnRequests() {
+            try {
+                const list = JSON.parse(localStorage.getItem(RETURN_SYNC_STORAGE_KEY) || '[]');
+                return Array.isArray(list) ? list.filter(x => x && x.requestId && x.cardNumber && x.params) : [];
+            } catch(e) {
+                return [];
+            }
+        },
+        savePendingReturnRequests(list) {
+            try {
+                localStorage.setItem(RETURN_SYNC_STORAGE_KEY, JSON.stringify(Array.isArray(list) ? list : []));
+            } catch(e) {}
+        },
+        enqueuePendingReturnRequest(item) {
+            const list = CardLogic.getPendingReturnRequests().filter(x => x.requestId !== item.requestId);
+            list.push(item);
+            CardLogic.savePendingReturnRequests(list);
+        },
+        removePendingReturnRequest(requestId) {
+            CardLogic.savePendingReturnRequests(CardLogic.getPendingReturnRequests().filter(x => x.requestId !== requestId));
+        },
+        markPendingReturnAttempt(requestId) {
+            const list = CardLogic.getPendingReturnRequests();
+            const found = list.find(x => x.requestId === requestId);
+            if (found) {
+                found.attempts = Number(found.attempts || 0) + 1;
+                CardLogic.savePendingReturnRequests(list);
+                return found.attempts;
+            }
+            return 0;
+        },
+        applyOptimisticReturnState(cardNumber) {
+            const t = state.allCardData?.find(c => c.id === cardNumber);
+            if (t) t.status = '반납처리중';
+        },
+        // 최신 카드 목록이 와도, 아직 서버에 접수 중인 반납 카드는 '반납처리중'으로 둔다 (loading.js applyFreshInitialData)
+        reapplyPendingReturnStates() {
+            CardLogic.getPendingReturnRequests().forEach(x => {
+                const t = state.allCardData?.find(c => c.id === x.cardNumber);
+                if (t && String(t.status || '').trim() === '사용중') t.status = '반납처리중';
+            });
+        },
+        async runReturnRequestWithRetry(item, opts = {}) {
+            if (!item || !item.requestId || !item.params) return false;
+            if (!CardLogic._returnSyncing) CardLogic._returnSyncing = {};
+            if (CardLogic._returnSyncing[item.requestId]) return false;
+            CardLogic._returnSyncing[item.requestId] = true;
+
+            let lastErrorMessage = '';
+            try {
+                for (let i = 0; i < RETURN_RETRY_DELAYS_MS.length; i++) {
+                    const delay = RETURN_RETRY_DELAYS_MS[i];
+                    if (delay > 0) await new Promise(res => setTimeout(res, delay));
+                    // 이 기기에서 이 반납을 보낸 횟수 (페이지를 다시 열어도 이어서 센다)
+                    const priorAttempts = Number((CardLogic.getPendingReturnRequests().find(x => x.requestId === item.requestId) || {}).attempts || 0);
+                    CardLogic.markPendingReturnAttempt(item.requestId);
+                    try {
+                        /* @SERVER_API_GROUP_RETURN: 반납 요청 큐 등록 */
+                        await Api.call('queueReturnRequest', item.params);
+                        CardLogic.finishReturnRequest(item);
+                        return true;
+                    } catch (e) {
+                        lastErrorMessage = Utils.getErrorMessage(e);
+                        // 앞선 시도가 실제로는 접수돼 처리까지 끝났는데 응답만 못 받은 경우:
+                        // 카드가 이미 '사용가능'으로 돌아가 있다.
+                        if (priorAttempts > 0 && /CARD_NOT_RETURNABLE:(사용가능|대여가능|가능)/.test(lastErrorMessage)) {
+                            console.warn('[WS] return already processed by an earlier attempt', item.cardNumber);
+                            CardLogic.finishReturnRequest(item);
+                            return true;
+                        }
+                        // 서버가 접수를 거절한 경우는 다시 보내도 같다
+                        if (/ADMIN_SESSION_INVALID|CARD_NOT_FOUND|CARD_NOT_RETURNABLE/.test(lastErrorMessage)) {
+                            CardLogic.failReturnRequest(item, lastErrorMessage);
+                            return false;
+                        }
+                    }
+                }
+                // 계속 실패(인터넷 끊김 등): 이 기기에 남겨 두고 다음 잠금 해제 때 다시 보낸다
+                state.lastReturnSubmitError = { cardNumber: item.cardNumber, message: lastErrorMessage, at: new Date().toISOString() };
+                if (!opts.silent) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '반납 접수 지연',
+                        html: `${Utils.esc(item.cardNumber)} 반납을 서버에 아직 보내지 못했습니다.<br>인터넷이 연결되면 자동으로 다시 보냅니다.`,
+                        confirmButtonText: '확인'
+                    });
+                }
+                return false;
+            } finally {
+                delete CardLogic._returnSyncing[item.requestId];
+            }
+        },
+        finishReturnRequest(item) {
+            CardLogic.removePendingReturnRequest(item.requestId);
+            /* 접수된 직후 '지금 처리해' 신호를 한 번 보낸다. 응답은 기다리지 않는다.
+               5분 트리거만 기다리면 그동안 카드가 '반납처리중'이라 바로 다음 사람이 못 쓴다.
+               실패해도 트리거가 처리하므로 조용히 넘어간다. */
+            try { Api.call('processQueueNow').catch(() => {}); } catch (_) {}
+            state.pendingPostReturnSync = true;
+            CardLogic.scheduleQuickSync(3, 1200);
+        },
+        failReturnRequest(item, message) {
+            CardLogic.removePendingReturnRequest(item.requestId);
+            state.lastReturnSubmitError = { cardNumber: item.cardNumber, message, at: new Date().toISOString() };
+            // 화면의 '반납처리중' 표시를 서버 상태로 되돌린다
+            state.pendingPostReturnSync = true;
+            CardLogic.scheduleQuickSync(1, 600);
+            let reason = '카드 상태를 확인한 뒤 다시 반납해 주세요.';
+            if (String(message).includes('ADMIN_SESSION_INVALID')) {
+                setAdminMode(false, null, { silent: true });
+                reason = '관리자 인증이 만료되었습니다. 관리자 PIN을 다시 입력한 뒤 이 카드를 다시 반납해 주세요.';
+            } else if (String(message).includes('CARD_NOT_RETURNABLE')) {
+                const current = String(message).split(':')[1] || '';
+                reason = `카드가 반납할 수 없는 상태입니다${current ? ` (현재: ${Utils.esc(current)})` : ''}. 카드 상태를 확인해 주세요.`;
+            } else if (String(message).includes('CARD_NOT_FOUND')) {
+                reason = '카드상태 시트에서 이 카드를 찾지 못했습니다. 시트를 확인해 주세요.';
+            }
+            Swal.fire({
+                icon: 'error',
+                title: '반납이 접수되지 않았습니다',
+                html: `<b>${Utils.esc(item.cardNumber)}</b><br>${reason}<br><small>입력한 영수증은 그대로 남아 있습니다.</small>`,
+                confirmButtonText: '확인'
+            });
+        },
+        drainPendingReturnRequests() {
+            CardLogic.getPendingReturnRequests().forEach(item => {
+                CardLogic.runReturnRequestWithRetry(item, { silent: true }).catch(console.error);
+            });
         }
 
     };
@@ -19297,6 +19405,8 @@ ${receiptUseTypeHtml}
     function applyFreshInitialData(r, source) {
         state.allCardData = r.allCards || [];
         state.allUsersData = r.allUsers || [];
+        // 아직 서버에 접수 중인 반납은 시트에 반영되기 전이라 '사용중'으로 올 수 있다
+        try { CardLogic.reapplyPendingReturnStates(); } catch (e) {}
         state.lastSyncTs = Date.now();
         if (!state.savedCartPrefetchPromise) SavedCartPrefetch.start(source);
         else SavedCartPrefetch.reattachAfterFreshCards();
@@ -19394,7 +19504,10 @@ ${receiptUseTypeHtml}
 
         UIManager.showScreen('login');
         playLoginEnter();
-        setTimeout(() => CardLogic.drainPendingRentRequests(), 800);
+        setTimeout(() => {
+            CardLogic.drainPendingRentRequests();
+            CardLogic.drainPendingReturnRequests();
+        }, 800);
         console.log('[WS MEASURE] unlock sequence to login screen', `${Date.now() - unlockStartedAt}ms`);
         UIManager.startInactivityDetection();
     }
@@ -19799,6 +19912,51 @@ ${receiptUseTypeHtml}
         });
     }
 
+    /* 반납 화면 어디에 영수증 파일을 끌어다 놓아도 첨부되게 한다.
+       예전에는 '영수증 추가 첨부' 버튼 위에서만 받아서, 영수증 목록 위에 놓으면
+       브라우저가 그 파일을 직접 열어 버려 앱 화면이 사라졌다.
+       버튼 위에 놓는 경우는 버튼이 직접 처리한다 (return.js, 전파를 멈춤).
+       다른 화면에서는 파일을 놓아도 아무 일도 일어나지 않게 막기만 한다. */
+    function bindReceiptDragDrop() {
+        const hasFiles = (ev) => {
+            const types = ev.dataTransfer && ev.dataTransfer.types;
+            return !!types && Array.from(types).includes('Files');
+        };
+        const IDLE_TEXT = '사진 촬영 · 갤러리 선택 · 드래그';
+        const setHighlight = (on) => {
+            const add = document.getElementById('add-receipt-btn');
+            if (!add) return;
+            add.classList.toggle('drag-over', on && !add.disabled);
+            const sub = add.querySelector('.receipt-dropzone-sub');
+            if (sub) sub.textContent = on && !add.disabled ? '화면 아무 곳에나 놓으면 영수증이 추가됩니다' : IDLE_TEXT;
+        };
+        // dragover 는 끌고 있는 동안 계속 오므로, 잠시 끊기면 끌기가 끝난 것으로 본다
+        let offTimer = null;
+        document.addEventListener('dragover', (ev) => {
+            if (!hasFiles(ev)) return;
+            ev.preventDefault();
+            const onReturn = state.currentScreen === 'returnDetails';
+            if (ev.dataTransfer) ev.dataTransfer.dropEffect = onReturn ? 'copy' : 'none';
+            if (!onReturn) return;
+            setHighlight(true);
+            clearTimeout(offTimer);
+            offTimer = setTimeout(() => setHighlight(false), 250);
+        });
+        document.addEventListener('drop', (ev) => {
+            if (!hasFiles(ev)) return;
+            ev.preventDefault();
+            clearTimeout(offTimer);
+            setHighlight(false);
+            if (state.currentScreen !== 'returnDetails') return;
+            const add = document.getElementById('add-receipt-btn');
+            if (add && add.disabled) return;
+            // 영수증 편집 팝업 등이 떠 있을 때는 받지 않는다
+            try { if (typeof Swal !== 'undefined' && Swal.isVisible()) return; } catch (_) {}
+            const files = ev.dataTransfer && ev.dataTransfer.files;
+            if (files && files.length) CardLogic.handleReceiptFiles(files);
+        });
+    }
+
     function bindKeyboardShortcuts() {
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
@@ -19866,6 +20024,7 @@ ${receiptUseTypeHtml}
         bindMainActionHandlers();
         bindReceiptFileInput();
         bindReceiptClipboardPaste();
+        bindReceiptDragDrop();
         bindKeyboardShortcuts();
         bindBeforeUnloadGuard();
         bindLockCardTilt();
