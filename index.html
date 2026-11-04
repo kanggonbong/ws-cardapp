@@ -19193,7 +19193,7 @@ ${receiptUseTypeHtml}
                 await Api.call('queueReturnRequest', params);
 
                 /* 큐에 넣은 직후 '지금 처리해' 신호를 한 번 보낸다. 응답은 기다리지 않는다.
-                   1분 트리거만 기다리면 그동안 카드가 '반납처리중'이라 바로 다음 사람이 못 쓴다.
+                   5분 트리거만 기다리면 그동안 카드가 '반납처리중'이라 바로 다음 사람이 못 쓴다.
                    실패해도 트리거가 처리하므로 조용히 넘어간다. */
                 try { Api.call('processQueueNow').catch(() => {}); } catch (_) {}
 
