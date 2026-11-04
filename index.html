@@ -21202,6 +21202,15 @@ html body.ws-app[data-current-screen="returnDetails"]
   var MAX_SCALE_TOUCH   = 1.00;  // 세로 기기는 확대하지 않음 (키우면 오히려 넘침)
   var SAFE_GAP  = 12;     // 위아래 최소 여백(px)
 
+  /* PC(가로) 화면에서 화면별로 '전체 틀이 창 폭의 몇 배까지 커져도 되는지' 상한.
+     비율 레이아웃(ws-*-fluid.css)을 넣은 뒤 내용이 세로로 촘촘해져서, 높이에 맞춰 키우는
+     배율이 예전보다 커졌다 (1536x864 기준 신청 1.02→1.27, 반납 1.37→1.60).
+     그래서 PC 에서 화면이 커 보였다. 예전 화면에서 잰 폭 비율로 다시 묶는다.
+       신청: 예전 693/1536 = 0.45, 838/1920 = 0.44
+       반납: 예전 934/1536 = 0.61
+       내선번호: 예전 810/1536 = 0.53 (지금도 거의 같아 사실상 걸리지 않는다) */
+  var MAX_WIDTH_RATIO_POINTER = { main: 0.45, returnDetails: 0.61, login: 0.53 };
+
   function isDisabled() {
     try {
       if (location.search.indexOf('nofit=1') >= 0) return true;
@@ -21307,6 +21316,10 @@ html body.ws-app[data-current-screen="returnDetails"]
       var isTouch = (mode === 'touch');
       var minScale = isTouch ? MIN_SCALE_TOUCH : MIN_SCALE_POINTER;
       var maxScale = isTouch ? MAX_SCALE_TOUCH : MAX_SCALE_POINTER;
+      if (!isTouch) {
+        var widthRatio = MAX_WIDTH_RATIO_POINTER[document.body.getAttribute('data-current-screen')];
+        if (widthRatio) maxScale = Math.min(maxScale, Math.max(1, widthRatio * availW / naturalW));
+      }
       scale = Math.min(availH / naturalH, availW / naturalW);
       if (!isFinite(scale) || scale <= 0) scale = 1;
       scale = Math.max(minScale, Math.min(maxScale, scale));
