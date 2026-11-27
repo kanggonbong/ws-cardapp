@@ -232,7 +232,7 @@ h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.0
   <div class="pqr" id="posterQr"></div>
   <ol>
     <li>1. 휴대폰 <b>카메라</b>로 QR 찍기</li>
-    <li>2. 화면 안내대로 <b>앱 설치</b> (안드로이드는 버튼 한 번)</li>
+    <li>2. <b>안드로이드</b>: Chrome에서 <b>앱 설치하기</b> → <b>설치</b><br>&nbsp;&nbsp;&nbsp;&nbsp;<b>아이폰</b>: 화면 화살표대로 <b>공유</b> → <b>홈 화면에 추가</b></li>
     <li>3. 홈 화면의 <b>우성고카드</b> 아이콘으로 실행</li>
   </ol>
   <p class="url" id="posterUrl"></p>
@@ -286,6 +286,7 @@ h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.0
       'android': { os: 'android', browser: 'chrome', inApp: '' },
       'android-samsung': { os: 'android', browser: 'samsung', inApp: '' },
       'android-inapp': { os: 'android', browser: 'chrome', inApp: '네이버' },
+      'android-kakao': { os: 'android', browser: 'chrome', inApp: '카카오톡', kakao: true },
       'pc': { os: 'pc', browser: 'chrome', inApp: '' }
     }[demo] || null;
   }
@@ -326,12 +327,38 @@ h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.0
   }
   $('copyBtn').onclick = copyUrl;
 
-  /* ---------- 안드로이드: 설치 버튼 (크롬·삼성 인터넷·엣지) ---------- */
+  /* ---------- 안드로이드: 크롬으로 모은다 ----------
+     크롬의 '앱 설치'만 진짜 앱처럼 설치돼서(시작 화면·아이콘이 크고 깔끔) 다른 브라우저는 크롬으로 넘긴다.
+     크롬이 없는 폰이면 크롬 열기가 실패하면서 ?nochrome=1 로 되돌아오고, 그때만 지금 브라우저로 설치. */
+  var noChrome = params.get('nochrome') === '1';
+  function chromeIntent() {
+    var u = new URL(GATE_URL);
+    return 'intent://' + u.host + u.pathname + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(GATE_URL + '?nochrome=1') + ';end';
+  }
+  // 처음 한 번은 자동으로 크롬을 연다 (안 넘어가면 버튼으로)
+  function autoOpen(url, key) {
+    if (demo || noChrome) return;
+    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch (e) {}
+    setTimeout(function () { location.href = url; }, 400);
+  }
+  function chromeButton() {
+    $('externalBtn').href = chromeIntent();
+    $('externalLabel').textContent = 'Chrome에서 설치하기';
+    $('externalBtn').querySelector('i').className = 'fa-brands fa-chrome';
+    show('externalBtn');
+  }
+  var chromeSteps = [
+    ui('fa-brands fa-chrome', 'Chrome에서 설치하기') + '를 누르세요.<span class="sub">자동으로 넘어가면 이 단계는 건너뛰어요.</span>',
+    'Chrome에서 ' + ui('fa-solid fa-download', '앱 설치하기') + ' → ' + ui('', '설치') + '를 누르면 끝이에요.'
+  ];
+
+  /* ---------- 설치 버튼 (안드로이드 크롬 · PC) ---------- */
   var deferred = null;
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     deferred = e;
-    if (env.os !== 'ios' && !env.inApp) {
+    var allow = env.os === 'pc' || (env.os === 'android' && !env.inApp && (env.browser === 'chrome' || noChrome));
+    if (allow) {
       show('installBtn');
       if (env.os === 'android') {
         setLead('아래 버튼 한 번이면 홈 화면에 설치돼요.');
@@ -361,8 +388,14 @@ h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.0
     // 1) 카카오톡 · 네이버 등 앱 안의 브라우저: 여기서는 설치가 안 되므로 바깥 브라우저로
     if (env.inApp) {
       setEnv('fa-solid fa-mobile-screen', env.inApp + ' 앱 안');
-      setNote('warn', 'fa-solid fa-triangle-exclamation', env.inApp + ' 안에서는 설치가 안 돼요. ' + (env.kakao ? '브라우저' : env.os === 'ios' ? 'Safari' : 'Chrome') + '로 열어 주세요.');
-      if (env.kakao) {
+      setNote('warn', 'fa-solid fa-triangle-exclamation', env.inApp + ' 안에서는 설치가 안 돼요. ' + (env.os === 'android' && !noChrome ? 'Chrome으로' : env.kakao ? '브라우저로' : env.os === 'ios' ? 'Safari로' : '다른 브라우저로') + ' 열어 주세요.');
+      if (env.os === 'android' && !noChrome) {
+        // 안드로이드는 카카오톡·네이버 등 어디서든 바로 크롬으로 (기본 브라우저를 거치지 않음)
+        chromeButton();
+        setLead('Chrome으로 넘어가서 설치해요.');
+        setSteps(chromeSteps);
+        autoOpen(chromeIntent(), 'ws_chrome_jump');
+      } else if (env.kakao) {
         // 카카오톡은 안드로이드·아이폰 모두 기본 브라우저로 넘기는 주소가 있다
         var kakaoUrl = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(GATE_URL);
         $('externalBtn').href = kakaoUrl;
@@ -378,14 +411,11 @@ h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.0
           setTimeout(function () { location.href = kakaoUrl; }, 400);
         }
       } else if (env.os === 'android') {
-        var u = new URL(GATE_URL);
-        $('externalBtn').href = 'intent://' + u.host + u.pathname + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(GATE_URL) + ';end';
-        $('externalLabel').textContent = 'Chrome으로 열기';
-        show('externalBtn');
-        setLead('아래 버튼을 누르면 Chrome으로 넘어가요.');
+        // 크롬이 없는 폰에서 앱 안 브라우저(카카오톡 제외): 메뉴로 다른 브라우저에서 열기
+        setLead('메뉴에서 다른 브라우저로 열어 주세요.');
         setSteps([
-          ui('fa-brands fa-chrome', 'Chrome으로 열기') + '를 누르세요.',
-          'Chrome에서 ' + ui('fa-solid fa-download', '앱 설치하기') + '를 누르면 끝이에요.'
+          '화면 위나 아래의 ' + ui('fa-solid fa-ellipsis-vertical', '') + ' 메뉴를 누르세요.',
+          ui('', '다른 브라우저로 열기') + '를 고르세요.<span class="sub">메뉴에 없으면 아래 주소 복사 → 브라우저 주소창에 붙여넣기</span>'
         ]);
         show('copyBtn');
       } else {
@@ -426,25 +456,33 @@ h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.0
       return;
     }
 
-    // 3) 안드로이드: 크롬·삼성 인터넷은 설치 버튼(beforeinstallprompt), 안 뜨면 메뉴로
+    // 3) 안드로이드: 크롬이면 설치 버튼, 다른 브라우저면 크롬으로 넘긴다
     if (env.os === 'android') {
       var name = env.browser === 'samsung' ? '삼성 인터넷' : env.browser === 'edge' ? 'Edge' : env.browser === 'whale' ? '웨일' : env.browser === 'firefox' ? 'Firefox' : 'Chrome';
       setEnv(env.browser === 'chrome' ? 'fa-brands fa-chrome' : 'fa-brands fa-android', '안드로이드 · ' + name);
+
+      // 3-1) 크롬이 아닌 브라우저 → 크롬으로 (삼성 인터넷에서 설치하면 바로가기라 작고 흐리게 보임)
+      if (env.browser !== 'chrome' && !noChrome) {
+        setLead('Chrome으로 설치하면 앱처럼 깔끔하게 설치돼요.');
+        setSteps(chromeSteps);
+        chromeButton();
+        autoOpen(chromeIntent(), 'ws_chrome_jump');
+        return;
+      }
+
+      // 3-2) 크롬(또는 크롬이 없는 폰의 지금 브라우저) → 설치 버튼, 안 뜨면 메뉴
       setLead('잠시 후 나타나는 <b>앱 설치하기</b> 버튼을 누르세요.');
       setSteps([]);
+      if (noChrome && env.browser !== 'chrome') setNote('warn', 'fa-solid fa-circle-info', 'Chrome이 없어서 지금 브라우저로 설치해요.');
       var menuSteps = env.browser === 'samsung'
         ? ['아래쪽 ' + ui('fa-solid fa-bars', '메뉴') + '를 누르세요.', ui('fa-regular fa-square-plus', '현재 페이지 추가') + ' → ' + ui('', '홈 화면') + '을 고르세요.', ui('', '추가') + '를 누르면 끝이에요.']
-        : ['오른쪽 위 ' + ui('fa-solid fa-ellipsis-vertical', '') + ' 메뉴를 누르세요.', ui('fa-solid fa-download', '앱 설치') + ' 또는 ' + ui('fa-regular fa-square-plus', '홈 화면에 추가') + '를 고르세요.', ui('', '설치') + '를 누르면 끝이에요.'];
+        : env.browser === 'chrome'
+          ? ['오른쪽 위 ' + ui('fa-solid fa-ellipsis-vertical', '') + ' 메뉴를 누르세요.', ui('fa-solid fa-download', '앱 설치') + '를 고르세요.<span class="sub">메뉴에 <b>앱 열기</b>가 보이면 이미 설치된 거예요. 홈 화면 아이콘으로 여세요.</span>', ui('', '설치') + '를 누르면 끝이에요.']
+          : ['브라우저 ' + ui('fa-solid fa-ellipsis-vertical', '') + ' 메뉴를 누르세요.', ui('fa-regular fa-square-plus', '홈 화면에 추가') + '를 고르세요.', ui('', '추가') + '를 누르면 끝이에요.'];
       var fallback = function () {
         if (deferred) return;
         setLead('브라우저 메뉴에서 설치해 주세요.');
         setSteps(menuSteps);
-        if (env.browser === 'firefox' || env.browser === 'whale') {
-          var u2 = new URL(GATE_URL);
-          $('externalBtn').href = 'intent://' + u2.host + u2.pathname + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(GATE_URL) + ';end';
-          $('externalLabel').textContent = 'Chrome으로 열기';
-          show('externalBtn');
-        }
       };
       if (demo) { (demo === 'android' ? function () { show('installBtn'); setLead('아래 버튼 한 번이면 홈 화면에 설치돼요.'); setSteps(['아래 ' + ui('fa-solid fa-download', '앱 설치하기') + ' 버튼을 누르세요.', '나오는 창에서 ' + ui('', '설치') + '를 누르면 끝이에요.<span class="sub">홈 화면에 우성고카드 아이콘이 생겨요.</span>']); } : fallback)(); }
       else setTimeout(fallback, 2500);
@@ -471,7 +509,7 @@ h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.0
   $('printBtn').onclick = function () { window.print(); };
 
   if (demo) {
-    var views = ['ios-safari', 'ios-safari-26', 'ios-chrome', 'kakao', 'ios-inapp', 'android', 'android-samsung', 'android-inapp', 'pc'];
+    var views = ['ios-safari', 'ios-safari-26', 'ios-chrome', 'kakao', 'ios-inapp', 'android', 'android-samsung', 'android-samsung&nochrome=1', 'android-kakao', 'android-inapp', 'pc'];
     $('demoBar').innerHTML = '미리보기: ' + views.map(function (v) { return '<a href="?view=' + v + '">' + v + '</a>'; }).join('');
     show('demoBar');
   }
