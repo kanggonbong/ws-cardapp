@@ -1,376 +1,483 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>우성고 카드 시스템</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>우성고 카드 설치</title>
+<meta name="description" content="우성고 카드 시스템을 휴대폰 홈 화면에 앱으로 설치합니다." />
 
 <link rel="manifest" href="./manifest.json" />
-<link rel="apple-touch-icon" href="./assets/icon-192.png" />
-
-<meta name="theme-color" content="#f2f4f6" />
+<link rel="icon" href="./assets/icon-192.png" />
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+<meta name="theme-color" content="#F3F6FA" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="우성고카드" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
 <style>
-:root{
-  --primary:#3182f6;
-  --primary-deep:#1b64da;
-  --bg:#f2f4f6;
-  --panel:#ffffff;
-  --panel-soft:#f8fafc;
-  --border:#e5e8ef;
-  --text:#191f28;
-  --sub:#6b7684;
+/* 앱(ws-theme.css)과 같은 색: 학교 남색 + 옅은 푸른 바탕 */
+:root {
+  --bg: #F3F6FA;
+  --panel: #FFFFFF;
+  --panel-2: #F7F9FC;
+  --line: #DCE4EF;
+  --line-soft: #E8EEF5;
+  --ink: #0F2347;
+  --ink-soft: #4A5A78;
+  --muted: #93A1B8;
+  --accent: #1D4185;
+  --accent-press: #163468;
+  --accent-soft: #E7EEF8;
+  --good: #059669;
+  --good-soft: #ECFDF5;
+  --warn: #B45309;
+  --warn-soft: #FFF7ED;
+  --shadow: 0 1px 2px rgba(15, 35, 71, .05), 0 18px 40px -16px rgba(15, 35, 71, .18);
+  --shadow-sm: 0 1px 2px rgba(15, 35, 71, .06), 0 4px 12px -4px rgba(15, 35, 71, .12);
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --aurora:
+    radial-gradient(55% 45% at 8% 0%, rgba(29, 65, 133, .14), transparent 70%),
+    radial-gradient(45% 40% at 95% 8%, rgba(56, 140, 220, .13), transparent 70%),
+    radial-gradient(60% 50% at 50% 105%, rgba(20, 160, 190, .08), transparent 70%);
 }
-
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { background: var(--bg); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--aurora), var(--bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: max(28px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+  word-break: keep-all;
 }
+.hide { display: none !important; }
 
-html{
-  background:#f2f4f6;
+.wrap { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 14px; }
+
+/* 머리: 아이콘 + 이름 + 지금 환경 */
+.head { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 8px 0 4px; }
+.app-icon {
+  width: 76px; height: 76px; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line-soft), 0 12px 28px -12px rgba(15, 35, 71, .35);
+  animation: pop .5s var(--spring) both;
 }
-
-body{
-  margin:0;
-  min-height:100vh;
-  min-height:100dvh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:#f2f4f6;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--text);
+.app-icon img { width: 100%; height: 100%; display: block; }
+h1 { margin: 14px 0 4px; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+.lead { margin: 0; color: var(--ink-soft); font-size: 15px; font-weight: 600; line-height: 1.5; }
+.env {
+  margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line-soft); box-shadow: var(--shadow-sm);
+  color: var(--ink-soft); font-size: 12.5px; font-weight: 700;
 }
+.env i { color: var(--accent); }
 
-.card{
-  width:min(420px,95vw);
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:30px;
-  padding:32px 24px;
-  box-shadow:0 1px 2px rgba(15,23,42,.04);
-  text-align:center;
+/* 판 */
+.panel {
+  background: var(--panel); border: 1px solid var(--line-soft); border-radius: 22px;
+  box-shadow: var(--shadow); padding: 18px;
+  animation: rise .45s ease both;
 }
+.panel-title { margin: 0 0 12px; font-size: 14px; font-weight: 800; color: var(--accent); display: flex; align-items: center; gap: 7px; }
 
-.icon{
-  width:90px;
-  height:90px;
-  margin:0 auto 18px;
+/* 따라 하기 단계 */
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; counter-reset: step; }
+.steps li {
+  counter-increment: step;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border-radius: 16px;
+  background: var(--panel-2); border: 1px solid var(--line-soft);
+  font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--ink);
 }
-
-.icon img{
-  width:100%;
-  height:100%;
-  border-radius:22px;
-  display:block;
+.steps li::before {
+  content: counter(step);
+  flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--accent); color: #fff; font-size: 14px; font-weight: 800;
 }
-
-h1{
-  margin:0 0 10px;
-  font-size:1.8rem;
-  font-weight:900;
-  letter-spacing:-.04em;
+.steps li .sub { display: block; margin-top: 2px; color: var(--muted); font-size: 12.5px; font-weight: 600; }
+/* 화면에 보이는 버튼 모양을 그대로 흉내 낸 작은 칩 */
+.ui {
+  display: inline-flex; align-items: center; gap: 5px; vertical-align: middle;
+  padding: 3px 9px; margin: 0 2px; border-radius: 9px;
+  background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+  font-size: 13.5px; font-weight: 700; color: var(--ink); white-space: nowrap;
 }
+.ui i { color: var(--accent); font-size: 13px; }
 
-.desc{
-  margin:0;
-  color:var(--sub);
-  line-height:1.6;
-  font-weight:700;
+/* 안내 띠 */
+.note { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; font-size: 13.5px; font-weight: 600; line-height: 1.5; }
+.note i { margin-top: 2px; }
+.note.warn { background: var(--warn-soft); color: var(--warn); }
+.note.good { background: var(--good-soft); color: var(--good); }
+
+/* 버튼 */
+.btns { display: flex; flex-direction: column; gap: 10px; }
+.btn {
+  width: 100%; min-height: 54px; border: 0; border-radius: 16px; padding: 0 18px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  font: inherit; font-size: 16.5px; font-weight: 800; text-decoration: none; cursor: pointer;
+  transition: transform .25s var(--spring), background-color .15s ease;
 }
+.btn:active { transform: scale(.97); transition: transform .08s ease-out; }
+.btn.primary { background: var(--accent); color: #fff; box-shadow: 0 12px 24px -12px rgba(29, 65, 133, .7); }
+.btn.primary:active { background: var(--accent-press); }
+.btn.ghost { background: var(--panel); color: var(--accent); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.btn.quiet { min-height: 46px; background: transparent; color: var(--ink-soft); font-size: 15px; font-weight: 700; }
 
-.badge{
-  display:inline-block;
-  margin-top:16px;
-  padding:8px 14px;
-  border-radius:999px;
-  background:#eef5ff;
-  color:var(--primary);
-  border:1px solid #dbeafe;
-  font-weight:800;
-  font-size:.9rem;
+/* PC: QR */
+.qr-box { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.qr {
+  padding: 14px; border-radius: 20px; background: #fff; border: 1px solid var(--line-soft); box-shadow: var(--shadow-sm);
+  line-height: 0;
 }
+.qr img, .qr canvas { width: 200px !important; height: 200px !important; }
+.qr-url { font-size: 12.5px; color: var(--muted); font-weight: 600; text-align: center; word-break: break-all; }
 
-.guide{
-  margin-top:22px;
-  padding:18px;
-  border-radius:20px;
-  background:var(--panel-soft);
-  border:1px solid var(--border);
-  text-align:left;
+.foot { text-align: center; color: var(--muted); font-size: 12.5px; font-weight: 600; line-height: 1.6; padding: 4px 8px 0; }
+.toast {
+  position: fixed; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); transform: translate(-50%, 20px);
+  padding: 11px 16px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 700;
+  opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .3s var(--spring); z-index: 30;
 }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-.guide ol{
-  margin:0;
-  padding-left:20px;
+/* 공유 버튼 위치를 가리키는 화살표 (아이폰) */
+.pointer {
+  position: fixed; z-index: 20; display: none; flex-direction: column; align-items: center; gap: 4px;
+  color: var(--accent); font-size: 12.5px; font-weight: 800; pointer-events: none;
 }
+.pointer i { font-size: 26px; filter: drop-shadow(0 4px 8px rgba(29, 65, 133, .35)); }
+.pointer span { background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; box-shadow: var(--shadow-sm); }
+.pointer.bottom-center { display: flex; left: 50%; bottom: max(10px, env(safe-area-inset-bottom)); transform: translateX(-50%); flex-direction: column-reverse; }
+.pointer.bottom-right { display: flex; right: 18px; bottom: max(10px, env(safe-area-inset-bottom)); flex-direction: column-reverse; align-items: flex-end; }
+.pointer.top-right { display: flex; right: 18px; top: max(8px, env(safe-area-inset-top)); align-items: flex-end; }
+.pointer.bottom-center i, .pointer.bottom-right i { animation: bob-down 1.2s ease-in-out infinite; }
+.pointer.top-right i { animation: bob-up 1.2s ease-in-out infinite; }
+@keyframes bob-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+@keyframes bob-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes rise { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
 
-.guide li{
-  margin:10px 0;
-  color:#4f5f73;
-  line-height:1.5;
-  font-weight:700;
-}
+/* 미리보기(?view=) 표시 */
+.demo-bar { font-size: 12px; color: var(--muted); text-align: center; }
+.demo-bar a { color: var(--accent); font-weight: 700; margin: 0 4px; }
 
-.btns{
-  margin-top:24px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.btn{
-  width:100%;
-  border:none;
-  border-radius:18px;
-  padding:16px;
-  font-size:1rem;
-  font-weight:900;
-  cursor:pointer;
-  text-decoration:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.primary{
-  background:var(--primary);
-  color:white;
-  box-shadow:0 10px 20px rgba(49,130,246,.18);
-}
-
-.primary:active{
-  transform:scale(.98);
-}
-
-.secondary{
-  background:#ffffff;
-  color:var(--primary);
-  border:1px solid var(--border);
-}
-
-.secondary:active{
-  transform:scale(.98);
-}
-
-.small{
-  margin-top:16px;
-  color:#8b95a1;
-  font-size:.82rem;
-  line-height:1.5;
-  font-weight:700;
-}
-
-.hide{
-  display:none!important;
+/* 인쇄: QR 안내문 한 장 */
+.poster { display: none; }
+@media print {
+  @page { size: A4; margin: 18mm; }
+  body { background: #fff; padding: 0; display: block; }
+  .wrap, .pointer, .toast { display: none !important; }
+  .poster { display: flex !important; flex-direction: column; align-items: center; text-align: center; gap: 10mm; padding-top: 10mm; color: #0F2347; }
+  .poster img.logo { width: 34mm; height: 34mm; border-radius: 8mm; }
+  .poster h2 { margin: 0; font-size: 30pt; font-weight: 800; letter-spacing: -0.03em; }
+  .poster p { margin: 0; font-size: 15pt; color: #4A5A78; font-weight: 600; line-height: 1.6; }
+  .poster .pqr { padding: 6mm; border: 1px solid #DCE4EF; border-radius: 8mm; line-height: 0; }
+  .poster .pqr img, .poster .pqr canvas { width: 80mm !important; height: 80mm !important; }
+  .poster ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4mm; font-size: 14pt; font-weight: 600; text-align: left; }
+  .poster ol b { color: #1D4185; }
+  .poster .url { font-size: 11pt; color: #93A1B8; }
 }
 </style>
 </head>
-
 <body>
-
-<div class="card">
-
-  <div class="icon">
-    <img src="./assets/icon-192.png" alt="icon">
+<div class="wrap">
+  <div class="head">
+    <div class="app-icon"><img src="./assets/apple-touch-icon.png" alt="우성고 카드 아이콘"></div>
+    <h1>우성고 카드</h1>
+    <p class="lead" id="lead">휴대폰 홈 화면에 앱으로 설치해 보세요.</p>
+    <span class="env" id="env"><i class="fa-solid fa-circle-notch fa-spin"></i> 기기 확인 중</span>
   </div>
 
-  <h1>우성고 카드 시스템</h1>
-
-  <p class="desc" id="desc">
-    환경을 확인하고 있습니다.
-  </p>
-
-  <div class="badge" id="badge">
-    확인 중...
-  </div>
-
-  <div class="guide hide" id="iosSafariGuide">
-    <ol>
-      <li>Safari 공유 버튼을 누릅니다.</li>
-      <li>더보기를 누른 뒤 홈 화면에 추가를 선택합니다.</li>
-      <li>추가를 누르면 홈 화면에 앱 아이콘이 생성됩니다.</li>
-    </ol>
-  </div>
-
-  <div class="guide hide" id="iosNotSafariGuide">
-    <ol>
-      <li>아래 주소 복사하기 버튼을 누릅니다.</li>
-      <li>Safari 브라우저를 실행합니다.</li>
-      <li>주소창에 붙여넣기 후 접속합니다.</li>
-      <li>Safari에서 홈 화면에 추가를 진행합니다.</li>
-    </ol>
+  <div class="panel" id="panel">
+    <p class="panel-title" id="panelTitle"><i class="fa-solid fa-list-check"></i> 이렇게 설치하세요</p>
+    <div id="notes"></div>
+    <ol class="steps" id="steps"></ol>
+    <div class="qr-box hide" id="qrBox">
+      <div class="qr" id="qr"></div>
+      <div class="qr-url" id="qrUrl"></div>
+    </div>
   </div>
 
   <div class="btns">
-
-    <a id="chromeBtn" class="btn primary hide" href="#">
-      Chrome에서 설치하기
-    </a>
-
-    <button id="installBtn" class="btn primary hide">
-      앱 설치하기
-    </button>
-
-    <button id="copyBtn" class="btn primary hide">
-      주소 복사하기
-    </button>
-
-    <a id="goBtn" class="btn secondary hide" href="./index.html">
-      앱 바로가기
-    </a>
-
+    <button class="btn primary hide" id="installBtn" type="button"><i class="fa-solid fa-download"></i> 앱 설치하기</button>
+    <a class="btn primary hide" id="externalBtn" href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i> <span id="externalLabel">브라우저로 열기</span></a>
+    <button class="btn ghost hide" id="copyBtn" type="button"><i class="fa-regular fa-copy"></i> 주소 복사하기</button>
+    <button class="btn ghost hide" id="printBtn" type="button"><i class="fa-solid fa-print"></i> QR 안내문 인쇄하기</button>
+    <a class="btn ghost" id="openBtn" href="./index.html"><i class="fa-solid fa-arrow-right"></i> 설치 없이 바로 사용하기</a>
   </div>
 
-  <div class="small hide" id="androidText">
-    설치가 안 되면 Chrome 메뉴(⋮) → 홈 화면에 추가
-  </div>
-
-  <div class="small">
-    이미 설치했다면 홈 화면의 우성고카드 아이콘으로 실행하세요.
-  </div>
-
+  <p class="foot">이미 설치했다면 홈 화면의 <b>우성고카드</b> 아이콘을 누르세요.<br>설치하지 않아도 브라우저에서 똑같이 쓸 수 있어요.</p>
+  <p class="demo-bar hide" id="demoBar"></p>
 </div>
 
+<div class="pointer" id="pointer"><i class="fa-solid fa-arrow-down"></i><span id="pointerLabel">공유</span></div>
+<div class="toast" id="toast"></div>
+
+<!-- 인쇄용 안내문 -->
+<div class="poster" aria-hidden="true">
+  <img class="logo" src="./assets/apple-touch-icon.png" alt="">
+  <h2>우성고 카드</h2>
+  <p>휴대폰 카메라로 QR을 찍고<br>화면에 나오는 안내대로 설치하세요.</p>
+  <div class="pqr" id="posterQr"></div>
+  <ol>
+    <li>1. 휴대폰 <b>카메라</b>로 QR 찍기</li>
+    <li>2. 화면 안내대로 <b>앱 설치</b> (안드로이드는 버튼 한 번)</li>
+    <li>3. 홈 화면의 <b>우성고카드</b> 아이콘으로 실행</li>
+  </ol>
+  <p class="url" id="posterUrl"></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-const APP_URL = "https://kanggonbong.github.io/ws-cardapp/";
-const GATE_URL = "https://kanggonbong.github.io/ws-cardapp/gate.html";
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var APP_URL = new URL('./index.html', location.href).href;
+  var GATE_URL = location.origin + location.pathname; // QR·주소 복사에 쓰는 이 페이지 주소 (?view 같은 꼬리 제외)
 
-const $ = (id) => document.getElementById(id);
+  // 이미 설치한 앱(홈 화면 아이콘)으로 열렸으면 바로 앱으로
+  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  if (standalone) { location.replace(APP_URL); return; }
 
-let deferredPrompt = null;
-
-function show(id){
-  $(id).classList.remove("hide");
-}
-
-function isStandalone(){
-  return window.matchMedia('(display-mode: standalone)').matches
-    || window.navigator.standalone === true;
-}
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(()=>{});
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  if(isStandalone()){
-    location.replace(APP_URL);
-    return;
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
   }
 
-  const ua = navigator.userAgent.toLowerCase();
+  /* ---------- 기기 · 브라우저 알아보기 ---------- */
+  var ua = navigator.userAgent;
+  var params = new URLSearchParams(location.search);
+  var demo = params.get('view'); // 미리보기: ios-safari, ios-chrome, ios-inapp, kakao, android, android-samsung, android-inapp, pc
 
-  const isAndroid = /android/.test(ua);
-  const isiOS = /iphone|ipad|ipod/.test(ua);
+  var isIPad = /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var isIOS = /iPhone|iPod/.test(ua) || isIPad;
+  var isAndroid = /Android/i.test(ua);
+  var isKakao = /KAKAOTALK/i.test(ua);
+  var inAppName =
+    isKakao ? '카카오톡' :
+    /NAVER\(inapp|NAVER/i.test(ua) && !/Whale/i.test(ua) ? '네이버' :
+    /Instagram/i.test(ua) ? '인스타그램' :
+    /FBAN|FBAV|FB_IAB/i.test(ua) ? '페이스북' :
+    /\bLine\//i.test(ua) ? '라인' :
+    /BAND\//i.test(ua) ? '밴드' :
+    /DaumApps/i.test(ua) ? '다음' : '';
+  var iosBrowser = /CriOS/.test(ua) ? 'chrome' : /EdgiOS/.test(ua) ? 'edge' : /FxiOS/.test(ua) ? 'firefox' : /Whale/i.test(ua) ? 'whale' : 'safari';
+  var androidBrowser = /SamsungBrowser/i.test(ua) ? 'samsung' : /EdgA/i.test(ua) ? 'edge' : /Whale/i.test(ua) ? 'whale' : /Firefox/i.test(ua) ? 'firefox' : 'chrome';
+  var safariMajor = (ua.match(/Version\/(\d+)/) || [])[1] ? parseInt(ua.match(/Version\/(\d+)/)[1], 10) : 0;
 
-  const isSamsung = /samsungbrowser/.test(ua);
-  const isKakao = /kakaotalk/.test(ua);
-  const isNaver = /naver/.test(ua);
+  var env;
+  if (demo) {
+    env = {
+      'ios-safari': { os: 'ios', browser: 'safari', inApp: '' },
+      'ios-safari-26': { os: 'ios', browser: 'safari', inApp: '', safari26: true },
+      'ios-chrome': { os: 'ios', browser: 'chrome', inApp: '' },
+      'ios-inapp': { os: 'ios', browser: 'safari', inApp: '네이버' },
+      'kakao': { os: 'ios', browser: 'safari', inApp: '카카오톡', kakao: true },
+      'android': { os: 'android', browser: 'chrome', inApp: '' },
+      'android-samsung': { os: 'android', browser: 'samsung', inApp: '' },
+      'android-inapp': { os: 'android', browser: 'chrome', inApp: '네이버' },
+      'pc': { os: 'pc', browser: 'chrome', inApp: '' }
+    }[demo] || null;
+  }
+  if (!env) {
+    env = {
+      os: isIOS ? 'ios' : isAndroid ? 'android' : 'pc',
+      browser: isIOS ? iosBrowser : isAndroid ? androidBrowser : 'pc',
+      inApp: inAppName,
+      kakao: isKakao,
+      ipad: isIPad,
+      safari26: isIOS && iosBrowser === 'safari' && safariMajor >= 26
+    };
+  }
 
-  const isChrome =
-    /chrome/.test(ua) &&
-    !isSamsung &&
-    !isKakao &&
-    !isNaver &&
-    !/edg\//.test(ua) &&
-    !/opr\//.test(ua);
+  /* ---------- 그리는 도구 ---------- */
+  var ui = function (icon, text) { return '<span class="ui"><i class="' + icon + '"></i>' + (text ? ' ' + text : '') + '</span>'; };
+  var SHARE = 'fa-solid fa-arrow-up-from-bracket';
+  function setEnv(icon, text) { $('env').innerHTML = '<i class="' + icon + '"></i> ' + text; }
+  function setLead(t) { $('lead').innerHTML = t; }
+  function setSteps(list) { $('steps').innerHTML = list.map(function (s) { return '<li><span>' + s + '</span></li>'; }).join(''); $('steps').classList.toggle('hide', !list.length); }
+  function setNote(kind, icon, html) { $('notes').innerHTML = html ? '<div class="note ' + kind + '" style="margin-bottom:12px"><i class="' + icon + '"></i><span>' + html + '</span></div>' : ''; }
+  function show(id) { $(id).classList.remove('hide'); }
+  function hide(id) { $(id).classList.add('hide'); }
+  function pointer(pos, label, up) {
+    var p = $('pointer');
+    p.className = 'pointer ' + (pos || '');
+    p.querySelector('i').className = 'fa-solid ' + (up ? 'fa-arrow-up' : 'fa-arrow-down');
+    $('pointerLabel').textContent = label || '';
+    // 화살표가 글자를 가리지 않게 그쪽 여백을 넓힌다
+    if (/bottom/.test(pos)) document.body.style.paddingBottom = 'calc(96px + env(safe-area-inset-bottom))';
+    if (/top/.test(pos)) document.body.style.paddingTop = 'calc(84px + env(safe-area-inset-top))';
+  }
+  function toast(t) { var el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { el.classList.remove('show'); }, 2200); }
+  function copyUrl() {
+    var done = function () { toast('주소를 복사했어요'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(GATE_URL).then(done, fallback); else fallback();
+    function fallback() { window.prompt('아래 주소를 길게 눌러 복사하세요.', GATE_URL); }
+  }
+  $('copyBtn').onclick = copyUrl;
 
-  const isSafari =
-    isiOS &&
-    /safari/.test(ua) &&
-    !/crios/.test(ua) &&
-    !/fxios/.test(ua) &&
-    !isKakao &&
-    !isNaver;
+  /* ---------- 안드로이드: 설치 버튼 (크롬·삼성 인터넷·엣지) ---------- */
+  var deferred = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    if (env.os !== 'ios' && !env.inApp) {
+      show('installBtn');
+      if (env.os === 'android') {
+        setLead('아래 버튼 한 번이면 홈 화면에 설치돼요.');
+        setSteps([
+          '아래 ' + ui('fa-solid fa-download', '앱 설치하기') + ' 버튼을 누르세요.',
+          '나오는 창에서 ' + ui('', '설치') + '를 누르면 끝이에요.<span class="sub">홈 화면에 우성고카드 아이콘이 생겨요.</span>'
+        ]);
+      }
+    }
+  });
+  $('installBtn').onclick = function () {
+    if (!deferred) { toast('브라우저 메뉴에서 설치해 주세요'); return; }
+    deferred.prompt();
+    deferred.userChoice.then(function (r) { deferred = null; if (r && r.outcome === 'accepted') installed(); });
+  };
+  window.addEventListener('appinstalled', installed);
+  function installed() {
+    hide('installBtn');
+    setEnv('fa-solid fa-circle-check', '설치 완료');
+    setLead('홈 화면의 <b>우성고카드</b> 아이콘으로 실행하세요.');
+    setSteps([]);
+    setNote('good', 'fa-solid fa-circle-check', '설치가 끝났어요. 이제 이 창은 닫아도 돼요.');
+  }
 
-  show("goBtn");
-
-  if(isAndroid){
-
-    if(isChrome){
-
-      $("badge").innerText = "Android Chrome";
-      $("desc").innerText = "앱을 설치하거나 바로 사용할 수 있습니다.";
-
-      show("androidText");
-
-      window.addEventListener("beforeinstallprompt", (e)=>{
-        e.preventDefault();
-        deferredPrompt = e;
-        show("installBtn");
-      });
-
-      $("installBtn").onclick = async () => {
-        if(!deferredPrompt){
-          alert("설치가 안 되면 Chrome 메뉴(⋮) → 홈 화면에 추가");
-          return;
+  /* ---------- 화면별 안내 ---------- */
+  function render() {
+    // 1) 카카오톡 · 네이버 등 앱 안의 브라우저: 여기서는 설치가 안 되므로 바깥 브라우저로
+    if (env.inApp) {
+      setEnv('fa-solid fa-mobile-screen', env.inApp + ' 앱 안');
+      setNote('warn', 'fa-solid fa-triangle-exclamation', env.inApp + ' 안에서는 설치가 안 돼요. ' + (env.kakao ? '브라우저' : env.os === 'ios' ? 'Safari' : 'Chrome') + '로 열어 주세요.');
+      if (env.kakao) {
+        // 카카오톡은 안드로이드·아이폰 모두 기본 브라우저로 넘기는 주소가 있다
+        var kakaoUrl = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(GATE_URL);
+        $('externalBtn').href = kakaoUrl;
+        $('externalLabel').textContent = '기본 브라우저로 열기';
+        show('externalBtn');
+        setLead('아래 버튼을 누르면 브라우저로 넘어가요.');
+        setSteps([
+          ui('fa-solid fa-arrow-up-right-from-square', '기본 브라우저로 열기') + '를 누르세요.',
+          '브라우저에서 열린 화면의 안내를 따라 설치하세요.'
+        ]);
+        if (!demo && !sessionStorage.getItem('ws_kakao_jump')) {
+          try { sessionStorage.setItem('ws_kakao_jump', '1'); } catch (e) {}
+          setTimeout(function () { location.href = kakaoUrl; }, 400);
         }
-
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-      };
-
-    } else {
-
-      $("badge").innerText = "Android";
-      $("desc").innerText = "안정적인 설치를 위해 Chrome 브라우저를 이용해주세요.";
-
-      const clean = GATE_URL.replace("https://","");
-
-      $("chromeBtn").href =
-        `intent://${clean}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(GATE_URL)};end`;
-
-      show("chromeBtn");
+      } else if (env.os === 'android') {
+        var u = new URL(GATE_URL);
+        $('externalBtn').href = 'intent://' + u.host + u.pathname + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(GATE_URL) + ';end';
+        $('externalLabel').textContent = 'Chrome으로 열기';
+        show('externalBtn');
+        setLead('아래 버튼을 누르면 Chrome으로 넘어가요.');
+        setSteps([
+          ui('fa-brands fa-chrome', 'Chrome으로 열기') + '를 누르세요.',
+          'Chrome에서 ' + ui('fa-solid fa-download', '앱 설치하기') + '를 누르면 끝이에요.'
+        ]);
+        show('copyBtn');
+      } else {
+        setLead('메뉴에서 Safari로 열어 주세요.');
+        setSteps([
+          '화면 위나 아래의 ' + ui('fa-solid fa-ellipsis', '') + ' 메뉴를 누르세요.',
+          ui('fa-brands fa-safari', 'Safari로 열기') + ' 또는 ' + ui('', '다른 브라우저로 열기') + '를 고르세요.<span class="sub">메뉴에 없으면 아래 주소 복사 → Safari 주소창에 붙여넣기</span>'
+        ]);
+        show('copyBtn');
+      }
+      return;
     }
 
-    return;
-  }
-
-  if(isSafari){
-
-    $("badge").innerText = "iPhone Safari";
-    $("desc").innerText = "Safari에서 홈 화면에 추가하면 앱처럼 사용할 수 있습니다.";
-
-    show("iosSafariGuide");
-
-    return;
-  }
-
-  if(isiOS){
-
-    $("badge").innerText = "iPhone";
-    $("desc").innerText = "안정적인 설치를 위해 Safari에서 열어주세요.";
-
-    show("iosNotSafariGuide");
-    show("copyBtn");
-
-    $("copyBtn").onclick = async () => {
-      try{
-        await navigator.clipboard.writeText(GATE_URL);
-        alert("주소가 복사되었습니다.");
-      }catch(e){
-        prompt("아래 주소를 복사해주세요.", GATE_URL);
+    // 2) 아이폰 · 아이패드: 설치 버튼이 없어서 공유 메뉴로 직접 추가
+    if (env.os === 'ios') {
+      var label = env.browser === 'chrome' ? 'Chrome' : env.browser === 'edge' ? 'Edge' : env.browser === 'firefox' ? 'Firefox' : env.browser === 'whale' ? '웨일' : 'Safari';
+      setEnv(env.browser === 'chrome' ? 'fa-brands fa-chrome' : 'fa-brands fa-apple', (env.ipad ? '아이패드' : '아이폰') + ' · ' + label);
+      setLead('공유 메뉴에서 <b>홈 화면에 추가</b>를 누르면 앱처럼 쓸 수 있어요.');
+      var finish = ui('', '추가') + '를 누르면 끝이에요.<span class="sub">홈 화면에 우성고카드 아이콘이 생겨요.</span>';
+      var addHome = ui('fa-regular fa-square-plus', '홈 화면에 추가') + '를 누르세요.<span class="sub">안 보이면 목록을 아래로 내려 보세요.</span>';
+      if (env.browser === 'safari' && env.safari26 && !env.ipad) {
+        setSteps(['오른쪽 아래 ' + ui('fa-solid fa-ellipsis', '') + ' 버튼을 누르세요.', ui(SHARE, '공유') + '를 누르세요.', addHome, finish]);
+        pointer('bottom-right', '여기', false);
+      } else if (env.browser === 'safari' && !env.ipad) {
+        setSteps(['화면 아래 가운데 ' + ui(SHARE, '공유') + ' 버튼을 누르세요.<span class="sub">주소창을 위로 옮겨 두었다면 위쪽에 있어요.</span>', addHome, finish]);
+        pointer('bottom-center', '공유', false);
+      } else if (env.browser === 'safari' && env.ipad) {
+        setSteps(['오른쪽 위 ' + ui(SHARE, '공유') + ' 버튼을 누르세요.', addHome, finish]);
+        pointer('top-right', '공유', true);
+      } else if (env.browser === 'chrome') {
+        setSteps(['주소창 오른쪽 ' + ui(SHARE, '공유') + ' 버튼을 누르세요.', addHome, finish]);
+        pointer('top-right', '공유', true);
+      } else {
+        setSteps([label + ' 메뉴에서 ' + ui(SHARE, '공유') + '를 누르세요.', addHome, finish]);
+        setNote('warn', 'fa-solid fa-circle-info', '메뉴에 <b>홈 화면에 추가</b>가 없으면 주소를 복사해서 Safari에서 열어 주세요.');
+        show('copyBtn');
       }
-    };
+      return;
+    }
 
-    return;
+    // 3) 안드로이드: 크롬·삼성 인터넷은 설치 버튼(beforeinstallprompt), 안 뜨면 메뉴로
+    if (env.os === 'android') {
+      var name = env.browser === 'samsung' ? '삼성 인터넷' : env.browser === 'edge' ? 'Edge' : env.browser === 'whale' ? '웨일' : env.browser === 'firefox' ? 'Firefox' : 'Chrome';
+      setEnv(env.browser === 'chrome' ? 'fa-brands fa-chrome' : 'fa-brands fa-android', '안드로이드 · ' + name);
+      setLead('잠시 후 나타나는 <b>앱 설치하기</b> 버튼을 누르세요.');
+      setSteps([]);
+      var menuSteps = env.browser === 'samsung'
+        ? ['아래쪽 ' + ui('fa-solid fa-bars', '메뉴') + '를 누르세요.', ui('fa-regular fa-square-plus', '현재 페이지 추가') + ' → ' + ui('', '홈 화면') + '을 고르세요.', ui('', '추가') + '를 누르면 끝이에요.']
+        : ['오른쪽 위 ' + ui('fa-solid fa-ellipsis-vertical', '') + ' 메뉴를 누르세요.', ui('fa-solid fa-download', '앱 설치') + ' 또는 ' + ui('fa-regular fa-square-plus', '홈 화면에 추가') + '를 고르세요.', ui('', '설치') + '를 누르면 끝이에요.'];
+      var fallback = function () {
+        if (deferred) return;
+        setLead('브라우저 메뉴에서 설치해 주세요.');
+        setSteps(menuSteps);
+        if (env.browser === 'firefox' || env.browser === 'whale') {
+          var u2 = new URL(GATE_URL);
+          $('externalBtn').href = 'intent://' + u2.host + u2.pathname + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(GATE_URL) + ';end';
+          $('externalLabel').textContent = 'Chrome으로 열기';
+          show('externalBtn');
+        }
+      };
+      if (demo) { (demo === 'android' ? function () { show('installBtn'); setLead('아래 버튼 한 번이면 홈 화면에 설치돼요.'); setSteps(['아래 ' + ui('fa-solid fa-download', '앱 설치하기') + ' 버튼을 누르세요.', '나오는 창에서 ' + ui('', '설치') + '를 누르면 끝이에요.<span class="sub">홈 화면에 우성고카드 아이콘이 생겨요.</span>']); } : fallback)(); }
+      else setTimeout(fallback, 2500);
+      return;
+    }
+
+    // 4) PC: 휴대폰으로 찍을 QR + 인쇄
+    setEnv('fa-solid fa-desktop', 'PC');
+    setLead('휴대폰 카메라로 아래 QR을 찍으면 설치 안내가 열려요.');
+    $('panelTitle').innerHTML = '<i class="fa-solid fa-qrcode"></i> 휴대폰으로 찍어 주세요';
+    setSteps([]);
+    show('qrBox');
+    show('printBtn');
+    $('qrUrl').textContent = GATE_URL;
+    $('openBtn').innerHTML = '<i class="fa-solid fa-arrow-right"></i> 이 PC에서 바로 사용하기';
   }
 
-  $("badge").innerText = "PC / 기타";
-  $("desc").innerText = "휴대폰 카메라로 QR 코드를 찍어 접속해주세요.";
+  function drawQr() {
+    if (typeof QRCode === 'undefined') return;
+    var opts = { text: GATE_URL, width: 512, height: 512, colorDark: '#0F2347', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M };
+    try { new QRCode($('qr'), opts); new QRCode($('posterQr'), opts); } catch (e) {}
+    $('posterUrl').textContent = GATE_URL;
+  }
+  $('printBtn').onclick = function () { window.print(); };
 
-});
+  if (demo) {
+    var views = ['ios-safari', 'ios-safari-26', 'ios-chrome', 'kakao', 'ios-inapp', 'android', 'android-samsung', 'android-inapp', 'pc'];
+    $('demoBar').innerHTML = '미리보기: ' + views.map(function (v) { return '<a href="?view=' + v + '">' + v + '</a>'; }).join('');
+    show('demoBar');
+  }
+  render();
+  drawQr();
+})();
 </script>
-
 </body>
 </html>

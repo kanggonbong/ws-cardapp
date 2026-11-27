@@ -32,7 +32,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>우성고 카드</title>
 
-  <meta name="theme-color" content="#8b5cf6" />
+  <meta name="theme-color" content="#F3F6FA" />
+    <!-- 홈 화면 설치(PWA): 아이콘·매니페스트·서비스 워커는 GitHub(ws-cardapp)에 같이 올린다 (pwa/ws-cardapp/) -->
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" href="./assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+    <script>
+      if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+      }
+    </script>
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="우성고카드" />

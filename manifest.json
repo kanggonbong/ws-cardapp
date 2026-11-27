@@ -1,16 +1,20 @@
 {
+  "id": "./index.html",
   "name": "우성고 카드 시스템",
   "short_name": "우성고카드",
+  "description": "우성고등학교 법인카드 대여·반납",
+  "lang": "ko",
+  "dir": "ltr",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f2f4f6",
-  "theme_color": "#f2f4f6",
+  "orientation": "any",
+  "background_color": "#F3F6FA",
+  "theme_color": "#F3F6FA",
   "icons": [
-    {
-      "src": "./assets/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
+    { "src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "./assets/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
